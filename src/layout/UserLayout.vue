@@ -111,14 +111,26 @@
   </v-toolbar>
   <!-- <v-content> -->
     <v-container fluid>
-      <span class="headline font-weight-thin">{{page_name}}</span>
+      <v-card class="mt-3 mx-auto">
+        <v-layout row wrap ml-3>
+          <v-sheet
+            class="v-sheet--offset mx-auto pa-3"
+            color="info"
+            elevation="15"
+          >
+            <span class="headline font-weight-thin" dark>{{page_name}}</span>
+          </v-sheet>   
+          <v-spacer></v-spacer>
+        </v-layout>
       <v-breadcrumbs divider="/" >
+       
        <v-breadcrumbs-item v-for="item in breadcrumbs" :key="item" @click="goTo('/app')">
          
          <v-icon color="primary">{{item.icon}}</v-icon><span class="caption font-weight-light">{{item.name}}</span>
          
        </v-breadcrumbs-item> 
-      </v-breadcrumbs>      
+      </v-breadcrumbs>  
+      </v-card> 
       <v-divider></v-divider>
       <!-- <transition name="fade"> -->
       <router-view></router-view>
@@ -196,5 +208,8 @@ export default {
 </script>
 
 <style>
-
+.v-sheet--offset {
+    top: -24px;
+    position: relative;
+  }
 </style>
