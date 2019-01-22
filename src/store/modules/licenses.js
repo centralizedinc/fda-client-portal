@@ -13,7 +13,7 @@ const mutations = {
         state.LicenseAPI = new LicenseAPI(token);
     },
     SET_LICENSES(state, licenses){
-        // console.log('mutations licenses: ' + JSON.stringify(licenses))
+        console.log('mutations licenses: ' + JSON.stringify(licenses))
         state.licenses = licenses;
     }
 }
@@ -21,7 +21,7 @@ const mutations = {
 var actions = {
     SET_LICENSES(context){
         context.state.LicenseAPI.getLicenses((licenses) => {
-            // console.log('actions licenses: ' + JSON.stringify(licenses))
+            console.log('actions licenses: ' + JSON.stringify(licenses))
             context.commit('SET_LICENSES', licenses)
         })
     }
