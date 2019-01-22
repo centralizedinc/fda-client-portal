@@ -1,0 +1,11 @@
+.v-card {
+    background: linear-gradient(90deg, white, #CAD0A0);
+    border-radius: 8px !important;
+}
+
+.v-card__title {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 16px
+}
