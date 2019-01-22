@@ -1,10 +1,12 @@
 <template>
     <v-layout align-center justify-center>
         <v-flex xs4 pa-2 mt-4>
-            <v-card>
-                <v-toolbar dark style='background: linear-gradient(45deg, #43A047 0%, #1de9b6 100%)'>
-                    <span class='font-weight-light headline'>Login</span>
+            <v-card pa-5>
+                <v-toolbar color = 'primary'>
+                    <!-- dark style='background: linear-gradient(45deg, #43A047 0%, #1de9b6 100%)' -->
+                    <span class='font-weight-light title'>Login</span>
                 </v-toolbar>
+                <v-divider></v-divider>
                 <v-card-text transparent>
                     <v-text-field
                         name="name"
@@ -26,7 +28,7 @@
                     <v-divider></v-divider>
                     <v-card-actions transparent>                        
                         <v-spacer></v-spacer>
-                        <v-btn color="success" @click="login" class="caption font-weight-light">Login</v-btn>
+                        <v-btn color="primary" @click="login" class="caption font-weight-light">Login</v-btn>
                     </v-card-actions>
                 </v-card-text>
             </v-card>
