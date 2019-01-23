@@ -39,7 +39,7 @@ export default new Router({
         {
           path: 'certificates',
           name: 'Certificate of Product Registration',
-          component: () => import('@/views/app/UserPortfolio.vue')
+          component: () => import('@/views/app/SampleFormLayout.vue')
         },
         {
           path: 'notification',
