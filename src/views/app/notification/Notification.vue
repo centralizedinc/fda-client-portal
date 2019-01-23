@@ -15,10 +15,9 @@
                 </v-btn>
                 <v-data-table
                     :headers="headers"
-                    :items="licenses"
+                    :items="notification"
                     class="elevation-1"
                 >
-                <!-- :items="$store.state.licenses.licenses" -->
                     <template slot="items" slot-scope="props">
                     <td>{{ props.item.case_no }}</td>
                     <td>{{ props.item.case_no }}</td>
@@ -61,7 +60,7 @@
           { text: 'Variation Date', value: 'date_variation' },
           { text: 'Actions', value: '' }
         ],
-        licenses: [{    
+        notification: [{    
         case_no: "00",
         application_type: "sample application",
         current_task: "sample task",
@@ -78,7 +77,7 @@
             this.$store.dispatch('SET_LICENSES');
         },
         apply(){
-            this.$router.push('/app/licenses/apply')
+            this.$router.push('/app/notification/apply')
         }
     }
   }

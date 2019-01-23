@@ -74,7 +74,7 @@
         </v-list-tile>
         <v-divider></v-divider>
         <v-list-tile
-          @click="goTo('/app/payments')"
+          @click="goTo('/app/profile')"
           class="ma-1"
           :style="activeRoute('Notifications')"
         >
@@ -87,7 +87,7 @@
         </v-list-tile>
 
         <v-list-tile
-          @click="goTo('/app/payments')"
+          @click="goTo('/app/password')"
           class="ma-1"
           :style="activeRoute('Notifications')"
         >
@@ -100,7 +100,7 @@
         </v-list-tile>
 
         <v-list-tile
-          @click="goTo('/app/payments')"
+          @click="goTo('/app/logout')"
           class="ma-1"
           :style="activeRoute('Notifications')"
         >
@@ -141,14 +141,6 @@
       <v-card class="mt-3 mx-auto">
         <v-layout row wrap ml-3>
           <v-sheet
-<<<<<<< HEAD
-            class="v-sheet--offset mx-auto pa-3"
-            color="info" light
-            elevation="15"
-          >
-            <span class="headline font-weight-thin">{{page_name}}</span>
-          </v-sheet>   
-=======
             class="v-sheet--offset pa-3"
             color="fdaSilver"
             elevation="4"
@@ -167,7 +159,6 @@
             </v-breadcrumbs>
           </v-sheet>
 
->>>>>>> 42375a1b8e21eb5f7c780619a36cb8bd8a952af8
           <v-spacer></v-spacer>
         </v-layout>
       </v-card>
