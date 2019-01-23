@@ -115,10 +115,10 @@
         <v-layout row wrap ml-3>
           <v-sheet
             class="v-sheet--offset mx-auto pa-3"
-            color="info"
+            color="info" light
             elevation="15"
           >
-            <span class="headline font-weight-thin" dark>{{page_name}}</span>
+            <span class="headline font-weight-thin">{{page_name}}</span>
           </v-sheet>   
           <v-spacer></v-spacer>
         </v-layout>
