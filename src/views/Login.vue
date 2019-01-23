@@ -19,7 +19,8 @@
             :append-icon="value ? 'visibility' : 'visibility_off'"
             :append-icon-cb="() => (value = !value)"
             value="Password"
-            :rules="[() => ('The email and password you entered don\'t match')]"
+            :rules="() => ('The email and password you entered don\'t match')"
+            
             error
             :type="value ? 'password' : 'text'"
           ></v-text-field>

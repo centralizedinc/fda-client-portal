@@ -39,16 +39,41 @@ export default new Router({
         {
           path: 'certificates',
           name: 'Certificate of Product Registration',
-          component: () => import('@/views/app/SampleFormLayout.vue')
+          component: () => import('@/views/app/certificates/Certificates.vue')
+        },
+        {
+          path: 'certificates/apply',
+          name: 'New Certificate of Product Registration',
+          component: () => import('@/views/app/certificates/Apply.vue')
         },
         {
           path: 'notification',
           name: 'Product Notification',
-          component: () => import('@/views/app/UserPortfolio.vue')
+          component: () => import('@/views/app/notification/Notification.vue')
+        },
+        {
+          path: 'notification/apply',
+          name: 'New Product Notification',
+          component: () => import('@/views/app/notification/Apply.vue')
         },
         {
           path: 'payments',
           name: 'Payments',
+          component: () => import('@/views/app/UserPortfolio.vue')
+        },
+        {
+          path: 'profile',
+          name: 'Profile',
+          component: () => import('@/views/app/UserPortfolio.vue')
+        },
+        {
+          path: 'password',
+          name: 'Password',
+          component: () => import('@/views/app/UserPortfolio.vue')
+        },
+        {
+          path: 'logout',
+          name: 'Logout',
           component: () => import('@/views/app/UserPortfolio.vue')
         },
       ]

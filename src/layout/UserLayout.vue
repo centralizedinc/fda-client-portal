@@ -74,7 +74,7 @@
         </v-list-tile>
         <v-divider></v-divider>
         <v-list-tile
-          @click="goTo('/app/payments')"
+          @click="goTo('/app/profile')"
           class="ma-1"
           :style="activeRoute('Notifications')"
         >
@@ -87,7 +87,7 @@
         </v-list-tile>
 
         <v-list-tile
-          @click="goTo('/app/payments')"
+          @click="goTo('/app/password')"
           class="ma-1"
           :style="activeRoute('Notifications')"
         >
@@ -100,7 +100,7 @@
         </v-list-tile>
 
         <v-list-tile
-          @click="goTo('/app/payments')"
+          @click="goTo('/app/logout')"
           class="ma-1"
           :style="activeRoute('Notifications')"
         >
