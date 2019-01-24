@@ -59,7 +59,17 @@ export default new Router({
         {
           path: 'payments',
           name: 'Payments',
-          component: () => import('@/views/app/UserPortfolio.vue')
+          component: () => import('@/views/app/payment/Payment.vue')
+        },
+        {
+          path: 'payments/creaditcard',
+          name: 'Creadit Card Payment',
+          component: () => import('@/views/app/payment/CreaditCardPayment.vue')
+        },
+        {
+          path: 'payments/summary',
+          name: 'Payment Summary',
+          component: () => import('@/views/app/payment/PaymentSummary.vue')
         },
         {
           path: 'profile',

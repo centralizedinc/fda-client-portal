@@ -227,12 +227,25 @@ export default {
           disabled: false,
           href: "breadcrumbs_dashboard"
         },
+        // {
+        //   icon: "card_membership",
+        //   name: "License",
+        //   disabled: false,
+        //   href: "breadcrumbs_dashboard"
+        // },
         {
           icon: "book",
           name: "Certificates",
           disabled: false,
           href: "breadcrumbs_dashboard"
-        }
+        },
+        // {
+        //   icon: "far fa-creadit-card",
+        //   name: "Payments",
+        //   disabled: false,
+        //   href: "breadcrumbs_dashboard"
+        // },
+
       ];
     }
   }
