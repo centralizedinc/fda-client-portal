@@ -60,7 +60,8 @@
 
 <script>
 export default {
-  props: ["form"]
+  props: ["form"],
+  
 };
 </script>
 

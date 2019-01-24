@@ -75,6 +75,8 @@ export default {
       this.$router.push("/app/licenses/apply");
     }
   }
+}
+
 </script>
 
 <style>

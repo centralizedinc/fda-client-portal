@@ -98,7 +98,8 @@
                         <v-flex xs10>                                                                              
                         </v-flex>
                         <v-flex xs2 pl-5>
-                            <v-btn color="success" @click="submit">Submit</v-btn>                                                 
+                            <v-btn color="success" @click="submit">Submit</v-btn>   
+                                                                                
                         </v-flex>    
                     </v-layout>
                 </v-container>

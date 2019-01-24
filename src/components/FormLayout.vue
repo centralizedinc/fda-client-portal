@@ -81,20 +81,30 @@ export default {
   },
   data: () => ({
     length: 3,
-    onboarding: 0
+    onboarding: 0,
+    sample: "sample"
   }),
 
   methods: {
     next() {
       this.onboarding =
         this.onboarding + 1 === length ? 0 : this.onboarding + 1;
+        this.step = this.onboarding;
+        
+      console.log("formlayout next clicked: " + JSON.stringify(this.step))
     },
     prev() {
       this.onboarding =
         this.onboarding - 1 < 0 ? this.length - 1 : this.onboarding - 1;
+        this.step = this.onboarding;
+        console.log("formlayout prev is clicked: " + JSON.stringify(this.step))
     },
     onScroll(e) {
       e.target.scrollTop;
+    },
+    toogle(){
+      this.sample = "Hello"
+      console.log(this.sample)
     }
   }
 };

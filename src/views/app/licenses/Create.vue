@@ -27,7 +27,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-two slot="content-step-2" :form="form"></step-two>
+      <step-two slot="content-step-2" v-if="e1===2" :form="form"></step-two>
     </form-layout>
   </div>
 </template>
@@ -130,11 +130,17 @@ export default {
       ]
     }
   }),
+  created(){
+    console.log("created porps: " + JSON.stringify(this.form))
+  },
+
   methods: {
     prev() {
+      console.log("next is clicked!!! ");
       this.e1--;
     },
     next() {
+      console.log("next is clicked!!! ");
       this.e1++;
     }
   }
