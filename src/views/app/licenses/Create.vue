@@ -7,26 +7,21 @@
       v-else
       :step="e1"
       :submitAt="2"
-      :steps="3"
+      :steps="2"
       hidePrevOnLastStep
       @prev="prev"
       @next="next"
     >
       <template slot="header-step-1">General Information
-        <v-tooltip bottom>
-          <v-btn slot="activator" flat icon>
-            <i class="fas fa-question fa-spin"></i>
+        <v-spacer></v-spacer>
+        <v-tooltip left>
+          <v-btn slot="activator" flat icon color="error">
+            <i class="fas fa-question fa-lg fa-spin"></i>
           </v-btn>Get Help
         </v-tooltip>
       </template>
       <step-one slot="content-step-1" :form="form"></step-one>
-      <template slot="header-step-2">Establishment Information
-        <v-tooltip bottom>
-          <v-btn slot="activator" flat icon>
-            <i class="fas fa-question fa-spin"></i>
-          </v-btn>Get Help
-        </v-tooltip>
-      </template>
+      <template slot="header-step-2">Establishment Information</template>
       <step-two slot="content-step-2" :form="form"></step-two>
     </form-layout>
   </div>

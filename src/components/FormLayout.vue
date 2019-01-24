@@ -3,18 +3,13 @@
     <v-flex xs12>
       <v-card>
         <v-spacer></v-spacer>
-        <v-card-title class="headline ml-3 mt-3">
+        <v-card-title class="headline ml-3 mt-2 pt-3" style="padding: 2px;">
           <slot :name="'header-step-' + step"></slot>
         </v-card-title>
         <v-window v-model="onboarding">
           <v-window-item v-for="n in length" :key="`card-${n}`">
             <v-card style="box-shadow: none  !important;" height="230">
-              <v-progress-linear
-                v-model="value"
-                :active="show"
-                :indeterminate="query"
-                :query="true"
-              ></v-progress-linear>
+              <v-progress-linear></v-progress-linear>
               <v-container id="scroll-target" style="max-height: 200px" class="scroll-y">
                 <v-layout
                   v-scroll:#scroll-target="onScroll"
@@ -30,7 +25,7 @@
           </v-window-item>
         </v-window>
         <v-card-actions class="justify-space-between">
-          <v-btn flat @click="prev">
+          <v-btn flat @click="$emit('prev')">
             <v-icon>mdi-chevron-left</v-icon>
           </v-btn>
           <v-item-group v-model="onboarding" class="text-xs-center" mandatory>
@@ -43,7 +38,7 @@
               >{{n}}</v-btn>
             </v-item>
           </v-item-group>
-          <v-btn flat @click="next">
+          <v-btn flat @click="$emit('next')">
             <v-icon>mdi-chevron-right</v-icon>
           </v-btn>
         </v-card-actions>

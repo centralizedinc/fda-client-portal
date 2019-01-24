@@ -49,3 +49,18 @@
     margin-left: 8px;
     border-radius: 5px !important;
 }
+
+.v-tooltip__content {
+    width: 150px;
+    transform: skew(-20deg);
+    background: #104b2A !important;
+    color: #e9d758 !important;
+    font-size: 14px;
+    display: inline-block;
+    padding: 6px 8px !important;
+    position: absolute;
+    width: auto;
+    text-transform: uppercase !important;
+    font-weight: 700;
+    box-shadow: none !important;
+}
