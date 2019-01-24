@@ -64,7 +64,6 @@
       this.$router.push("/app/licenses/apply");
     }
   }
-};
 </script>
 
 <style>

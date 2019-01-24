@@ -2,7 +2,8 @@
     <v-layout row wrap>
         <v-flex xs12>
             <form-layout @submit="submit">
-                <template slot="header-step-1">Credit Card Details</template>
+                <template slot="header-step-1">Credit Card Details
+</template>
                 <v-container slot="content-step-1" grid-list-xl>
                     <v-layout row wrap>
                         <v-flex xs12>
@@ -94,12 +95,11 @@
                                 :rules="[rules.required]">
                             </v-text-field>
                         </v-flex>
-                        <v-flex xs6>                                                                              
+                        <v-flex xs10>                                                                              
                         </v-flex>
-                        <v-flex xs6>
-                                <v-spacer></v-spacer>
-                                <v-btn color="success" @click="submit">Submit</v-btn>
-                            </v-flex>    
+                        <v-flex xs2 pl-5>
+                            <v-btn color="success" @click="submit">Submit</v-btn>                                                 
+                        </v-flex>    
                     </v-layout>
                 </v-container>
             </form-layout>
@@ -132,9 +132,9 @@
                 }
             };
         },
-        methods:{
-            submit(){
-                 this.$router.push('/app/payments/summary')
+        methods: {
+            submit() {
+                this.$router.push('/app/payments/summary')
             }
         }
     };

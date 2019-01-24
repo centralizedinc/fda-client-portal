@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import vtooltip from 'v-tooltip'
 import '@/assets/css/fdastyle.css'
 import './plugins/vuetify'
 import App from './App.vue'
@@ -15,6 +16,7 @@ import '../node_modules/nprogress/nprogress.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
+Vue.use(vtooltip)
 
 NProgress.configure({
   showSpinner: false,
