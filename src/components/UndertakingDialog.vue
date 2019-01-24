@@ -33,7 +33,13 @@
           </ol>
         </v-card-text>
         <v-divider></v-divider>
-        <v-btn flat color="success" @click.native.stop="apply">I accept</v-btn>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-tooltip left>
+            <v-btn slot="activator" flat color="success" @click.native.stop="apply">I accept</v-btn>Help
+          </v-tooltip>
+          <v-spacer></v-spacer>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
@@ -57,7 +63,7 @@ export default {
     par2:
       "The pharmacist/s and the other appropriate allied health professionals, upon and during employment in the establishment, is/are not and will not in any way be connected to, employed by or engaged with any other FDA-regulated establishment;",
     par3:
-      "The approved and valid License to Operate shall be displayed in a conspicuous place in the establishment visible to my customersjdjggjdgjsgdjgdsThe approved and valid License to Operate shall be displayed in a conspicuous place in the establishment visible to my customers;",
+      "The approved and valid License to Operate shall be displayed in a conspicuous place in the establishment visible to my customers. The approved and valid License to Operate shall be displayed in a conspicuous place in the establishment visible to my customers;",
     par4:
       "The establishment will change its business name, and/or brand name in the case of products, in the event that there is a similar, same, or confusingly similar name registered with the Food and Drug Administration, or if the FDA rules later that such name is misleading, offensive, against the law, customs, public morals, public policy or otherwise violative of relevant rules and regulations;",
     par5:

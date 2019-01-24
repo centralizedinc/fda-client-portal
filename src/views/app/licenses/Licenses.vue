@@ -2,11 +2,17 @@
   <v-layout row wrap>
     <v-flex xs12 p1-2>
       <v-card>
-        <v-btn fab small color="primary" top right absolute @click.native.stop="apply">
+        <v-btn fab small color="primary" top right absolute @click="dialog=true">
+          <!-- <v-btn fab small color="primary" top right absolute @click.native.stop="apply"> -->
           <v-icon>edit</v-icon>
         </v-btn>
-        <v-data-table :headers="headers" :items="licenses" class="elevation-1">
-          <!-- :items="$store.state.licenses.licenses" -->
+        <undertaking-dialog :show="dialog"></undertaking-dialog>
+
+        <v-data-table
+          :headers="headers"
+          :items="$store.state.licenses.licenses"
+          class="elevation-1"
+        >
           <template slot="items" slot-scope="props">
             <td>{{ props.item.case_no }}</td>
             <td>{{ props.item.case_no }}</td>
@@ -36,29 +42,34 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        headers: [
-          { text: 'Case No', value: 'case_no'},
-          { text: 'License No', value: 'case_no' },
-          { text: 'Type', value: 'application_type' },
-          { text: 'Task', value: 'current_task' },
-          { text: 'Application Date', value: 'date_created' },
-          { text: 'Variation Date', value: 'date_variation' },
-          { text: 'Actions', value: '' }
-        ],
-        licenses: [{    
-        case_no: "00",
-        application_type: "sample application",
-        current_task: "sample task",
-        date_created: "01/01/2019",
-        date_variation: "01/01/2019"    
-    }]
-      }
-    },
-    created(){
-        this.init()
+import Undertaking from "../../../components/UndertakingDialog";
+
+export default {
+  components: {
+    UndertakingDialog: () => import("@/components/UndertakingDialog")
+  },
+  data() {
+    return {
+      dialog: false,
+
+      headers: [
+        { text: "Case No", value: "case_no" },
+        { text: "License No", value: "case_no" },
+        { text: "Type", value: "application_type" },
+        { text: "Task", value: "current_task" },
+        { text: "Application Date", value: "date_created" },
+        { text: "Variation Date", value: "date_variation" },
+        { text: "Actions", value: "" }
+      ],
+      licenses: []
+    };
+  },
+  created() {
+    this.init();
+  },
+  methods: {
+    init() {
+      this.$store.dispatch("SET_LICENSES");
     },
     apply() {
       this.$router.push("/app/licenses/apply");

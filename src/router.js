@@ -34,7 +34,7 @@ export default new Router({
         {
           path: 'licenses/apply',
           name: 'New License Application',
-          component: () => import('@/views/app/licenses/Apply.vue')
+          component: () => import('@/views/app/licenses/Create.vue')
         },
         {
           path: 'certificates',
