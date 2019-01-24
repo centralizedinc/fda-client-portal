@@ -2,7 +2,9 @@
   <v-layout row wrap>
     <v-card>
       <v-spacer></v-spacer>
-      <v-card-title class="headline ml-3 mt-3 text-capitalize">General Information</v-card-title>
+      <v-card-title class="headline ml-3 mt-3 text-capitalize">
+        <slot :name="'header-step-' + step"></slot>
+      </v-card-title>
 
       <v-window v-model="onboarding">
         <v-window-item v-for="n in length" :key="`card-${n}`">
@@ -16,9 +18,7 @@
                 justify-center
                 tag="v-card-text"
               >
-                Transparent themed, for background-imaged slides. Background color black added for demonstration purposes.Transparent themed, for background-imaged slides. Background color black added for demonstration purposes.Transparent themed, for background-imaged slides. Background color black added for demonstration purposes.Transparent tXXXXXXXhemed, for background-imaged slides. Background color black added for demonstration purposes.Transparent themed, for background-imaged slides. Background color black added for demonstration purposes.Transparent themed, for background-imaged slides. Background color black added for demonstration purposes.Transparent themed, for background-imaged slides. Background color black added for demonstration purposes.mcmcmcmcmMKMKMM[O
-                Transparent themed, for background-imaged slides. Background color black added for demonstration purposes.Transparent themed, for background-imaged slides. Background color black added for demonstration purposes.Transparent themed, for background-imaged slides. Background color black added for demonstration purposes.Transparent tXXXXXXXhemed, for background-imaged slides. Background color black added for demonstration purposes.Transparent themed, for background-imaged slides. Background color black added for demonstration purposes.Transparent themed, for background-imaged slides. Background color black added for demonstration purposes.Transparent themed, for background-imaged slides. Background color black added for demonstration purposes.mcmcmcmcm
-                style="height: 1000px" style="height: 1000px"
+                <slot :name="'content-step-' + step"></slot>
               </v-layout>
             </v-container>
           </v-card>
