@@ -2,17 +2,15 @@
   <v-layout row wrap>
     <v-flex xs12 p1-2>
       <v-card>
-        <v-btn fab small color="primary" top right absolute @click="dialog=true">
-          <!-- <v-btn fab small color="primary" top right absolute @click.native.stop="apply"> -->
-          <v-icon>edit</v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <v-btn slot="activator" fab medium color="fdaMed" top right absolute @click="dialog=true">
+            <v-icon medium color="fdaSilver">create</v-icon>
+          </v-btn>Apply New License
+        </v-tooltip>
+
         <undertaking-dialog :show="dialog"></undertaking-dialog>
 
-        <v-data-table
-          :headers="headers"
-          :items="$store.state.licenses.licenses"
-          class="elevation-1"
-        >
+        <v-data-table :headers="headers" :items="licenses" class="elevation-1">
           <template slot="items" slot-scope="props">
             <td>{{ props.item.case_no }}</td>
             <td>{{ props.item.case_no }}</td>
@@ -22,15 +20,26 @@
             <td>{{ props.item.date_variation }}</td>
             <td>
               <v-layout row wrap>
-                <v-flex xs6>
-                  <v-btn flat icon color="primary">
-                    <v-icon small>edit</v-icon>
-                  </v-btn>
+                <v-flex xs3>
+                  <v-tooltip top>
+                    <v-btn slot="activator" flat icon color="primary">
+                      <v-icon small>refresh</v-icon>
+                    </v-btn>Renewal
+                  </v-tooltip>
                 </v-flex>
-                <v-flex xs6>
-                  <v-btn flat icon color="primary">
-                    <v-icon small>search</v-icon>
-                  </v-btn>
+                <v-flex xs3>
+                  <v-tooltip top>
+                    <v-btn slot="activator" flat icon color="primary">
+                      <v-icon small>edit</v-icon>
+                    </v-btn>Variation
+                  </v-tooltip>
+                </v-flex>
+                <v-flex xs3>
+                  <v-tooltip top>
+                    <v-btn slot="activator" flat icon color="primary">
+                      <v-icon small>search</v-icon>
+                    </v-btn>View Application
+                  </v-tooltip>
                 </v-flex>
               </v-layout>
             </td>
@@ -51,7 +60,6 @@ export default {
   data() {
     return {
       dialog: false,
-
       headers: [
         { text: "Case No", value: "case_no" },
         { text: "License No", value: "case_no" },
@@ -61,7 +69,15 @@ export default {
         { text: "Variation Date", value: "date_variation" },
         { text: "Actions", value: "" }
       ],
-      licenses: []
+      licenses: [
+        {
+          case_no: "00",
+          application_type: "sample application",
+          current_task: "sample task",
+          date_created: "01/01/2019",
+          date_variation: "01/01/2019"
+        }
+      ]
     };
   },
   created() {

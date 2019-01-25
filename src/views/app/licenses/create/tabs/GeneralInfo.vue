@@ -61,7 +61,12 @@
 <script>
 export default {
   props: ["form"],
-  
+  data: () => ({
+    types: [],
+    activity: [],
+    addtl: [],
+    capital: []
+  })
 };
 </script>
 

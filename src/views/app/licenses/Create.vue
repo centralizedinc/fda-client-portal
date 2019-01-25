@@ -6,28 +6,28 @@
     <form-layout
       v-else
       :step="e1"
-      :submitAt="2"
-      :steps="3"
+      :submitAt="4"
+      :steps="4"
       hidePrevOnLastStep
       @prev="prev"
       @next="next"
+      @changePage="changePage"
     >
       <template slot="header-step-1">General Information
-        <v-tooltip bottom>
-          <v-btn slot="activator" flat icon>
-            <i class="fas fa-question fa-spin"></i>
+        <v-spacer></v-spacer>
+        <v-tooltip left>
+          <v-btn slot="activator" flat icon color="error">
+            <i class="fas fa-question fa-lg fa-spin"></i>
           </v-btn>Get Help
         </v-tooltip>
       </template>
       <step-one slot="content-step-1" :form="form"></step-one>
-      <template slot="header-step-2">Establishment Information
-        <v-tooltip bottom>
-          <v-btn slot="activator" flat icon>
-            <i class="fas fa-question fa-spin"></i>
-          </v-btn>Get Help
-        </v-tooltip>
-      </template>
-      <step-two slot="content-step-2" v-if="e1===2" :form="form"></step-two>
+      <template slot="header-step-2">Establishment Information</template>
+      <step-two slot="content-step-2" :form="form"></step-two>
+      <template slot="header-step-3">Header3</template>
+      <template slot="content-step-3">Content 3</template>
+      <template slot="header-step-4">Header 4</template>
+      <template slot="content-step-4">Content 4</template>
     </form-layout>
   </div>
 </template>
@@ -142,6 +142,11 @@ export default {
     next() {
       console.log("next is clicked!!! ");
       this.e1++;
+    },
+    changePage(val){
+      console.log("change page value: " + JSON.stringify(val))
+      this.e1 = val
+      
     }
   }
 };
