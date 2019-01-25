@@ -7,11 +7,12 @@
           <slot :name="'header-step-' + step"></slot>
         </v-card-title>
         <v-window v-model="onboarding">
-          <v-window-item v-for="n in length" :key="`card-${n}`">
-            <v-card style="box-shadow: none  !important;">
+          <v-window-item v-for="n in steps" :key="`card-${n}`">
+            <v-card style="box-shadow: none  !important;" height="400">
               <v-progress-linear></v-progress-linear>
-              <v-container id="scroll-target" class="scroll-y" style="max-height: 1000vh">
+              <v-container mt-3 id="scroll-target" style="max-height: 1000vh" class="scroll-y">
                 <v-layout
+                  mt-3
                   v-scroll:#scroll-target="onScroll"
                   column
                   style="height: 280px"
@@ -38,12 +39,7 @@
               >{{n}}</v-btn>
             </v-item>
           </v-item-group>
-          <!-- <v-btn
-                
-                :complete="step > 2" step="2"
-              >asdasd
-          </v-btn>-->
-          <v-btn flat @click="next">
+          <v-btn flat v-if="!(submitAt&&submitAt===step)&&steps!==step" @click="next">
             <v-icon>mdi-chevron-right</v-icon>
           </v-btn>
         </v-card-actions>
@@ -80,7 +76,7 @@ export default {
     }
   },
   data: () => ({
-    length: 3,
+    length: 4,
     onboarding: 0
   }),
   watch: {
@@ -119,9 +115,9 @@ export default {
   overflow-y: scroll;
 }
 /* .v-card__title {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 2px;
-} */
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2px;
+  } */
 </style>
