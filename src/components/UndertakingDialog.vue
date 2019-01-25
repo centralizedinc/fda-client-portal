@@ -35,7 +35,7 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-tooltip left>
+          <v-tooltip top>
             <v-btn slot="activator" flat color="success" @click.native.stop="apply">I accept</v-btn>Agree
           </v-tooltip>
           <v-spacer></v-spacer>

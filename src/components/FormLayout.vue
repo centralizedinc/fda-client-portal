@@ -7,14 +7,15 @@
           <slot :name="'header-step-' + step"></slot>
         </v-card-title>
         <v-window v-model="onboarding">
-          <v-window-item v-for="n in length" :key="`card-${n}`">
-            <v-card style="box-shadow: none  !important;" height="230">
+          <v-window-item v-for="n in steps" :key="`card-${n}`">
+            <v-card style="box-shadow: none  !important;" height="400">
               <v-progress-linear></v-progress-linear>
-              <v-container id="scroll-target" style="max-height: 200px" class="scroll-y">
+              <v-container mt-3 id="scroll-target" style="max-height: 1000vh" class="scroll-y">
                 <v-layout
+                  mt-3
                   v-scroll:#scroll-target="onScroll"
                   column
-                  style="height: 200px"
+                  style="height: 280px"
                   align-center
                   justify-center
                 >
@@ -25,12 +26,13 @@
           </v-window-item>
         </v-window>
         <v-card-actions class="justify-space-between">
-          <v-btn flat @click="$emit('prev')">
+          <v-btn flat v-show="!(hidePrevOnLastStep&&steps===step)&&step!==1" @click="prev">
             <v-icon>mdi-chevron-left</v-icon>
           </v-btn>
           <v-item-group v-model="onboarding" class="text-xs-center" mandatory>
-            <v-item v-for="n in length" :key="`btn-${n}`">
+            <v-item v-for="n in steps" :key="`btn-${n}`">
               <v-btn
+                medium
                 slot-scope="{ active, toggle }"
                 :input-value="active"
                 icon
@@ -38,7 +40,7 @@
               >{{n}}</v-btn>
             </v-item>
           </v-item-group>
-          <v-btn flat @click="$emit('next')">
+          <v-btn flat v-if="!(submitAt&&submitAt===step)&&steps!==step" @click="next">
             <v-icon>mdi-chevron-right</v-icon>
           </v-btn>
         </v-card-actions>
@@ -75,18 +77,19 @@ export default {
     }
   },
   data: () => ({
-    length: 3,
+    length: 4,
     onboarding: 0
   }),
-
   methods: {
     next() {
       this.onboarding =
         this.onboarding + 1 === length ? 0 : this.onboarding + 1;
+      this.$emit("next");
     },
     prev() {
       this.onboarding =
         this.onboarding - 1 < 0 ? this.length - 1 : this.onboarding - 1;
+      this.$emit("prev");
     },
     onScroll(e) {
       e.target.scrollTop;
@@ -106,9 +109,9 @@ export default {
   overflow-y: scroll;
 }
 /* .v-card__title {
-  align-items: center;
-  display: flex;
-  flex-wrap: wrap;
-  padding: 2px;
-} */
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 2px;
+  } */
 </style>

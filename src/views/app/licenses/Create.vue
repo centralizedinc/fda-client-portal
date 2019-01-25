@@ -3,15 +3,7 @@
     <v-layout row wrap v-if="invalid">
       <v-flex xs12>Invalid Request: 404 status code.</v-flex>
     </v-layout>
-    <form-layout
-      v-else
-      :step="e1"
-      :submitAt="2"
-      :steps="2"
-      hidePrevOnLastStep
-      @prev="prev"
-      @next="next"
-    >
+    <form-layout v-else :step="e1" :steps="3" @prev="prev" @next="next">
       <template slot="header-step-1">General Information
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -23,6 +15,8 @@
       <step-one slot="content-step-1" :form="form"></step-one>
       <template slot="header-step-2">Establishment Information</template>
       <step-two slot="content-step-2" :form="form"></step-two>
+      <template slot="header-step-3">Office Address</template>
+      <step-three slot="content-step-3" :form="form"></step-three>
     </form-layout>
   </div>
 </template>
@@ -32,7 +26,8 @@ export default {
   components: {
     FormLayout: () => import("@/components/FormLayout"),
     StepOne: () => import("./create/tabs/GeneralInfo.vue"),
-    StepTwo: () => import("./create/tabs/EstablishmentInfo.vue")
+    StepTwo: () => import("./create/tabs/EstablishmentInfo.vue"),
+    StepThree: () => import("./create/tabs/OfficeAddress.vue")
   },
   data: () => ({
     e1: 1,
