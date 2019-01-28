@@ -79,7 +79,7 @@ export default new Router({
         {
           path: 'password',
           name: 'Password',
-          component: () => import('@/views/app/UserPortfolio.vue')
+          component: () => import('@/views/app/passwordSettings/ChangePassword.vue')
         },
         {
           path: 'logout',
