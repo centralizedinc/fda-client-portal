@@ -4,12 +4,12 @@
       <v-layout row wrap>
         <template v-for="(item, index) in files">
           <v-flex xs12 :key="index">
-            <v-card class="elevation-10">
+            <v-card class="elevation-1">
               <v-flex xs1 pt-3 :key="index" v-if="index > 4">
                 <v-tooltip top>
                   <v-btn
                     slot="activator"
-                    medium
+                    small
                     color="error"
                     @click="remove(index)"
                     fab
@@ -56,11 +56,8 @@
           </v-flex>
         </template>
       </v-layout>
-      <v-divider></v-divider>
       <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="success" class="font-weight-light" @click="addItem">Add File</v-btn>
-        <v-spacer></v-spacer>
+        <v-btn block color="success" class="font-weight-light" @click="addItem">Add File</v-btn>
       </v-card-actions>
     </div>
   </v-layout>

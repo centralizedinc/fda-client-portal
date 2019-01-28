@@ -2,8 +2,10 @@
   <v-layout align-center justify-center>
     <v-flex xs4 pa-2 mt-4>
       <v-card pa-5>
-        <v-toolbar color="primary">
-          <!-- dark style='background: linear-gradient(45deg, #43A047 0%, #1de9b6 100%)' -->
+        <v-toolbar
+          color="primary"
+          style="background: linear-gradient(45deg, #b5c25a 0%, #104b2a 100%); box-shadow: 0 6px 20px 0 rgba(77, 182, 172, 0.5)"
+        >
           <span class="font-weight-light title">Login</span>
         </v-toolbar>
         <v-divider></v-divider>

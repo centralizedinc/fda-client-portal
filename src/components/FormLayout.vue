@@ -39,7 +39,7 @@
               >{{n}}</v-btn>
             </v-item>
           </v-item-group>
-          <v-btn flat @click="next">
+          <v-btn color="primary" flat @click="next">
             <span v-if="steps === step">{{submitText}}</span>
             <v-icon v-else>mdi-chevron-right</v-icon>
           </v-btn>
@@ -79,7 +79,8 @@ export default {
   },
   methods: {
     next() {
-      if(steps === step){ //last step
+      if (this.steps === this.step) {
+        //last step
         this.$emit("submit");
       } else {
         this.$emit("next");

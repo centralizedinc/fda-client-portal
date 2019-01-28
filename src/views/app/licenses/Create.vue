@@ -3,7 +3,15 @@
     <v-layout row wrap v-if="invalid">
       <v-flex xs12>Invalid Request: 404 status code.</v-flex>
     </v-layout>
-    <form-layout v-else :step="e1" :steps="7" @prev="prev" @next="next" @changePage="changePage">
+    <form-layout
+      v-else
+      :step="e1"
+      :steps="6"
+      @prev="prev"
+      @next="next"
+      @changePage="changePage"
+      @submit="confirmDialog=true"
+    >
       <template slot="header-step-1">General Information
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -59,6 +67,8 @@
       </template>
       <step-six slot="content-step-6" :form="form"></step-six>
     </form-layout>
+    <confirm-to-review-app :show="confirmDialog" @close="confirmDialog=false" @submit="submit"></confirm-to-review-app>
+    <application-overview :form="form" :show="showAppOverview" @close="close"></application-overview>
   </div>
 </template>
 
@@ -66,6 +76,8 @@
 export default {
   components: {
     FormLayout: () => import("@/components/FormLayout"),
+    ApplicationOverview: () => import("./create/tabs/ApplicationOverview.vue"),
+    ConfirmToReviewApp: () => import("./create/tabs/ConfirmDialog.vue"),
     StepOne: () => import("./create/tabs/GeneralInfo.vue"),
     StepTwo: () => import("./create/tabs/EstablishmentInfo.vue"),
     StepThree: () => import("./create/tabs/OfficeAddress.vue"),
@@ -75,6 +87,8 @@ export default {
   },
   data: () => ({
     e1: 1,
+    confirmDialog: false,
+    showAppOverview: false,
     invalid: false,
     form: {
       application_type: "",
@@ -169,6 +183,9 @@ export default {
   },
 
   methods: {
+    close() {
+      this.confirmDialog = true;
+    },
     prev() {
       console.log("next is clicked!!! ");
       this.e1--;
