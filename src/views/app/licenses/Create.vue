@@ -67,7 +67,12 @@
       </template>
       <step-six slot="content-step-6" :form="form"></step-six>
     </form-layout>
-    <confirm-to-review-app :show="confirmDialog" @close="confirmDialog=false" @submit="submit"></confirm-to-review-app>
+    <confirm-to-review-app
+      :show="confirmDialog"
+      @close="confirmDialog=false"
+      @submit="submit"
+      @overview="dialog=false;showAppOverview=true"
+    ></confirm-to-review-app>
     <application-overview :form="form" :show="showAppOverview" @close="close"></application-overview>
   </div>
 </template>
@@ -76,7 +81,7 @@
 export default {
   components: {
     FormLayout: () => import("@/components/FormLayout"),
-    ApplicationOverview: () => import("./create/tabs/ApplicationOverview.vue"),
+    ApplicationOverview: () => import("@/components/ApplicationOverview.vue"),
     ConfirmToReviewApp: () => import("./create/tabs/ConfirmDialog.vue"),
     StepOne: () => import("./create/tabs/GeneralInfo.vue"),
     StepTwo: () => import("./create/tabs/EstablishmentInfo.vue"),
@@ -184,6 +189,7 @@ export default {
 
   methods: {
     close() {
+      this.showAppOverview = false;
       this.confirmDialog = true;
     },
     prev() {

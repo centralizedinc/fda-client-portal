@@ -19,21 +19,27 @@
         <a href="#">review</a> your application and make sure you have entered all values correctly. Once you clicked Next, you won't be able to modify any of the data you have entered.
         <div></div>
         <v-spacer></v-spacer>
-        <v-btn block color="primary">Review your Application</v-btn>
+        <v-btn block color="primary" @click="$emit('overview')">Review your Application</v-btn>
         <v-spacer></v-spacer>
       </v-card-text>
       <v-divider></v-divider>
       <v-card-actions>
-        <v-btn color="error" @click="$emit('close')">Close</v-btn>
+        <v-btn flat color="error" @click="$emit('close')">Close</v-btn>
         <v-spacer></v-spacer>
-        <v-btn color="success">Submit</v-btn>
+        <v-btn flat color="success">Submit</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
+import ApplicationOverview from "../../../../../components/ApplicationOverview";
+
 export default {
+  components: {
+    ApplicationOverview: () =>
+      import("../../../../../components/ApplicationOverview")
+  },
   props: {
     show: {
       type: Boolean,

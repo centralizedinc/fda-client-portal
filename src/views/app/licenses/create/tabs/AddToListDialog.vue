@@ -13,16 +13,22 @@
           primary-title
           class="headline"
           style="background: linear-gradient(45deg, #CAD0A0 0%, #b5c25a 100%)"
-        >{{title}}</v-card-title>
+        >
+          {{title}}
+          <v-spacer></v-spacer>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="error" @click="$emit('cancel')">
+              <i class="fas fa-2x fa-times-circle fa-spin"></i>
+            </v-btn>Close
+          </v-tooltip>
+          <!-- <v-btn top right absolute color="accent" @click="$emit('cancel')">Cancel</v-btn> -->
+        </v-card-title>
         <v-divider></v-divider>
         <v-card-text>
           <slot name="content"></slot>
         </v-card-text>
-        <v-divider></v-divider>
         <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="accent" @click="$emit('cancel')">Cancel</v-btn>
-          <v-btn color="success" @click="$emit('add')">Add</v-btn>
+          <v-btn block color="success" @click="$emit('add')">Add</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
