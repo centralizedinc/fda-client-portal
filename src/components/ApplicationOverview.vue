@@ -1,5 +1,7 @@
 <template>
-  <h4>About page</h4>
+  <v-layout row wrap>
+    <v-card></v-card>
+  </v-layout>
 </template>
 
 <script>

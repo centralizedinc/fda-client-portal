@@ -49,10 +49,9 @@ export default {
             this.$router.push('/app')
         }
     }
-
-}
+  }
+};
 </script>
 
 <style>
-
 </style>
