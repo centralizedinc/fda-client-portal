@@ -11,18 +11,16 @@
                     <v-text-field
                         name="name"
                         label="Email/Username"
+                        @keypress.enter="login"
                         id="id"
                     ></v-text-field>
                     <v-text-field
                         name="name"
                         label="Enter your password"
-                        hint="At least 8 characters"
                         min="8"
+                        @keypress.enter="login"
                         :append-icon="value ? 'visibility' : 'visibility_off'"
                         :append-icon-cb="() => (value = !value)"
-                        value="Password"
-                        :rules="[() => ('The email and password you entered don\'t match')]"
-                        error
                         :type="value ? 'password' : 'text'"
                     ></v-text-field>
                     <v-divider></v-divider>
@@ -39,8 +37,14 @@
 
 <script>
 export default {
+    data() {
+        return {
+            value: true
+        }
+    },    
     methods:{
         login(){
+            // :rules="[() => ('The email and password you entered don\'t match')]"
             this.$store.commit('API_INSTANCE', 'my_sample_api_token')
             this.$router.push('/app')
         }
