@@ -1,17 +1,20 @@
 <template>
   <div>
-    <v-btn
-      color="accent"
-      style="border-radius: 14px !important;  height: 25px !important;"
-      @click="$refs.image.click()"
-    >{{label}}</v-btn>
-    <input
-      type="file"
-      style="display: none"
-      ref="image"
-      :multiple="multiple"
-      @change="onFilePicked"
-    >
+    <v-flex xs12>
+      <v-btn
+        class="font-weight-light"
+        color="accent"
+        style="border-radius: 14px !important;  height: 30px !important;"
+        @click="$refs.image.click()"
+      >{{label}}</v-btn>
+      <input
+        type="file"
+        style="display: none"
+        ref="image"
+        :multiple="multiple"
+        @change="onFilePicked"
+      >
+    </v-flex>
   </div>
 </template>
 

@@ -1,43 +1,69 @@
 <template>
-  <div>
-    <!-- <v-container grid-list-xs-sm-md-lg ml-5> -->
-      <v-layout row wrap pl-5 ml-3 mt-5>
+  <v-layout row wrap>
+    <div>
+      <v-layout row wrap>
         <template v-for="(item, index) in files">
-          <v-flex xs5 :key="index">
-            <div v-if="index < 5">
-              <span style="color: red">*</span>
-              {{item.purpose}}
-            </div>
-            <div v-else>
-              <v-text-field label="Purpose" v-model="item.purpose"></v-text-field>
-            </div>
+          <v-flex xs12 :key="index">
+            <v-card class="elevation-10">
+              <v-flex xs1 pt-3 :key="index" v-if="index > 4">
+                <v-tooltip top>
+                  <v-btn
+                    slot="activator"
+                    medium
+                    color="error"
+                    @click="remove(index)"
+                    fab
+                    right
+                    absolute
+                  >
+                    <v-icon>delete</v-icon>
+                  </v-btn>Remove this file
+                </v-tooltip>
+              </v-flex>
+              <v-flex xs1 :key="index" v-else></v-flex>
+              <v-flex xs12 ml-4 pt-4 pb-2>
+                <div
+                  v-if="index < 5"
+                  class="subheading bold"
+                  style="text-transform: uppercase !important"
+                >
+                  <span style="color: red">*</span>
+                  {{item.purpose}}
+                </div>
+                <div v-else pb-2>
+                  <v-flex xs11 mr-4>
+                    <v-text-field label="Purpose" v-model="item.purpose"></v-text-field>
+                  </v-flex>
+                </div>
+              </v-flex>
+
+              <v-flex
+                xs2
+                ml-5
+                :key="index"
+              >{{item.file_name !== '' ? item.file_name : "No file Chosen"}}</v-flex>
+              <v-flex xs5 ml-5 mb-3 pa-2 :key="index">
+                <upload-btn
+                  style
+                  label="Choose File"
+                  :index="index"
+                  @getFile="getFile"
+                  mimetype="application/pdf"
+                  @onError="uploadError"
+                ></upload-btn>
+              </v-flex>
+            </v-card>
           </v-flex>
-          <v-flex xs4 mt-2 :key="index">{{item.file_name !== '' ? item.file_name : "No file Chosen"}}</v-flex>
-          <v-flex xs2 mt-4 :key="index">
-            <upload-btn
-              style
-              label="Choose File"
-              :index="index"
-              @getFile="getFile"
-              mimetype="application/pdf"
-              @onError="uploadError"
-            ></upload-btn>
-          </v-flex>
-          <v-flex xs1 mt-2 :key="index" v-if="index > 4">
-            <v-btn medium color="error" @click="remove(index)" fab flat>
-              <v-icon>delete</v-icon>
-            </v-btn>
-          </v-flex>
-          <v-flex xs1 :key="index" v-else></v-flex>
         </template>
       </v-layout>
-    </v-container>
-    <v-card-actions>
-      <v-spacer></v-spacer>
-      <v-btn color="success" class="font-weight-light" @click="addItem">Add File</v-btn>
-      <v-spacer></v-spacer>
-    </v-card-actions>
-  </div>
+      <v-divider></v-divider>
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn color="success" class="font-weight-light" @click="addItem">Add File</v-btn>
+        <v-spacer></v-spacer>
+      </v-card-actions>
+    </div>
+  </v-layout>
 </template>
 
 <script>
