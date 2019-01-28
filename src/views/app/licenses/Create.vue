@@ -3,7 +3,7 @@
     <v-layout row wrap v-if="invalid">
       <v-flex xs12>Invalid Request: 404 status code.</v-flex>
     </v-layout>
-    <form-layout v-else :step="e1" :steps="3" @prev="prev" @next="next">
+    <form-layout v-else :step="e1" :steps="3" @prev="prev" @next="next" @changePage="changePage">
       <template slot="header-step-1">General Information
         <v-spacer></v-spacer>
         <v-tooltip left>
