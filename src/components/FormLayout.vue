@@ -39,8 +39,9 @@
               >{{n}}</v-btn>
             </v-item>
           </v-item-group>
-          <v-btn flat v-if="!(submitAt&&submitAt===step)&&steps!==step" @click="next">
-            <v-icon>mdi-chevron-right</v-icon>
+          <v-btn flat @click="next">
+            <span v-if="steps === step">{{submitText}}</span>
+            <v-icon v-else>mdi-chevron-right</v-icon>
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -65,14 +66,6 @@ export default {
     submitText: {
       type: String,
       default: "Submit"
-    },
-    hidePrevOnLastStep: {
-      type: Boolean,
-      default: false
-    },
-    hideSubmit: {
-      type: Boolean,
-      default: false
     }
   },
   data: () => ({
@@ -86,10 +79,11 @@ export default {
   },
   methods: {
     next() {
-      // this.onboarding =
-      //   this.onboarding + 1 === length ? 0 : this.onboarding + 1;
-      this.$emit("next");
-      // console.log("formlayout next clicked: " + JSON.stringify(this.onboarding))
+      if(steps === step){ //last step
+        this.$emit("submit");
+      } else {
+        this.$emit("next");
+      }
     },
     prev() {
       // this.onboarding =
