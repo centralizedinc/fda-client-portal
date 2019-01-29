@@ -15,7 +15,13 @@ export default new Router({
         path: '',
         name: 'Login',
         component: () => import('@/views/Login.vue')
-      }]
+      },
+      {
+        path: '/signup',
+        name: 'Registration',
+        component: () => import('@/views/Registration.vue')
+      }
+    ]
 
     },
     {
@@ -84,7 +90,7 @@ export default new Router({
         {
           path: 'password',
           name: 'Password',
-          component: () => import('@/views/app/UserPortfolio.vue')
+          component: () => import('@/views/app/passwordSettings/ChangePassword.vue')
         },
         {
           path: 'logout',
