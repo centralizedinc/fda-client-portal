@@ -72,6 +72,11 @@ export default new Router({
           component: () => import('@/views/app/payment/PaymentSummary.vue')
         },
         {
+          path: 'track',
+          name: 'FDA Doctrack Status',
+          component: () => import('@/views/app/DocTracker.vue')
+        },
+        {
           path: 'profile',
           name: 'Profile',
           component: () => import('@/views/app/UserPortfolio.vue')
