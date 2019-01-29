@@ -37,6 +37,11 @@ export default new Router({
           component: () => import('@/views/app/licenses/Create.vue')
         },
         {
+          path: 'licenses/view',
+          name: 'View License Application',
+          component: () => import('@/views/app/licenses/View.vue')
+        },
+        {
           path: 'certificates',
           name: 'Certificate of Product Registration',
           component: () => import('@/views/app/certificates/Certificates.vue')

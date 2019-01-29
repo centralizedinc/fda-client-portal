@@ -36,7 +36,7 @@
                 </v-flex>
                 <v-flex xs3>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary">
+                    <v-btn slot="activator" flat icon color="primary" @click="view">
                       <v-icon small>search</v-icon>
                     </v-btn>View Application
                   </v-tooltip>
@@ -89,6 +89,9 @@ export default {
     },
     apply() {
       this.$router.push("/app/licenses/apply");
+    },
+    view(){
+      this.$router.push("/app/licenses/view")
     }
   }
 }
