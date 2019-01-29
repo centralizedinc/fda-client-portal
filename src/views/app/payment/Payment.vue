@@ -61,7 +61,7 @@
             this.$store.dispatch('SET_LICENSES');
         },
         pay(){
-            this.$router.push('/app/payments/creaditcard')
+            this.$router.push('/app/payments/summary')
         }
     }
   }

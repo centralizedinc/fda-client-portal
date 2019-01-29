@@ -54,7 +54,6 @@ export default {
     }
   },
   data: () => ({
-    dialog: false,
     parA:
       "I, duly authorized officer/s or representative/s of the Establishment hereby voluntarily and categorically declare, undertake, and agree that all data and information contained and provided in the attached application, together with all other submissions, including amendments, are true and correct based on my knowledge and are based on existing records, legal documents and available information.",
     parB: "I, likewise declares, undertakes and agrees that:",
