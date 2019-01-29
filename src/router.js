@@ -15,7 +15,13 @@ export default new Router({
         path: '',
         name: 'Login',
         component: () => import('@/views/Login.vue')
-      }]
+      },
+      {
+        path: '/signup',
+        name: 'Registration',
+        component: () => import('@/views/Registration.vue')
+      }
+    ]
 
     },
     {
@@ -35,6 +41,11 @@ export default new Router({
           path: 'licenses/apply',
           name: 'New License Application',
           component: () => import('@/views/app/licenses/Create.vue')
+        },
+        {
+          path: 'licenses/view',
+          name: 'View License Application',
+          component: () => import('@/views/app/licenses/View.vue')
         },
         {
           path: 'certificates',
@@ -84,7 +95,7 @@ export default new Router({
         {
           path: 'password',
           name: 'Password',
-          component: () => import('@/views/app/UserPortfolio.vue')
+          component: () => import('@/views/app/passwordSettings/ChangePassword.vue')
         },
         {
           path: 'logout',
