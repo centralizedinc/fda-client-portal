@@ -32,9 +32,11 @@
     <v-flex xs12>
       <v-text-field
         color="green darken-1"
-        :rules="[rules.required]"
         label="TIN Number"
         :mask="tin"
+        :rules="[rules.required]"
+        hint="Establishment's registered Tax Identification Number"
+        class="input-group--focused"
         v-model="form.estab_details.tin"
       ></v-text-field>
     </v-flex>
@@ -53,6 +55,8 @@
             label="1. Email Address"
             v-model="form.estab_details.email"
             :disabled="form.application_type==='R'"
+            hint="Establishment's main email address. If possible, enter an email address that is not specific to an employee"
+            class="input-group--focused"
           ></v-text-field>
         </v-flex>
         <v-flex xs5 ml-5>
@@ -62,6 +66,8 @@
             label="2. Landline Number"
             v-model="form.estab_details.landline"
             :disabled="form.application_type==='R'"
+            hint="Establishment's primary landline number"
+            class="input-group--focused"
           ></v-text-field>
         </v-flex>
         <v-flex xs5 ml-5>
@@ -80,6 +86,8 @@
             label="4. Mobile Number"
             v-model="form.estab_details.mobile"
             :disabled="form.application_type==='R'"
+            hint="Establisment's or administrator's mobile number"
+            class="input-group--focused"
           ></v-text-field>
         </v-flex>
       </v-layout>

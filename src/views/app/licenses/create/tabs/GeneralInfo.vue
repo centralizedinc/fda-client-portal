@@ -3,8 +3,8 @@
     <v-flex xs12>
       <v-autocomplete
         v-model="form.general_info.product_type"
-        :rules="[rules.required]"
         :items="types"
+        :rules="[rules.required]"
         hide-no-data
         hide-selected
         item-text="name"
@@ -16,7 +16,6 @@
     <v-flex xs12>
       <v-autocomplete
         v-model="form.general_info.primary_activity"
-        :rules="[rules.required]"
         :items="activity"
         hide-no-data
         color="green darken-1"
@@ -25,13 +24,13 @@
         type="text"
         item-text="name"
         item-value="_id"
+        :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
       <v-autocomplete
-        multiple
-        chips
         v-model="form.general_info.addtl_activity"
+        :rules="[rules.required]"
         :items="addtl"
         hide-no-data
         color="green darken-1"
@@ -40,7 +39,6 @@
         type="text"
         item-text="name"
         item-value="_id"
-        :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
@@ -50,6 +48,7 @@
         hide-no-data
         color="green darken-1"
         hide-selected
+        :rules="[rules.declare]"
         label="Declared Capital"
         required
         type="text"
@@ -71,7 +70,9 @@ export default {
     addtl: [],
     capital: [],
     rules: {
-      required: value => !!value || "This field is required"
+      required: value => !!value || "This field is required",
+      declare: () =>
+        "Please declare your capital. If none, select Not Applicable"
     }
   })
 };

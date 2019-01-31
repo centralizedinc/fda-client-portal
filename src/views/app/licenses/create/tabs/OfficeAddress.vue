@@ -6,6 +6,8 @@
         label="Address"
         :rules="[rules.required]"
         v-model="form.addresses.office.address"
+        hint="Unit Number, Floor, Building, Lot, Block, Phase, Street"
+        class="input-group--focused"
       ></v-text-field>
     </v-flex>
     <v-flex xs12>
@@ -77,7 +79,14 @@
         <template slot="content">
           <v-checkbox label="Same as Office Address"></v-checkbox>
           <v-flex xs12>
-            <v-text-field color="green darken-1" label="Address" v-model="warehouse.address"></v-text-field>
+            <v-text-field
+              color="green darken-1"
+              label="Address"
+              :rules="[rules.required]"
+              v-model="warehouse.address"
+              hint="Unit Number, Floor, Building, Lot, Block, Phase, Street"
+              class="input-group--focused"
+            ></v-text-field>
           </v-flex>
           <v-flex xs12>
             <v-autocomplete
@@ -87,6 +96,7 @@
               hide-no-data
               hide-selected
               label="Region"
+              :rules="[rules.required]"
             ></v-autocomplete>
           </v-flex>
           <v-flex xs12>
@@ -97,6 +107,7 @@
               hide-no-data
               hide-selected
               label="Province"
+              :rules="[rules.required]"
             ></v-autocomplete>
           </v-flex>
           <v-flex xs12>
@@ -107,6 +118,7 @@
               hide-no-data
               hide-selected
               label="City / Town"
+              :rules="[rules.required]"
             ></v-autocomplete>
           </v-flex>
           <v-flex xs12>
@@ -117,6 +129,7 @@
               hide-no-data
               hide-selected
               label="Zip Code"
+              :rules="[rules.required]"
             ></v-autocomplete>
           </v-flex>
         </template>
@@ -167,6 +180,8 @@
             label="Address"
             v-model="form.addresses.plant.address"
             :rules="[rules.required]"
+            hint="Unit Number, Floor, Building, Lot, Block, Phase, Street"
+            class="input-group--focused"
           ></v-text-field>
         </v-flex>
         <v-flex xs12>
