@@ -1,14 +1,25 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12>
-      <v-text-field color="green darken-1" label="Last Name" v-model="form.auth_officer.lastname"></v-text-field>
+      <v-text-field
+        color="green darken-1"
+        label="Last Name"
+        :rules="[rules.required]"
+        v-model="form.auth_officer.lastname"
+      ></v-text-field>
     </v-flex>
     <v-flex xs12>
-      <v-text-field color="green darken-1" label="First Name" v-model="form.auth_officer.firstname"></v-text-field>
+      <v-text-field
+        color="green darken-1"
+        label="First Name"
+        :rules="[rules.required]"
+        v-model="form.auth_officer.firstname"
+      ></v-text-field>
       <v-flex xs12>
         <v-text-field
           color="green darken-1"
           label="Middle Name"
+          :rules="[rules.required]"
           v-model="form.auth_officer.middlename"
         ></v-text-field>
       </v-flex>
@@ -16,6 +27,7 @@
     <v-flex xs12>
       <v-autocomplete
         color="green darken-1"
+        :rules="[rules.required]"
         v-model="form.auth_officer.designation"
         :items="designation"
         hide-no-data
@@ -24,7 +36,12 @@
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
-      <v-text-field color="green darken-1" label="TIN Number" v-model="form.auth_officer.tin"></v-text-field>
+      <v-text-field
+        color="green darken-1"
+        label="TIN Number"
+        :rules="[rules.required]"
+        v-model="form.auth_officer.tin"
+      ></v-text-field>
     </v-flex>
     <v-flex xs12>
       <v-card-title primary-title class="headline">Government Issued Identification Document
@@ -39,6 +56,7 @@
         <v-flex xs12>
           <v-autocomplete
             color="green darken-1"
+            :rules="[rules.required]"
             v-model="form.auth_officer.id_type"
             :items="id_type"
             hide-no-data
@@ -47,7 +65,12 @@
           ></v-autocomplete>
         </v-flex>
         <v-flex xs12>
-          <v-text-field color="green darken-1" label="ID Number" v-model="form.auth_officer.id_no"></v-text-field>
+          <v-text-field
+            color="green darken-1"
+            label="ID Number"
+            :rules="[rules.required]"
+            v-model="form.auth_officer.id_no"
+          ></v-text-field>
         </v-flex>
         <v-flex xs12>
           <v-menu
@@ -63,6 +86,7 @@
             <v-text-field
               color="green darken-1"
               slot="activator"
+              :rules="[rules.required]"
               v-model="date"
               label="Expiry"
               prepend-icon="event"
@@ -80,12 +104,14 @@
           <v-text-field
             color="green darken-1"
             label="Address"
+            :rules="[rules.required]"
             v-model="form.auth_officer.mail_add.address"
           ></v-text-field>
         </v-flex>
         <v-flex xs12>
           <v-autocomplete
             color="green darken-1"
+            :rules="[rules.required]"
             v-model="form.auth_officer.mail_add.region"
             :items="region"
             hide-no-data
@@ -96,6 +122,7 @@
         <v-flex xs12>
           <v-autocomplete
             color="green darken-1"
+            :rules="[rules.required]"
             v-model="form.auth_officer.mail_add.province"
             :items="province"
             hide-no-data
@@ -106,6 +133,7 @@
         <v-flex xs12>
           <v-autocomplete
             color="green darken-1"
+            :rules="[rules.required]"
             v-model="form.auth_officer.mail_add.city"
             :items="city"
             hide-no-data
@@ -116,6 +144,7 @@
         <v-flex xs12>
           <v-autocomplete
             color="green darken-1"
+            :rules="[rules.required]"
             v-model="form.auth_officer.mail_add.zipcode"
             :items="zip"
             hide-no-data
@@ -139,7 +168,10 @@ export default {
       "Head, Regulatory Affairs",
       "Head, Production"
     ],
-    id_type: ["PRC", "TIN"]
+    id_type: ["PRC", "TIN"],
+    rules: {
+      required: value => !!value || "This field is required"
+    }
   })
 };
 </script>

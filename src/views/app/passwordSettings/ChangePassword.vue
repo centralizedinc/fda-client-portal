@@ -27,6 +27,17 @@
             class="input-group--focused"
             @click:append="new_password = !new_password"
           ></v-text-field>
+          <v-text-field
+            :append-icon="confirm_password ? 'visibility_off' : 'visibility'"
+            :rules="[rules.required, rules.confirm_password]"
+            :type="confirm_password ? 'text' : 'password'"
+            name="input-10-2"
+            prepend-icon="lock_open"
+            label="Confirm Password"
+            hint="At least 8 characters"
+            class="input-group--focused"
+            @click:append="confirm_password = !confirm_password"
+          ></v-text-field>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -72,12 +83,13 @@ export default {
     return {
       old_password: false,
       new_password: true,
+      confirm_password: true,
       dialog: false,
       email: "",
       password: "Password",
       rules: {
         required: value => !!value || "Required.",
-        counter: value => value.length <= 20 || "Max 20 characters",
+        confirm_password:  () => ('The new password and confirm password you entered doesn\'t match'),
         email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Invalid e-mail.";
