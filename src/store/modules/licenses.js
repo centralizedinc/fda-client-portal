@@ -5,30 +5,44 @@ import LicenseAPI from '../../api/LicenseApi';
 
 const state = {
     LicenseAPI: null,
-    licenses: []
+    licenses: [],
+    newLicense: []
 }
 
 const mutations = {
-    API_INSTANCE(state, token) {
-        state.LicenseAPI = new LicenseAPI(token);
-    },
     SET_LICENSES(state, licenses) {
         // console.log('mutations licenses: ' + JSON.stringify(licenses))
         state.licenses = licenses;
+    },
+    SAVE_LICENSES(state, licenses){
+        state.newLicense =licenses
     }
 }
 
 var actions = {
-    SET_LICENSES(context) {
-        if (!LicenseAPI)
-            context.state.LicenseAPI.getLicenses((licenses, err) => {
+    GET_LICENSES(context) {
+        // if (context.rootState.user_session.token){
+            new LicenseAPI(context.rootState.user_session.token).getLicenses((licenses, err) => {
                 console.log('actions licenses: ' + JSON.stringify(licenses))
                 if(!err){
+                    console.log('actions licenses: ' + JSON.stringify(licenses))
                     context.commit('SET_LICENSES', licenses)
                 } else {
                     console.log(JSON.stringify(err))
                 }
             })
+        // }
+    },
+    SAVE_LICENSES(context, license){
+        // console.log("Save context!!!" + JSON.stringify(context))
+        console.log("Save licenses!!!" + JSON.stringify(license))
+        new LicenseAPI(context.rootState.user_session.token).saveLicenses(license, (licenses, err) => {
+            if(!err){
+                console.log('actions save licenses: ' + JSON.stringify(licenses))
+            }else{
+                console.log("actions save licenses error: " + JSON.stringify(err))
+            }          
+        })
     }
 }
 

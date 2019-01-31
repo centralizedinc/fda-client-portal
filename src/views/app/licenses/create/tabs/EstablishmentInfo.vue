@@ -162,6 +162,11 @@ export default {
       console.log(index);
       this.form.estab_details.products.splice(index, 1);
     }
+  },
+  watch: {
+    form(){
+      console.log("establishment form: " + JSON.stringify(this.form))
+    }
   }
 };
 </script>
