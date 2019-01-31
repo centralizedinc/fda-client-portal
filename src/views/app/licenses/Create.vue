@@ -48,7 +48,7 @@
         </v-tooltip>
       </template>
       <step-four slot="content-step-4" :form="form"></step-four>
-      <template slot="header-step-5">Authorized Officer Details
+      <template slot="header-step-5">Qualified Personnel
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">

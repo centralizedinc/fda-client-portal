@@ -52,7 +52,7 @@
           </v-btn>Add Warehouse to List
         </v-tooltip>
         <v-spacer></v-spacer>
-        <v-tooltip left>
+        <v-tooltip top>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help

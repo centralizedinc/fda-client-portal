@@ -8,7 +8,7 @@
               placeholder="The Tracking ID of the Document Tracking Log given to you"
               name
               box
-              label="DocTrack Number."
+              label="DocTrack Number"
               id="id"
             ></v-text-field>
           </v-flex>

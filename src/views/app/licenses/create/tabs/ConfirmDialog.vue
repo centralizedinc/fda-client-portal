@@ -9,8 +9,9 @@
     <v-card>
       <v-toolbar
         color="primary"
-        style="background: linear-gradient(45deg, #b5c25a 0%, #104b2a 100%); box-shadow: 0 6px 20px 0 rgba(77, 182, 172, 0.5)"
+        style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
       >
+        >
         <span class="font-weight-light title">Note</span>
       </v-toolbar>
       <!-- <v-card-title primary-title class="headline">Note:</v-card-title> -->
@@ -33,12 +34,11 @@
 </template>
 
 <script>
-import ApplicationOverview from "../../../../../components/ApplicationOverview";
+import ApplicationOverview from "@/components/ApplicationOverview";
 
 export default {
   components: {
-    ApplicationOverview: () =>
-      import("../../../../../components/ApplicationOverview")
+    ApplicationOverview: () => import("@/components/ApplicationOverview")
   },
   props: {
     show: {

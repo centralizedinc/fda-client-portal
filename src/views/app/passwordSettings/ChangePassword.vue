@@ -1,9 +1,7 @@
 <template>
   <v-layout align-center justify-center>
-    <v-flex xs12 pa-2 mt-4>
-      <v-card pa-5>
-        <v-card-title primary-title>Change Password</v-card-title>
-        <v-divider></v-divider>
+    <v-flex xs12>
+      <v-card>
         <v-card-text transparent>
           <v-text-field
             :append-icon="old_password ? 'visibility_off' : 'visibility'"
@@ -30,29 +28,30 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-spacer></v-spacer>
           <v-btn
+            block
             slot="activator"
             color="success"
-            class="caption font-weight-light"
+            class="font-weight-light"
             @click="dialog=true"
           >Send request</v-btn>
         </v-card-actions>
       </v-card>
       <v-dialog v-model="dialog" width="500">
         <v-card>
-          <v-card-title class="headline grey lighten-2" primary-title>Confirmation</v-card-title>
-
-          <v-card-text>Please enter your Email address. You will receive a link to login a new password.</v-card-text>
-
+          <v-card-title
+            primary-title
+            class="headline"
+            style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+          >Confirmation</v-card-title>
           <v-divider></v-divider>
-
-          <v-flex xs12 pa-2 mt-4>
+          <v-card-text>Please enter your registered email address. Access the link in your mail to login with your new password.</v-card-text>
+          <v-flex xs12 pa-2>
             <v-text-field
               v-model="email"
               :rules="[rules.required, rules.email]"
               prepend-icon="email"
-              label="Enter your email"
+              label="Enter your email address"
             ></v-text-field>
           </v-flex>
           <v-divider></v-divider>

@@ -57,7 +57,7 @@
         </template>
       </v-layout>
       <v-card-actions>
-        <v-btn block color="success" class="font-weight-light" @click="addItem">Add File</v-btn>
+        <v-btn block color="success" @click="addItem">Add File</v-btn>
       </v-card-actions>
     </div>
   </v-layout>

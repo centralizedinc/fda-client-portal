@@ -32,7 +32,7 @@
           <v-item-group v-model="onboarding" text-xs-center mandatory>
             <v-item class="step" v-for="n in steps" :key="`btn-${n}`">
               <v-btn
-                slot-scope="{ active, toggle}"
+                slot-scope="{ active}"
                 :input-value="active"
                 icon
                 @click="$emit('changePage', n)"
