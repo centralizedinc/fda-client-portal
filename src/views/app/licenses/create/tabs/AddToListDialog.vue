@@ -12,7 +12,7 @@
         <v-card-title
           primary-title
           class="headline"
-          style="background: linear-gradient(45deg, #CAD0A0 0%, #b5c25a 100%)"
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
         >
           {{title}}
           <v-spacer></v-spacer>

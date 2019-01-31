@@ -19,7 +19,7 @@
       ></v-text-field>
       <ul>
         <li
-          class="text-danger"
+          class="text-error"
         >For single proprietorship reflect the name of the person indicated in the DTI registration certificate.</li>
         <li
           class="text-danger"

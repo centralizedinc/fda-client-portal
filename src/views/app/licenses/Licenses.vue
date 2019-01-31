@@ -1,4 +1,4 @@
-<template>
+<template >
   <v-layout row wrap>
     <v-flex xs12 p1-2>
       <v-card>
@@ -8,7 +8,7 @@
           </v-btn>Apply New License
         </v-tooltip>
 
-        <undertaking-dialog :show="dialog"></undertaking-dialog>
+        <undertaking-dialog :show="dialog" @proceed="launchAppForm"></undertaking-dialog>
 
         <v-data-table :headers="headers" :items="licenses" class="elevation-1">
           <template slot="items" slot-scope="props">
@@ -30,7 +30,7 @@
                 <v-flex xs3>
                   <v-tooltip top>
                     <v-btn slot="activator" flat icon color="primary">
-                      <v-icon small>edit</v-icon>
+                      <v-icon small>far fa-edit</v-icon>
                     </v-btn>Variation
                   </v-tooltip>
                 </v-flex>
@@ -93,11 +93,11 @@ export default {
       });
       // console.log("################all licenses data: " + JSON.stringify(this.$store.state.licenses.licenses))
     },
-    apply() {
-      this.$router.push("/app/licenses/apply");
+    view() {
+      this.$router.push("/app/licenses/view");
     },
-    view(){
-      this.$router.push("/app/licenses/view")
+    launchAppForm() {
+      this.$router.push("/app/licenses/apply");
     }
   }
 };

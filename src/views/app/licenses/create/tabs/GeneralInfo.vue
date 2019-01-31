@@ -54,8 +54,6 @@
         type="text"
         item-text="name"
         item-value="_id"
-        :disabled="form.application_type==='R'"
-        v-if="form.general_info.primary_activity&&form.general_info.primary_activity!==''&&capital.length!==0"
       ></v-autocomplete>
     </v-flex>
   </v-layout>
@@ -74,7 +72,8 @@ export default {
       declare: () =>
         "Please declare your capital. If none, select Not Applicable"
     }
-  })
+  }),
+  methods: {}
 };
 </script>
 
