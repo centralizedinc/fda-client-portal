@@ -32,7 +32,7 @@
                 </div>
                 <div v-else pb-2>
                   <v-flex xs11 mr-4>
-                    <v-text-field label="Purpose" v-model="item.purpose"></v-text-field>
+                    <v-text-field label="Purpose" :rules="[rules.required]" v-model="item.purpose"></v-text-field>
                   </v-flex>
                 </div>
               </v-flex>
@@ -96,7 +96,10 @@ export default {
         file_name: "",
         file: null
       }
-    ]
+    ],
+    rules: {
+      required: value => !!value || "This field is required"
+    }
   }),
   created() {
     this.init();
