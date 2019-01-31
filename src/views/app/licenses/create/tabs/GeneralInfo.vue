@@ -55,8 +55,6 @@
         type="text"
         item-text="name"
         item-value="_id"
-        :disabled="form.application_type==='R'"
-        v-if="form.general_info.primary_activity&&form.general_info.primary_activity!==''&&capital.length!==0"
       ></v-autocomplete>
     </v-flex>
   </v-layout>
@@ -73,7 +71,8 @@ export default {
     rules: {
       required: value => !!value || "This field is required"
     }
-  })
+  }),
+  methods: {}
 };
 </script>
 
