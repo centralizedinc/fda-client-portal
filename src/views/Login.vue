@@ -9,7 +9,7 @@
           <span class="font-weight-light title">Login</span>
         </v-toolbar>
         <v-divider></v-divider>
-        <v-card-text transparent>
+        <v-card-text>
           <v-text-field name="name" label="Email/Username" @keypress.enter="login" id="id"></v-text-field>
           <v-text-field
             name="name"
@@ -20,8 +20,7 @@
             :append-icon-cb="() => (value = !value)"
             :type="value ? 'password' : 'text'"
           ></v-text-field>
-          <v-divider></v-divider>
-          <v-card-actions transparent>
+          <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="primary" @click="login" class="caption font-weight-light">Login</v-btn>
           </v-card-actions>

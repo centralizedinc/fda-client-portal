@@ -100,8 +100,7 @@ export default {
       this.$router.push("/app/licenses/view")
     }
   }
-}
-
+};
 </script>
 
 <style>
