@@ -3,7 +3,7 @@
 
 const state = {
   isAuthenticated: false,
-  token: 'sample_tokenssss',
+  token: null,
   user: {},
   task: {}
 }

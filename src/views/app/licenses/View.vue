@@ -27,12 +27,12 @@
                                     <v-card flat>
                                         <v-card-text>
                                             <v-layout align-center mb-3>
-                                                <v-avatar color="grey" class="mr-3"></v-avatar>
+                                                <!-- <v-avatar color="grey" class="mr-3"></v-avatar> -->
                                                 <strong class="title">{{ title[n] }}</strong>
                                                 <v-spacer></v-spacer>
-                                                <v-btn icon>
+                                                <!-- <v-btn icon>
                                                     <v-icon>mdi-account</v-icon>
-                                                </v-btn>
+                                                </v-btn> -->
                                             </v-layout>
                                             <!-- Summary-->
                                             <v-card flat v-show="n===1">

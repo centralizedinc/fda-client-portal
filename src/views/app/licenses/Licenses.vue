@@ -69,15 +69,7 @@ export default {
         { text: "Variation Date", value: "date_variation" },
         { text: "Actions", value: "" }
       ],
-      licenses: [
-        {
-          case_no: "00",
-          application_type: "sample application",
-          current_task: "sample task",
-          date_created: "01/01/2019",
-          date_variation: "01/01/2019"
-        }
-      ]
+      licenses: []
     };
   },
   created() {
@@ -85,7 +77,21 @@ export default {
   },
   methods: {
     init() {
-      this.$store.dispatch("SET_LICENSES");
+      this.$store.dispatch("GET_LICENSES")
+      var licensesData = this.$store.state.licenses.licenses;
+      licensesData.forEach(element => {
+        console.log("data looped: " + JSON.stringify(element))
+        var data = {
+          case_no: element.auto_id,
+          application_type: element.application_type,
+          current_task: element.current_task,
+          date_created: element.date_created,
+          date_variation: element.date_variation
+        }
+        console.log("data to show: " + JSON.stringify(data))  
+        this.licenses.push(data); 
+      });
+      // console.log("################all licenses data: " + JSON.stringify(this.$store.state.licenses.licenses))
     },
     apply() {
       this.$router.push("/app/licenses/apply");
