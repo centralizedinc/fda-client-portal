@@ -30,7 +30,7 @@
                 <v-flex xs3>
                   <v-tooltip top>
                     <v-btn slot="activator" flat icon color="primary">
-                      <v-icon small>edit</v-icon>
+                      <v-icon small>far fa-edit</v-icon>
                     </v-btn>Variation
                   </v-tooltip>
                 </v-flex>

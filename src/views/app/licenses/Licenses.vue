@@ -1,4 +1,4 @@
-<template>
+<template >
   <v-layout row wrap>
     <v-flex xs12 p1-2>
       <v-card>
@@ -30,7 +30,7 @@
                 <v-flex xs3>
                   <v-tooltip top>
                     <v-btn slot="activator" flat icon color="primary">
-                      <v-icon small>edit</v-icon>
+                      <v-icon small>far fa-edit</v-icon>
                     </v-btn>Variation
                   </v-tooltip>
                 </v-flex>

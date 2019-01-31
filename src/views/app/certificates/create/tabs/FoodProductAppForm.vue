@@ -94,7 +94,7 @@
         :items="types"
         hide-no-data
         hide-selected
-        label="Number of Yeras applied for Product Registration"
+        label="Number of Years applied for Product Registration"
       ></v-autocomplete>
     </v-flex>
     <!-- Contact Information -->

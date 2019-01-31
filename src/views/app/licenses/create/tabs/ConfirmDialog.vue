@@ -11,7 +11,6 @@
         color="primary"
         style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
       >
-        >
         <span class="font-weight-light title">Note</span>
       </v-toolbar>
       <!-- <v-card-title primary-title class="headline">Note:</v-card-title> -->
