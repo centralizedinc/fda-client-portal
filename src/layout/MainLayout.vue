@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <notification></notification>
     <!-- <v-parallax src="https://i.postimg.cc/XYmyNYy9/FDASlider1-1920x675.png" height="850"> -->
       <v-toolbar dark style="background: linear-gradient(45deg, #104b2a 0%, #b5c25a 100%)">
         {{title}}
@@ -17,7 +18,9 @@
 </template>
 
 <script>
+import notification from '@/components/Notification'
 export default {
+  components:{notification},
   data(){
     return{
       title:""
