@@ -43,6 +43,11 @@ export default new Router({
           component: () => import('@/views/app/licenses/Create.vue')
         },
         {
+          path: 'licenses/view',
+          name: 'View License Application',
+          component: () => import('@/views/app/licenses/View.vue')
+        },
+        {
           path: 'certificates',
           name: 'Certificate of Product Registration',
           component: () => import('@/views/app/certificates/Certificates.vue')
@@ -78,6 +83,11 @@ export default new Router({
           component: () => import('@/views/app/payment/PaymentSummary.vue')
         },
         {
+          path: 'track',
+          name: 'FDA Doctrack Status',
+          component: () => import('@/views/app/DocTracker.vue')
+        },
+        {
           path: 'profile',
           name: 'Profile',
           component: () => import('@/views/app/UserPortfolio.vue')
@@ -85,7 +95,7 @@ export default new Router({
         {
           path: 'password',
           name: 'Password',
-          component: () => import('@/views/app/UserPortfolio.vue')
+          component: () => import('@/views/app/passwordSettings/ChangePassword.vue')
         },
         {
           path: 'logout',

@@ -9,7 +9,7 @@
           <v-list-tile
             class="pa-1"
             avatar
-            style=" height: 100px; background:url('https://pixinvent.com/free-materialize-material-design-admin-template/images/gallary/7.png') no-repeat center center"
+            style=" height: 100px; background:url('https://i.postimg.cc/YCbD5mHP/image.png') repeat center center"
           >
             <v-list-tile-avatar class="mt-4">
               <img src="http://i.pravatar.cc/300">
@@ -32,12 +32,13 @@
             <v-list-tile-title class="body-1 font-weight-light">Dashboard</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+
         <v-list-tile @click="goTo('/app/licenses')" class="ma-1" :style="activeRoute('Licenses')">
           <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">card_membership</v-icon>
+            <v-icon color="fdaBlueGreen">fas fa-file-contract</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title class="body-1 font-weight-light">LTO</v-list-tile-title>
+            <v-list-tile-title class="body-1 font-weight-light">Licenses</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile
@@ -46,10 +47,10 @@
           :style="activeRoute('Certificates')"
         >
           <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">book</v-icon>
+            <v-icon color="fdaBlueGreen">fas fa-certificate</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
-            <v-list-tile-title class="body-1 font-weight-light">CPR</v-list-tile-title>
+            <v-list-tile-title class="body-1 font-weight-light">Certificates</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile
@@ -58,18 +59,32 @@
           :style="activeRoute('Notifications')"
         >
           <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">description</v-icon>
+            <v-icon color="fdaBlueGreen">fas fa-file-invoice</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title class="body-1 font-weight-light">Product Notification</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+
         <v-list-tile @click="goTo('/app/payments')" class="ma-1" :style="activeRoute('Payments')">
           <v-list-tile-action>
             <v-icon color="fdaBlueGreen">far fa-credit-card</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title class="body-1 font-weight-light">Payments</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
+        <v-list-tile
+          @click="goTo('/app/track')"
+          class="ma-1"
+          :style="activeRoute('Document Tracker')"
+        >
+          <v-list-tile-action>
+            <v-icon color="fdaBlueGreen">fas fa-search</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="body-1 font-weight-light">DocTracker</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
         <v-divider></v-divider>
@@ -85,20 +100,18 @@
             <v-list-tile-title class="body-1 font-weight-light">My Profile</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-
         <v-list-tile
           @click="goTo('/app/password')"
           class="ma-1"
           :style="activeRoute('Notifications')"
         >
           <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">lock_open</v-icon>
+            <v-icon color="fdaBlueGreen">fas fa-key</v-icon>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title class="body-1 font-weight-light">Password Settings</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-
         <v-list-tile
           @click="goTo('/app/logout')"
           class="ma-1"
@@ -158,7 +171,6 @@
               </v-breadcrumbs-item>
             </v-breadcrumbs>
           </v-sheet>
-
           <v-spacer></v-spacer>
         </v-layout>
       </v-card>
@@ -176,7 +188,7 @@
     >
       <span class="caption">Copyright © 2019 FDA All rights reserved.</span>
       <v-spacer></v-spacer>
-      <span class="caption">Food And Drugs Administration of the Philippines</span>
+      <span class="caption">Food And Drug Administration of the Philippines</span>
     </v-footer>
   </v-app>
 </template>
@@ -238,14 +250,13 @@ export default {
           name: "Certificates",
           disabled: false,
           href: "breadcrumbs_dashboard"
-        },
+        }
         // {
         //   icon: "far fa-creadit-card",
         //   name: "Payments",
         //   disabled: false,
         //   href: "breadcrumbs_dashboard"
         // },
-
       ];
     }
   }
