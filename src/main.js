@@ -1,22 +1,28 @@
 import Vue from 'vue'
 import vtooltip from 'v-tooltip'
-import '@/assets/css/fdastyle.css'
-import './plugins/vuetify'
+
 import App from './App.vue'
 import router from './router'
 import store from './store'
 import axios from 'axios'
+import NProgress from 'nprogress';
+import notify from "@/plugins/notify";
+
+
+import './plugins/vuetify'
 import './registerServiceWorker'
+
+
 import 'roboto-fontface/css/roboto/roboto-fontface.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import '@fortawesome/fontawesome-free/css/all.css'
-
-import NProgress from 'nprogress';
+import '@/assets/css/fdastyle.scss'
 import '../node_modules/nprogress/nprogress.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
 Vue.use(vtooltip)
+Vue.use(notify, store)
 
 NProgress.configure({
   showSpinner: false,

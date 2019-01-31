@@ -95,22 +95,6 @@
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile
-          @click="goTo('/app/track')"
-          class="ma-1"
-          :style="activeRoute('Document Tracker')"
-        >
-          <v-list-tile-action>
-            <v-tooltip top>
-              <v-btn slot="activator" icon>
-                <v-icon color="fdaBlueGreen">fas fa-search</v-icon>
-              </v-btn>Doc Tracker
-            </v-tooltip>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title class="body-1 font-weight-light">DocTracker</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
         <v-divider></v-divider>
         <v-list-tile
           @click="goTo('/app/profile')"

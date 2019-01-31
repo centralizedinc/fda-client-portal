@@ -3,6 +3,8 @@
     <v-flex xs12>
       <v-text-field
         color="green darken-1"
+        :rules="[rules.required]"
+        required
         label="Name of Establishment"
         v-model="form.estab_details.establishment_name"
       ></v-text-field>
@@ -11,11 +13,13 @@
       <v-text-field
         color="green darken-1"
         label="Establishment Owner"
+        :rules="[rules.required]"
+        required
         v-model="form.estab_details.establishment_owner"
       ></v-text-field>
       <ul>
         <li
-          class="text-danger"
+          class="text-error"
         >For single proprietorship reflect the name of the person indicated in the DTI registration certificate.</li>
         <li
           class="text-danger"
@@ -28,6 +32,7 @@
     <v-flex xs12>
       <v-text-field
         color="green darken-1"
+        :rules="[rules.required]"
         label="TIN Number"
         :mask="tin"
         v-model="form.estab_details.tin"
@@ -44,6 +49,7 @@
         <v-flex xs5 ml-5>
           <v-text-field
             color="green darken-1"
+            :rules="[rules.required, rules.email]"
             label="1. Email Address"
             v-model="form.estab_details.email"
             :disabled="form.application_type==='R'"
@@ -52,6 +58,7 @@
         <v-flex xs5 ml-5>
           <v-text-field
             color="green darken-1"
+            :rules="[rules.required]"
             label="2. Landline Number"
             v-model="form.estab_details.landline"
             :disabled="form.application_type==='R'"
@@ -60,6 +67,7 @@
         <v-flex xs5 ml-5>
           <v-text-field
             color="green darken-1"
+            :rules="[rules.required]"
             label="3. Fax Number"
             v-model="form.estab_details.fax"
             :disabled="form.application_type==='R'"
@@ -68,6 +76,7 @@
         <v-flex xs5 ml-5>
           <v-text-field
             color="green darken-1"
+            :rules="[rules.required]"
             label="4. Mobile Number"
             v-model="form.estab_details.mobile"
             :disabled="form.application_type==='R'"
@@ -103,11 +112,17 @@
                 :items="lines"
                 hide-no-data
                 hide-selected
+                :rules="[rules.required]"
                 label="Product Line"
               ></v-autocomplete>
             </v-flex>
             <v-flex xs5 ml-5 :key="index">
-              <v-text-field color="green darken-1" label="Remarks" v-model="item.remarks"></v-text-field>
+              <v-text-field
+                color="green darken-1"
+                :rules="[rules.required]"
+                label="Remarks"
+                v-model="item.remarks"
+              ></v-text-field>
             </v-flex>
             <v-flex xs1 pt-3 :key="index">
               <v-btn flat icon @click="removeItem(index)">
@@ -149,7 +164,14 @@ export default {
       "Skin whitening products",
       "Anti-wrinkle products",
       "Others (Specify in Remarks)"
-    ]
+    ],
+    rules: {
+      required: value => !!value || "This field is required",
+      email: value => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return pattern.test(value) || "Invalid e-mail.";
+      }
+    }
   }),
   methods: {
     addItem() {
@@ -161,6 +183,11 @@ export default {
     removeItem(index) {
       console.log(index);
       this.form.estab_details.products.splice(index, 1);
+    }
+  },
+  watch: {
+    form() {
+      console.log("establishment form: " + JSON.stringify(this.form));
     }
   }
 };

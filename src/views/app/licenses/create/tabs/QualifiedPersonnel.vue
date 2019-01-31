@@ -17,20 +17,32 @@
         <template slot="content">
           <v-layout row wrap>
             <v-flex xs12>
-              <v-text-field color="green darken-1" label="Last Name" v-model="qualified.lastname"></v-text-field>
+              <v-text-field
+                color="green darken-1"
+                label="Last Name"
+                :rules="[rules.required]"
+                v-model="qualified.lastname"
+              ></v-text-field>
             </v-flex>
             <v-flex xs12>
-              <v-text-field color="green darken-1" label="First Name" v-model="qualified.firstname"></v-text-field>
+              <v-text-field
+                color="green darken-1"
+                label="First Name"
+                :rules="[rules.required]"
+                v-model="qualified.firstname"
+              ></v-text-field>
               <v-flex xs12>
                 <v-text-field
                   color="green darken-1"
                   label="Middle Name"
+                  :rules="[rules.required]"
                   v-model="qualified.middlename"
                 ></v-text-field>
               </v-flex>
               <v-flex xs12>
                 <v-autocomplete
                   color="green darken-1"
+                  :rules="[rules.required]"
                   v-model="qualified.designation"
                   :items="designation"
                   hide-no-data
@@ -52,6 +64,7 @@
                   <v-text-field
                     color="green darken-1"
                     slot="activator"
+                    :rules="[rules.required]"
                     v-model="qualified.birthday"
                     label="Birthday"
                     prepend-icon="event"
@@ -68,11 +81,17 @@
                 <v-text-field
                   color="green darken-1"
                   label="Email Address"
+                  :rules="[rules.required, rules.email]"
                   v-model="qualified.email"
                 ></v-text-field>
               </v-flex>
               <v-flex xs12>
-                <v-text-field color="green darken-1" label="TIN Number" v-model="qualified.tin"></v-text-field>
+                <v-text-field
+                  color="green darken-1"
+                  label="TIN Number"
+                  :rules="[rules.required]"
+                  v-model="qualified.tin"
+                ></v-text-field>
               </v-flex>
               <!-- Government Issued Identification -->
               <v-flex xs12>
@@ -81,6 +100,7 @@
               <v-flex xs12>
                 <v-autocomplete
                   color="green darken-1"
+                  :rules="[rules.required]"
                   v-model="qualified.id_type"
                   :items="id_type"
                   hide-no-data
@@ -89,7 +109,12 @@
                 ></v-autocomplete>
               </v-flex>
               <v-flex xs12>
-                <v-text-field color="green darken-1" label="ID Number" v-model="qualified.id_no"></v-text-field>
+                <v-text-field
+                  color="green darken-1"
+                  label="ID Number"
+                  :rules="[rules.required]"
+                  v-model="qualified.id_no"
+                ></v-text-field>
               </v-flex>
               <v-flex xs12>
                 <v-menu
@@ -106,6 +131,7 @@
                     color="green darken-1"
                     slot="activator"
                     v-model="qualified.id_expiry"
+                    :rules="[rules.required]"
                     label="Expiry"
                     prepend-icon="event"
                     readonly
@@ -207,7 +233,14 @@ export default {
         text: "Actions",
         value: ""
       }
-    ]
+    ],
+    rules: {
+      required: value => !!value || "This field is required",
+      email: value => {
+        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return pattern.test(value) || "Invalid e-mail.";
+      }
+    }
   }),
   methods: {
     add() {

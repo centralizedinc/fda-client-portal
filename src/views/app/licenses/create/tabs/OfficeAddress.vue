@@ -1,7 +1,12 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12>
-      <v-text-field color="green darken-1" label="Address" v-model="form.addresses.office.address"></v-text-field>
+      <v-text-field
+        color="green darken-1"
+        label="Address"
+        :rules="[rules.required]"
+        v-model="form.addresses.office.address"
+      ></v-text-field>
     </v-flex>
     <v-flex xs12>
       <v-autocomplete
@@ -11,6 +16,7 @@
         hide-no-data
         hide-selected
         label="Region"
+        :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
@@ -21,6 +27,7 @@
         hide-no-data
         hide-selected
         label="Province"
+        :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
@@ -31,6 +38,7 @@
         hide-no-data
         hide-selected
         label="City / Town"
+        :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
@@ -41,6 +49,7 @@
         hide-no-data
         hide-selected
         label="Zip Code"
+        :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
@@ -157,6 +166,7 @@
             color="green darken-1"
             label="Address"
             v-model="form.addresses.plant.address"
+            :rules="[rules.required]"
           ></v-text-field>
         </v-flex>
         <v-flex xs12>
@@ -167,6 +177,7 @@
             hide-no-data
             hide-selected
             label="Region"
+            :rules="[rules.required]"
           ></v-autocomplete>
         </v-flex>
         <v-flex xs12>
@@ -177,6 +188,7 @@
             hide-no-data
             hide-selected
             label="Province"
+            :rules="[rules.required]"
           ></v-autocomplete>
         </v-flex>
         <v-flex xs12>
@@ -187,6 +199,7 @@
             hide-no-data
             hide-selected
             label="City / Town"
+            :rules="[rules.required]"
           ></v-autocomplete>
         </v-flex>
         <v-flex xs12>
@@ -197,6 +210,7 @@
             hide-no-data
             hide-selected
             label="Zip Code"
+            :rules="[rules.required]"
           ></v-autocomplete>
         </v-flex>
       </v-layout>
@@ -240,7 +254,10 @@ export default {
     province: [],
     city: [],
     zipcode: [],
-    warehouse: []
+    warehouse: [],
+    rules: {
+      required: value => !!value || "This field is required"
+    }
   }),
   methods: {
     add() {

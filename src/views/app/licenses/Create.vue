@@ -20,7 +20,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-one slot="content-step-1" :form="form"></step-one>
+      <step-one slot="content-step-1" :form="form" ></step-one>
       <template slot="header-step-2">Establishment Information
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -181,12 +181,17 @@ export default {
           file: null
         }
       ]
-    }
+    },
   }),
   created() {
     console.log("created porps: " + JSON.stringify(this.form));
   },
-
+  // watch: {
+  //   form(){
+  //     this.editedForm = this.form;
+  //     console.log("form updated: " + JSON.stringify(this.editedForm))
+  //   }
+  // },
   methods: {
     close() {
       this.showAppOverview = false;
@@ -203,6 +208,12 @@ export default {
     changePage(val) {
       console.log("change page value: " + JSON.stringify(val));
       this.e1 = val;
+      this.editedForm = this.form;
+      console.log("form updated: " + JSON.stringify(this.editedForm))
+    },
+    submit() {
+      console.log("#########submit: " + JSON.stringify(this.form));
+      this.$store.dispatch("SAVE_LICENSES", this.form)
     }
   }
 };

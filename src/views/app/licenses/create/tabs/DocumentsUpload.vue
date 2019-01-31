@@ -132,12 +132,12 @@ export default {
       this.files.splice(index, 1);
     },
     uploadError() {
-      this.$notify({
-        message: "File is invalid. Only PDF File is supported.",
-        icon: "add_alert",
-        type: "warning",
-        initialMargin: 100
-      });
+      // this.$notify({
+      //   message: "File is invalid. Only PDF File is supported.",
+      //   icon: "add_alert",
+      //   type: "warning",
+      //   initialMargin: 100
+      // });
     }
   }
 };

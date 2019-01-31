@@ -3,6 +3,7 @@
     <v-flex xs12>
       <v-autocomplete
         v-model="form.general_info.product_type"
+        :rules="[rules.required]"
         :items="types"
         hide-no-data
         hide-selected
@@ -15,6 +16,7 @@
     <v-flex xs12>
       <v-autocomplete
         v-model="form.general_info.primary_activity"
+        :rules="[rules.required]"
         :items="activity"
         hide-no-data
         color="green darken-1"
@@ -38,6 +40,7 @@
         type="text"
         item-text="name"
         item-value="_id"
+        :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
@@ -48,6 +51,7 @@
         color="green darken-1"
         hide-selected
         label="Declared Capital"
+        required
         type="text"
         item-text="name"
         item-value="_id"
@@ -65,7 +69,10 @@ export default {
     types: [],
     activity: [],
     addtl: [],
-    capital: []
+    capital: [],
+    rules: {
+      required: value => !!value || "This field is required"
+    }
   })
 };
 </script>

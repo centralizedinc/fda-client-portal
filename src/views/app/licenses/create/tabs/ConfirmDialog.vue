@@ -26,7 +26,7 @@
       <v-card-actions>
         <v-btn flat color="error" @click="$emit('close')">Close</v-btn>
         <v-spacer></v-spacer>
-        <v-btn flat color="success">Submit</v-btn>
+        <v-btn flat color="success" @click="$emit('submit')">Submit</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
