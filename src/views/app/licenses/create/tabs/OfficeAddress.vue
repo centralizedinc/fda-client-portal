@@ -68,12 +68,7 @@
         </v-tooltip>
       </v-card-title>
 
-      <warehouse-list
-        :show="addToListDialog"
-        @cancel="clearForm"
-        @add="add"
-        title="Warehouse Address"
-      >
+      <warehouse-list :show="addToListDialog" @add="add" title="Warehouse Address">
         <template slot="content">
           <v-checkbox label="Same as Office Address"></v-checkbox>
           <v-flex xs12>
@@ -123,28 +118,19 @@
       </warehouse-list>
       <v-layout row wrap>
         <v-flex xs12>
-          <v-data-table
-            :headers="headers"
-            :items="warehouseList"
-            hide-actions
-            class="elevation-1"
-            pagination.sync="pagination"
-            item-key="id"
-            loading="true"
-            search="search"
-          >
-            <template slot="items" slot-scope>
-              <td>props.item.address}}</td>
-              <td>props.item.city + " " + props.item.town}}</td>
-              <td>props.item.province}}</td>
-              <td>props.item.zipcode}}</td>
+          <v-data-table :headers="headers" :items="addedWarehouse" class="elevation-1">
+            <template slot="items" slot-scope="props">
+              <td>{{props.item.address}}</td>
+              <td>{{props.item.city}}</td>
+              <td>{{props.item.province}}</td>
+              <td>{{props.item.zipcode}}</td>
               <td>
                 <v-layout row wrap>
                   <v-flex xs6>
                     <v-tooltip top>
-                      <v-btn slot="activator" flat icon color="primary">
-                        <v-icon small>edit</v-icon>
-                      </v-btn>Edit item
+                      <v-btn slot="activator" flat icon color="primary" @click="deleteItem(item)">
+                        <v-icon color="error" small>fas fa-trash-alt</v-icon>
+                      </v-btn>Delete item
                     </v-tooltip>
                   </v-flex>
                 </v-layout>
@@ -249,7 +235,7 @@ export default {
         value: ""
       }
     ],
-    warehouseList: [],
+    addedWarehouse: [],
     region: [],
     province: [],
     city: [],
@@ -262,6 +248,7 @@ export default {
   methods: {
     add() {
       this.form.addresses.warehouse.push(this.warehouse);
+      this.addedWarehouse.push(this.warehouse);
       this.clearForm();
     },
     clearForm() {
@@ -274,10 +261,11 @@ export default {
         location: ""
       };
       this.addToListDialog = false;
+    },
+    deleteItem(item) {
+      confirm("Are you sure you want to delete this item?") &&
+        this.addedWarehouse.splice(item, 1);
     }
-  },
-  editItem() {
-    this.addToListDialog = true;
   }
 };
 </script>

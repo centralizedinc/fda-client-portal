@@ -8,12 +8,7 @@
     >Add Qualified Person to List</v-btn>
     <v-spacer></v-spacer>
     <v-flex xs12 p1-2>
-      <qualified-personnel-list
-        :show="addToListDialog"
-        @cancel="clearForm"
-        @add="add"
-        title="Qualified Personnel"
-      >
+      <qualified-personnel-list :show="addToListDialog" @add="add" title="Qualified Personnel">
         <template slot="content">
           <v-layout row wrap>
             <v-flex xs12>
@@ -147,23 +142,14 @@
           </v-layout>
         </template>
       </qualified-personnel-list>
-      <v-data-table
-        :headers="headers"
-        :items="warehouseList"
-        hide-actions
-        class="elevation-1"
-        pagination.sync="pagination"
-        item-key="id"
-        loading="true"
-        search="search"
-      >
-        <template slot="items" slot-scope>
-          <td>props.item.firstname + "" +item.lastname}}</td>
-          <td>props.item.designation}}</td>
-          <td>props.item.birthdate}}</td>
-          <td>props.item.id_type}}</td>
-          <td>props.item.tin}}</td>
-          <td>props.item.id_no}}</td>
+      <v-data-table :headers="headers" :items="addedPersonnel" class="elevation-1">
+        <template slot="items" slot-scope="props">
+          <td>{{props.item.firstname + " " + props.item.lastname}}</td>
+          <td>{{props.item.designation}}</td>
+          <td>{{props.item.birthdate}}</td>
+          <td>{{props.item.id_type}}</td>
+          <td>{{props.item.tin}}</td>
+          <td>{{props.item.id_no}}</td>
           <td>
             <v-layout row wrap>
               <v-flex xs6>
@@ -193,17 +179,7 @@ export default {
     menu2: null,
     designation: [],
     id_type: [],
-    qualified: {
-      lastname: "",
-      firstname: "",
-      middlename: "",
-      designation: "",
-      birthday: "",
-      tin: "",
-      id_type: "",
-      id_no: "",
-      id_expiry: ""
-    },
+    qualified: [],
     headers: [
       {
         text: "Name",
@@ -234,6 +210,8 @@ export default {
         value: ""
       }
     ],
+    addedPersonnel: [],
+
     rules: {
       required: value => !!value || "This field is required",
       email: value => {
@@ -244,7 +222,13 @@ export default {
   }),
   methods: {
     add() {
+      console.log(
+        "#############################################################################################################################" +
+          JSON.stringify(this.qualified)
+      );
+
       this.form.qualified_personnel.push(this.qualified);
+      this.addedPersonnel.push(this.qualified);
       this.clearForm();
     },
     clearForm() {
