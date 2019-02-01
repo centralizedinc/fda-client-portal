@@ -66,7 +66,7 @@
                     color="green darken-1"
                     slot="activator"
                     v-model="qualified.birthday"
-                    label="Birthday date"
+                    label="Birthday"
                     prepend-icon="event"
                     readonly
                   ></v-text-field>

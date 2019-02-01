@@ -5,98 +5,59 @@
         <template v-for="(item, index) in files">
           <v-flex xs12 :key="index">
             <v-card class="elevation-1">
-              <v-flex xs1 mt-3 pt-3 :key="index" v-if="index > 4">
+              <v-flex xs1 pt-3 :key="index" v-if="index > 4">
                 <v-tooltip top>
                   <v-btn
-                    class="mt-4"
                     slot="activator"
                     small
-                    flat
                     color="error"
                     @click="remove(index)"
                     fab
                     right
                     absolute
                   >
-                    <v-icon class="pt-1">fas fa-trash-alt</v-icon>
+                    <v-icon>delete</v-icon>
                   </v-btn>Remove this file
                 </v-tooltip>
               </v-flex>
               <v-flex xs1 :key="index" v-else></v-flex>
-              <v-flex xs12 mt-3>
+              <v-flex xs12 ml-4 pt-4 pb-2>
                 <div
                   v-if="index < 5"
-                  class="subheading font-weight: heavy align-center"
-                  style="text-transform: uppercase !important ; "
+                  class="subheading bold"
+                  style="text-transform: uppercase !important"
                 >
-                  <v-sheet
-                    dark
-                    class="elevation-1 pl-3"
-                    color="fdaGreen"
-                    height="26"
-                    style="border-radius: 0px 0px 12px 12px !important"
-                  >
-                    {{item.purpose}}
-                    <span style="color: red">*</span>
-                  </v-sheet>
+                  <span style="color: red">*</span>
+                  {{item.purpose}}
                 </div>
-
-                <div v-else>
-                  <v-flex xs11 mr-4 ml-5 pr-5 mb-0>
+                <div v-else pb-2>
+                  <v-flex xs11 mr-4>
                     <v-text-field label="Purpose" :rules="[rules.required]" v-model="item.purpose"></v-text-field>
                   </v-flex>
                 </div>
               </v-flex>
-              <v-layout row wrap>
-                <v-flex xs3 pl-3 pb-3 ml-3 mt-2 pt-2 :key="index">
-                  <upload-btn
-                    label="Choose File"
-                    :index="index"
-                    @getFile="getFile"
-                    mimetype="application/pdf"
-                    @onError="uploadError"
-                  ></upload-btn>
-                </v-flex>
-                <v-flex
-                  xs6
-                  ml-5
-                  mt-4
-                  pl-5
-                  pb-2
-                  :key="index"
-                >{{item.file_name !== '' ? item.file_name : "No file chosen"}}</v-flex>
-              </v-layout>
+
+              <v-flex
+                xs2
+                ml-5
+                :key="index"
+              >{{item.file_name !== '' ? item.file_name : "No file Chosen"}}</v-flex>
+              <v-flex xs5 ml-5 mb-3 pa-2 :key="index">
+                <upload-btn
+                  style
+                  label="Choose File"
+                  :index="index"
+                  @getFile="getFile"
+                  mimetype="application/pdf"
+                  @onError="uploadError"
+                ></upload-btn>
+              </v-flex>
             </v-card>
           </v-flex>
         </template>
       </v-layout>
-      <v-divider></v-divider>
-
       <v-card-actions>
-        <v-flex xs12>
-          <v-card>
-            <v-card-text>
-              <v-layout row wrap>
-                <v-spacer></v-spacer>
-                <v-btn color="success" flat icon @click="addItem">
-                  <v-icon>fas fa-plus fa-3x</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-              </v-layout>
-            </v-card-text>
-            <v-footer
-              text
-              text-xs-center
-              height="40"
-              color="fdaGreen"
-              class="subheading font-weight-regular"
-              style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%); text-transform: uppercase; "
-            >
-              <v-spacer></v-spacer>Add another file
-              <v-spacer></v-spacer>
-            </v-footer>
-          </v-card>
-        </v-flex>
+        <v-btn block color="success" @click="addItem">Add File</v-btn>
       </v-card-actions>
     </div>
   </v-layout>

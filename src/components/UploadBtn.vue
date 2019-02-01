@@ -2,9 +2,11 @@
   <div>
     <v-flex xs12>
       <v-btn
-        class="font-weight-light"
-        color="accent"
-        style="border-radius: 14px !important;  height: 30px !important;"
+        class="font-weight-light elevation-2"
+        raised
+        ripple
+        color="fdaSilver"
+        style="border-radius: 2px !important;  height: 30px !important;"
         @click="$refs.image.click()"
       >{{label}}</v-btn>
       <input
