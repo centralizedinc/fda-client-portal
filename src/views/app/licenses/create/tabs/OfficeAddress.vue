@@ -70,7 +70,12 @@
         </v-tooltip>
       </v-card-title>
 
-      <warehouse-list :show="addToListDialog" @add="add" title="Warehouse Address">
+      <warehouse-list
+        :show="addToListDialog"
+        @add="add"
+        @cancel="addToListDialog=false"
+        title="Warehouse Address"
+      >
         <template slot="content">
           <v-checkbox label="Same as Office Address"></v-checkbox>
           <v-flex xs12>
@@ -231,23 +236,28 @@ export default {
     headers: [
       {
         text: "Address",
-        value: ""
+        value: "",
+        sortable: false
       },
       {
         text: "City/Town",
-        value: ""
+        value: "",
+        sortable: false
       },
       {
         text: "Province",
-        value: ""
+        value: "",
+        sortable: false
       },
       {
         text: "Zip Code",
-        value: ""
+        value: "",
+        sortable: false
       },
       {
         text: "Actions",
-        value: ""
+        value: "",
+        sortable: false
       }
     ],
     addedWarehouse: [],

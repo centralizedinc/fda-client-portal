@@ -50,9 +50,9 @@
                   label="Designation"
                 ></v-autocomplete>
               </v-flex>
+
               <v-flex xs12>
                 <v-menu
-                  ref="menu"
                   :close-on-content-click="false"
                   v-model="menu"
                   :nudge-right="40"
@@ -65,21 +65,36 @@
                   <v-text-field
                     color="green darken-1"
                     slot="activator"
+                    :rules="[rules.required]"
                     v-model="qualified.birthday"
-                    label="Birthday date"
+                    label="Birthday"
                     prepend-icon="event"
                     readonly
                   ></v-text-field>
                   <v-date-picker
-                    ref="picker"
+                    color="green darken-1"
                     v-model="qualified.birthday"
-                    :max="new Date().toISOString().substr(0, 10)"
-                    min="1950-01-01"
                     @input="$refs.menu.save(qualified.birthday)"
                   ></v-date-picker>
                 </v-menu>
               </v-flex>
 
+              <v-flex xs12>
+                <v-text-field
+                  color="green darken-1"
+                  label="Email Address"
+                  :rules="[rules.required, rules.email]"
+                  v-model="qualified.email"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  color="green darken-1"
+                  label="TIN Number"
+                  :rules="[rules.required]"
+                  v-model="qualified.tin"
+                ></v-text-field>
+              </v-flex>
               <!-- Government Issued Identification -->
               <v-flex xs12>
                 <v-card-title primary-title class="headline">Government Issued Identification</v-card-title>
@@ -138,7 +153,7 @@
         <template slot="items" slot-scope="props">
           <td>{{props.item.firstname + " " + props.item.lastname}}</td>
           <td>{{props.item.designation}}</td>
-          <td>{{props.item.birthday}}</td>
+          <td>{{props.item.birthdate}}</td>
           <td>{{props.item.id_type}}</td>
           <td>{{props.item.tin}}</td>
           <td>{{props.item.id_no}}</td>
@@ -219,11 +234,6 @@ export default {
       }
     }
   }),
-  watch: {
-    menu(val) {
-      val && this.$nextTick(() => (this.$refs.picker.activePicker = "YEAR"));
-    }
-  },
   methods: {
     add() {
       this.form.qualified_personnel.push(this.qualified);
