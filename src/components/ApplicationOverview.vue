@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <v-dialog v-model="show" max-width="1000px" transition="dialog-transition">
+    <v-dialog v-model="show" max-width="1000px" persistent transition="dialog-transition">
       <v-card>
         <v-toolbar
           color="primary"

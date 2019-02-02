@@ -27,6 +27,7 @@
         <v-card-text>
           <slot name="content"></slot>
         </v-card-text>
+        <v-divider></v-divider>
         <v-card-actions>
           <v-btn ripple raised block color="success" @click="$emit('add')">Add</v-btn>
         </v-card-actions>

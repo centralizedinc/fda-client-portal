@@ -8,14 +8,19 @@
         </v-card-title>
         <v-window v-model="onboarding">
           <v-window-item v-for="n in steps" :key="`card-${n}`">
-            <v-card style="box-shadow: none  !important;" height="400">
+            <v-card style="box-shadow: none  !important;" height="calc(100% - 80px)">
               <v-progress-linear></v-progress-linear>
-              <v-container mt-3 id="scroll-target" style="max-height: 1000vh" class="scroll-y">
+              <v-container
+                mt-3
+                id="scroll-target"
+                style="max-height: calc(100% - 80px)"
+                class="scroll-y"
+              >
                 <v-layout
                   mt-3
                   v-scroll:#scroll-target="onScroll"
                   column
-                  style="height: 280px"
+                  style="height: calc(100% - 80px)"
                   align-center
                   justify-center
                 >

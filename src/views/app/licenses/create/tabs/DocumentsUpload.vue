@@ -70,34 +70,34 @@
           </v-flex>
         </template>
       </v-layout>
-      <v-divider></v-divider>
+      <v-divider class="mt-3"></v-divider>
 
-      <v-card-actions>
-        <v-flex xs12>
-          <v-card>
-            <v-card-text>
-              <v-layout row wrap>
-                <v-spacer></v-spacer>
-                <v-btn color="success" flat icon @click="addItem">
-                  <v-icon>fas fa-plus fa-3x</v-icon>
-                </v-btn>
-                <v-spacer></v-spacer>
-              </v-layout>
-            </v-card-text>
-            <v-footer
-              text
-              text-xs-center
-              height="40"
-              color="fdaGreen"
-              class="subheading font-weight-regular"
-              style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%); text-transform: uppercase; "
-            >
-              <v-spacer></v-spacer>Add another file
+      <v-flex xs12>
+        <!-- <v-tooltip top>
+          <v-btn
+            class="mt-0"
+            color="transparent"
+            slot="activator"
+            block
+            @click="addItem"
+            style="box-shadow: none !important"
+          >
+            <v-icon medium color="success">fas fa-plus fa-3x</v-icon>
+          </v-btn>Add another file
+        </v-tooltip>
+        </v-flex>-->
+        <v-card class="mt-2" @click="addItem" hover ripple="hover">
+          <v-card-text>
+            <v-layout row wrap>
               <v-spacer></v-spacer>
-            </v-footer>
-          </v-card>
-        </v-flex>
-      </v-card-actions>
+              <v-tooltip top>
+                <v-icon slot="activator" color="success">fas fa-plus fa-3x</v-icon>Add another file
+              </v-tooltip>
+              <v-spacer></v-spacer>
+            </v-layout>
+          </v-card-text>
+        </v-card>
+      </v-flex>
     </div>
   </v-layout>
 </template>
