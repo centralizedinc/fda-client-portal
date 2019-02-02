@@ -8,9 +8,11 @@
       >
         {{title}}
         <v-spacer></v-spacer>
-        <v-btn color="error" flat icon @click="$emit('close')">
-          <v-icon>close</v-icon>
-        </v-btn>
+        <v-tooltip top>
+          <v-btn slot="activator" flat icon color="black" @click="$emit('close')">
+            <i class="fas fa-times-circle"></i>
+          </v-btn>Close
+        </v-tooltip>
       </v-card-title>
       <v-divider></v-divider>
       <v-card-text>
@@ -49,7 +51,7 @@
         </v-layout>
       </v-card-text>
       <v-card-actions>
-        <v-btn block flat color="success" @click="$emit('close')">close</v-btn>
+        <v-btn block ripple flat color="success" @click="$emit('close')">close</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

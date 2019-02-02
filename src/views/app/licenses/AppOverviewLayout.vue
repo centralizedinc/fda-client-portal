@@ -9,7 +9,7 @@
         </v-card>
       </template>
       <template slot="header-2">Header 2</template>
-      <template slot="content-2">Content sss2</template>
+      <template slot="content-2">Content 2</template>
       <template slot="header-3">Header 3</template>
       <template slot="content-3">Content 3</template>
     </application-summary>
@@ -23,10 +23,6 @@ export default {
   },
   data() {
     return {
-      inboxes: [],
-      headers: [],
-      items: [],
-      loading: false,
       showAppView: false
     };
   }
