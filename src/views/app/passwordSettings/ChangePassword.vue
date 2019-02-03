@@ -67,8 +67,7 @@
           </v-flex>
           <v-divider></v-divider>
           <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="success" flat @click="submit">Submit</v-btn>
+            <v-btn block color="success" flat @click="submit">Submit</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -88,7 +87,8 @@ export default {
       password: "Password",
       rules: {
         required: value => !!value || "Required.",
-        confirm_password:  () => ('The new password and confirm password you entered doesn\'t match'),
+        confirm_password: () =>
+          "The new password and confirm password you entered doesn't match",
         email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Invalid e-mail.";
