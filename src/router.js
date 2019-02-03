@@ -12,16 +12,16 @@ export default new Router({
       name: 'Main',
       component: MainLayout,
       children: [{
-        path: '',
-        name: 'Login',
-        component: () => import('@/views/Login.vue')
-      },
-      {
-        path: '/signup',
-        name: 'Registration',
-        component: () => import('@/views/Registration.vue')
-      }
-    ]
+          path: '',
+          name: 'Login',
+          component: () => import('@/views/Login.vue')
+        },
+        {
+          path: '/signup',
+          name: 'Registration',
+          component: () => import('@/views/Registration.vue')
+        }
+      ]
 
     },
     {
@@ -82,11 +82,7 @@ export default new Router({
           name: 'Payment Summary',
           component: () => import('@/views/app/payment/PaymentSummary.vue')
         },
-        {
-          path: 'track',
-          name: 'FDA Doctrack Status',
-          component: () => import('@/views/app/DocTracker.vue')
-        },
+
         {
           path: 'profile',
           name: 'Profile',
@@ -94,7 +90,7 @@ export default new Router({
         },
         {
           path: 'password',
-          name: 'Password',
+          name: 'Change Password',
           component: () => import('@/views/app/passwordSettings/ChangePassword.vue')
         },
         {

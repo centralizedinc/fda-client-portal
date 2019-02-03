@@ -1,7 +1,14 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12>
-      <v-text-field color="green darken-1" label="Address" v-model="form.addresses.office.address"></v-text-field>
+      <v-text-field
+        color="green darken-1"
+        label="Address"
+        :rules="[rules.required]"
+        v-model="form.addresses.office.address"
+        hint="Unit Number, Floor, Building, Lot, Block, Phase, Street"
+        class="input-group--focused"
+      ></v-text-field>
     </v-flex>
     <v-flex xs12>
       <v-autocomplete
@@ -11,6 +18,7 @@
         hide-no-data
         hide-selected
         label="Region"
+        :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
@@ -21,6 +29,7 @@
         hide-no-data
         hide-selected
         label="Province"
+        :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
@@ -31,6 +40,7 @@
         hide-no-data
         hide-selected
         label="City / Town"
+        :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
@@ -41,34 +51,57 @@
         hide-no-data
         hide-selected
         label="Zip Code"
+        :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
       <!-- Warehouse list -->
-      <v-card-title primary-title class="headline">Warehouse List
+      <v-sheet
+        dark
+        class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
+        color="fdaGreen"
+        height="35"
+        width="calc(100% - 30px)"
+        style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
+      >Warehouse List
         <v-tooltip top>
-          <v-btn slot="activator" fab medium small color="fdaGreen" @click="addToListDialog=true">
-            <v-icon medium color="fdaSilver">add</v-icon>
-          </v-btn>Add Warehouse to List
-        </v-tooltip>
-        <v-spacer></v-spacer>
-        <v-tooltip left>
-          <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg"></i>
+          <v-btn slot="activator" flat icon small color="error">
+            <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
           </v-btn>Get Help
         </v-tooltip>
-      </v-card-title>
+      </v-sheet>
+      <!-- add button -->
+      <v-flex xs12>
+        <v-tooltip top>
+          <v-btn
+            color="transparent"
+            slot="activator"
+            block
+            @click="addToListDialog=true"
+            style="box-shadow: none !important"
+          >
+            <v-icon medium color="success">fas fa-plus fa-3x</v-icon>
+          </v-btn>Add new
+        </v-tooltip>
+      </v-flex>
 
       <warehouse-list
         :show="addToListDialog"
-        @cancel="clearForm"
         @add="add"
+        @cancel="addToListDialog=false"
         title="Warehouse Address"
       >
         <template slot="content">
           <v-checkbox label="Same as Office Address"></v-checkbox>
           <v-flex xs12>
-            <v-text-field color="green darken-1" label="Address" v-model="warehouse.address"></v-text-field>
+            <v-text-field
+              color="green darken-1"
+              label="Address"
+              :rules="[rules.required]"
+              v-model="warehouse.address"
+              hint="Unit Number, Floor, Building, Lot, Block, Phase, Street"
+              class="input-group--focused"
+            ></v-text-field>
           </v-flex>
           <v-flex xs12>
             <v-autocomplete
@@ -78,6 +111,7 @@
               hide-no-data
               hide-selected
               label="Region"
+              :rules="[rules.required]"
             ></v-autocomplete>
           </v-flex>
           <v-flex xs12>
@@ -88,6 +122,7 @@
               hide-no-data
               hide-selected
               label="Province"
+              :rules="[rules.required]"
             ></v-autocomplete>
           </v-flex>
           <v-flex xs12>
@@ -98,6 +133,7 @@
               hide-no-data
               hide-selected
               label="City / Town"
+              :rules="[rules.required]"
             ></v-autocomplete>
           </v-flex>
           <v-flex xs12>
@@ -108,34 +144,26 @@
               hide-no-data
               hide-selected
               label="Zip Code"
+              :rules="[rules.required]"
             ></v-autocomplete>
           </v-flex>
         </template>
       </warehouse-list>
       <v-layout row wrap>
         <v-flex xs12>
-          <v-data-table
-            :headers="headers"
-            :items="warehouseList"
-            hide-actions
-            class="elevation-1"
-            pagination.sync="pagination"
-            item-key="id"
-            loading="true"
-            search="search"
-          >
+          <v-data-table :headers="headers" :items="addedWarehouse" class="elevation-1">
             <template slot="items" slot-scope="props">
               <td>{{props.item.address}}</td>
-              <td>{{props.item.city + " " + props.item.town}}</td>
+              <td>{{props.item.city}}</td>
               <td>{{props.item.province}}</td>
               <td>{{props.item.zipcode}}</td>
               <td>
                 <v-layout row wrap>
                   <v-flex xs6>
                     <v-tooltip top>
-                      <v-btn slot="activator" flat icon color="primary">
-                        <v-icon small>edit</v-icon>
-                      </v-btn>Edit item
+                      <v-btn slot="activator" flat icon color="primary" @click="deleteItem(item)">
+                        <v-icon color="error" small>fas fa-trash-alt</v-icon>
+                      </v-btn>Delete item
                     </v-tooltip>
                   </v-flex>
                 </v-layout>
@@ -147,61 +175,76 @@
     </v-flex>
 
     <!-- Plant Address -->
-    <v-flex xs12 mt-3>
-      <v-card-title primary-title class="headline">Plant Address</v-card-title>
-    </v-flex>
-    <v-card-text>
-      <v-layout row wrap>
-        <v-flex xs12>
-          <v-text-field
-            color="green darken-1"
-            label="Address"
-            v-model="form.addresses.plant.address"
-          ></v-text-field>
-        </v-flex>
-        <v-flex xs12>
-          <v-autocomplete
-            color="green darken-1"
-            v-model="form.addresses.plant.region"
-            :items="region"
-            hide-no-data
-            hide-selected
-            label="Region"
-          ></v-autocomplete>
-        </v-flex>
-        <v-flex xs12>
-          <v-autocomplete
-            color="green darken-1"
-            v-model="form.addresses.plant.province"
-            :items="province"
-            hide-no-data
-            hide-selected
-            label="Province"
-          ></v-autocomplete>
-        </v-flex>
-        <v-flex xs12>
-          <v-autocomplete
-            color="green darken-1"
-            v-model="form.addresses.plant.city"
-            :items="city"
-            hide-no-data
-            hide-selected
-            label="City / Town"
-          ></v-autocomplete>
-        </v-flex>
-        <v-flex xs12>
-          <v-autocomplete
-            color="green darken-1"
-            v-model="form.addresses.plant.zipcode"
-            :items="zip"
-            hide-no-data
-            hide-selected
-            label="Zip Code"
-          ></v-autocomplete>
-        </v-flex>
-      </v-layout>
-    </v-card-text>
-    <div></div>
+    <v-sheet
+      dark
+      class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
+      color="fdaGreen"
+      height="35"
+      width="calc(100% - 30px)"
+      style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
+    >Plant Address
+      <v-tooltip top>
+        <v-btn slot="activator" flat icon small color="error">
+          <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
+        </v-btn>Get Help
+      </v-tooltip>
+    </v-sheet>
+    <v-layout row wrap>
+      <v-flex xs12>
+        <v-text-field
+          color="green darken-1"
+          label="Address"
+          v-model="form.addresses.plant.address"
+          :rules="[rules.required]"
+          hint="Unit Number, Floor, Building, Lot, Block, Phase, Street"
+          class="input-group--focused"
+        ></v-text-field>
+      </v-flex>
+      <v-flex xs12>
+        <v-autocomplete
+          color="green darken-1"
+          v-model="form.addresses.plant.region"
+          :items="region"
+          hide-no-data
+          hide-selected
+          label="Region"
+          :rules="[rules.required]"
+        ></v-autocomplete>
+      </v-flex>
+      <v-flex xs12>
+        <v-autocomplete
+          color="green darken-1"
+          v-model="form.addresses.plant.province"
+          :items="province"
+          hide-no-data
+          hide-selected
+          label="Province"
+          :rules="[rules.required]"
+        ></v-autocomplete>
+      </v-flex>
+      <v-flex xs12>
+        <v-autocomplete
+          color="green darken-1"
+          v-model="form.addresses.plant.city"
+          :items="city"
+          hide-no-data
+          hide-selected
+          label="City / Town"
+          :rules="[rules.required]"
+        ></v-autocomplete>
+      </v-flex>
+      <v-flex xs12>
+        <v-autocomplete
+          color="green darken-1"
+          v-model="form.addresses.plant.zipcode"
+          :items="zip"
+          hide-no-data
+          hide-selected
+          label="Zip Code"
+          :rules="[rules.required]"
+        ></v-autocomplete>
+      </v-flex>
+    </v-layout>
   </v-layout>
 </template>
 
@@ -216,35 +259,44 @@ export default {
     headers: [
       {
         text: "Address",
-        value: ""
+        value: "",
+        sortable: false
       },
       {
         text: "City/Town",
-        value: ""
+        value: "",
+        sortable: false
       },
       {
         text: "Province",
-        value: ""
+        value: "",
+        sortable: false
       },
       {
         text: "Zip Code",
-        value: ""
+        value: "",
+        sortable: false
       },
       {
         text: "Actions",
-        value: ""
+        value: "",
+        sortable: false
       }
     ],
-    warehouseList: [],
+    addedWarehouse: [],
     region: [],
     province: [],
     city: [],
     zipcode: [],
-    warehouse: []
+    warehouse: [],
+    rules: {
+      required: value => !!value || "This field is required"
+    }
   }),
   methods: {
     add() {
       this.form.addresses.warehouse.push(this.warehouse);
+      this.addedWarehouse.push(this.warehouse);
       this.clearForm();
     },
     clearForm() {
@@ -257,10 +309,11 @@ export default {
         location: ""
       };
       this.addToListDialog = false;
+    },
+    deleteItem(item) {
+      confirm("Are you sure you want to delete this item?") &&
+        this.addedWarehouse.splice(item, 1);
     }
-  },
-  editItem() {
-    this.addToListDialog = true;
   }
 };
 </script>

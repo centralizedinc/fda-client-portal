@@ -20,7 +20,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-one slot="content-step-1" :form="form" ></step-one>
+      <step-one slot="content-step-1" :form="form"></step-one>
       <template slot="header-step-2">Establishment Information
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -48,7 +48,7 @@
         </v-tooltip>
       </template>
       <step-four slot="content-step-4" :form="form"></step-four>
-      <template slot="header-step-5">Authorized Officer Details
+      <template slot="header-step-5">Qualified Personnel
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -181,7 +181,7 @@ export default {
           file: null
         }
       ]
-    },
+    }
   }),
   created() {
     console.log("created porps: " + JSON.stringify(this.form));
@@ -209,11 +209,11 @@ export default {
       console.log("change page value: " + JSON.stringify(val));
       this.e1 = val;
       this.editedForm = this.form;
-      console.log("form updated: " + JSON.stringify(this.editedForm))
+      console.log("form updated: " + JSON.stringify(this.editedForm));
     },
     submit() {
       console.log("#########submit: " + JSON.stringify(this.form));
-      this.$store.dispatch("SAVE_LICENSES", this.form)
+      this.$store.dispatch("SAVE_LICENSES", this.form);
     }
   }
 };

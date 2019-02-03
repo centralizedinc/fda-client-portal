@@ -1,4 +1,4 @@
-<template>
+<template >
   <v-layout row wrap>
     <v-flex xs12 p1-2>
       <v-card>
@@ -8,7 +8,7 @@
           </v-btn>Apply New License
         </v-tooltip>
 
-        <undertaking-dialog :show="dialog"></undertaking-dialog>
+        <undertaking-dialog :show="dialog" @proceed="launchAppForm"></undertaking-dialog>
 
         <v-data-table :headers="headers" :items="licenses" class="elevation-1">
           <template slot="items" slot-scope="props">
@@ -93,8 +93,8 @@ export default {
         this.licenses.push(data); 
       });
     },
-    apply() {
-      this.$router.push("/app/licenses/apply");
+    view() {
+      this.$router.push("/app/licenses/view");
     },
     view(){
       this.$router.push("/app/licenses/view")
@@ -103,7 +103,9 @@ export default {
       
     },
     variation(item){
-
+    },
+    launchAppForm() {
+      this.$router.push("/app/licenses/apply");
     }
   }
 };

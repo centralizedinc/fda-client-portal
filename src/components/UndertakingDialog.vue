@@ -11,7 +11,7 @@
         <v-card-title
           primary-title
           class="headline"
-          style="background: linear-gradient(45deg, #CAD0A0 0%, #b5c25a 100%)"
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
         >Declaration and Undertaking</v-card-title>
         <v-divider></v-divider>
         <v-card-text>
@@ -36,7 +36,7 @@
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-tooltip top>
-            <v-btn slot="activator" flat color="success" @click.native.stop="apply">I accept</v-btn>Agree
+            <v-btn slot="activator" ripple flat color="success" @click.native.stop="apply">I accept</v-btn>Agree
           </v-tooltip>
           <v-spacer></v-spacer>
         </v-card-actions>
@@ -84,7 +84,8 @@ export default {
   }),
   methods: {
     apply() {
-      this.$router.push("/app/licenses/apply");
+      this.$emit("proceed");
+      // this.$router.push("/app/licenses/apply");
     }
   }
 };
