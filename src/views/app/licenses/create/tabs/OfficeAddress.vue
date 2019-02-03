@@ -124,11 +124,11 @@
             loading="true"
             search="search"
           >
-            <template slot="items" slot-scope>
-              <td>props.item.address}}</td>
-              <td>props.item.city + " " + props.item.town}}</td>
-              <td>props.item.province}}</td>
-              <td>props.item.zipcode}}</td>
+            <template slot="items" slot-scope="props">
+              <td>{{props.item.address}}</td>
+              <td>{{props.item.city + " " + props.item.town}}</td>
+              <td>{{props.item.province}}</td>
+              <td>{{props.item.zipcode}}</td>
               <td>
                 <v-layout row wrap>
                   <v-flex xs6>

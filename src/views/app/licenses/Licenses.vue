@@ -22,14 +22,14 @@
               <v-layout row wrap>
                 <v-flex xs3>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary">
+                    <v-btn slot="activator" flat icon color="primary" @click="renew, props.item">
                       <v-icon small>refresh</v-icon>
                     </v-btn>Renewal
                   </v-tooltip>
                 </v-flex>
                 <v-flex xs3>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary">
+                    <v-btn slot="activator" flat icon color="primary" @click="variation, props.item">
                       <v-icon small>edit</v-icon>
                     </v-btn>Variation
                   </v-tooltip>
@@ -60,6 +60,9 @@ export default {
   data() {
     return {
       dialog: false,
+      initial: false,
+      renewal: false,
+      variation: false,
       headers: [
         { text: "Case No", value: "case_no" },
         { text: "License No", value: "case_no" },
@@ -80,7 +83,6 @@ export default {
       this.$store.dispatch("GET_LICENSES")
       var licensesData = this.$store.state.licenses.licenses;
       licensesData.forEach(element => {
-        console.log("data looped: " + JSON.stringify(element))
         var data = {
           case_no: element.auto_id,
           application_type: element.application_type,
@@ -88,16 +90,20 @@ export default {
           date_created: element.date_created,
           date_variation: element.date_variation
         }
-        console.log("data to show: " + JSON.stringify(data))  
         this.licenses.push(data); 
       });
-      // console.log("################all licenses data: " + JSON.stringify(this.$store.state.licenses.licenses))
     },
     apply() {
       this.$router.push("/app/licenses/apply");
     },
     view(){
       this.$router.push("/app/licenses/view")
+    },
+    renew(item){
+      
+    },
+    variation(item){
+
     }
   }
 };

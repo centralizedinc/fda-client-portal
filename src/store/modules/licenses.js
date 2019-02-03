@@ -6,7 +6,7 @@ import LicenseAPI from '../../api/LicenseApi';
 const state = {
     LicenseAPI: null,
     licenses: [],
-    newLicense: []
+    productType: []
 }
 
 const mutations = {
@@ -14,14 +14,17 @@ const mutations = {
         // console.log('mutations licenses: ' + JSON.stringify(licenses))
         state.licenses = licenses;
     },
-    SAVE_LICENSES(state, licenses){
-        state.newLicense =licenses
+    SET_PRODUCT_TYPE(state, licenses){
+        licenses.forEach(element => {
+            state.productType.push(element);
+        });
+        
+        console.log("commited data to state product type: " + JSON.stringify(state.productType))
     }
 }
 
 var actions = {
     GET_LICENSES(context) {
-        // if (context.rootState.user_session.token){
             new LicenseAPI(context.rootState.user_session.token).getLicenses((licenses, err) => {
                 console.log('actions licenses: ' + JSON.stringify(licenses))
                 if(!err){
@@ -33,9 +36,17 @@ var actions = {
             })
         // }
     },
+    GET_PRODUCT_TYPE(context) {
+        new LicenseAPI(context.rootState.user_session.token).productType((productType, err) => {
+            console.log("product type data store!!!!!!: " + JSON.stringify(productType))
+            if(!err){
+                context.commit('SET_PRODUCT_TYPE', productType)
+            }else{
+                console.log(JSON.stringify(err))
+            }
+        })
+    },
     SAVE_LICENSES(context, license){
-        // console.log("Save context!!!" + JSON.stringify(context))
-        console.log("Save licenses!!!" + JSON.stringify(license))
         new LicenseAPI(context.rootState.user_session.token).saveLicenses(license, (licenses, err) => {
             if(!err){
                 console.log('actions save licenses: ' + JSON.stringify(licenses))

@@ -28,7 +28,7 @@
           <slot name="content"></slot>
         </v-card-text>
         <v-card-actions>
-          <v-btn block color="success" @click="$emit('add')">Add</v-btn>
+          <v-btn block color="success" @click="$emit('add')"></v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

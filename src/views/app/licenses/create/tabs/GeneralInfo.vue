@@ -66,7 +66,17 @@ export default {
     activity: [],
     addtl: [],
     capital: []
-  })
+  }),
+  created(){
+    this.init();
+  },
+  methods:{
+    init(){
+      this.$store.dispatch("GET_PRODUCT_TYPE")
+      // this.types.push()
+      console.log("########################product type list: " + JSON.stringify(this.$store.state.productType))
+    }
+  }
 };
 </script>
 

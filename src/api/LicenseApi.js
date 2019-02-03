@@ -36,6 +36,33 @@ export default class LicenseAPI {
             cb(null, err)
         })
     }
+
+    productType(cb) {
+        axios.get('lto-api/resource/product_type')
+        .then(result => {
+            console.log("product type License API result: " + JSON.stringify(result));
+            console.log("product type License API result dat model: " + JSON.stringify(result.data.model));
+            if (result.data.success) {
+              cb(result.data.model)
+            }
+          })
+          .catch(err => {
+            console.log(JSON.stringify(err));
+            cb(null, err)
+          });
+    }
+
+    primary(productType, cb) {
+        axios.get("lto-api/resource/primary/", productType)
+        .then(result => {
+          if (result.data.success) {
+            cb(result.data.model)
+          }
+        })
+        .catch(err => {
+          console.log(JSON.stringify(err));
+        });
+    }
 }
 
 // module.exports = LicenseAPI

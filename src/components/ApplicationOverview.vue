@@ -45,25 +45,25 @@
                 <v-container grid-list-md text-xs-left>
                   <v-layout row wrap>
                     <v-flex xs4 class="fontbold">Case Number</v-flex>
-                    <v-flex xs8>dd</v-flex>
+                    <v-flex xs8>{{form.case_no}}</v-flex>
                     <v-flex xs4 class="fontbold">App Type</v-flex>
-                    <v-flex xs8>dd</v-flex>
+                    <v-flex xs8>{{form.application_type}}</v-flex>
                     <v-flex xs4 class="fontbold">Establishment</v-flex>
-                    <v-flex xs8>dd</v-flex>
+                    <v-flex xs8>{{form.estab_details.establishment_name}}</v-flex>
                     <v-flex xs4 class="fontbold">Product Type</v-flex>
                     <v-flex xs8>{{form.general_info.product_type}}</v-flex>
                     <v-flex xs4 class="fontbold">Primary Activity</v-flex>
                     <v-flex xs8>{{form.general_info.primary_activity}}</v-flex>
                     <v-flex xs4 class="fontbold">Current Task</v-flex>
-                    <v-flex xs8>dd</v-flex>
+                    <v-flex xs8>{{form.current_task}}</v-flex>
                     <v-flex xs4 class="fontbold">Current User</v-flex>
-                    <v-flex xs8>dd</v-flex>
+                    <v-flex xs8>{{form.user}}</v-flex>
                     <v-flex xs4 class="fontbold">Required Action</v-flex>
                     <v-flex xs8>dd</v-flex>
                     <v-flex xs4 class="fontbold">Created by</v-flex>
-                    <v-flex xs8>dd</v-flex>
+                    <v-flex xs8>{{form.user}}</v-flex>
                     <v-flex xs4 class="fontbold">Created Date</v-flex>
-                    <v-flex xs8>dd</v-flex>
+                    <v-flex xs8>{{form.date_created}}}</v-flex>
                   </v-layout>
                 </v-container>
               </v-card-title>
@@ -292,19 +292,26 @@
 
 <script>
 export default {
-  props: {
-    form: {},
-    show: {
-      type: Boolean,
-      required: true,
-      default: false
-    }
-  },
+  props:['form','show'],
+  // props: {
+  //   form: {},
+  //   show: {
+  //     type: Boolean,
+  //     required: true,
+  //     default: false
+  //   }
+  // },
   data: () => ({
     length: 3,
     window: 0,
     title: ["","Summary", "Data", "Files", "Output Documents", "History", "Payment Details"]
-  })
+  }),
+  created(){
+    console.log("form data to view: " + JSON.stringify(this.form))
+  },
+  methods:{
+
+  }
 };
 </script>
 
