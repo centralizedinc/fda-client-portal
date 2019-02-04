@@ -7,6 +7,7 @@
         :rules="[rules.required]"
         hide-no-data
         hide-selected
+        @change="loadPrimary"
         item-text="name"
         color="green darken-1"
         item-value="_id"
@@ -22,6 +23,7 @@
         hide-selected
         label="Primary Activity"
         type="text"
+        @change="loadItems"
         item-text="name"
         item-value="_id"
         :rules="[rules.required]"
@@ -67,6 +69,8 @@ export default {
     activity: [],
     addtl: [],
     capital: [],
+    product: [],
+    primary: [],
     rules: {
       required: value => !!value || "This field is required",
       declare: () =>
@@ -78,9 +82,36 @@ export default {
   },
   methods:{
     init(){
-      this.$store.dispatch("GET_PRODUCT_TYPE")
-      // this.types.push()
-      console.log("########################product type list: " + JSON.stringify(this.$store.state.productType))
+      this.$store.dispatch("GET_PRODUCT_TYPE").then((result) => {
+        
+      console.log("########################product type list: " + JSON.stringify(this.$store.state.licenses.productType))
+      // this.$store.state.licenses.productType.forEach(element => {
+      //   // var data = {
+      //   //   _id: element._id,
+      //   //   name: elemenet.name,
+      //   //   date_created: element.date_created,
+      //   //   primary_activity: element.primary_activity
+      //   // }
+      //   this.types.push(element); 
+      // })
+      this.types = this.$store.state.licenses.productType;
+      console.log("transfer to types##############: " + JSON.stringify(this.types))
+      }).catch((err) => {
+        
+      });      
+    },
+    loadPrimary(){
+      console.log("form general information product type: " + JSON.stringify(this.form.general_info.product_type))
+      this.form.general_info.primary_activity = "";
+      this.$store.dispatch("GET_PRIMARY", this.form.general_info.productType);
+      this.activity = this.$store.licenses.primaryActivity
+      
+
+    },
+    loadItems(){
+      this.form.general_info.addtl_activity = "";
+      this.form.general_info.primary_capital = "";
+      this.$store.dispatch()
     }
   }
 };
