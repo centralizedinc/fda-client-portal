@@ -4,18 +4,24 @@
       <v-card>
         <v-toolbar
           color="primary"
-          style="background: linear-gradient(45deg, #f58555 0%, #b5c25a 100%); box-shadow: 0 6px 20px 0 rgba(77, 182, 172, 0.5)"
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
         >
-          <span class="font-weight-light title">Application Overview</span>
+          <span class="font-weight-light headline">Application Overview</span>
+          <v-spacer></v-spacer>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="black" @click="$emit('close')">
+              <i class="fas fa-times-circle"></i>
+            </v-btn>Close
+          </v-tooltip>
         </v-toolbar>
         <!-- <v-card-title primary-title class="headline">Application Overview</v-card-title> -->
         <v-card-text>
-          <v-layout align-center>
-            <v-flex xs2 pl-5>
-              <v-item-group v-model="window" class="shrink mr-4" mandatory tag="v-flex">
+          <v-layout align-left>
+            <v-flex xs2 mr-5 mt-3 pt-3 pr-5>
+              <v-item-group v-model="window" class="shrink mr-5" mandatory tag="v-flex">
                 <v-item v-for="n in title.length" :key="n">
-                  <div slot-scope="{ active, toggle }">
-                    <v-btn :input-value="active" icon @click="toggle">
+                  <div class="mr-5 pr-5" left slot-scope="{ active, toggle }">
+                    <v-btn class="text-align: left" ripple flat @click="toggle">
                       <v-icon>mdi-record</v-icon>
                       {{title[n]}}
                     </v-btn>
@@ -25,18 +31,22 @@
             </v-flex>
 
             <v-flex xs10>
-              <v-window v-model="window" class="elevation-1" vertical>
+              <v-window v-model="window" class="elevation-5" style="border-radius: 8px" vertical>
                 <v-window-item v-for="n in title.length" :key="n">
-                  <v-card flat>
+                  <v-card>
                     <v-card-text>
                       <v-layout align-center mb-3>
-                        <v-avatar color="grey" class="mr-3"></v-avatar>
-                        <strong class="title">{{ title[n] }}</strong>
+                        <v-avatar class="mr-3" color="grey">
+                          <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
+                        </v-avatar>
+
+                        <strong class="title text-transform: uppercase">{{ title[n] }}</strong>
                         <v-spacer></v-spacer>
                         <v-btn icon>
                           <v-icon>mdi-account</v-icon>
                         </v-btn>
                       </v-layout>
+
                       <!-- Summary-->
                       <v-card flat v-show="n===1">
                         <v-card-title>
@@ -189,28 +199,6 @@
                               <td class="text-xs-right">{{ props.item.id_no }}</td>
                             </template>
                           </v-data-table>
-                          <!-- <md-table v-model="form.qualified_personnel" md-sort-order="asc">
-                            <md-table-row slot="md-table-row" slot-scope="{ item }">
-                              <md-table-cell
-                                md-label="Name"
-                                md-sort-by="name"
-                              >{{ item.firstname + "" +item.lastname +""+ item.middlename }}</md-table-cell>
-                              <md-table-cell
-                                md-label="Designation"
-                                md-sort-by="designation"
-                              >{{ item.designation }}</md-table-cell>
-                              <md-table-cell
-                                md-label="Birthdate"
-                                md-sort-by="birthdate"
-                              >{{ item.birthdate }}</md-table-cell>
-                              <md-table-cell md-label="TIN" md-sort-by="tin">{{ item.tin }}</md-table-cell>
-                              <md-table-cell
-                                md-label="Government ID"
-                                md-sort-by="id"
-                              >{{ item.id_type}}</md-table-cell>
-                              <md-table-cell md-label="ID Number" md-sort-by="no">{{ item.id_no }}</md-table-cell>
-                            </md-table-row>
-                          </md-table>-->
                         </v-container>
                       </v-card>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <application-summary :show="showAppView" @close="showAppView=false" :tabs="3">
+    <application-summary :show="showAppView" @close="showAppView=false">
       <template slot="header-1">Header 1</template>
       <template slot="content-1">
         <v-card>
