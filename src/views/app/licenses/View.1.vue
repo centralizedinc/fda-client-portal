@@ -1,52 +1,39 @@
 <template>
   <v-layout row wrap>
-    <v-dialog v-model="show" max-width="1000px" persistent transition="dialog-transition">
+    <v-flex xs12>
       <v-card>
-        <v-toolbar
-          color="primary"
-          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
-        >
-          <span class="font-weight-light headline">Application Overview</span>
-          <v-spacer></v-spacer>
-          <v-tooltip top>
-            <v-btn slot="activator" flat icon color="black" @click="$emit('close')">
-              <i class="fas fa-times-circle"></i>
-            </v-btn>Close
-          </v-tooltip>
-        </v-toolbar>
+        <!-- <v-toolbar color="primary" style="background: linear-gradient(45deg, #f58555 0%, #b5c25a 100%); box-shadow: 0 6px 20px 0 rgba(77, 182, 172, 0.5)">
+                            <span class="font-weight-light title">View License</span>
+        </v-toolbar>-->
         <!-- <v-card-title primary-title class="headline">Application Overview</v-card-title> -->
         <v-card-text>
-          <v-layout align-left>
-            <v-flex xs2 mr-5 mt-3 pt-3 pr-5>
-              <v-item-group v-model="window" class="shrink mr-5" mandatory tag="v-flex">
+          <v-layout align-center>
+            <v-flex xs2 mr-5 pr-5 align-center>
+              <v-item-group v-model="window" class="shrink mr-4" mandatory tag="v-flex">
                 <v-item v-for="n in title.length" :key="n">
-                  <div class="mr-5 pr-5" left slot-scope="{ active, toggle }">
-                    <v-btn class="text-align: left" ripple flat @click="toggle">
-                      <v-icon>mdi-record</v-icon>
+                  <div slot-scope="{ active, toggle }">
+                    <v-btn :input-value="active" flat align-center @click="toggle">
+                      <!-- <v-icon>mdi-record</v-icon> -->
                       {{title[n]}}
                     </v-btn>
                   </div>
                 </v-item>
               </v-item-group>
+              <v-spacer></v-spacer>
             </v-flex>
-
             <v-flex xs10>
-              <v-window v-model="window" class="elevation-5" style="border-radius: 8px" vertical>
+              <v-window v-model="window" class="elevation-1" vertical>
                 <v-window-item v-for="n in title.length" :key="n">
-                  <v-card>
+                  <v-card flat>
                     <v-card-text>
                       <v-layout align-center mb-3>
-                        <v-avatar class="mr-3" color="grey">
-                          <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
-                        </v-avatar>
-
-                        <strong class="title text-transform: uppercase">{{ title[n] }}</strong>
+                        <!-- <v-avatar color="grey" class="mr-3"></v-avatar> -->
+                        <strong class="title">{{ title[n] }}</strong>
                         <v-spacer></v-spacer>
-                        <v-btn icon>
-                          <v-icon>mdi-account</v-icon>
-                        </v-btn>
+                        <!-- <v-btn icon>
+                                                    <v-icon>mdi-account</v-icon>
+                        </v-btn>-->
                       </v-layout>
-
                       <!-- Summary-->
                       <v-card flat v-show="n===1">
                         <v-card-title>
@@ -182,23 +169,39 @@
                           v-for="(item, index) in form.qualified_personnel"
                           :key="index"
                         >
-                          <v-data-table
-                            v-model="form.qualified_personnel"
-                            :headers="headers"
-                            :items="items"
-                            class="elevation-1"
-                          >
-                            <template slot="item" slot-scope="props">
-                              <td>{{ props.item.name }}</td>
-                              <td
-                                class="text-xs-right"
-                              >{{ props.item.firstname + "" +props.item.lastname +""+ props.item.middlename }}</td>
-                              <td class="text-xs-right">{{ props.item.designation }}</td>
-                              <td class="text-xs-right">{{ props.item.birthdate }}</td>
-                              <td class="text-xs-right">{{ props.item.id_type }}</td>
-                              <td class="text-xs-right">{{ props.item.id_no }}</td>
-                            </template>
-                          </v-data-table>
+                          <!-- <v-data-table
+                                                        headers="headers"
+                                                        items="items"
+                                                        hide-actions
+                                                        class="elevation-1"
+                                                        >
+                                                        <template slot="items" slot-scope="{{item}}">
+                                                            <td></td>
+                                                            <td class="text-xs-right">{{ item.firstname + "" +item.lastname +""+ item.middlename }}</td>
+</template>
+                          </v-data-table>-->
+                          <md-table v-model="form.qualified_personnel" md-sort-order="asc">
+                            <md-table-row slot="md-table-row" slot-scope="{ item }">
+                              <md-table-cell
+                                md-label="Name"
+                                md-sort-by="name"
+                              >{{ item.firstname + "" +item.lastname +""+ item.middlename }}</md-table-cell>
+                              <md-table-cell
+                                md-label="Designation"
+                                md-sort-by="designation"
+                              >{{ item.designation }}</md-table-cell>
+                              <md-table-cell
+                                md-label="Birthdate"
+                                md-sort-by="birthdate"
+                              >{{ item.birthdate }}</md-table-cell>
+                              <md-table-cell md-label="TIN" md-sort-by="tin">{{ item.tin }}</md-table-cell>
+                              <md-table-cell
+                                md-label="Government ID"
+                                md-sort-by="id"
+                              >{{ item.id_type}}</md-table-cell>
+                              <md-table-cell md-label="ID Number" md-sort-by="no">{{ item.id_no }}</md-table-cell>
+                            </md-table-row>
+                          </md-table>
                         </v-container>
                       </v-card>
 
@@ -268,11 +271,6 @@
                           </v-container>
                         </v-card-title>
                       </v-card>
-                      <!-- <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-
-                      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>-->
                     </v-card-text>
                   </v-card>
                 </v-window-item>
@@ -280,40 +278,93 @@
             </v-flex>
           </v-layout>
         </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn flat color="error" @click="$emit('close')">Close</v-btn>
-          <v-spacer></v-spacer>
-        </v-card-actions>
+        <!-- <v-divider></v-divider>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn flat color="error" @click="$emit('close')">Close</v-btn>
+                    <v-spacer></v-spacer>
+        </v-card-actions>-->
       </v-card>
-    </v-dialog>
+    </v-flex>
   </v-layout>
 </template>
 
 <script>
 export default {
-  props: {
-    form: {},
-    show: {
-      type: Boolean,
-      required: true,
-      default: false
-    }
-  },
-  data: () => ({
-    length: 3,
-    window: 0,
-    title: [
-      "",
-      "Summary",
-      "Data",
-      "Files",
-      "Output Documents",
-      "History",
-      "Payment Details"
-    ]
-  })
+  data() {
+    return {
+      length: 3,
+      window: 0,
+      title: [
+        "",
+        "Summary",
+        "Data",
+        "Files",
+        "Output Documents",
+        "History",
+        "Payment Details"
+      ],
+      form: {
+        application_type: "",
+        general_info: {
+          product_type: "",
+          primary_activity: "",
+          declared_capital: ""
+        },
+        estab_details: {
+          establishment_name: "",
+          establishment_owner: "",
+          tin: "",
+          email: "",
+          landline: "",
+          fax: "",
+          mobile: "",
+          products: [
+            {
+              prod_line: "",
+              remarks: ""
+            }
+          ]
+        },
+        addresses: {
+          office: {
+            address: "",
+            region: "",
+            province: "",
+            city: "",
+            zipcode: "",
+            location: ""
+          },
+          warehouse: [],
+          plant: {
+            address: "",
+            region: "",
+            province: "",
+            city: "",
+            zipcode: ""
+          }
+        },
+        auth_officer: {
+          mail_add: {
+            address: "",
+            region: "",
+            province: "",
+            city: "",
+            zipcode: ""
+          },
+          lastname: "",
+          firstname: "",
+          middlename: "",
+          designation: "",
+          tin: "",
+          birthday: "",
+          id_type: "",
+          id_no: "",
+          id_expiry: ""
+        }
+      }
+    };
+  }
 };
 </script>
 
