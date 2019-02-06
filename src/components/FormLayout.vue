@@ -7,7 +7,7 @@
           <slot :name="'header-step-' + step"></slot>
         </v-card-title>
         <v-window v-model="onboarding">
-          <v-window-item v-for="n in steps" :key="`card-${n}`">
+          <v-window-item v-for="st in steps" :key="`card-${st}`">
             <v-card style="box-shadow: none  !important;" height="calc(100% - 80px)">
               <v-progress-linear></v-progress-linear>
               <v-container
@@ -24,7 +24,7 @@
                   align-center
                   justify-center
                 >
-                  <slot :name="'content-step-' + step"></slot>
+                  <slot :name="'content-step-' + st"></slot>
                 </v-layout>
               </v-container>
             </v-card>
