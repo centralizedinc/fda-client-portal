@@ -53,35 +53,33 @@
 
                       <!-- Summary-->
                       <v-card flat v-show="window===0">
-                        <v-card-title class="headline ml-3 mt-2 pt-3" style="padding: 2px;">
-                          <!-- <slot :name="'header-'"></slot> -->
-                          <v-container grid-list-md text-xs-left>
-                            <v-layout row wrap>
-                              <slot name="'appsummary'"></slot>
-                            </v-layout>
-                          </v-container>
-                        </v-card-title>
+                        <v-container grid-list-md text-xs-left>
+                          <v-layout row wrap>
+                            <slot name="appsummary"></slot>
+                          </v-layout>
+                        </v-container>
+                        <!-- </v-card-title> -->
                       </v-card>
 
                       <!-- Data -->
                       <v-card flat v-show="window===1">
-                        <v-card-title class="headline ml-3 mt-2 pt-3" style="padding: 2px;">
-                          <slot :name="'header-'"></slot>
-                          <v-container grid-list-md text-xs-left>
-                            <v-layout row wrap>
-                              <slot :name="'appdata'"></slot>
-                            </v-layout>
-                          </v-container>
-                        </v-card-title>
+                        <v-container grid-list-md text-xs-left>
+                          <v-layout row wrap>
+                            <slot name="appdata"></slot>
+                          </v-layout>
+                        </v-container>
                       </v-card>
 
                       <!-- Uploaded Documents -->
-                      <v-card flat v-show="n===3">
-                        <v-container grid-list-md text-xs-left>
-                          <v-layout row wrap>
-                            <slot :name="'uploadedfiles'"></slot>
-                          </v-layout>
-                        </v-container>
+                      <v-card flat v-show="window===2">
+                        <v-card-title class="headline ml-3 mt-2 pt-3" style="padding: 2px;">
+                          <slot name="'header-'"></slot>
+                          <v-container grid-list-md text-xs-left>
+                            <v-layout row wrap>
+                              <slot :name="'uploadedfiles'"></slot>
+                            </v-layout>
+                          </v-container>
+                        </v-card-title>
                       </v-card>
 
                       <!-- Output Documents -->
