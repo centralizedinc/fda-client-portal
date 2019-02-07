@@ -28,7 +28,11 @@
         <template v-if="user.status === 2">
         <v-list-tile @click="goTo('/app')" class="ma-1" :style="activeRoute('Dashboard')">
           <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">dashboard</v-icon>
+            <v-tooltip top>
+              <v-btn slot="activator" icon>
+                <v-icon color="fdaBlueGreen">dashboard</v-icon>
+              </v-btn>Dashboard
+            </v-tooltip>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title class="body-1 font-weight-light">Dashboard</v-list-tile-title>
@@ -37,7 +41,11 @@
 
         <v-list-tile @click="goTo('/app/licenses')" class="ma-1" :style="activeRoute('Licenses')">
           <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">fas fa-file-contract</v-icon>
+            <v-tooltip top>
+              <v-btn slot="activator" icon>
+                <v-icon color="fdaBlueGreen">fas fa-file-contract</v-icon>
+              </v-btn>Licenses
+            </v-tooltip>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title class="body-1 font-weight-light">Licenses</v-list-tile-title>
@@ -49,7 +57,11 @@
           :style="activeRoute('Certificates')"
         >
           <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">fas fa-certificate</v-icon>
+            <v-tooltip top>
+              <v-btn slot="activator" icon>
+                <v-icon color="fdaBlueGreen">fas fa-certificate</v-icon>
+              </v-btn>Certificates
+            </v-tooltip>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title class="body-1 font-weight-light">Certificates</v-list-tile-title>
@@ -61,7 +73,11 @@
           :style="activeRoute('Notifications')"
         >
           <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">fas fa-file-invoice</v-icon>
+            <v-tooltip top>
+              <v-btn slot="activator" icon>
+                <v-icon color="fdaBlueGreen">fas fa-file-invoice</v-icon>
+              </v-btn>Product Notification
+            </v-tooltip>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title class="body-1 font-weight-light">Product Notification</v-list-tile-title>
@@ -70,25 +86,17 @@
 
         <v-list-tile @click="goTo('/app/payments')" class="ma-1" :style="activeRoute('Payments')">
           <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">far fa-credit-card</v-icon>
+            <v-tooltip top>
+              <v-btn slot="activator" icon>
+                <v-icon color="fdaBlueGreen">far fa-credit-card</v-icon>
+              </v-btn>Payments
+            </v-tooltip>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title class="body-1 font-weight-light">Payments</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
 
-        <v-list-tile
-          @click="goTo('/app/track')"
-          class="ma-1"
-          :style="activeRoute('Document Tracker')"
-        >
-          <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">fas fa-search</v-icon>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title class="body-1 font-weight-light">DocTracker</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
         <v-divider></v-divider>
         </template>
         <v-list-tile
@@ -97,7 +105,11 @@
           :style="activeRoute('Notifications')"
         >
           <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">far fa-user-circle</v-icon>
+            <v-tooltip top>
+              <v-btn slot="activator" icon>
+                <v-icon color="fdaBlueGreen">far fa-user-circle</v-icon>
+              </v-btn>My Profile
+            </v-tooltip>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title class="body-1 font-weight-light">My Profile</v-list-tile-title>
@@ -109,7 +121,11 @@
           :style="activeRoute('Notifications')"
         >
           <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">fas fa-key</v-icon>
+            <v-tooltip top>
+              <v-btn slot="activator" icon>
+                <v-icon color="fdaBlueGreen">fas fa-key</v-icon>
+              </v-btn>Password Settings
+            </v-tooltip>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title class="body-1 font-weight-light">Password Settings</v-list-tile-title>
@@ -121,7 +137,11 @@
           :style="activeRoute('Logout')"
         >
           <v-list-tile-action>
-            <v-icon color="fdaBlueGreen">fas fa-sign-out-alt</v-icon>
+            <v-tooltip top>
+              <v-btn slot="activator" icon>
+                <v-icon color="fdaBlueGreen">fas fa-sign-out-alt</v-icon>
+              </v-btn>Logout
+            </v-tooltip>
           </v-list-tile-action>
           <v-list-tile-content>
             <v-list-tile-title class="body-1 font-weight-light">Logout</v-list-tile-title>

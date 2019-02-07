@@ -1,14 +1,25 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12>
-      <v-text-field color="green darken-1" label="Last Name" v-model="form.auth_officer.lastname"></v-text-field>
+      <v-text-field
+        color="green darken-1"
+        label="Last Name"
+        :rules="[rules.required]"
+        v-model="form.auth_officer.lastname"
+      ></v-text-field>
     </v-flex>
     <v-flex xs12>
-      <v-text-field color="green darken-1" label="First Name" v-model="form.auth_officer.firstname"></v-text-field>
+      <v-text-field
+        color="green darken-1"
+        label="First Name"
+        :rules="[rules.required]"
+        v-model="form.auth_officer.firstname"
+      ></v-text-field>
       <v-flex xs12>
         <v-text-field
           color="green darken-1"
           label="Middle Name"
+          :rules="[rules.required]"
           v-model="form.auth_officer.middlename"
         ></v-text-field>
       </v-flex>
@@ -16,6 +27,7 @@
     <v-flex xs12>
       <v-autocomplete
         color="green darken-1"
+        :rules="[rules.required]"
         v-model="form.auth_officer.designation"
         :items="designation"
         hide-no-data
@@ -24,106 +36,143 @@
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
-      <v-text-field color="green darken-1" label="TIN Number" v-model="form.auth_officer.tin"></v-text-field>
+      <v-text-field
+        color="green darken-1"
+        label="TIN Number"
+        :rules="[rules.required]"
+        v-model="form.auth_officer.tin"
+      ></v-text-field>
     </v-flex>
     <v-flex xs12>
-      <v-card-title primary-title class="headline">Government Issued Identification Document
-        <v-spacer></v-spacer>
-        <v-tooltip left>
-          <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg"></i>
+      <v-sheet
+        dark
+        class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
+        color="fdaGreen"
+        height="35"
+        width="calc(100% - 30px)"
+        style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
+      >Government Issued Identification Document
+        <v-tooltip top>
+          <v-btn slot="activator" flat icon small color="error">
+            <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
           </v-btn>Get Help
         </v-tooltip>
-      </v-card-title>
-      <v-card-text>
-        <v-flex xs12>
-          <v-autocomplete
-            color="green darken-1"
-            v-model="form.auth_officer.id_type"
-            :items="id_type"
-            hide-no-data
-            hide-selected
-            label="ID Type"
-          ></v-autocomplete>
-        </v-flex>
-        <v-flex xs12>
-          <v-text-field color="green darken-1" label="ID Number" v-model="form.auth_officer.id_no"></v-text-field>
-        </v-flex>
-        <v-flex xs12>
-          <v-menu
-            :close-on-content-click="false"
-            v-model="menu2"
-            :nudge-right="40"
-            lazy
-            transition="scale-transition"
-            offset-y
-            full-width
-            min-width="290px"
-          >
-            <v-text-field
-              color="green darken-1"
-              slot="activator"
-              v-model="date"
-              label="Expiry"
-              prepend-icon="event"
-              readonly
-            ></v-text-field>
-            <v-date-picker color="green darken-1" v-model="date" @input="menu2 = false"></v-date-picker>
-          </v-menu>
-        </v-flex>
-      </v-card-text>
-    </v-flex>
-    <v-flex xs12>
-      <v-card-title primary-title class="headline">Mailing Address</v-card-title>
-      <v-card-text>
-        <v-flex xs12>
+      </v-sheet>
+
+      <v-flex xs12>
+        <v-autocomplete
+          color="green darken-1"
+          :rules="[rules.required]"
+          v-model="form.auth_officer.id_type"
+          :items="id_type"
+          hide-no-data
+          hide-selected
+          label="ID Type"
+        ></v-autocomplete>
+      </v-flex>
+      <v-flex xs12>
+        <v-text-field
+          color="green darken-1"
+          label="ID Number"
+          :rules="[rules.required]"
+          v-model="form.auth_officer.id_no"
+        ></v-text-field>
+      </v-flex>
+      <v-flex xs12>
+        <v-menu
+          :close-on-content-click="false"
+          v-model="menu"
+          :nudge-right="40"
+          lazy
+          transition="scale-transition"
+          offset-y
+          full-width
+          min-width="290px"
+        >
           <v-text-field
             color="green darken-1"
-            label="Address"
-            v-model="form.auth_officer.mail_add.address"
+            slot="activator"
+            :rules="[rules.required]"
+            v-model="form.auth_officer.id_expiry"
+            label="Expiry"
+            prepend-icon="event"
+            readonly
           ></v-text-field>
-        </v-flex>
-        <v-flex xs12>
-          <v-autocomplete
+          <v-date-picker
             color="green darken-1"
-            v-model="form.auth_officer.mail_add.region"
-            :items="region"
-            hide-no-data
-            hide-selected
-            label="Region"
-          ></v-autocomplete>
-        </v-flex>
-        <v-flex xs12>
-          <v-autocomplete
-            color="green darken-1"
-            v-model="form.auth_officer.mail_add.province"
-            :items="province"
-            hide-no-data
-            hide-selected
-            label="Province"
-          ></v-autocomplete>
-        </v-flex>
-        <v-flex xs12>
-          <v-autocomplete
-            color="green darken-1"
-            v-model="form.auth_officer.mail_add.city"
-            :items="city"
-            hide-no-data
-            hide-selected
-            label="City / Town"
-          ></v-autocomplete>
-        </v-flex>
-        <v-flex xs12>
-          <v-autocomplete
-            color="green darken-1"
-            v-model="form.auth_officer.mail_add.zipcode"
-            :items="zip"
-            hide-no-data
-            hide-selected
-            label="Zip Code"
-          ></v-autocomplete>
-        </v-flex>
-      </v-card-text>
+            v-model="form.auth_officer.id_expiry"
+            @input="$refs.menu.save(form.auth_officer.id_expiry)"
+          ></v-date-picker>
+        </v-menu>
+      </v-flex>
+    </v-flex>
+    <v-flex xs12>
+      <v-sheet
+        dark
+        class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
+        color="fdaGreen"
+        height="35"
+        width="calc(100% - 30px)"
+        style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
+      >Mailing Address
+        <v-tooltip top>
+          <v-btn slot="activator" flat icon small color="error">
+            <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
+          </v-btn>Get Help
+        </v-tooltip>
+      </v-sheet>
+      <v-flex xs12>
+        <v-text-field
+          color="green darken-1"
+          label="Address"
+          :rules="[rules.required]"
+          v-model="form.auth_officer.mail_add.address"
+        ></v-text-field>
+      </v-flex>
+      <v-flex xs12>
+        <v-autocomplete
+          color="green darken-1"
+          :rules="[rules.required]"
+          v-model="form.auth_officer.mail_add.region"
+          :items="region"
+          hide-no-data
+          hide-selected
+          label="Region"
+        ></v-autocomplete>
+      </v-flex>
+      <v-flex xs12>
+        <v-autocomplete
+          color="green darken-1"
+          :rules="[rules.required]"
+          v-model="form.auth_officer.mail_add.province"
+          :items="province"
+          hide-no-data
+          hide-selected
+          label="Province"
+        ></v-autocomplete>
+      </v-flex>
+      <v-flex xs12>
+        <v-autocomplete
+          color="green darken-1"
+          :rules="[rules.required]"
+          v-model="form.auth_officer.mail_add.city"
+          :items="city"
+          hide-no-data
+          hide-selected
+          label="City / Town"
+        ></v-autocomplete>
+      </v-flex>
+      <v-flex xs12>
+        <v-autocomplete
+          color="green darken-1"
+          :rules="[rules.required]"
+          v-model="form.auth_officer.mail_add.zipcode"
+          :items="zip"
+          hide-no-data
+          hide-selected
+          label="Zip Code"
+        ></v-autocomplete>
+      </v-flex>
     </v-flex>
   </v-layout>
 </template>
@@ -132,6 +181,7 @@
 export default {
   props: ["form"],
   data: () => ({
+    menu: null,
     designation: [
       "Owner (for sole proprietorships)",
       "CEO/ President/ General Manager",
@@ -139,7 +189,10 @@ export default {
       "Head, Regulatory Affairs",
       "Head, Production"
     ],
-    id_type: ["PRC", "TIN"]
+    id_type: ["PRC", "TIN"],
+    rules: {
+      required: value => !!value || "This field is required"
+    }
   })
 };
 </script>

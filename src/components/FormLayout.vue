@@ -7,19 +7,24 @@
           <slot :name="'header-step-' + step"></slot>
         </v-card-title>
         <v-window v-model="onboarding">
-          <v-window-item v-for="n in steps" :key="`card-${n}`">
-            <v-card style="box-shadow: none  !important;" height="400">
+          <v-window-item v-for="st in steps" :key="`card-${st}`">
+            <v-card style="box-shadow: none  !important;" height="calc(100% - 80px)">
               <v-progress-linear></v-progress-linear>
-              <v-container mt-3 id="scroll-target" style="max-height: 1000vh" class="scroll-y">
+              <v-container
+                mt-3
+                id="scroll-target"
+                style="max-height: calc(100% - 80px)"
+                class="scroll-y"
+              >
                 <v-layout
                   mt-3
                   v-scroll:#scroll-target="onScroll"
                   column
-                  style="height: 280px"
+                  style="height: calc(100% - 80px)"
                   align-center
                   justify-center
                 >
-                  <slot :name="'content-step-' + step"></slot>
+                  <slot :name="'content-step-' + st"></slot>
                 </v-layout>
               </v-container>
             </v-card>
@@ -32,7 +37,7 @@
           <v-item-group v-model="onboarding" text-xs-center mandatory>
             <v-item class="step" v-for="n in steps" :key="`btn-${n}`">
               <v-btn
-                slot-scope="{ active, toggle}"
+                slot-scope="{ active}"
                 :input-value="active"
                 icon
                 @click="$emit('changePage', n)"

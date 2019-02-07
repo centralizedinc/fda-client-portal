@@ -20,7 +20,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-one slot="content-step-1" :form="form" ></step-one>
+      <step-one slot="content-step-1" :form="form"></step-one>
       <template slot="header-step-2">Establishment Information
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -48,7 +48,7 @@
         </v-tooltip>
       </template>
       <step-four slot="content-step-4" :form="form"></step-four>
-      <template slot="header-step-5">Authorized Officer Details
+      <template slot="header-step-5">Qualified Personnel
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -71,9 +71,16 @@
       :show="confirmDialog"
       @close="confirmDialog=false"
       @submit="submit"
-      @overview="dialog=false;showAppOverview=true"
+      @overview="overview"
     ></confirm-to-review-app>
-    <application-overview :form="form" :show="showAppOverview" @close="close"></application-overview>
+    <application-overview :form="form" :show="showAppOverview" @close="close">
+      <app-summary slot="appsummary"></app-summary>
+      <app-data slot="appdata"></app-data>
+      <uploaded-files slot="uploadedfiles"></uploaded-files>
+      <output-docs slot="outputdocs"></output-docs>
+      <app-history slot="apphistory"></app-history>
+      <payment slot="paymentdetails"></payment>
+    </application-overview>
   </div>
 </template>
 
@@ -88,7 +95,13 @@ export default {
     StepThree: () => import("./create/tabs/OfficeAddress.vue"),
     StepFour: () => import("./create/tabs/AuthorizedOfficerDetails.vue"),
     StepFive: () => import("./create/tabs/QualifiedPersonnel.vue"),
-    StepSix: () => import("./create/tabs/DocumentsUpload.vue")
+    StepSix: () => import("./create/tabs/DocumentsUpload.vue"),
+    AppSummary: () => import("./appoverview/tabs/AppSummary.vue"),
+    AppData: () => import("./appoverview/tabs/Data.vue"),
+    UploadedFiles: () => import("./appoverview/tabs/Files.vue"),
+    OutputDocs: () => import("./appoverview/tabs/OutputDocs.vue"),
+    AppHistory: () => import("./appoverview/tabs/AppHistory.vue"),
+    Payment: () => import("./appoverview/tabs/PaymentDetails.vue")
   },
   data: () => ({
     e1: 1,
@@ -96,6 +109,12 @@ export default {
     showAppOverview: false,
     invalid: false,
     form: {
+      case_no: "",
+      current_task: "",
+      user: "",
+      action: "",
+      created_by: "",
+      date_created: "",
       application_type: "",
       general_info: {
         product_type: "",
@@ -181,7 +200,7 @@ export default {
           file: null
         }
       ]
-    },
+    }
   }),
   created() {
     console.log("created porps: " + JSON.stringify(this.form));
@@ -209,11 +228,17 @@ export default {
       console.log("change page value: " + JSON.stringify(val));
       this.e1 = val;
       this.editedForm = this.form;
-      console.log("form updated: " + JSON.stringify(this.editedForm))
+      console.log("form updated: " + JSON.stringify(this.editedForm));
     },
     submit() {
       console.log("#########submit: " + JSON.stringify(this.form));
-      this.$store.dispatch("SAVE_LICENSES", this.form)
+      this.$store.dispatch("SAVE_LICENSES", this.form);
+    },
+    overview(){
+      this.dialog=false;
+      this.showAppOverview=true;
+      this.$store.commit("OVERVIEW_APP", this.form)
+      this.confirmDialog = false;
     }
   }
 };
