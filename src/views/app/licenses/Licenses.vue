@@ -2,11 +2,11 @@
   <v-layout row wrap>
     <v-flex xs12 p1-2>
       <v-card>
-        <v-tooltip top>
+        <!-- <v-tooltip top>
           <v-btn slot="activator" fab medium color="fdaMed" top right absolute @click="dialog=true">
             <v-icon medium color="fdaSilver">create</v-icon>
           </v-btn>Apply New License
-        </v-tooltip>
+        </v-tooltip> -->
 
         <undertaking-dialog :show="dialog" @proceed="launchAppForm"></undertaking-dialog>
         <v-data-table :headers="headers" :items="licenses" class="elevation-1">
@@ -52,6 +52,20 @@
         </v-data-table>
       </v-card>
     </v-flex>
+
+
+    
+      
+    
+    <v-layout column class="fab-container">
+      <v-tooltip top>
+        <v-btn slot="activator" fab color="primary" @click="dialog=true">
+          <v-icon>add</v-icon>
+        </v-btn>
+        Apply New
+      </v-tooltip>
+    </v-layout>
+
   </v-layout>
 </template>
 

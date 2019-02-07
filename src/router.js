@@ -3,94 +3,166 @@ import Router from 'vue-router'
 import UserLayout from '@/layout/UserLayout'
 import MainLayout from '@/layout/MainLayout'
 
+import store from "@/store";
+
 
 Vue.use(Router)
 
-export default new Router({
+function isAuthorized(to, from, next){
+  store.dispatch('CHECK_SESSION', store.state.user_session.user.username)
+  .then(result=>{
+    if(result.status === 2){ 
+      //leaving breadcrumbs behind    
+      store.commit('DROP_BREADCRUMBS', {name: to.name, href: to.path})     
+      next()
+    } else{      
+      next("/app")
+    }
+  })
+  .catch(err=>{
+    next("/app")
+  })
+}
+
+function isAuthenticated(to, from, next){
+  if (store.state.user_session.isAuthenticated) {
+    next('/app');
+  } else {
+    next()
+  }
+}
+
+function isActiveSession(to, from, next) {
+  if(!store.state.user_session.isAuthenticated){
+    next("/");
+  } else {
+    store.commit('DROP_BREADCRUMBS', {name: to.name, href: to.path})
+    next();
+  }
+}
+
+function dropBreadcrumbs(to, from, next) {
+  store.commit('DROP_BREADCRUMBS', {name: to.name, href: to.path})
+  next();
+}
+
+
+
+var router =  new Router({
   routes: [{
       path: '/',
       name: 'Main',
       component: MainLayout,
       children: [{
-          path: '',
-          name: 'Login',
-          component: () => import('@/views/Login.vue')
-        },
-        {
-          path: '/signup',
-          name: 'Registration',
-          component: () => import('@/views/Registration.vue')
-        }
-      ]
+        path: '',
+        name: 'Login',
+        component: () => import('@/views/Login.vue'),
+        beforeEnter: isAuthenticated
+      },
+      {
+        path: '/signup',
+        name: 'Registration',
+        component: () => import('@/views/Registration.vue')
+      },
+      {
+        path: '/confirmation',
+        name: 'Confirmation',
+        component: () => import('@/views/Confirmation.vue')
+      },
+      {
+        path: '/recovery',
+        name: 'Account Recovery',
+        component: () => import('@/views/Recovery.vue')
+      }
+    ]
 
     },
     {
       path: '/app',
       component: UserLayout,
+      beforeEnter: isActiveSession,
       children: [{
           path: '',
           name: 'Dashboard',
-          component: () => import('@/views/app/UserPortfolio.vue')
+          component: () => import('@/views/app/UserPortfolio.vue'),
+          beforeEnter: isAuthorized
         },
         {
           path: 'licenses',
           name: 'License to Operate',
-          component: () => import('@/views/app/licenses/Licenses.vue')
+          component: () => import('@/views/app/licenses/Licenses.vue'),
+          beforeEnter: isAuthorized
         },
         {
           path: 'licenses/apply',
           name: 'New License Application',
-          component: () => import('@/views/app/licenses/Create.vue')
+          component: () => import('@/views/app/licenses/Create.vue'),
+          beforeEnter: isAuthorized
         },
         {
           path: 'licenses/view',
           name: 'View License Application',
-          component: () => import('@/views/app/licenses/View.vue')
+          component: () => import('@/views/app/licenses/View.vue'),
+          beforeEnter: isAuthorized
         },
         {
           path: 'certificates',
           name: 'Certificate of Product Registration',
-          component: () => import('@/views/app/certificates/Certificates.vue')
+          component: () => import('@/views/app/certificates/Certificates.vue'),
+          beforeEnter: isAuthorized
         },
         {
           path: 'certificates/apply',
           name: 'New Certificate of Product Registration',
-          component: () => import('@/views/app/certificates/Apply.vue')
+          component: () => import('@/views/app/certificates/Apply.vue'),
+          beforeEnter: isAuthorized
         },
         {
           path: 'notification',
           name: 'Product Notification',
-          component: () => import('@/views/app/notification/Notification.vue')
+          component: () => import('@/views/app/notification/Notification.vue'),
+          beforeEnter: isAuthorized
         },
         {
           path: 'notification/apply',
           name: 'New Product Notification',
-          component: () => import('@/views/app/notification/Apply.vue')
+          component: () => import('@/views/app/notification/Apply.vue'),
+          beforeEnter: isAuthorized
         },
         {
           path: 'payments',
           name: 'Payments',
-          component: () => import('@/views/app/payment/Payment.vue')
+          component: () => import('@/views/app/payment/Payment.vue'),
+          beforeEnter: isAuthorized
         },
         {
           path: 'payments/creaditcard',
           name: 'Creadit Card Payment',
-          component: () => import('@/views/app/payment/CreaditCardPayment.vue')
+          component: () => import('@/views/app/payment/CreaditCardPayment.vue'),
+          beforeEnter: isAuthorized
         },
         {
           path: 'payments/summary',
           name: 'Payment Summary',
-          component: () => import('@/views/app/payment/PaymentSummary.vue')
+          component: () => import('@/views/app/payment/PaymentSummary.vue'),
+          beforeEnter: isAuthorized
         },
-
+        {
+          path: 'track',
+          name: 'FDA Doctrack Status',
+          component: () => import('@/views/app/DocTracker.vue'),
+          beforeEnter: isAuthorized
+        },
         {
           path: 'profile',
           name: 'Profile',
-          component: () => import('@/views/app/UserPortfolio.vue')
+          beforeEnter: dropBreadcrumbs,
+          component: () => import('@/views/app/Profile.vue')
         },
         {
           path: 'password',
-          name: 'Change Password',
+          name: 'Password',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/passwordSettings/ChangePassword.vue')
         },
         {
@@ -111,3 +183,6 @@ export default new Router({
     }
   ]
 })
+
+
+export default router
