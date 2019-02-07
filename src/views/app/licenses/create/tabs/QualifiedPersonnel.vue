@@ -112,6 +112,7 @@
             </v-flex>
             <v-flex xs12>
               <v-menu
+                ref="menu2"
                 :close-on-content-click="false"
                 v-model="menu2"
                 :nudge-right="40"
@@ -131,9 +132,10 @@
                   readonly
                 ></v-text-field>
                 <v-date-picker
+                  ref="picker2"
                   color="green darken-1"
                   v-model="qualified.id_expiry"
-                  @input="$refs.menu.save(qualified.id_expiry)"
+                  @input="$refs.menu2.save(qualified.id_expiry)"
                 ></v-date-picker>
               </v-menu>
             </v-flex>
@@ -233,6 +235,9 @@ export default {
   watch: {
     menu(val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = "YEAR"));
+    },
+    menu2(val) {
+      val && this.$nextTick(() => (this.$refs.picker2.activePicker = "YEAR"));
     }
   },
   methods: {

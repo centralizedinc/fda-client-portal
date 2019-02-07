@@ -71,7 +71,7 @@
       :show="confirmDialog"
       @close="confirmDialog=false"
       @submit="submit"
-      @overview="dialog=false;showAppOverview=true"
+      @overview="overview"
     ></confirm-to-review-app>
     <application-overview :form="form" :show="showAppOverview" @close="close">
       <app-summary slot="appsummary"></app-summary>
@@ -232,6 +232,11 @@ export default {
     submit() {
       console.log("#########submit: " + JSON.stringify(this.form));
       this.$store.dispatch("SAVE_LICENSES", this.form);
+    },
+    overview(){
+      this.dialog=false;
+      this.showAppOverview=true;
+      this.$store.commit("OVERVIEW_APP", this.form)
       this.confirmDialog = false;
     }
   }

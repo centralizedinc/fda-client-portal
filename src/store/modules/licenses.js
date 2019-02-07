@@ -6,12 +6,20 @@ import { resolve } from 'url';
 
 const state = {
     LicenseAPI: null,
-    licenses: []
+    licenses: [],
+    form: null,
+    overview_app: null
 }
 
 const mutations = {
     SET_LICENSES(state, licenses) {
         state.licenses = licenses;
+    },
+    SET_FORM(state, form){
+        state.form = form
+    },
+    OVERVIEW_APP(state, form){
+        state.overview_app = form
     }
 }
 
