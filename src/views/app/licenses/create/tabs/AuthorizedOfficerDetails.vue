@@ -38,10 +38,47 @@
     <v-flex xs12>
       <v-text-field
         color="green darken-1"
+        label="Email Address"
+        :rules="[rules.required]"
+        v-model="form.auth_officer.email"
+      ></v-text-field>
+    </v-flex>
+    <v-flex xs12>
+      <v-text-field
+        color="green darken-1"
         label="TIN Number"
         :rules="[rules.required]"
         v-model="form.auth_officer.tin"
       ></v-text-field>
+    </v-flex>
+    <v-flex xs12>
+      <v-menu
+        ref="menu2"
+        :close-on-content-click="false"
+        v-model="menu2"
+        :nudge-right="40"
+        lazy
+        transition="scale-transition"
+        offset-y
+        full-width
+        min-width="290px"
+      >
+        <v-text-field
+          color="green darken-1"
+          slot="activator"
+          v-model="form.auth_officer.birthday"
+          label="Birthday"
+          prepend-icon="event"
+          readonly
+        ></v-text-field>
+        <v-date-picker
+          ref="picker2"
+          v-model="form.auth_officer.birthday"
+          :max="new Date().toISOString().substr(0, 10)"
+          min="1950-01-01"
+          @input="$refs.menu2.save(form.auth_officer.birthday)"
+        ></v-date-picker>
+      </v-menu>
     </v-flex>
     <v-flex xs12>
       <v-sheet
@@ -80,6 +117,7 @@
       </v-flex>
       <v-flex xs12>
         <v-menu
+          ref="menu"
           :close-on-content-click="false"
           v-model="menu"
           :nudge-right="40"
@@ -99,8 +137,11 @@
             readonly
           ></v-text-field>
           <v-date-picker
+            ref="picker"
             color="green darken-1"
             v-model="form.auth_officer.id_expiry"
+            :max="new Date().toISOString().substr(0, 10)"
+            min="2019-01-01"
             @input="$refs.menu.save(form.auth_officer.id_expiry)"
           ></v-date-picker>
         </v-menu>
@@ -182,6 +223,7 @@ export default {
   props: ["form"],
   data: () => ({
     menu: null,
+    menu2: null,
     designation: [
       "Owner (for sole proprietorships)",
       "CEO/ President/ General Manager",
@@ -193,7 +235,15 @@ export default {
     rules: {
       required: value => !!value || "This field is required"
     }
-  })
+  }),
+  watch: {
+    menu(val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = "YEAR"));
+    },
+    menu2(val) {
+      val && this.$nextTick(() => (this.$refs.picker2.activePicker = "YEAR"));
+    }
+  }
 };
 </script>
 

@@ -55,7 +55,7 @@
                       <v-card flat v-show="window===0">
                         <v-container grid-list-md text-xs-left>
                           <v-layout row wrap>
-                            <slot name="'appsummary'"></slot>
+                            <slot name="appsummary"></slot>
                           </v-layout>
                         </v-container>
                         <!-- </v-card-title> -->
@@ -65,40 +65,40 @@
                       <v-card flat v-show="window===1">
                         <v-container grid-list-md text-xs-left>
                           <v-layout row wrap>
-                            <slot name="appdata" :form="form"></slot>
+                            <slot name="appdata"></slot>
                           </v-layout>
                         </v-container>
                       </v-card>
 
                       <!-- Uploaded Documents -->
                       <v-card flat v-show="window===2">
-                        <v-card-title class="headline ml-3 mt-2 pt-3" style="padding: 2px;">
-                          <slot name="'header-'"></slot>
-                          <v-container grid-list-md text-xs-left>
-                            <v-layout row wrap>
-                              <slot :name="'uploadedfiles'"></slot>
-                            </v-layout>
-                          </v-container>
-                        </v-card-title>
+                        <!-- <v-card-title class="headline ml-3 mt-2 pt-3" style="padding: 2px;"> -->
+                        <!-- <slot name="'header-'"></slot> -->
+                        <v-container grid-list-md text-xs-left>
+                          <v-layout row wrap>
+                            <slot name="uploadedfiles"></slot>
+                          </v-layout>
+                        </v-container>
+                        <!-- </v-card-title> -->
                       </v-card>
 
                       <!-- Output Documents -->
                       <v-card flat v-show="window===3">
-                        <v-card-title class="headline ml-3 mt-2 pt-3" style="padding: 2px;">
-                          <slot :name="'header-'"></slot>
-                          <v-container grid-list-md text-xs-left>
-                            <v-layout row wrap>
-                              <slot :name="'outputdocs'"></slot>
-                            </v-layout>
-                          </v-container>
-                        </v-card-title>
+                        <!-- <v-card-title class="headline ml-3 mt-2 pt-3" style="padding: 2px;"> -->
+                        <!-- <slot name="'header-'"></slot> -->
+                        <v-container grid-list-md text-xs-left>
+                          <v-layout row wrap>
+                            <slot name="outputdocs"></slot>
+                          </v-layout>
+                        </v-container>
+                        <!-- </v-card-title> -->
                       </v-card>
 
                       <!-- Application History -->
                       <v-card flat v-show="window===4">
                         <v-container grid-list-md text-xs-left>
                           <v-layout row wrap>
-                            <slot :name="'apphistory'"></slot>
+                            <slot name="apphistory"></slot>
                           </v-layout>
                         </v-container>
                       </v-card>
@@ -109,7 +109,7 @@
                         <slot :name="'header-'"></slot>-->
                         <v-container grid-list-md text-xs-left>
                           <v-layout row wrap>
-                            <slot :name="'paymentdetails'"></slot>
+                            <slot name="paymentdetails"></slot>
                           </v-layout>
                         </v-container>
                         <!-- </v-card-title> -->
@@ -134,7 +134,6 @@
 <script>
 export default {
   props: {
-    form: {},
     show: {
       type: Boolean,
       required: true,
@@ -149,9 +148,6 @@ export default {
   data: () => ({
     form: null,
     length: 3,
-    appsummary: null,
-    appdata: null,
-    length: 0,
     window: 0,
     title: [
       " ",
@@ -162,10 +158,7 @@ export default {
       "History",
       "Payment Details"
     ]
-  }),
-  created(){
-    this.form = this.$store.state.licenses.overview_app
-  }
+  })
 };
 </script>
 

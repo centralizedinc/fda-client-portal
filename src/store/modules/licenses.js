@@ -2,7 +2,9 @@
 // var jwt = require('jsonwebtoken')
 import store from '../index'
 import LicenseAPI from '../../api/LicenseApi';
-import { resolve } from 'url';
+import {
+    resolve
+} from 'url';
 
 const state = {
     LicenseAPI: null,
@@ -15,11 +17,12 @@ const mutations = {
     SET_LICENSES(state, licenses) {
         state.licenses = licenses;
     },
-    SET_FORM(state, form){
+    SET_FORM(state, form) {
         state.form = form
     },
-    OVERVIEW_APP(state, form){
+    OVERVIEW_APP(state, form) {
         state.overview_app = form
+        console.log("overview app store: " + JSON.stringify(state.overview_app))
     }
 }
 
@@ -27,29 +30,29 @@ var actions = {
     // GET_UNASSIGNED(context) {
     //     if(context.rootState.user_session.token){
     //         return new Promise((resolve, reject) => {
-                
+
     //         })
     //     }
     // },
     GET_LICENSES(context) {
-            new LicenseAPI(context.rootState.user_session.token).getLicenses((licenses, err) => {
-                if(!err){
-                    context.commit('SET_LICENSES', licenses)
-                } else {
-                    console.log(JSON.stringify(err))
-                }
-            })
+        new LicenseAPI(context.rootState.user_session.token).getLicenses((licenses, err) => {
+            if (!err) {
+                context.commit('SET_LICENSES', licenses)
+            } else {
+                console.log(JSON.stringify(err))
+            }
+        })
     },
-    SAVE_LICENSES(context, license){
+    SAVE_LICENSES(context, license) {
         new LicenseAPI(context.rootState.user_session.token).saveLicenses(license, (licenses, err) => {
-            if(!err){
+            if (!err) {
                 console.log('actions save licenses: ' + JSON.stringify(licenses))
-            }else{
+            } else {
                 console.log("actions save licenses error: " + JSON.stringify(err))
-            }          
+            }
         })
     }
-    
+
 }
 
 export default {

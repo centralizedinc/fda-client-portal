@@ -19,21 +19,27 @@
             <td>{{ props.item.date_variation }}</td>
             <td>
               <v-layout row wrap>
-                <v-flex xs3>
+                <v-flex xs4>
                   <v-tooltip top>
                     <v-btn slot="activator" flat icon color="primary" @click="renew(props.item)">
                       <v-icon small>refresh</v-icon>
                     </v-btn>Renewal
                   </v-tooltip>
                 </v-flex>
-                <v-flex xs3>
+                <v-flex xs4>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary" @click="variation(props.item)">
+                    <v-btn
+                      slot="activator"
+                      flat
+                      icon
+                      color="primary"
+                      @click="variation(props.item)"
+                    >
                       <v-icon small>edit</v-icon>
                     </v-btn>Variation
                   </v-tooltip>
                 </v-flex>
-                <v-flex xs3>
+                <v-flex xs4>
                   <v-tooltip top>
                     <v-btn slot="activator" flat icon color="primary" @click="view(props.item)">
                       <v-icon small>search</v-icon>
@@ -80,7 +86,7 @@ export default {
   },
   methods: {
     init() {
-      this.$store.dispatch("GET_LICENSES")
+      this.$store.dispatch("GET_LICENSES");
       var licensesData = this.$store.state.licenses.licenses;
       licensesData.forEach(element => {
         // var data = {
@@ -90,19 +96,19 @@ export default {
         //   date_created: element.date_created,
         //   date_variation: element.date_variation
         // }
-        // this.licenses.push(data); 
-        this.licenses.push(element); 
+        // this.licenses.push(data);
+        this.licenses.push(element);
       });
     },
     view(item) {
-      this.$store.commit("SET_FORM", item)
+      this.$store.commit("SET_FORM", item);
       this.$router.push("/app/licenses/view");
     },
-    renew(item){
-      this.$store.commit("SET_FORM", item)
+    renew(item) {
+      this.$store.commit("SET_FORM", item);
     },
-    variation(item){
-      this.$store.commit("SET_FORM", item)
+    variation(item) {
+      this.$store.commit("SET_FORM", item);
     },
     launchAppForm() {
       this.$router.push("/app/licenses/apply");

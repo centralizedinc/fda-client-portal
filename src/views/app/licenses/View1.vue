@@ -41,7 +41,7 @@
                           <v-container grid-list-md text-xs-left>
                             <v-layout row wrap>
                               <v-flex xs4 class="fontbold">Case Number</v-flex>
-                              <v-flex xs8>dd</v-flex>
+                              <v-flex xs8>{{form.case_no}}</v-flex>
                               <v-flex xs4 class="fontbold">App Type</v-flex>
                               <v-flex xs8>dd</v-flex>
                               <v-flex xs4 class="fontbold">Establishment</v-flex>
@@ -166,43 +166,61 @@
                         <v-container
                           grid-list-md
                           text-xs-left
-                          v-for="(item, index) in form.qualified_personnel"
+                          v-for="(item, index) in form.estab_details.products"
                           :key="index"
                         >
-                          <!-- <v-data-table
-                                                        headers="headers"
-                                                        items="items"
-                                                        hide-actions
-                                                        class="elevation-1"
-                                                        >
-                                                        <template slot="items" slot-scope="{{item}}">
-                                                            <td></td>
-                                                            <td class="text-xs-right">{{ item.firstname + "" +item.lastname +""+ item.middlename }}</td>
-</template>
-                          </v-data-table>-->
-                          <md-table v-model="form.qualified_personnel" md-sort-order="asc">
-                            <md-table-row slot="md-table-row" slot-scope="{ item }">
-                              <md-table-cell
-                                md-label="Name"
-                                md-sort-by="name"
-                              >{{ item.firstname + "" +item.lastname +""+ item.middlename }}</md-table-cell>
-                              <md-table-cell
-                                md-label="Designation"
-                                md-sort-by="designation"
-                              >{{ item.designation }}</md-table-cell>
-                              <md-table-cell
-                                md-label="Birthdate"
-                                md-sort-by="birthdate"
-                              >{{ item.birthdate }}</md-table-cell>
-                              <md-table-cell md-label="TIN" md-sort-by="tin">{{ item.tin }}</md-table-cell>
-                              <md-table-cell
-                                md-label="Government ID"
-                                md-sort-by="id"
-                              >{{ item.id_type}}</md-table-cell>
-                              <md-table-cell md-label="ID Number" md-sort-by="no">{{ item.id_no }}</md-table-cell>
-                            </md-table-row>
-                          </md-table>
+                          <v-layout row wrap>
+                            <v-flex xs8 class="fontbold">{{item.prod_line}}</v-flex>
+                            <v-flex xs4>{{item.remarks}}</v-flex>
+                          </v-layout>
                         </v-container>
+                        <v-card-title>
+                          <h1 class="title">Office Address</h1>
+                          <v-container grid-list-md text-xs-left>
+                            <v-layout row wrap>
+                              <v-flex xs4 class="fontbold">Mailing Address</v-flex>
+                              <v-flex
+                                xs8
+                              >{{form.addresses.office.address + " " + form.addresses.office.region + " " + form.addresses.office.province + " " + form.addresses.office.city + " " + form.addresses.office.zipcode}}</v-flex>
+                            </v-layout>
+                          </v-container>
+                        </v-card-title>
+                        <v-card-title>
+                          <h1 class="title">Authorized Officer</h1>
+                          <v-container grid-list-md text-xs-left>
+                            <v-layout row wrap>
+                              <v-flex xs4 class="fontbold">Name</v-flex>
+                              <v-flex
+                                xs8
+                              >{{form.auth_officer.lastname + ", " + form.auth_officer.firstname + " " + form.auth_officer.middlename }}</v-flex>
+                              <v-flex xs4 class="fontbold">Designation</v-flex>
+                              <v-flex xs8>{{form.auth_officer.designation}}</v-flex>
+                              <v-flex xs4 class="fontbold">TIN</v-flex>
+                              <v-flex xs8>{{form.auth_officer.tin}}</v-flex>
+                              <v-flex xs4 class="fontbold">Birthday</v-flex>
+                              <v-flex xs8>{{form.auth_officer.birthday}}</v-flex>
+                              <v-flex xs4 class="fontbold">Government ID</v-flex>
+                              <v-flex
+                                xs8
+                              >{{form.auth_officer.id_type + " " + form.auth_officer.id_number }}</v-flex>
+                              <v-flex xs4 class="fontbold">Address</v-flex>
+                              <v-flex
+                                xs8
+                              >{{form.auth_officer.mail_add.address + " " + form.auth_officer.mail_add.region + " " + form.auth_officer.mail_add.province + " " + form.auth_officer.mail_add.city + " " + form.auth_officer.mail_add.zipcode}}</v-flex>
+                              <v-flex xs4 class="fontbold">ID Number</v-flex>
+                              <v-flex xs8>{{form.auth_officer.id_number}}</v-flex>
+                            </v-layout>
+                          </v-container>
+                        </v-card-title>
+                        <v-card-title>
+                          <h1 class="title">Qualified Personnel</h1>
+                        </v-card-title>
+                        <v-container
+                          grid-list-md
+                          text-xs-left
+                          v-for="(item, index) in form.qualified_personnel"
+                          :key="index"
+                        ></v-container>
                       </v-card>
 
                       <!-- Uploaded Documents -->
@@ -278,12 +296,6 @@
             </v-flex>
           </v-layout>
         </v-card-text>
-        <!-- <v-divider></v-divider>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn flat color="error" @click="$emit('close')">Close</v-btn>
-                    <v-spacer></v-spacer>
-        </v-card-actions>-->
       </v-card>
     </v-flex>
   </v-layout>
@@ -298,73 +310,78 @@ export default {
       title: [
         "",
         "Summary",
-        "Data",
-        "Files",
+        "Application Data",
+        "Uploaded Files",
         "Output Documents",
         "History",
         "Payment Details"
       ],
-      form: {
-        application_type: "",
-        general_info: {
-          product_type: "",
-          primary_activity: "",
-          declared_capital: ""
-        },
-        estab_details: {
-          establishment_name: "",
-          establishment_owner: "",
-          tin: "",
-          email: "",
-          landline: "",
-          fax: "",
-          mobile: "",
-          products: [
-            {
-              prod_line: "",
-              remarks: ""
-            }
-          ]
-        },
-        addresses: {
-          office: {
-            address: "",
-            region: "",
-            province: "",
-            city: "",
-            zipcode: "",
-            location: ""
-          },
-          warehouse: [],
-          plant: {
-            address: "",
-            region: "",
-            province: "",
-            city: "",
-            zipcode: ""
-          }
-        },
-        auth_officer: {
-          mail_add: {
-            address: "",
-            region: "",
-            province: "",
-            city: "",
-            zipcode: ""
-          },
-          lastname: "",
-          firstname: "",
-          middlename: "",
-          designation: "",
-          tin: "",
-          birthday: "",
-          id_type: "",
-          id_no: "",
-          id_expiry: ""
-        }
-      }
+      form: null
+      // form: {
+      //   application_type: "",
+      //   general_info: {
+      //     product_type: "",
+      //     primary_activity: "",
+      //     declared_capital: ""
+      //   },
+      //   estab_details: {
+      //     establishment_name: "",
+      //     establishment_owner: "",
+      //     tin: "",
+      //     email: "",
+      //     landline: "",
+      //     fax: "",
+      //     mobile: "",
+      //     products: [
+      //       {
+      //         prod_line: "",
+      //         remarks: ""
+      //       }
+      //     ]
+      //   },
+      //   addresses: {
+      //     office: {
+      //       address: "",
+      //       region: "",
+      //       province: "",
+      //       city: "",
+      //       zipcode: "",
+      //       location: ""
+      //     },
+      //     warehouse: [],
+      //     plant: {
+      //       address: "",
+      //       region: "",
+      //       province: "",
+      //       city: "",
+      //       zipcode: ""
+      //     }
+      //   },
+      //   auth_officer: {
+      //     mail_add: {
+      //       address: "",
+      //       region: "",
+      //       province: "",
+      //       city: "",
+      //       zipcode: ""
+      //     },
+      //     lastname: "",
+      //     firstname: "",
+      //     middlename: "",
+      //     designation: "",
+      //     tin: "",
+      //     birthday: "",
+      //     id_type: "",
+      //     id_no: "",
+      //     id_expiry: ""
+      //   }
+      // }
     };
   }
+  // created() {
+  //   this.form = this.$store.state.licenses.form;
+  //   console.log("VIEW ########################: " + JSON.stringify(this.form));
+  // }
 };
 </script>
 

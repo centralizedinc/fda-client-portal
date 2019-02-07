@@ -4,6 +4,7 @@
       <v-flex xs12>Invalid Request: 404 status code.</v-flex>
     </v-layout>
     <form-layout
+      v-show="!paymentDialog"
       v-else
       :step="e1"
       :steps="6"
@@ -71,16 +72,17 @@
       :show="confirmDialog"
       @close="confirmDialog=false"
       @submit="submit"
-      @overview="overview"
+      @overview="dialog = false ; showAppOverview = true"
     ></confirm-to-review-app>
     <application-overview :form="form" :show="showAppOverview" @close="close">
-      <app-summary slot="appsummary"></app-summary>
-      <app-data slot="appdata"></app-data>
-      <uploaded-files slot="uploadedfiles"></uploaded-files>
-      <output-docs slot="outputdocs"></output-docs>
-      <app-history slot="apphistory"></app-history>
-      <payment slot="paymentdetails"></payment>
+      <app-summary slot="appsummary" :form="form"></app-summary>
+      <app-data slot="appdata" :form="form"></app-data>
+      <uploaded-files slot="uploadedfiles" :form="form"></uploaded-files>
+      <output-docs slot="outputdocs" :form="form"></output-docs>
+      <app-history slot="apphistory" :form="form"></app-history>
+      <payment slot="paymentdetails" :form="form"></payment>
     </application-overview>
+    <payment-summary v-show="paymentDialog" @close="confirmDialog=false"></payment-summary>
   </div>
 </template>
 
@@ -101,11 +103,13 @@ export default {
     UploadedFiles: () => import("./appoverview/tabs/Files.vue"),
     OutputDocs: () => import("./appoverview/tabs/OutputDocs.vue"),
     AppHistory: () => import("./appoverview/tabs/AppHistory.vue"),
-    Payment: () => import("./appoverview/tabs/PaymentDetails.vue")
+    Payment: () => import("./appoverview/tabs/PaymentDetails.vue"),
+    PaymentSummary: () => import("../payment/PaymentSummary.vue")
   },
   data: () => ({
     e1: 1,
     confirmDialog: false,
+    paymentDialog: false,
     showAppOverview: false,
     invalid: false,
     form: {
@@ -165,6 +169,7 @@ export default {
         firstname: "",
         middlename: "",
         designation: "",
+        email: "",
         tin: "",
         birthday: "",
         id_type: "",
@@ -230,14 +235,10 @@ export default {
       console.log("form updated: " + JSON.stringify(this.editedForm));
     },
     submit() {
+      this.paymentDialog = true;
+      this.confirmDialog = false;
       console.log("#########submit: " + JSON.stringify(this.form));
       this.$store.dispatch("SAVE_LICENSES", this.form);
-    },
-    overview(){
-      this.dialog=false;
-      this.showAppOverview=true;
-      this.$store.commit("OVERVIEW_APP", this.form)
-      this.confirmDialog = false;
     }
   }
 };
