@@ -51,18 +51,21 @@
                    <!-- <transition name="fade"> -->
                     <v-form v-if="step_curr===1" key="step1">
                         <v-text-field class="subheading font-weight-light"
+                            outline
                             name="name"
                             label="Name of Establishment"
                             v-model="account.company.name"
                             id="name"
                         ></v-text-field>
                         <v-text-field class="font-weight-light"
+                            outline
                             name="owner"
                             label="Establishment Owner"
                             v-model="account.company.owner"
                             id="owner"
                         ></v-text-field>
                         <v-text-field class="font-weight-light"
+                            outline
                             name="tin"
                             label="TIN"
                             v-model="account.company.tin"
@@ -73,31 +76,38 @@
                     </v-form>
 
                     <v-form v-if="step_curr===2" key="step2">
-                        <v-text-field class="subheading font-weight-light"
+                        <v-textarea class="font-weight-light"
+                        outline
                             name="add"
                             label="Address"
                             v-model="account.company.address.address"
                             id="add"
-                        ></v-text-field>
-                        <v-text-field class="font-weight-light"
+                        ></v-textarea>
+                        
+                        <v-select class="font-weight-light"
+                            outline
+                            :items="items"
                             name="region"
                             label="Region"
                             v-model="account.company.address.region"
                             id="region"
-                        ></v-text-field>
-                        <v-text-field class="font-weight-light"
+                        ></v-select>
+                        <v-select class="font-weight-light"
+                            outline
                             name="province"
                             label="Province"
                             v-model="account.company.address.province"
                             id="province"
-                        ></v-text-field>
-                        <v-text-field class="font-weight-light"
+                        ></v-select>
+                        <v-select class="font-weight-light"
+                            outline
                             name="city"
                             label="City/Town"
                             v-model="account.company.address.city"
                             id="city"
-                        ></v-text-field>
+                        ></v-select>
                         <v-text-field class="font-weight-light"
+                            outline
                             name="zip"
                             label="Zip Code"
                             v-model="account.company.address.zipCode"
@@ -106,68 +116,96 @@
                     </v-form>
 
                     <v-form v-else-if="step_curr===3" key="step3">
-                        <v-text-field class="font-weight-light"
-                            name="last"
-                            label="Last Name"
-                            v-model="account.name.last"
-                            id="last"
-                        ></v-text-field>
-                        <v-text-field class="font-weight-light"
-                            name="first"
-                            label="First Name"
-                            v-model="account.name.first"
-                            id="first"
-                        ></v-text-field>
-                        <v-text-field class="font-weight-light"
-                            name="mid"
-                            label="Middle Name"
-                            v-model="account.name.middle"
-                            id="mid"
-                        ></v-text-field>
-                        <v-text-field class="font-weight-light"
+                        <v-layout row wrap>
+                            <v-flex xs12 md4 pa-1>
+                                <v-text-field class="font-weight-light"
+                                    outline
+                                    name="last"
+                                    label="Last Name"
+                                    v-model="account.name.last"
+                                    id="last"
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 md4 pa-1>
+                                <v-text-field class="font-weight-light"
+                                    outline
+                                    name="first"
+                                    label="First Name"
+                                    v-model="account.name.first"
+                                    id="first"
+                                ></v-text-field>
+                            </v-flex>
+                            <v-flex xs12 md4 pa-1>
+                                <v-text-field class="font-weight-light"
+                                    outline
+                                    name="mid"
+                                    label="Middle Name"
+                                    v-model="account.name.middle"
+                                    id="mid"
+                                ></v-text-field>
+                            </v-flex>
+                        </v-layout>
+                                                                        
+                        <v-select class="font-weight-light"
+                            outline
                             name="position"
                             label="Designation"
                             v-model="account.position"
                             id="position"
-                        ></v-text-field>
+                        ></v-select>
                         <v-text-field class="font-weight-light"
+                        outline
                             name="tin"
                             label="TIN"
                             v-model="account.tin"
                             id="tin"
+                            mask="###-###-###-###"
+                            counter="12"
                         ></v-text-field>
                         <v-text-field class="font-weight-light"
+                        outline
                             name="email"
                             label="Email Address"
                             v-model="account.email"
                             id="email"
                         ></v-text-field>
-                        <v-text-field class="font-weight-light"
-                            name="phone"
-                            label="Phone Number"
-                            v-model="account.contact.phone"
-                            id="phone"
-                        ></v-text-field>
-                        <v-text-field class="font-weight-light"
-                            name="mobile"
-                            label="Mobile Number"
-                            v-model="account.contact.mobile"
-                            id="mobile"
-                        ></v-text-field>
+                        <v-layout row wrap>
+                            <v-flex xs12 md6 pa-1>
+                                <v-text-field class="font-weight-light"
+                                    outline
+                                    name="phone"
+                                    label="Phone Number"
+                                    v-model="account.contact.phone"
+                                    id="phone"
+                                ></v-text-field>
+                            </v-flex>
+                             <v-flex xs12 md6 pa-1>
+                                <v-text-field class="font-weight-light"
+                                    outline
+                                    name="mobile"
+                                    label="Mobile Number"
+                                    v-model="account.contact.mobile"
+                                    id="mobile"
+                                ></v-text-field>
+                            </v-flex>
+                        </v-layout>                                                
                     </v-form>
 
                     <v-form v-else-if="step_curr===4" key="step4">
-                        <v-text-field class="font-weight-light"
+                        <v-select class="font-weight-light"
+                            outline
                             name="name"
                             label="Government ID"
                             id="id"
-                        ></v-text-field>
+                        ></v-select>
                         <v-text-field class="font-weight-light"
+                            outline
                             name="name"
                             label="ID Number"
                             id="id"
                         ></v-text-field>
                         <v-text-field class="font-weight-light"
+                            outline
                             name="name"
                             label="Expiry Date"
                             placeholder="mm/dd/yyyy"
@@ -187,18 +225,23 @@
                             </v-flex>
                             <v-flex xs12 md8>
                                 <v-text-field class="font-weight-light"
+                                    outline
                                     name="name"
                                     label="Username/Email"
                                     id="id"
+                                    v-model="account.username"
                                 ></v-text-field>
                                 <v-text-field
+                                    outline
                                     name="name"
                                     label="Password"
+                                    v-model="account.password"
                                     :append-icon="visible_pass ? 'visibility' : 'visibility_off'"
                                     :append-icon-cb="() => (visible_pass = !visible_pass)"
                                     :type="visible_pass ? 'password' : 'text'"
                                 ></v-text-field>
                                 <v-text-field
+                                    outline
                                     name="name"
                                     label="Confirm Passowrd"
                                     :append-icon="visible_conf_pass ? 'visibility' : 'visibility_off'"
@@ -218,7 +261,11 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                      <v-btn color="secondary" outline @click="back">Back</v-btn>
-                    <v-btn color="primary" @click="next">Next</v-btn>
+                    <v-btn
+                        color="primary"
+                        :loading="loading"
+                        @click.native="next"
+                    >Next </v-btn>
                 </v-card-actions>
             </v-card>
            
@@ -249,6 +296,7 @@ export default {
     components: { VueRecaptcha },
     data(){
         return{
+            loading:false,
             account:{
                 company:{
                     address:{}
@@ -267,7 +315,7 @@ export default {
             ],
             avatar:"",
             visible_pass:true,
-            visible_conf_pass: false,
+            visible_conf_pass: true,
         }
     },
     created(){
@@ -276,14 +324,12 @@ export default {
     methods:{
         init(){
             //set default avatar                    
-            this.avatar = md5(Math.floor(Math.random()*100) + "@gmail.com") 
-            this.$notify({icon: 'hearing',message:"this is a sample notification3", color:"error"})                    
+            this.avatar = md5(Math.floor(Math.random()*100) + "@gmail.com")             
         },
         next(){
             if(this.step_curr < 5){
                 this.step_curr++;
                 this.progress = this.progress + 20;
-                this.$notify({message:"this is a sample notification" + this.step_curr}) 
             }else{
                 this.submit();
             }
@@ -297,7 +343,17 @@ export default {
             
         },
         submit(){
-            this.$store.dispatch('REGISTER', {account:this.account, vm:this})
+            this.loading = true;
+            this.$store.dispatch('REGISTER', this.account).
+            then(res=>{
+                this.loading = false;
+                this.$notify({message:'Registration Successful', color: 'primary'})
+                this.$router.push("/")
+            })
+            .catch(err=>{
+                this.loading = false;
+                this.$notifyError(err)
+            })
         }
     },
     computed:{
@@ -306,8 +362,13 @@ export default {
                 this.avatar = md5(this.account.email)
             }
             var link = "https://www.gravatar.com/avatar/"+this.avatar+"?d=retro&s=100"
-            console.log("AVATAR LINK: " + link)
             return link;
+        }
+    },
+    watch:{
+        'account.email':function (val, oldVal){
+            this.account.username = val;
+            
         }
     }
 };

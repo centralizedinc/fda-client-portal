@@ -9,19 +9,20 @@ var mutations = {
         //reset
         //MD doesn't recommend multiple snackbar
         state.notifications = [];
+        var expiry = null;
+        if(!payload.timeout){
+            expiry = (new Date()).getTime() + 6000;
+        }else{
+            expiry = (new Date()).getTime() + payload.timeout;
+        }
         state.notifications.push({
-            id: state.id++,
             data: payload,
+            expiry:expiry,
             show:true
         })
     },
     REMOVE_NOTIFICATION: (state, payload)=>{
-        for(var i=0; i<state.notifications.length; i++){
-            if(state.notifications[i].id === payload.id){
-                state.notifications.splice(i,1);
-                break;
-            }
-        }
+        state.notifications = [];
     }
 }
 

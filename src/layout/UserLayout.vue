@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <notification></notification>
     <v-navigation-drawer app :mini-variant="mini || $vuetify.breakpoint.mdAndDown" width="250">
       <v-toolbar
         dark
@@ -16,14 +17,15 @@
             </v-list-tile-avatar>
             <v-spacer></v-spacer>
             <v-list-tile-content class="mt-4">
-              <v-list-tile-title class="body-2">abalita</v-list-tile-title>
+              <v-list-tile-title class="body-2">{{user.username}}</v-list-tile-title>
               <v-list-tile-sub-title class="caption">Last Logged in:</v-list-tile-sub-title>
-              <v-list-tile-sub-title class="caption">01/02/2019 2:19PM</v-list-tile-sub-title>
+              <v-list-tile-sub-title class="caption">{{formatDate(user.last_login)}}</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-toolbar>
       <v-list>
+        <template v-if="user.status === 2">
         <v-list-tile @click="goTo('/app')" class="ma-1" :style="activeRoute('Dashboard')">
           <v-list-tile-action>
             <v-icon color="fdaBlueGreen">dashboard</v-icon>
@@ -88,6 +90,7 @@
           </v-list-tile-content>
         </v-list-tile>
         <v-divider></v-divider>
+        </template>
         <v-list-tile
           @click="goTo('/app/profile')"
           class="ma-1"
@@ -113,9 +116,9 @@
           </v-list-tile-content>
         </v-list-tile>
         <v-list-tile
-          @click="goTo('/app/logout')"
+          @click="showLogout()"
           class="ma-1"
-          :style="activeRoute('Notifications')"
+          :style="activeRoute('Logout')"
         >
           <v-list-tile-action>
             <v-icon color="fdaBlueGreen">fas fa-sign-out-alt</v-icon>
@@ -137,47 +140,112 @@
       </v-btn>
       <span class="headline font-weight-light">FDA Client Portal</span>
       <v-spacer></v-spacer>
-      <v-btn icon>
+      
+
+      <v-menu offset-y>
+        <v-btn icon slot="activator">
         <v-icon small>far fa-bell</v-icon>
       </v-btn>
-      <v-btn icon>
-        <v-avatar size="40">
-          <img src="http://i.pravatar.cc/200" alt="alt">
-        </v-avatar>
-      </v-btn>
+        <v-list two-line subheader>
+          <v-subheader>Notifications</v-subheader>
+          <v-divider></v-divider>
+          <v-list-tile avatar>
+            <v-list-tile-content>
+              <v-list-tile-title class="body-2 font-weight-light">
+                <v-icon color="success" small right>check</v-icon> Account Activation                 
+              </v-list-tile-title>
+              <v-list-tile-sub-title class="caption font-weight-thin">02/06/2019 3:26PM - Your account was activated</v-list-tile-sub-title>             
+            </v-list-tile-content>
+          </v-list-tile>
+                    
+        </v-list>
+      </v-menu>
+      
+      <v-menu offset-y>
+        <v-btn icon slot="activator">
+          <v-avatar size="40">
+            <img src="http://i.pravatar.cc/200" alt="alt">
+          </v-avatar>
+        </v-btn>
+        <v-list two-line subheader>
+          <v-list-tile avatar @click="goTo('/app/profile')">
+            <v-list-tile-content >
+              <v-list-tile-title class="body-2 font-weight-light">My Profile</v-list-tile-title>
+              <v-list-tile-sub-title class="caption font-weight-thin">Change your account details</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-divider></v-divider>
+          <v-list-tile avatar @click="goTo('/app/password')">
+            <v-list-tile-content >
+              <v-list-tile-title class="body-2 font-weight-light">Password Settings</v-list-tile-title>
+              <v-list-tile-sub-title class="caption font-weight-thin">Change Password and Security Settings</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-divider></v-divider>
+          <v-list-tile avatar @click="showLogout">
+            <v-list-tile-content>
+              <v-list-tile-title class="body-2 font-weight-light">Logout</v-list-tile-title>
+              <v-list-tile-sub-title class="caption font-weight-thin">Sing out of FDA Portal</v-list-tile-sub-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
       <v-btn icon>
         <v-icon small>fas fa-indent</v-icon>
       </v-btn>
     </v-toolbar>
     <!-- <v-content> -->
     <v-container fluid>
-      <v-card class="mt-3 mx-auto">
-        <v-layout row wrap ml-3>
+      <!-- <v-card class="mt-3 mx-auto">
+        <v-layout row wrap ml-3> -->
           <v-sheet
-            class="v-sheet--offset pa-3"
+            class="v-sheet--offset pa-2 mt-3"
             color="fdaSilver"
-            elevation="4"
-            width="calc(100% - 15px)"
+            elevation="10"
+            width="calc(100% - 5px)"
           >
             <span class="title font-weight-light">{{page_name}}</span>
             <v-breadcrumbs divider="/">
               <v-breadcrumbs-item
                 v-for="(item, index) in breadcrumbs"
                 :key="index"
-                @click="goTo('/app')"
+                @click="goTo(item.href)"
               >
                 <v-icon color="primary">{{item.icon}}</v-icon>
-                <span class="body-1 font-weight-light">{{item.name}}</span>
+                <span class="caption font-weight-light">{{item.name}}</span>
               </v-breadcrumbs-item>
             </v-breadcrumbs>
           </v-sheet>
           <v-spacer></v-spacer>
-        </v-layout>
-      </v-card>
-      <v-divider></v-divider>
+          <router-view></router-view>
+        <!-- </v-layout> -->
+      <!-- </v-card> -->
+      <!-- <v-divider></v-divider> -->
       <!-- <transition name="fade"> -->
-      <router-view></router-view>
+      <!-- <router-view></router-view> -->
       <!-- </transition> -->
+
+      <v-dialog
+        v-model="logout"         
+        persistent max-width="300"
+        transition="dialog-transition"
+
+      >
+        <v-card>
+          <v-toolbar dark color="primary">
+            <span class="title font-weight-thin">Logout</span>
+          </v-toolbar>
+          <v-card-text>
+            <span class="font-weight-light">Are you sure you want to logout?</span>
+            <v-divider></v-divider>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn outline color="secondary" dark @click.native="logout = false">No</v-btn>
+            <v-btn color="primary" @click="confirmLogout()">Yes</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-container>
     <!-- </v-content> -->
     <v-footer
@@ -194,29 +262,44 @@
 </template>
 
 <script>
+import notification from '@/components/Notification'
 export default {
+  components:{notification},
   //#########################
   // variables
   //#########################
   data() {
     return {
       mini: false,
-      route_name: ""
+      route_name: "",
+      user:{},
+      logout:false
     };
   },
   //#########################
   // init
   //#########################
-  created() {},
+  created() {
+    this.init()
+  },
   //#########################
   // methods
   //#########################
   methods: {
+    init(){
+      this.user = this.$store.state.user_session.user;
+    },
     goTo(router) {
       this.$router.push(router);
     },
+    showLogout(){
+      this.logout = true;
+    },
+    confirmLogout(){
+      this.$store.dispatch('LOGOUT')
+      this.$router.push("/")
+    },
     activeRoute(route) {
-      console.log("ROUTER_NAME: " + this.$route.name);
       if (this.$route.name === route) {
         return "background-color: rgb(202,208,160); color:white";
       } else {
@@ -232,32 +315,7 @@ export default {
       return this.$route.name;
     },
     breadcrumbs() {
-      return [
-        {
-          icon: "home",
-          name: "Dashboard",
-          disabled: false,
-          href: "breadcrumbs_dashboard"
-        },
-        // {
-        //   icon: "card_membership",
-        //   name: "License",
-        //   disabled: false,
-        //   href: "breadcrumbs_dashboard"
-        // },
-        {
-          icon: "book",
-          name: "Certificates",
-          disabled: false,
-          href: "breadcrumbs_dashboard"
-        }
-        // {
-        //   icon: "far fa-creadit-card",
-        //   name: "Payments",
-        //   disabled: false,
-        //   href: "breadcrumbs_dashboard"
-        // },
-      ];
+      return this.$store.state.breadcrumbs.navigation
     }
   }
 };
