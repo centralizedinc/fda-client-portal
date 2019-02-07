@@ -73,7 +73,14 @@
       @submit="submit"
       @overview="overview"
     ></confirm-to-review-app>
-    <application-overview :form="form" :show="showAppOverview" @close="close"></application-overview>
+    <application-overview :form="form" :show="showAppOverview" @close="close">
+      <app-summary slot="appsummary"></app-summary>
+      <app-data slot="appdata"></app-data>
+      <uploaded-files slot="uploadedfiles"></uploaded-files>
+      <output-docs slot="outputdocs"></output-docs>
+      <app-history slot="apphistory"></app-history>
+      <payment slot="paymentdetails"></payment>
+    </application-overview>
   </div>
 </template>
 
@@ -88,7 +95,13 @@ export default {
     StepThree: () => import("./create/tabs/OfficeAddress.vue"),
     StepFour: () => import("./create/tabs/AuthorizedOfficerDetails.vue"),
     StepFive: () => import("./create/tabs/QualifiedPersonnel.vue"),
-    StepSix: () => import("./create/tabs/DocumentsUpload.vue")
+    StepSix: () => import("./create/tabs/DocumentsUpload.vue"),
+    AppSummary: () => import("./appoverview/tabs/AppSummary.vue"),
+    AppData: () => import("./appoverview/tabs/Data.vue"),
+    UploadedFiles: () => import("./appoverview/tabs/Files.vue"),
+    OutputDocs: () => import("./appoverview/tabs/OutputDocs.vue"),
+    AppHistory: () => import("./appoverview/tabs/AppHistory.vue"),
+    Payment: () => import("./appoverview/tabs/PaymentDetails.vue")
   },
   data: () => ({
     e1: 1,
@@ -96,6 +109,12 @@ export default {
     showAppOverview: false,
     invalid: false,
     form: {
+      case_no: "",
+      current_task: "",
+      user: "",
+      action: "",
+      created_by: "",
+      date_created: "",
       application_type: "",
       general_info: {
         product_type: "",
@@ -219,6 +238,7 @@ export default {
       this.dialog=false;
       this.showAppOverview=true;
       this.$store.commit("OVERVIEW_APP", this.form)
+      this.confirmDialog = false;
     }
   }
 };

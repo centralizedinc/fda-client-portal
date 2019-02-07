@@ -1,25 +1,29 @@
 <template>
   <div>
-    <application-summary :show="showAppView" @close="showAppView=false">
-      <template slot="header-1">Header 1</template>
-      <template slot="content-1">
-        <v-card>
-          <v-card-title primary-title>title 1</v-card-title>
-          <v-card-text>Content 1</v-card-text>
-        </v-card>
-      </template>
-      <template slot="header-2">Header 2</template>
-      <template slot="content-2">Content 2</template>
-      <template slot="header-3">Header 3</template>
-      <template slot="content-3">Content 3</template>
-    </application-summary>
+    <application-overview :show="showAppView" @close="showAppView=false">
+      <!-- <template slot="header-1">Application Summary</template> -->
+      <application-summary slot="appsumary"></application-summary>
+      <app-data slot="appdata"></app-data>
+      <uploaded-files slot="uploadedfiles"></uploaded-files>
+      <output-docs slot="outputdocs"></output-docs>
+      <app-history slot="apphistory"></app-history>
+      <payment-details slot="paymentdetails"></payment-details>
+    </application-overview>
   </div>
 </template>
 
 <script>
 export default {
   components: {
-    ApplicationSummary: () => import("@/components/ApplicationOverview")
+    ApplicationOverview: () => import("@/components/ApplicationOverview"),
+    ApplicationSummary: () =>
+      import("@/views/app/licenses/appoverview/AppSummary.vue"),
+    AppData: () => import("@/views/app/licenses/appoverview/Data.vue"),
+    UploadedFiles: () => import("@/views/app/licenses/appoverview/Files.vue"),
+    OutputDocs: () => import("@/views/app/licenses/appoverview/OutputDocs.vue"),
+    AppHistory: () => import("@/views/app/licenses/appoverview/AppHistory.vue"),
+    PaymentDetails: () =>
+      import("@/views/app/licenses/appoverview/PaymentDetails.vue")
   },
   data() {
     return {
