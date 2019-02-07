@@ -283,6 +283,7 @@ export default {
     }
   },
   data: () => ({
+    form: null,
     length: 3,
     window: 0,
     title: [
@@ -294,7 +295,10 @@ export default {
       "History",
       "Payment Details"
     ]
-  })
+  }),
+  created(){
+    this.form = this.$store.state.licenses.overview_app
+  }
 };
 </script>
 

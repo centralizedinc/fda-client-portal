@@ -41,7 +41,7 @@
                           <v-container grid-list-md text-xs-left>
                             <v-layout row wrap>
                               <v-flex xs4 class="fontbold">Case Number</v-flex>
-                              <v-flex xs8>dd</v-flex>
+                              <v-flex xs8>{{form.case_no}}</v-flex>
                               <v-flex xs4 class="fontbold">App Type</v-flex>
                               <v-flex xs8>dd</v-flex>
                               <v-flex xs4 class="fontbold">Establishment</v-flex>
@@ -290,7 +290,7 @@
 </template>
 
 <script>
-export default {
+export default {  
   data() {
     return {
       length: 3,
@@ -304,66 +304,71 @@ export default {
         "History",
         "Payment Details"
       ],
-      form: {
-        application_type: "",
-        general_info: {
-          product_type: "",
-          primary_activity: "",
-          declared_capital: ""
-        },
-        estab_details: {
-          establishment_name: "",
-          establishment_owner: "",
-          tin: "",
-          email: "",
-          landline: "",
-          fax: "",
-          mobile: "",
-          products: [
-            {
-              prod_line: "",
-              remarks: ""
-            }
-          ]
-        },
-        addresses: {
-          office: {
-            address: "",
-            region: "",
-            province: "",
-            city: "",
-            zipcode: "",
-            location: ""
-          },
-          warehouse: [],
-          plant: {
-            address: "",
-            region: "",
-            province: "",
-            city: "",
-            zipcode: ""
-          }
-        },
-        auth_officer: {
-          mail_add: {
-            address: "",
-            region: "",
-            province: "",
-            city: "",
-            zipcode: ""
-          },
-          lastname: "",
-          firstname: "",
-          middlename: "",
-          designation: "",
-          tin: "",
-          birthday: "",
-          id_type: "",
-          id_no: "",
-          id_expiry: ""
-        }
-      }
+      form: null
+      // form: {
+      //   application_type: "",
+      //   general_info: {
+      //     product_type: "",
+      //     primary_activity: "",
+      //     declared_capital: ""
+      //   },
+      //   estab_details: {
+      //     establishment_name: "",
+      //     establishment_owner: "",
+      //     tin: "",
+      //     email: "",
+      //     landline: "",
+      //     fax: "",
+      //     mobile: "",
+      //     products: [
+      //       {
+      //         prod_line: "",
+      //         remarks: ""
+      //       }
+      //     ]
+      //   },
+      //   addresses: {
+      //     office: {
+      //       address: "",
+      //       region: "",
+      //       province: "",
+      //       city: "",
+      //       zipcode: "",
+      //       location: ""
+      //     },
+      //     warehouse: [],
+      //     plant: {
+      //       address: "",
+      //       region: "",
+      //       province: "",
+      //       city: "",
+      //       zipcode: ""
+      //     }
+      //   },
+      //   auth_officer: {
+      //     mail_add: {
+      //       address: "",
+      //       region: "",
+      //       province: "",
+      //       city: "",
+      //       zipcode: ""
+      //     },
+      //     lastname: "",
+      //     firstname: "",
+      //     middlename: "",
+      //     designation: "",
+      //     tin: "",
+      //     birthday: "",
+      //     id_type: "",
+      //     id_no: "",
+      //     id_expiry: ""
+      //   }
+      // }
     };
+  },
+  created(){
+    this.form = this.$store.state.licenses.form
+    console.log("VIEW ########################: " + JSON.stringify(this.form))
   }
 };
 </script>

@@ -9,7 +9,6 @@
         </v-tooltip>
 
         <undertaking-dialog :show="dialog" @proceed="launchAppForm"></undertaking-dialog>
-
         <v-data-table :headers="headers" :items="licenses" class="elevation-1">
           <template slot="items" slot-scope="props">
             <td>{{ props.item.case_no }}</td>
@@ -22,21 +21,21 @@
               <v-layout row wrap>
                 <v-flex xs3>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary" @click="renew, props.item">
+                    <v-btn slot="activator" flat icon color="primary" @click="renew(props.item)">
                       <v-icon small>refresh</v-icon>
                     </v-btn>Renewal
                   </v-tooltip>
                 </v-flex>
                 <v-flex xs3>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary" @click="variation, props.item">
+                    <v-btn slot="activator" flat icon color="primary" @click="variation(props.item)">
                       <v-icon small>edit</v-icon>
                     </v-btn>Variation
                   </v-tooltip>
                 </v-flex>
                 <v-flex xs3>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary" @click="view">
+                    <v-btn slot="activator" flat icon color="primary" @click="view(props.item)">
                       <v-icon small>search</v-icon>
                     </v-btn>View Application
                   </v-tooltip>
@@ -52,7 +51,6 @@
 
 <script>
 import Undertaking from "../../../components/UndertakingDialog";
-
 export default {
   components: {
     UndertakingDialog: () => import("@/components/UndertakingDialog")
@@ -60,9 +58,11 @@ export default {
   data() {
     return {
       dialog: false,
+      dialogView: false,
       initial: false,
       renewal: false,
       variation: false,
+      form: {},
       headers: [
         { text: "Case No", value: "case_no" },
         { text: "License No", value: "case_no" },
@@ -83,26 +83,26 @@ export default {
       this.$store.dispatch("GET_LICENSES")
       var licensesData = this.$store.state.licenses.licenses;
       licensesData.forEach(element => {
-        var data = {
-          case_no: element.auto_id,
-          application_type: element.application_type,
-          current_task: element.current_task,
-          date_created: element.date_created,
-          date_variation: element.date_variation
-        }
-        this.licenses.push(data); 
+        // var data = {
+        //   case_no: element.auto_id,
+        //   application_type: element.application_type,
+        //   current_task: element.current_task,
+        //   date_created: element.date_created,
+        //   date_variation: element.date_variation
+        // }
+        // this.licenses.push(data); 
+        this.licenses.push(element); 
       });
     },
-    view() {
+    view(item) {
+      this.$store.commit("SET_FORM", item)
       this.$router.push("/app/licenses/view");
     },
-    view(){
-      this.$router.push("/app/licenses/view")
-    },
     renew(item){
-      
+      this.$store.commit("SET_FORM", item)
     },
     variation(item){
+      this.$store.commit("SET_FORM", item)
     },
     launchAppForm() {
       this.$router.push("/app/licenses/apply");
