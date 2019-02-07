@@ -109,7 +109,6 @@ export default {
     showAppOverview: false,
     invalid: false,
     form: {
-      case_no: "",
       current_task: "",
       user: "",
       action: "",

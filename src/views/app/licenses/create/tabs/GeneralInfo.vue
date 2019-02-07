@@ -82,28 +82,37 @@ export default {
   created() {
     this.init();
   },
-  computed:{
+  computed: {
     loadPrimary() {
-      this.editForm = this.form
+      this.editForm = this.form;
       this.form.general_info.primary_activity = "";
       this.$store
         .dispatch("GET_PRIMARY_ACTIVITY", this.form.general_info.product_type)
         .then(result => {
-          return this.activity = this.$store.state.licenses.primaryActivity;
+          return (this.activity = this.$store.state.products.primaryActivity);
         });
     },
     loadItems() {
       this.form.general_info.addtl_activity = "";
       this.form.general_info.primary_capital = "";
-      this.$store.dispatch("GET_SECONDARY_ACTIVITY", this.form.general_info.primary_activity).then(result =>{
-        return this.addtl = this.$store.state.licenses.secondaryActivity
-      })
-      this.$store.dispatch("GET_ADDITIONAL", this.form.general_info.primary_activity).then(result =>{
-        return this.addtl = this.$store.state.licenses.secondaryActivity
-      })
-      this.$store.dispatch("GET_DECLARED", this.form.general_info.primary_activity).then(result =>{
-        return this.capital = this.$store.state.licenses.declared
-      })
+      this.$store
+        .dispatch(
+          "GET_SECONDARY_ACTIVITY",
+          this.form.general_info.primary_activity
+        )
+        .then(result => {
+          return (this.addtl = this.$store.state.products.secondaryActivity);
+        });
+      this.$store
+        .dispatch("GET_ADDITIONAL", this.form.general_info.primary_activity)
+        .then(result => {
+          return (this.addtl = this.$store.state.products.secondaryActivity);
+        });
+      this.$store
+        .dispatch("GET_DECLARED", this.form.general_info.primary_activity)
+        .then(result => {
+          return (this.capital = this.$store.state.products.declared);
+        });
     }
   },
   methods: {
@@ -111,7 +120,7 @@ export default {
       this.$store
         .dispatch("GET_PRODUCT_TYPE")
         .then(result => {
-          this.types = this.$store.state.licenses.productType;
+          this.types = this.$store.state.products.productType;
         })
         .catch(err => {});
     }

@@ -55,7 +55,7 @@
                       <v-card flat v-show="window===0">
                         <v-container grid-list-md text-xs-left>
                           <v-layout row wrap>
-                            <slot name="appsummary"></slot>
+                            <slot name="'appsummary'"></slot>
                           </v-layout>
                         </v-container>
                         <!-- </v-card-title> -->
@@ -65,7 +65,7 @@
                       <v-card flat v-show="window===1">
                         <v-container grid-list-md text-xs-left>
                           <v-layout row wrap>
-                            <slot name="appdata"></slot>
+                            <slot name="appdata" :form="form"></slot>
                           </v-layout>
                         </v-container>
                       </v-card>
@@ -83,7 +83,7 @@
                       </v-card>
 
                       <!-- Output Documents -->
-                      <v-card flat v-show="n===4">
+                      <v-card flat v-show="window===3">
                         <v-card-title class="headline ml-3 mt-2 pt-3" style="padding: 2px;">
                           <slot :name="'header-'"></slot>
                           <v-container grid-list-md text-xs-left>
@@ -95,27 +95,24 @@
                       </v-card>
 
                       <!-- Application History -->
-                      <v-card flat v-show="n===5">
-                        <v-card-title class="headline ml-3 mt-2 pt-3" style="padding: 2px;">
-                          <slot :name="'header-'"></slot>
-                          <v-container grid-list-md text-xs-left>
-                            <v-layout row wrap>
-                              <slot :name="'apphistory'"></slot>
-                            </v-layout>
-                          </v-container>
-                        </v-card-title>
+                      <v-card flat v-show="window===4">
+                        <v-container grid-list-md text-xs-left>
+                          <v-layout row wrap>
+                            <slot :name="'apphistory'"></slot>
+                          </v-layout>
+                        </v-container>
                       </v-card>
 
                       <!-- Payment Details -->
-                      <v-card flat v-show="n===6">
-                        <v-card-title class="headline ml-3 mt-2 pt-3" style="padding: 2px;">
-                          <slot :name="'header-'"></slot>
-                          <v-container grid-list-md text-xs-left>
-                            <v-layout row wrap>
-                              <slot :name="'paymentdetails'"></slot>
-                            </v-layout>
-                          </v-container>
-                        </v-card-title>
+                      <v-card flat v-show="window===5">
+                        <!-- <v-card-title class="headline ml-3 mt-2 pt-3" style="padding: 2px;">
+                        <slot :name="'header-'"></slot>-->
+                        <v-container grid-list-md text-xs-left>
+                          <v-layout row wrap>
+                            <slot :name="'paymentdetails'"></slot>
+                          </v-layout>
+                        </v-container>
+                        <!-- </v-card-title> -->
                       </v-card>
                     </v-card-text>
                   </v-card>
