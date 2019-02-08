@@ -7,7 +7,7 @@ import store from './store'
 import axios from 'axios'
 import NProgress from 'nprogress';
 import notify from "@/plugins/notify";
-
+import mixins from "@/plugins/mixins"
 
 import './plugins/vuetify'
 import './registerServiceWorker'
@@ -23,6 +23,7 @@ Vue.config.productionTip = false
 Vue.prototype.$http = axios
 Vue.use(vtooltip)
 Vue.use(notify, store)
+Vue.use(mixins)
 
 NProgress.configure({
   showSpinner: false,

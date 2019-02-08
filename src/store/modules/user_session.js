@@ -2,6 +2,7 @@
 // var jwt = require('jsonwebtoken')
 
 import RegistrationAPI from "@/api/RegistrationAPI";
+import UserAPI from "@/api/UserAPI";
 
 const state = {
   isAuthenticated: false,
@@ -9,22 +10,20 @@ const state = {
   user: {},
   task: {},
   registration_details: {},
-  REGISTRATION_API: null
 };
 
 const mutations = {
   LOGIN: function(state, payload) {
     state.user = payload.user;
     state.token = payload.token;
-    state.isAuthenticated = true;
+    state.isAuthenticated = payload.isMatch;
+    new UserAPI(payload.token);
+    console.log("PAYLOAD: " + JSON.stringify(payload))
   },
   LOGOUT: function(state) {
     state.user = {};
     state.token = false;
     state.isAuthenticated = false;
-  },
-  CHECK_SESSION: function(state) {
-    // var decoded = jwt.verify(state.token, 'D!m3 P0rt@l')
   },
   CURRENT_TASK: function(state, payload) {
     state.task = payload;
@@ -35,26 +34,133 @@ const mutations = {
 };
 
 var actions = {
-  // checkAdmin: (state, data) => {
-  //   console.log('############ calling token: ' + JSON.stringify(state.state.user._id))
-  //   var instance = setAuthToken(state.state.token)
-  //   return instance.get('/api/users/isAdmin/' + state.state.user._id)
-  // }
 
-  REGISTER: (context, obj) => {
-    console.log("calling REGISTER....")
-    if (!context.state.RegistrationAPI) {
-      context.state.RegistrationAPI = new RegistrationAPI();
-    }
-    context.state.RegistrationAPI.register(obj.user,(res, err) => {
-      if (!err) {
-        context.commit("REGISTER", res);
-      } else {
-        console.log(JSON.stringify(err));
-        // console.log(JSON.stringify(obj.vm))
-        obj.vm.$notify(err)
-      }
-    });
+  /**
+   * @description check if the user session is valid or activated
+   */
+  CHECK_SESSION: (context, username) => {
+    return new Promise((resolve, reject)=>{
+      UserAPI.verifyStatus(username, (result, err)=>{
+        if (!err) {
+          resolve(result)
+        } else {
+          reject(err)
+        }
+      })
+    })    
+  },
+
+  /**
+   * @description invoke Registration API
+   */
+  REGISTER: (context, account) => {
+    return new Promise((resolve, reject)=>{
+      RegistrationAPI.register(account,(res, err) => {
+        if (!err) {
+          resolve(res)
+        } else {
+          reject(err)
+        }
+      });
+    })        
+  },
+
+  /**
+   * @description email confirmation
+   */
+  CONFIRM: (context, key) =>{
+    return new Promise((resolve, reject)=>{
+      RegistrationAPI.confirm(key, (res, err)=>{
+        if (!err) {
+          resolve(res)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  },
+
+  /**
+   * @description invoke LOGIN API
+   */
+  LOGIN: (context, credentials)=>{
+    return new Promise((resolve, reject)=>{
+      UserAPI.login(credentials, (res, err)=>{
+        if (!err) {          
+          context.commit('LOGIN', res);
+          resolve(res)
+        } else {
+          console.log(JSON.stringify(err));
+          reject(err)
+        }
+      })
+    })
+  },
+
+  /**
+   * @description remove user session and breadcrumbs history stored in cache
+   */
+  LOGOUT: (context)=>{
+    context.commit('LOGOUT')
+    context.commit('PICKUP_BREADCRUMBS')
+  },
+
+  /**
+   * @description send account recovery
+   */
+  FORGOT_PASSWORD: (context, email)=>{
+    return new Promise((resolve, reject)=>{
+      UserAPI.forgotPassword(email, (res, err)=>{
+        if (!err) {    
+          resolve(res)
+        } else {
+          console.log(JSON.stringify(err));
+          reject(err)
+        }
+      })
+    })
+  },
+
+  CONFIRM_ACCOUNT_RECOVERY: (context, key)=>{
+    return new Promise((resolve, reject)=>{
+      UserAPI.confirmAccountRecovery(key, (res, err)=>{
+        if (!err) {
+          resolve(res)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  },
+
+  /**
+   * @description change user password
+   */
+  CHANGE_PASSWORD: function(context, account){
+    return new Promise((resolve, reject)=>{
+      console.log('Calling Change Password!')
+      UserAPI.changePassword(account, (res, err)=>{
+        if (!err) {
+          resolve(res)
+        } else {
+          reject(err)
+        }
+      })
+    })
+  },
+
+
+  UPDATE_ACCOUNT:(context, account)=>{
+    return new Promise((resolve, reject)=>{
+      UserAPI.updateAccount(account, (res, err)=>{
+        if (!err) {
+          resolve(res)
+        } else {
+          reject(err)
+        }
+      })
+    })
+
   }
 };
 

@@ -3,13 +3,21 @@ const state = {
 };
 
 const mutations = {
-    ADD: function(state, payload){
-        state.navigation.add(payload)
+  DROP_BREADCRUMBS: function(state, payload){
+        var index = state.navigation.map(e => e.name).indexOf(payload.name);        
+        if(index >-1){
+          state.navigation.splice(index+1, state.navigation.length )
+        }else{
+          state.navigation.push(payload)
+        }        
     },
-    REMOVE: function(state, payload){
 
-    }
+  PICKUP_BREADCRUMBS: function(state, payload){
+      //remove all
+      state.navigation = []
+  }
 }
+
 
 export default {
   state,

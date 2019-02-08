@@ -86,6 +86,14 @@
                 ></v-date-picker>
               </v-menu>
             </v-flex>
+            <v-flex xs12>
+              <v-text-field
+                color="green darken-1"
+                label="Tax Identification Number"
+                :rules="[rules.required]"
+                v-model="qualified.tin"
+              ></v-text-field>
+            </v-flex>
 
             <!-- Government Issued Identification -->
             <v-flex xs12>
@@ -151,8 +159,8 @@
             <td>{{props.item.firstname + " " + props.item.lastname}}</td>
             <td>{{props.item.designation}}</td>
             <td>{{props.item.birthday}}</td>
-            <td>{{props.item.id_type}}</td>
             <td>{{props.item.tin}}</td>
+            <td>{{props.item.id_type}}</td>
             <td>{{props.item.id_no}}</td>
             <td>
               <v-layout row wrap>
@@ -182,8 +190,21 @@ export default {
     addToListDialog: false,
     menu: null,
     menu2: null,
-    designation: ["gaggaga", "jbjj", "gjgjgkgj"],
-    id_type: ["prc", "sss", "others"],
+    designation: [
+      "Company Pharmacist",
+      "Pharmacy Assistant",
+      "Production Manager/Head",
+      "Quality Assurance Manager/Head"
+    ],
+    id_type: [
+      "Professional Regulatory Commission",
+      "Social Security System",
+      "Government Service Insurance System (GSIS)",
+      "Commission on Elections (Voter's)",
+      "Land Transportation Office (Driver's)",
+      "Philippine Passport",
+      "Bureau of Immigration (Alien Registration)"
+    ],
     qualified: [],
     headers: [
       {

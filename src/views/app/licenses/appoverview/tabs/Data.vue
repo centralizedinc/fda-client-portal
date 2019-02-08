@@ -77,9 +77,7 @@
         <v-flex xs4 class="subheading">Birthday</v-flex>
         <v-flex xs8>{{form.auth_officer.birthday}}</v-flex>
         <v-flex xs4 class="subheading">Government ID</v-flex>
-        <v-flex xs8>{{form.auth_officer.id_type}}</v-flex>
-        <v-flex xs4 class="subheading">ID Number</v-flex>
-        <v-flex xs8>{{form.auth_officer.id_no}}</v-flex>
+        <v-flex xs8>{{form.auth_officer.id_type + " - " + form.auth_officer.id_no}}</v-flex>
         <v-flex xs4 class="subheading">Address</v-flex>
         <v-flex
           xs8
@@ -94,19 +92,18 @@
     >Qualified Personnel</v-flex>
     <v-container grid-list-md text-xs-left>
       <v-layout row wrap>
-        <v-flex xs4 class="subheading">Name</v-flex>
-        <v-flex
-          xs8
-        >{{form.qualified_personnel.lastname + ", " + form.qualified_personnel.firstname + " " + form.qualified_personnel.middlename}}</v-flex>
-        <v-flex xs4 class="subheading">Designation</v-flex>
-        <v-flex xs8>{{form.qualified_personnel.designation}}</v-flex>
-
-        <v-flex xs4 class="subheading">Birthday</v-flex>
-        <v-flex xs8>{{form.qualified_personnel.birthday}}</v-flex>
-        <v-flex xs4 class="subheading">TIN</v-flex>
-        <v-flex xs8>{{form.qualified_personnel.tin}}</v-flex>
-        <v-flex xs4 class="subheading">Government ID</v-flex>
-        <v-flex xs8>{{form.qualified_personnel.id_type + " " + form.qualified_personnel.id_no}}</v-flex>
+        <v-flex xs12>
+          <v-data-table :headers="headers" :items="form.qualified_personnel" class="elevation-1">
+            <template slot="items" slot-scope="props">
+              <td>{{props.item.firstname + " " + props.item.lastname }}</td>
+              <td>{{props.item.designation}}</td>
+              <td>{{props.item.birthday}}</td>
+              <td>{{props.item.tin}}</td>
+              <td>{{props.item.id_type + "-" + props.item.id_no}}</td>
+              <td></td>
+            </template>
+          </v-data-table>
+        </v-flex>
       </v-layout>
     </v-container>
   </v-layout>
@@ -114,71 +111,36 @@
 
 <script>
 export default {
-  props: {},
-  data() {
-    return {
-      form: {
-        application_type: "",
-        general_info: {
-          product_type: "",
-          primary_activity: "",
-          declared_capital: ""
-        },
-        estab_details: {
-          establishment_name: "",
-          establishment_owner: "",
-          tin: "",
-          email: "",
-          landline: "",
-          fax: "",
-          mobile: "",
-          products: [
-            {
-              prod_line: "",
-              remarks: ""
-            }
-          ]
-        },
-        addresses: {
-          office: {
-            address: "",
-            region: "",
-            province: "",
-            city: "",
-            zipcode: "",
-            location: ""
-          },
-          warehouse: [],
-          plant: {
-            address: "",
-            region: "",
-            province: "",
-            city: "",
-            zipcode: ""
-          }
-        },
-        auth_officer: {
-          mail_add: {
-            address: "",
-            region: "",
-            province: "",
-            city: "",
-            zipcode: ""
-          },
-          lastname: "",
-          firstname: "",
-          middlename: "",
-          designation: "",
-          tin: "",
-          birthday: "",
-          id_type: "",
-          id_no: "",
-          id_expiry: ""
-        },
-        qualified_personnel: []
+  props: ["form"],
+  data: () => ({
+    headers: [
+      {
+        text: "Name",
+        value: "",
+        sortable: false
+      },
+      {
+        text: "Designation",
+        value: "",
+        sortable: false
+      },
+      {
+        text: "Birthdate",
+        value: "",
+        sortable: false
+      },
+      {
+        text: "TIN",
+        value: "",
+        sortable: false
+      },
+      {
+        text: "Government ID",
+        value: "",
+        sortable: false
       }
-    };
-  }
+    ]
+  })
 };
 </script>
 

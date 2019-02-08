@@ -82,14 +82,14 @@ export default {
   created() {
     this.init();
   },
-  computed:{
+  computed: {
     loadPrimary() {
-      this.editForm = this.form
+      this.editForm = this.form;
       this.form.general_info.primary_activity = "";
       this.$store
         .dispatch("GET_PRIMARY_ACTIVITY", this.form.general_info.product_type)
         .then(result => {
-          return this.activity = this.$store.state.products.primaryActivity;
+          return (this.activity = this.$store.state.products.primaryActivity);
         });
     },
     loadItems() {
@@ -122,7 +122,7 @@ export default {
       this.$store
         .dispatch("GET_PRODUCT_TYPE")
         .then(result => {
-          this.types = this.$store.state.licenses.productType;
+          this.types = this.$store.state.products.productType;
         })
         .catch(err => {});
     }
