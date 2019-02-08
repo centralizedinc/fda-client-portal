@@ -239,6 +239,11 @@ export default {
       this.confirmDialog = false;
       console.log("#########submit: " + JSON.stringify(this.form));
       this.$store.dispatch("SAVE_LICENSES", this.form);
+      this.$notify({
+        message: "You have successfully applied a new license ",
+        color: "success",
+        icon: "check_circle_outline"
+      });
     }
   }
 };

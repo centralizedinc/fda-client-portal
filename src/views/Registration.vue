@@ -259,14 +259,15 @@
            
         </v-flex>
         <v-flex xs12 md3 pa-2>
-            <v-toolbar dark color="secondary">
+
+            <v-card>
+              <v-toolbar color="fdaOrange">
                 <span class="subheading font-weight-light">Help</span>
                 <v-spacer></v-spacer>
                 <v-btn flat icon>
                     <v-icon>close</v-icon>
                 </v-btn>
             </v-toolbar>
-            <v-card>
                 <v-card-text>
                     <p>Provide us the Establishment Details</p>
                     <p>Avoid using numbers on Establishment Owner Field</p>
@@ -850,7 +851,6 @@ export default {
             
         }
     }
-  }
 };
 </script>
 

@@ -26,78 +26,78 @@
       </v-toolbar>
       <v-list>
         <template v-if="user.status === 2">
-        <v-list-tile @click="goTo('/app')" class="ma-1" :style="activeRoute('Dashboard')">
-          <v-list-tile-action>
-            <v-tooltip top>
-              <v-btn slot="activator" icon>
-                <v-icon color="fdaBlueGreen">dashboard</v-icon>
-              </v-btn>Dashboard
-            </v-tooltip>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title class="body-1 font-weight-light">Dashboard</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+          <v-list-tile @click="goTo('/app')" class="ma-1" :style="activeRoute('Dashboard')">
+            <v-list-tile-action>
+              <v-tooltip top>
+                <v-btn slot="activator" icon>
+                  <v-icon color="fdaBlueGreen">dashboard</v-icon>
+                </v-btn>Dashboard
+              </v-tooltip>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title class="body-1 font-weight-light">Dashboard</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
 
-        <v-list-tile @click="goTo('/app/licenses')" class="ma-1" :style="activeRoute('Licenses')">
-          <v-list-tile-action>
-            <v-tooltip top>
-              <v-btn slot="activator" icon>
-                <v-icon color="fdaBlueGreen">fas fa-file-contract</v-icon>
-              </v-btn>Licenses
-            </v-tooltip>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title class="body-1 font-weight-light">Licenses</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile
-          @click="goTo('/app/certificates')"
-          class="ma-1"
-          :style="activeRoute('Certificates')"
-        >
-          <v-list-tile-action>
-            <v-tooltip top>
-              <v-btn slot="activator" icon>
-                <v-icon color="fdaBlueGreen">fas fa-certificate</v-icon>
-              </v-btn>Certificates
-            </v-tooltip>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title class="body-1 font-weight-light">Certificates</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
-        <v-list-tile
-          @click="goTo('/app/notification')"
-          class="ma-1"
-          :style="activeRoute('Notifications')"
-        >
-          <v-list-tile-action>
-            <v-tooltip top>
-              <v-btn slot="activator" icon>
-                <v-icon color="fdaBlueGreen">fas fa-file-invoice</v-icon>
-              </v-btn>Product Notification
-            </v-tooltip>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title class="body-1 font-weight-light">Product Notification</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+          <v-list-tile @click="goTo('/app/licenses')" class="ma-1" :style="activeRoute('Licenses')">
+            <v-list-tile-action>
+              <v-tooltip top>
+                <v-btn slot="activator" icon>
+                  <v-icon color="fdaBlueGreen">fas fa-file-contract</v-icon>
+                </v-btn>Licenses
+              </v-tooltip>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title class="body-1 font-weight-light">Licenses</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile
+            @click="goTo('/app/certificates')"
+            class="ma-1"
+            :style="activeRoute('Certificates')"
+          >
+            <v-list-tile-action>
+              <v-tooltip top>
+                <v-btn slot="activator" icon>
+                  <v-icon color="fdaBlueGreen">fas fa-certificate</v-icon>
+                </v-btn>Certificates
+              </v-tooltip>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title class="body-1 font-weight-light">Certificates</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+          <v-list-tile
+            @click="goTo('/app/notification')"
+            class="ma-1"
+            :style="activeRoute('Notifications')"
+          >
+            <v-list-tile-action>
+              <v-tooltip top>
+                <v-btn slot="activator" icon>
+                  <v-icon color="fdaBlueGreen">fas fa-file-invoice</v-icon>
+                </v-btn>Product Notification
+              </v-tooltip>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title class="body-1 font-weight-light">Product Notification</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
 
-        <v-list-tile @click="goTo('/app/payments')" class="ma-1" :style="activeRoute('Payments')">
-          <v-list-tile-action>
-            <v-tooltip top>
-              <v-btn slot="activator" icon>
-                <v-icon color="fdaBlueGreen">far fa-credit-card</v-icon>
-              </v-btn>Payments
-            </v-tooltip>
-          </v-list-tile-action>
-          <v-list-tile-content>
-            <v-list-tile-title class="body-1 font-weight-light">Payments</v-list-tile-title>
-          </v-list-tile-content>
-        </v-list-tile>
+          <v-list-tile @click="goTo('/app/payments')" class="ma-1" :style="activeRoute('Payments')">
+            <v-list-tile-action>
+              <v-tooltip top>
+                <v-btn slot="activator" icon>
+                  <v-icon color="fdaBlueGreen">far fa-credit-card</v-icon>
+                </v-btn>Payments
+              </v-tooltip>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title class="body-1 font-weight-light">Payments</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
 
-        <v-divider></v-divider>
+          <v-divider></v-divider>
         </template>
         <v-list-tile
           @click="goTo('/app/profile')"
@@ -131,11 +131,7 @@
             <v-list-tile-title class="body-1 font-weight-light">Password Settings</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <v-list-tile
-          @click="showLogout()"
-          class="ma-1"
-          :style="activeRoute('Logout')"
-        >
+        <v-list-tile @click="showLogout()" class="ma-1" :style="activeRoute('Logout')">
           <v-list-tile-action>
             <v-tooltip top>
               <v-btn slot="activator" icon>
@@ -160,27 +156,27 @@
       </v-btn>
       <span class="headline font-weight-light">FDA Client Portal</span>
       <v-spacer></v-spacer>
-      
 
       <v-menu offset-y>
         <v-btn icon slot="activator">
-        <v-icon small>far fa-bell</v-icon>
-      </v-btn>
+          <v-icon small>far fa-bell</v-icon>
+        </v-btn>
         <v-list two-line subheader>
           <v-subheader>Notifications</v-subheader>
           <v-divider></v-divider>
           <v-list-tile avatar>
             <v-list-tile-content>
               <v-list-tile-title class="body-2 font-weight-light">
-                <v-icon color="success" small right>check</v-icon> Account Activation                 
+                <v-icon color="success" small right>check</v-icon>Account Activation
               </v-list-tile-title>
-              <v-list-tile-sub-title class="caption font-weight-thin">02/06/2019 3:26PM - Your account was activated</v-list-tile-sub-title>             
+              <v-list-tile-sub-title
+                class="caption font-weight-thin"
+              >02/06/2019 3:26PM - Your account was activated</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
-                    
         </v-list>
       </v-menu>
-      
+
       <v-menu offset-y>
         <v-btn icon slot="activator">
           <v-avatar size="40">
@@ -189,16 +185,18 @@
         </v-btn>
         <v-list two-line subheader>
           <v-list-tile avatar @click="goTo('/app/profile')">
-            <v-list-tile-content >
+            <v-list-tile-content>
               <v-list-tile-title class="body-2 font-weight-light">My Profile</v-list-tile-title>
               <v-list-tile-sub-title class="caption font-weight-thin">Change your account details</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
           <v-list-tile avatar @click="goTo('/app/password')">
-            <v-list-tile-content >
+            <v-list-tile-content>
               <v-list-tile-title class="body-2 font-weight-light">Password Settings</v-list-tile-title>
-              <v-list-tile-sub-title class="caption font-weight-thin">Change Password and Security Settings</v-list-tile-sub-title>
+              <v-list-tile-sub-title
+                class="caption font-weight-thin"
+              >Change Password and Security Settings</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
@@ -217,40 +215,35 @@
     <!-- <v-content> -->
     <v-container fluid>
       <!-- <v-card class="mt-3 mx-auto">
-        <v-layout row wrap ml-3> -->
-          <v-sheet
-            class="v-sheet--offset pa-2 mt-3"
-            color="fdaSilver"
-            elevation="10"
-            width="calc(100% - 5px)"
+      <v-layout row wrap ml-3>-->
+      <v-sheet
+        class="v-sheet--offset pa-2 mt-3 pt-3"
+        color="fdaSilver"
+        elevation="5"
+        width="calc(100% - 5px)"
+        height="80"
+      >
+        <span class="title font-weight-light">{{page_name}}</span>
+        <v-breadcrumbs divider="/">
+          <v-breadcrumbs-item
+            v-for="(item, index) in breadcrumbs"
+            :key="index"
+            @click="goTo(item.href)"
           >
-            <span class="title font-weight-light">{{page_name}}</span>
-            <v-breadcrumbs divider="/">
-              <v-breadcrumbs-item
-                v-for="(item, index) in breadcrumbs"
-                :key="index"
-                @click="goTo(item.href)"
-              >
-                <v-icon color="primary">{{item.icon}}</v-icon>
-                <span class="caption font-weight-light">{{item.name}}</span>
-              </v-breadcrumbs-item>
-            </v-breadcrumbs>
-          </v-sheet>
-          <v-spacer></v-spacer>
-          <router-view></router-view>
-        <!-- </v-layout> -->
+            <v-icon color="primary">{{item.icon}}</v-icon>
+            <span class="caption font-weight-light">{{item.name}}</span>
+          </v-breadcrumbs-item>
+        </v-breadcrumbs>
+      </v-sheet>
+      <v-spacer></v-spacer>
+      <router-view></router-view>
+      <!-- </v-layout> -->
       <!-- </v-card> -->
       <!-- <v-divider></v-divider> -->
       <!-- <transition name="fade"> -->
       <!-- <router-view></router-view> -->
       <!-- </transition> -->
-
-      <v-dialog
-        v-model="logout"         
-        persistent max-width="300"
-        transition="dialog-transition"
-
-      >
+      <v-dialog v-model="logout" persistent max-width="300" transition="dialog-transition">
         <v-card>
           <v-toolbar dark color="primary">
             <span class="title font-weight-thin">Logout</span>
@@ -282,9 +275,9 @@
 </template>
 
 <script>
-import notification from '@/components/Notification'
+import notification from "@/components/Notification";
 export default {
-  components:{notification},
+  components: { notification },
   //#########################
   // variables
   //#########################
@@ -292,32 +285,32 @@ export default {
     return {
       mini: false,
       route_name: "",
-      user:{},
-      logout:false
+      user: {},
+      logout: false
     };
   },
   //#########################
   // init
   //#########################
   created() {
-    this.init()
+    this.init();
   },
   //#########################
   // methods
   //#########################
   methods: {
-    init(){
+    init() {
       this.user = this.$store.state.user_session.user;
     },
     goTo(router) {
       this.$router.push(router);
     },
-    showLogout(){
+    showLogout() {
       this.logout = true;
     },
-    confirmLogout(){
-      this.$store.dispatch('LOGOUT')
-      this.$router.push("/")
+    confirmLogout() {
+      this.$store.dispatch("LOGOUT");
+      this.$router.push("/");
     },
     activeRoute(route) {
       if (this.$route.name === route) {
@@ -335,7 +328,7 @@ export default {
       return this.$route.name;
     },
     breadcrumbs() {
-      return this.$store.state.breadcrumbs.navigation
+      return this.$store.state.breadcrumbs.navigation;
     }
   }
 };

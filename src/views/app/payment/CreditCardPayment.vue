@@ -87,11 +87,12 @@
                 :rules="[rules.required]"
               ></v-text-field>
             </v-flex>
-            <v-flex>
-              <v-btn block color="success" @click="submit">Submit</v-btn>
-            </v-flex>
           </v-layout>
         </v-container>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn block color="success" @click="submit">Submit</v-btn>
+        </v-card-actions>
       </form-layout>
     </v-flex>
   </v-layout>

@@ -10,10 +10,10 @@
     <v-flex xs4>dd</v-flex>
     <v-flex xs8 class="title" mt-1 mb-1>Total Payment Due:</v-flex>
     <v-flex xs4>dd</v-flex>
-    <v-flex xs8 class="subheading">Payment Receipt:</v-flex>
+    <!-- <v-flex xs8 class="subheading">Payment Receipt:</v-flex>
     <v-flex xs4 class="body-2">
       <a href="#">Receipt</a>
-    </v-flex>
+    </v-flex>-->
   </v-layout>
 </template>
 
