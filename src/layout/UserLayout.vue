@@ -5,7 +5,7 @@
       <v-toolbar
         dark
         style="height: 100px; background: linear-gradient(45deg, #38c73c 0%, #b5c25a 100%)"
-      >
+      > 
         <v-list class="pa-0">
           <v-list-tile
             class="pa-1"
@@ -222,7 +222,6 @@
             class="v-sheet--offset pa-2 mt-3"
             color="fdaSilver"
             elevation="10"
-            width="calc(100% - 5px)"
           >
             <span class="title font-weight-light">{{page_name}}</span>
             <v-breadcrumbs divider="/">
@@ -246,7 +245,7 @@
       <!-- </transition> -->
 
       <v-dialog
-        v-model="logout"         
+        v-model="show_logout"         
         persistent max-width="300"
         transition="dialog-transition"
 
@@ -261,7 +260,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn outline color="secondary" dark @click.native="logout = false">No</v-btn>
+            <v-btn outline color="secondary" dark @click.native="show_logout = false">No</v-btn>
             <v-btn color="primary" @click="confirmLogout()">Yes</v-btn>
           </v-card-actions>
         </v-card>
@@ -293,7 +292,7 @@ export default {
       mini: false,
       route_name: "",
       user:{},
-      logout:false
+      show_logout:false
     };
   },
   //#########################

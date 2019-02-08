@@ -147,12 +147,12 @@ var router =  new Router({
           component: () => import('@/views/app/payment/PaymentSummary.vue'),
           beforeEnter: isAuthorized
         },
-        {
-          path: 'track',
-          name: 'FDA Doctrack Status',
-          component: () => import('@/views/app/DocTracker.vue'),
-          beforeEnter: isAuthorized
-        },
+        // {
+        //   path: 'track',
+        //   name: 'FDA Doctrack Status',
+        //   component: () => import('@/views/app/DocTracker.vue'),
+        //   beforeEnter: isAuthorized
+        // },
         {
           path: 'profile',
           name: 'Profile',

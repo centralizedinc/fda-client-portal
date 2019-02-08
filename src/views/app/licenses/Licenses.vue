@@ -81,7 +81,7 @@ export default {
       dialogView: false,
       initial: false,
       renewal: false,
-      variation: false,
+      // variation: false,
       form: {},
       headers: [
         { text: "Case No", value: "case_no" },
