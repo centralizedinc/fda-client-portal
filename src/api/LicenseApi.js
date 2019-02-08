@@ -23,7 +23,18 @@ export default class LicenseAPI {
         })
     }
 
+    uploadLicenses(licenses, cb){
+        axios.post('lto-api/upload/', licenses).then((result) => {
+            console.log("post licenses: " + JSON.stringify(result.data));
+           cb(result.data.model)
+        }).catch(err => {
+            console.log('##########error save: ' + JSON.stringify(err))
+            cb(null, err)
+        })
+    }
+
     saveLicenses(licenses, cb) {
+        console.log('actions save licenses: ' + JSON.stringify(licenses))
         axios.post('lto-api/', licenses).then((result) => {
             console.log("post licenses: " + JSON.stringify(result.data));
            

@@ -21,21 +21,21 @@
               <v-layout row wrap>
                 <v-flex xs3>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary" @click="renew(props.item)">
+                    <v-btn slot="activator" flat icon color="primary" @click="renewForm(props.item)">
                       <v-icon small>refresh</v-icon>
                     </v-btn>Renewal
                   </v-tooltip>
                 </v-flex>
                 <v-flex xs3>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary" @click="variation(props.item)">
+                    <v-btn slot="activator" flat icon color="primary" @click="variationForm(props.item)">
                       <v-icon small>edit</v-icon>
                     </v-btn>Variation
                   </v-tooltip>
                 </v-flex>
                 <v-flex xs3>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary" @click="view(props.item)">
+                    <v-btn slot="activator" flat icon color="primary" @click="viewForm(props.item)">
                       <v-icon small>search</v-icon>
                     </v-btn>View Application
                   </v-tooltip>
@@ -94,14 +94,18 @@ export default {
         this.licenses.push(element); 
       });
     },
-    view(item) {
+    viewForm(item) {
       this.$store.commit("SET_FORM", item)
       this.$router.push("/app/licenses/view");
     },
-    renew(item){
+    renewForm(item){
+      console.log("renew data: " + JSON.stringify(item.application_type))
+      item.application_type = "R"
       this.$store.commit("SET_FORM", item)
     },
-    variation(item){
+    variationForm(item){
+      item.application_type = "V"
+      this.dialog=true
       this.$store.commit("SET_FORM", item)
     },
     launchAppForm() {
