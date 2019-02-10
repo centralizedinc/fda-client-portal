@@ -25,7 +25,7 @@
         <v-divider></v-divider>
         <v-card-text>
           <v-flex xs12>
-            <p class="headline">You have successfuly downloaded the Order of Payment.</p>
+            <p class="headline">Order of Payment has been downloaded.</p>
             <p class="subheading">Note:</p>
             <ol>
               <li>Print the system generated Order of Payment</li>

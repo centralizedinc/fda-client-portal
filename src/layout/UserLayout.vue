@@ -243,7 +243,7 @@
       <!-- <transition name="fade"> -->
       <!-- <router-view></router-view> -->
       <!-- </transition> -->
-      <v-dialog v-model="logout" persistent max-width="300" transition="dialog-transition">
+      <v-dialog v-model="show_logout" persistent max-width="300" transition="dialog-transition">
         <v-card>
           <v-toolbar dark color="primary">
             <span class="title font-weight-thin">Logout</span>
@@ -254,7 +254,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn outline color="secondary" dark @click.native="logout = false">No</v-btn>
+            <v-btn outline color="secondary" dark @click.native="show_logout = false">No</v-btn>
             <v-btn color="primary" @click="confirmLogout()">Yes</v-btn>
           </v-card-actions>
         </v-card>
@@ -286,7 +286,7 @@ export default {
       mini: false,
       route_name: "",
       user: {},
-      logout: false
+      show_logout: false
     };
   },
   //#########################

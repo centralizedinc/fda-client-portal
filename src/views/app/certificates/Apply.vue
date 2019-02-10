@@ -16,7 +16,7 @@
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg fa-spin"></i>
+            <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help
         </v-tooltip>
       </template>
@@ -25,7 +25,7 @@
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg fa-spin"></i>
+            <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help
         </v-tooltip>
       </template>
@@ -34,7 +34,7 @@
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg fa-spin"></i>
+            <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help
         </v-tooltip>
       </template>
@@ -43,7 +43,7 @@
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg fa-spin"></i>
+            <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help
         </v-tooltip>
       </template>

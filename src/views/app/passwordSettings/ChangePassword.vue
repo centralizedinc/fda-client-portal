@@ -1,51 +1,57 @@
 <template>
   <v-layout align-center justify-center>
-    <v-flex xs12>
+    <v-flex xs8 pa-3>
       <v-card>
+        <!-- <v-card-title primary-title>
+          Change Password
+        </v-card-title> -->
+        <v-toolbar dark color="primary">
+          <span class="title font-weight-light">Change Password</span>
+        </v-toolbar>
+        <v-divider></v-divider>
         <v-card-text transparent>
+          <v-layout align-center justify-center>
+            <v-flex xs8>                                    
           <v-text-field
+          outline
             :append-icon="old_password ? 'visibility_off' : 'visibility'"
             :rules="[rules.required, rules.min]"
             :type="old_password ? 'text' : 'password'"
             name="input-10-2"
-            prepend-icon="vpn_key"
             label="Enter your Old Password"
-            hint="At least 8 characters"
-            class="input-group--focused"
             @click:append="old_password = !old_password"
+            v-model="account.password"
           ></v-text-field>
           <v-text-field
+          outline
             :append-icon="new_password ? 'visibility_off' : 'visibility'"
             :rules="[rules.required, rules.min]"
             :type="new_password ? 'text' : 'password'"
-            name="input-10-2"
-            prepend-icon="lock"
             label="Enter your New Password"
             hint="At least 8 characters"
-            class="input-group--focused"
             @click:append="new_password = !new_password"
+            v-model="account.new_password"
           ></v-text-field>
           <v-text-field
+          outline
             :append-icon="confirm_password ? 'visibility_off' : 'visibility'"
             :rules="[rules.required, rules.confirm_password]"
             :type="confirm_password ? 'text' : 'password'"
-            name="input-10-2"
-            prepend-icon="lock_open"
             label="Confirm Password"
-            hint="At least 8 characters"
-            class="input-group--focused"
             @click:append="confirm_password = !confirm_password"
+            v-model="confirm"
           ></v-text-field>
+          </v-flex>
+          </v-layout>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn
-            block
-            slot="activator"
-            color="success"
+          <v-spacer></v-spacer>
+          <v-btn     
+            color="primary"
             class="font-weight-light"
-            @click="dialog=true"
-          >Send request</v-btn>
+            @click="submit()"
+          >Submit</v-btn>
         </v-card-actions>
       </v-card>
       <v-dialog v-model="dialog" width="500">
@@ -79,15 +85,17 @@
 export default {
   data() {
     return {
+      account:{},
+      confirm:'',
       old_password: false,
-      new_password: true,
-      confirm_password: true,
+      new_password: false,
+      confirm_password: false,
       dialog: false,
       email: "",
       password: "Password",
       rules: {
         required: value => !!value || "Required.",
-        confirm_password: () =>
+        confirm_password: value => value===this.account.new_password ||
           "The new password and confirm password you entered doesn't match",
         email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -96,9 +104,25 @@ export default {
       }
     };
   },
+  created(){
+    this.init()
+  },
   methods: {
+    init(){
+      this.account = this.$store.state.user_session.user
+    },
     submit() {
-      this.$router.push("/");
+      // this.$router.push("/");
+      this.$store.dispatch('CHANGE_PASSWORD', this.account)
+      .then(result=>{
+        this.$notify({message:'Password updated.' , color:'primary'})
+        this.$store.dispatch('LOGOUT')
+        this.$router.push('/')
+      })
+      .catch(err=>{
+        console.log(err)
+        this.$notifyError(err)
+      })
     }
   }
 };

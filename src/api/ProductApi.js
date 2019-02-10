@@ -23,7 +23,7 @@ export default class ProductAPI {
     }
 
     primary(productType, cb) {
-        axios.get("core/primary/"+ productType)
+        axios.get("core/primary/products/"+ productType)
         .then(result => {
           if (result.data.success) {
             cb(result.data.model)

@@ -141,7 +141,7 @@
             color="green darken-1"
             v-model="form.auth_officer.id_expiry"
             :max="new Date().toISOString().substr(0, 10)"
-            min="2018-01-01"
+            min="1950-01-01"
             @input="$refs.menu.save(form.auth_officer.id_expiry)"
           ></v-date-picker>
         </v-menu>

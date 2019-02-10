@@ -17,7 +17,7 @@
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg fa-spin"></i>
+            <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help
         </v-tooltip>
       </template>
@@ -26,7 +26,7 @@
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg fa-spin"></i>
+            <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help
         </v-tooltip>
       </template>
@@ -35,7 +35,7 @@
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg fa-spin"></i>
+            <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help
         </v-tooltip>
       </template>
@@ -44,7 +44,7 @@
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg fa-spin"></i>
+            <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help
         </v-tooltip>
       </template>
@@ -53,7 +53,7 @@
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg fa-spin"></i>
+            <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help
         </v-tooltip>
       </template>
@@ -62,7 +62,7 @@
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg fa-spin"></i>
+            <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help
         </v-tooltip>
       </template>
@@ -207,6 +207,16 @@ export default {
     }
   }),
   created() {
+    if (
+      this.$store.state.licenses.form &&
+      this.$store.state.licenses.form._id &&
+      this.$store.state.licenses.form.application_type == "V"
+    ) {
+      this.form = this.$store.state.licenses.form;
+      this.$store.state.licenses.form = "";
+    }
+    this.form.application_type = "I";
+
     console.log("created porps: " + JSON.stringify(this.form));
   },
   // watch: {
@@ -235,6 +245,16 @@ export default {
       console.log("form updated: " + JSON.stringify(this.editedForm));
     },
     submit() {
+      var files = this.form.uploaded_files;
+      const formData = new FormData();
+      for (let i = 0; i < files.length; i++) {
+        if (files[i].file) {
+          formData.append("lto", files[i].file, files[i].file["name"]);
+        }
+      }
+      this.$store.dispatch("UPLOAD_LICENSES", formData);
+      this.form.uploaded_files = this.$store.state.licenses.uploaded;
+
       this.paymentDialog = true;
       this.confirmDialog = false;
       console.log("#########submit: " + JSON.stringify(this.form));

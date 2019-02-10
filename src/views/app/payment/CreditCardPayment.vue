@@ -102,6 +102,8 @@
 export default {
   data() {
     return {
+      card_logo: "",
+      loading: false,
       card_details: {
         number: "",
         exp_month: "",
@@ -115,6 +117,19 @@ export default {
         state: "",
         zip: ""
       },
+      payment_details: {
+      amount: 0,
+      currency: "php",
+      description: "",
+      statement_descriptor: "",
+      capture: true
+      },
+      transaction_details: {
+        application_type: "",
+        application: "",
+        case_no: "",
+        order_payment: {}
+      },
       rules: {
         required: value => !!value || "This is a required field",
         card_validity: true,
@@ -123,8 +138,59 @@ export default {
       }
     };
   },
+  watch:{
+    "card_details.number": function(val){
+      this.loading = true;
+      this.card_logo = "";
+      this.$store.state.payments.credit_card = "";
+      if(val !== ""){
+        this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result=>{
+          var creditCard = this.$store.state.payments.credit_card
+          if(creditCard.isValid){
+            this.card_logo =
+                  "https://fda-portal-user.herokuapp.com/assets/img/cc-icons/" +
+                  creditCard.card.type +
+                  ".png";
+
+                this.gaps = creditCard.card.gaps;
+                this.cvc_max = creditCard.card.code.size;
+                this.code_name = creditCard.card.code.name;
+          }
+        })
+      }else{
+        this.loading = false
+      }
+    }
+  },
   methods: {
+    isEmpty(str) {
+      return !str || str === null || str === "";
+    },
+    isEmptyStrings(arr) {
+      for (let i = 0; i < arr.length; i++) {
+        if (this.isEmpty(arr[i])) {
+          return true;
+        }
+      }
+      return false;
+    },
     submit() {
+      if (
+        !this.isEmptyStrings([
+          this.card_details.number,
+          this.card_details.exp_month,
+          this.card_details.exp_year,
+          this.card_details.cvc,
+          this.card_details.name,
+          this.card_details.email,
+          this.card_details.address_line1,
+          this.card_details.address_city,
+          this.card_details.state,
+          this.card_details.zip
+        ])
+      ) {
+        this.$store.dispatch("SAVE_PAYMENT", this.card_details, this.payment_details, this.transaction_details)
+      }
       this.$router.push("/app/payments/summary");
     }
   }

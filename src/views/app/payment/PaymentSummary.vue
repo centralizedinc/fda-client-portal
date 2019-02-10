@@ -67,6 +67,8 @@
             <v-btn class="font-weight-light" color="success" @click="creditCard">Credit Card</v-btn>
           </v-flex>
           <v-spacer></v-spacer>
+          <v-btn color="success">Pay Later</v-btn>
+          <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
     </v-flex>

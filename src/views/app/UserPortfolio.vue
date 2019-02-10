@@ -1,42 +1,82 @@
 <template>
   <v-layout row wrap>
+    <v-flex xs12>
+      <div class="headline">Overview</div>
+    </v-flex>
+
     <v-flex xs12 md6 lg3 pa-2>
-      <dashboard-card
-        icon="card_membership"
-        title="License"
-        description="Count"
-        details="0.00"
-        color="primary"
-      ></dashboard-card>
+      <v-card>
+        <v-tooltip top>
+          <v-btn slot="activator" color="success" dark absolute top right fab small>
+            <v-icon>call_made</v-icon>
+          </v-btn>Go to Licenses
+        </v-tooltip>
+
+        <dashboard-card
+          class="dcard"
+          icon="fas fa-file-contract"
+          title="Licenses"
+          description="Count"
+          details="1"
+          color="primary"
+        ></dashboard-card>
+      </v-card>
     </v-flex>
     <v-flex xs12 md6 lg3 pa-2>
-      <dashboard-card
-        icon="book"
-        title="Certificates"
-        description="Count"
-        details="0.00"
-        color="success"
-      ></dashboard-card>
+      <v-card>
+        <v-tooltip top>
+          <v-btn slot="activator" color="success" dark absolute top right fab small>
+            <v-icon>call_made</v-icon>
+          </v-btn>Go to Certificates
+        </v-tooltip>
+        <dashboard-card
+          class="dcard"
+          icon="fas fa-certificate"
+          title="Certificates"
+          description="Count"
+          details="9"
+          color="fdaGold"
+        ></dashboard-card>
+      </v-card>
     </v-flex>
     <v-flex xs12 md6 lg3 pa-2>
-      <dashboard-card
-        icon="far fa-credit-card"
-        title="Product Notification"
-        description="Count"
-        details="0.00"
-        color="warning"
-      ></dashboard-card>
+      <v-card>
+        <v-tooltip top>
+          <v-btn slot="activator" color="success" dark absolute top right fab small>
+            <v-icon>call_made</v-icon>
+          </v-btn>Go to Product Notification
+        </v-tooltip>
+        <dashboard-card
+          class="dcard"
+          icon="fas fa-file-invoice"
+          title="Notification"
+          description="Count"
+          details="2"
+          color="fdaOrange"
+        ></dashboard-card>
+      </v-card>
     </v-flex>
     <v-flex xs12 md6 lg3 pa-2>
-      <dashboard-card
-        icon="shopping_cart"
-        title="Payments"
-        description="Count"
-        details="0.00"
-        color="error"
-      ></dashboard-card>
+      <v-card>
+        <v-tooltip top>
+          <v-btn slot="activator" color="success" dark absolute top right fab small>
+            <v-icon>call_made</v-icon>
+          </v-btn>Go to Payments
+        </v-tooltip>
+        <dashboard-card
+          class="dcard"
+          icon="fas fa-credit-card fa-xs"
+          title="Payments"
+          description="Count"
+          details="0"
+          color="fdaBlueGreen"
+        ></dashboard-card>
+        <v-btn color="success" dark absolute top right fab small>
+          <v-icon>call_made</v-icon>
+        </v-btn>
+      </v-card>
     </v-flex>
-    <v-flex xs12 md6 lg4 pa-2>
+    <!-- <v-flex xs12 md6 lg4 pa-2>
       <v-card>
         <v-toolbar dark color="#00bfa5">
           <span class="subheadline font-weight-light">License Applications</span>
@@ -127,9 +167,7 @@
             </v-avatar>
           </v-btn>
         </v-toolbar>
-        <!-- <v-card-title primary-title>
-                
-        </v-card-title>-->
+      
         <v-card-text>
           <v-layout row wrap mt-4>
             <v-flex xs12>
@@ -146,17 +184,110 @@
           </v-layout>
         </v-card-text>
       </v-card>
+    </v-flex>-->
+    <v-flex xs12 mt-5>
+      <div class="headline">Reference</div>
     </v-flex>
+    <v-layout row wrap>
+      <v-flex xs5 sm5 class="my-3 ml-2">
+        <v-card class="dcard">
+          <v-date-picker
+            width="calc(100%-10px)"
+            v-model="calendar"
+            :event-color="date => date[9] % 2 ? 'red' : 'yellow'"
+            :events="functionEvents"
+          ></v-date-picker>
+        </v-card>
+      </v-flex>
+      <!-- USer Activity -->
+      <v-flex xs6 sm6 mt-3 ml-3>
+        <v-card width="530" class="dcard" height="410">
+          <v-toolbar color="fdaTan">
+            <v-toolbar-title>User Activity</v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn icon>
+              <v-icon>more_vert</v-icon>
+            </v-btn>
+          </v-toolbar>
+
+          <v-list two-line widht>
+            <template v-for="(item, index) in items">
+              <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
+              <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
+              <v-list-tile v-else avatar>
+                <v-list-tile-avatar>
+                  <img :src="item.avatar">
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                  <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                  <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                </v-list-tile-content>
+              </v-list-tile>
+            </template>
+          </v-list>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-btn flat block color="success">view more</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </v-layout>
 </template>
 
 <script>
 import DashboardCard from "@/components/DashboardCards";
 export default {
-  components: { DashboardCard }
+  components: { DashboardCard },
+  data: () => ({
+    date2: new Date().toISOString().substr(0, 10),
+    items: [
+      { header: "Today" },
+      {
+        avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
+        title: "Authorized Officer",
+        subtitle:
+          "<span class='text--primary'>Chz Quiocho</span> &mdash; Applied Certificate for Food"
+      },
+      { divider: true, inset: true },
+      {
+        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
+        title: "Qualified Personnel 1 ",
+        subtitle:
+          "<span class='text--primary'>Godfrey Rivera</span> &mdash; Paid Certificate 0005679"
+      },
+      { divider: true, inset: true },
+      {
+        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
+        title: "Authorized Officer",
+        subtitle:
+          "<span class='text--primary'>Chz Quiocho</span> &mdash; Renewed License 0001111"
+      }
+    ]
+  }),
+  methods: {
+    functionEvents(date) {
+      const [, , day] = date.split("-");
+      if ([12, 17, 28].includes(parseInt(day, 10))) return true;
+      if ([1, 19, 22].includes(parseInt(day, 10))) return ["red", "#00f"];
+      return false;
+    }
+  }
 };
 </script>
 
+
 <style>
+.dcard {
+  -webkit-box-reflect: below 6px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent), to(rgba(250, 250, 250, 0.1)));
+}
+.v-picker__title__btn:not(.v-picker__title__btn--active) {
+  font-size: 50px;
+}
+
+.primary {
+  background: linear-gradient(45deg, #e0c71c 0%, #e9d758 100%) !important;
+  /* border-color: #104b2a !important; */
+}
 </style>
 
