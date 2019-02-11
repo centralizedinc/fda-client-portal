@@ -3,7 +3,7 @@
     <v-dialog v-model="show" max-width="1000px" persistent transition="dialog-transition">
       <v-card>
         <v-toolbar
-          color="primary"
+          color="fdaGreen"
           style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
         >
           <span class="font-weight-light headline">Application Overview</span>

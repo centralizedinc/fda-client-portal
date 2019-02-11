@@ -66,7 +66,7 @@
       >Warehouse List
         <v-tooltip top>
           <v-btn slot="activator" flat icon small color="error">
-            <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
+            <v-icon small class="pb-1">fas fa-question</v-icon>
           </v-btn>Get Help
         </v-tooltip>
       </v-sheet>
@@ -76,11 +76,12 @@
           <v-btn
             color="transparent"
             slot="activator"
+            large
             block
             @click="addToListDialog=true"
             style="box-shadow: none !important"
           >
-            <v-icon medium color="success">fas fa-plus fa-3x</v-icon>
+            <v-icon color="success">fas fa-plus fa-3x</v-icon>
           </v-btn>Add new
         </v-tooltip>
       </v-flex>

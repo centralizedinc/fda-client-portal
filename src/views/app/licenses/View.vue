@@ -250,7 +250,7 @@
                           <v-flex xs12>
                             <v-divider></v-divider>
                           </v-flex>
-                          <v-btn block color="success" @click="pay()">Pay now</v-btn>
+                          <v-btn block color="success" @click="pay">Pay now</v-btn>
                         </v-layout>
                       </v-container>
                       <payment-summary v-show="paymentDialog"></payment-summary>

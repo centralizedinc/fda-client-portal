@@ -51,23 +51,23 @@
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-flex ml-5>
-            <v-btn class="font-weight-light" color="success">Bank Payment</v-btn>
-          </v-flex>
-          <v-spacer></v-spacer>
+
           <v-flex>
-            <v-btn class="font-weight-light" color="success" @click="redirect">Bancnet Online</v-btn>
+            <v-btn class="font-weight-light" color="success" @click="generatePDF">FDA Cashier/Bank</v-btn>
           </v-flex>
-          <v-spacer></v-spacer>
           <v-flex>
-            <v-btn class="font-weight-light" color="success" @click="generatePDF">FDA Cashier / FDAC</v-btn>
+            <v-btn class="font-weight-light" color="success">VFS Payment</v-btn>
           </v-flex>
           <v-spacer></v-spacer>
           <v-flex>
             <v-btn class="font-weight-light" color="success" @click="creditCard">Credit Card</v-btn>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-btn color="success">Pay Later</v-btn>
+          <v-flex>
+            <v-btn class="font-weight-light" color="success">EZ Pay</v-btn>
+          </v-flex>
+          <v-spacer></v-spacer>
+          <v-btn class="font-weight-light" color="success" @click="payLater">Pay Later</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -82,7 +82,7 @@
       >
         <v-card>
           <v-toolbar
-            color="primary"
+            color="fdaGreen"
             style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
           >
             <span class="font-weight-light headline">Final Step</span>
@@ -98,7 +98,7 @@
           <v-divider></v-divider>
           <v-card-text>
             <v-flex xs12>
-              <p class="body-2">You have successfuly downloaded the Order of Payment.</p>
+              <p class="body-2">Order of Payment has been downloaded.</p>
               <p>General Guidelines:</p>
               <ol>
                 <li>Print the system generated Order of Payment</li>
@@ -119,7 +119,7 @@
         </v-card>
       </v-dialog>
     </v-layout>
-    <v-layout row wrap>
+    <!-- <v-layout row wrap>
       <v-dialog
         v-model="bancnetDialog"
         scrollable
@@ -151,7 +151,7 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-layout>
+    </v-layout>-->
   </v-layout>
 </template>
 
@@ -166,8 +166,8 @@ export default {
         fee: 5000,
         lrf: 50
       },
-      finalStep: false,
-      bancnetDialog: false
+      finalStep: false
+      // bancnetDialog: false
     };
   },
   created() {
@@ -184,10 +184,13 @@ export default {
     creditCard() {
       this.$router.push("/app/payments/creditcard");
     },
-    redirect() {
-      this.bancnetDialog = true;
-      window.open("https://www.bancnetonline.com/BancnetWeb/login.do");
+    payLater() {
+      this.$router.push("/app/payments/paylater");
     }
+    // redirect() {
+    //   this.bancnetDialog = true;
+    //   window.open("https://www.bancnetonline.com/BancnetWeb/login.do");
+    // }
   }
 };
 </script>

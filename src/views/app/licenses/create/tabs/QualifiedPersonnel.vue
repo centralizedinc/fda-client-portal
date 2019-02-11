@@ -6,11 +6,12 @@
           class="mt-0"
           color="transparent"
           slot="activator"
+          large
           block
           @click="addToListDialog=true"
           style="box-shadow: none !important"
         >
-          <v-icon medium color="success">fas fa-plus fa-3x</v-icon>
+          <v-icon color="success">fas fa-plus fa-3x</v-icon>
         </v-btn>Add Qualified Person to List
       </v-tooltip>
     </v-flex>
@@ -140,11 +141,15 @@
                   readonly
                 ></v-text-field>
                 <v-date-picker
-                  ref="picker2"
+                  no-title
+                  scrollable
                   color="green darken-1"
                   v-model="qualified.id_expiry"
-                  @input="$refs.menu2.save(qualified.id_expiry)"
-                ></v-date-picker>
+                >
+                  <v-spacer></v-spacer>
+                  <v-btn flat color="primary" @click="menu2 = false">Cancel</v-btn>
+                  <v-btn flat color="primary" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
+                </v-date-picker>
               </v-menu>
             </v-flex>
           </v-flex>
@@ -256,9 +261,6 @@ export default {
   watch: {
     menu(val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = "YEAR"));
-    },
-    menu2(val) {
-      val && this.$nextTick(() => (this.$refs.picker2.activePicker = "YEAR"));
     }
   },
   methods: {

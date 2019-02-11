@@ -139,7 +139,7 @@
         </v-flex>
         <v-flex xs1 mt-3 :key="index">
           <v-btn flat small icon @click="removeItem(index)">
-            <v-icon color="error">fas fa-trash-alt</v-icon>
+            <v-icon color="error">fas fa-trash-alt fa-lg</v-icon>
           </v-btn>
         </v-flex>
       </template>
@@ -150,11 +150,13 @@
         <v-btn
           color="transparent"
           slot="activator"
+          large
+          hover
           block
           @click="addItem"
           style="box-shadow: none !important"
         >
-          <v-icon medium color="success">fas fa-plus fa-3x</v-icon>
+          <v-icon color="success">fas fa-plus fa-3x</v-icon>
         </v-btn>Add new
       </v-tooltip>
     </v-flex>

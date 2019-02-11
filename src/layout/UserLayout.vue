@@ -230,7 +230,7 @@
             :key="index"
             @click="goTo(item.href)"
           >
-            <v-icon color="primary">{{item.icon}}</v-icon>
+            <v-icon color="fdaGreen">{{item.icon}}</v-icon>
             <span class="caption font-weight-light">{{item.name}}</span>
           </v-breadcrumbs-item>
         </v-breadcrumbs>
@@ -245,7 +245,7 @@
       <!-- </transition> -->
       <v-dialog v-model="show_logout" persistent max-width="300" transition="dialog-transition">
         <v-card>
-          <v-toolbar dark color="primary">
+          <v-toolbar dark color="fdaGreen">
             <span class="title font-weight-thin">Logout</span>
           </v-toolbar>
           <v-card-text>
@@ -255,7 +255,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn outline color="secondary" dark @click.native="show_logout = false">No</v-btn>
-            <v-btn color="primary" @click="confirmLogout()">Yes</v-btn>
+            <v-btn color="fdaGreen" @click="confirmLogout()">Yes</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
