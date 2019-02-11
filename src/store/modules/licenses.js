@@ -10,19 +10,20 @@ const state = {
     LicenseAPI: null,
     licenses: [],
     form: null,
-    overview_app: null
+    uploaded: null
 }
 
 const mutations = {
     SET_LICENSES(state, licenses) {
+        state.license = null;
         state.licenses = licenses;
     },
     SET_FORM(state, form) {
-        state.form = form
+        state.form = null;
+        state.form = form;
     },
-    OVERVIEW_APP(state, form) {
-        state.overview_app = form
-        console.log("overview app store: " + JSON.stringify(state.overview_app))
+    UPLOADED_DATA(state,form){
+        state.uploaded = form
     }
 }
 
@@ -35,21 +36,42 @@ var actions = {
     //     }
     // },
     GET_LICENSES(context) {
-        new LicenseAPI(context.rootState.user_session.token).getLicenses((licenses, err) => {
-            if (!err) {
-                context.commit('SET_LICENSES', licenses)
-            } else {
-                console.log(JSON.stringify(err))
-            }
+        return new Promise((resolve, reject) => {
+            new LicenseAPI(context.rootState.user_session.token).getLicenses((licenses, err) => {
+                if (!err) {
+                    context.commit('SET_LICENSES', licenses)
+                    resolve()
+                } else {
+                    console.log(JSON.stringify(err))
+                    reject()
+                }
+            })
         })
     },
-    SAVE_LICENSES(context, license) {
-        new LicenseAPI(context.rootState.user_session.token).saveLicenses(license, (licenses, err) => {
-            if (!err) {
-                console.log('actions save licenses: ' + JSON.stringify(licenses))
-            } else {
-                console.log("actions save licenses error: " + JSON.stringify(err))
-            }
+    SAVE_LICENSES(context, license){
+        return new Promise((resolve, reject) => {
+            new LicenseAPI(context.rootState.user_session.token).saveLicenses(license,(licenses, err) => {
+                if(!err){
+                    console.log('actions save licenses: ' + JSON.stringify(licenses))
+                    resolve()
+                } else {
+                    console.log("actions save licenses error: " + JSON.stringify(err))
+                    reject()
+                }
+            })
+        })
+    },
+    UPLOAD_LICENSES(context, uploadData){
+        return new Promise((resolve, reject) => {
+            new LicenseAPI(context.rootState.user_session.token).uploadLicenses(uploadData,(uploadedData, err) =>{
+                if(!err){
+                    context.commit('UPLOADED_DATA', uploadedData)
+                    resolve()
+                }else{
+                    console.log(JSON.stringify(err))
+                    reject()
+                }
+            })
         })
     }
 

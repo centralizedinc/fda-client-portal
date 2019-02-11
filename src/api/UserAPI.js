@@ -18,9 +18,7 @@ export default class UserAPI {
   static login(credentials, cb) {
     axios
       .post(
-        "public/accounts/auth",
-        {},
-        {
+        "public/accounts/auth", {}, {
           auth: {
             username: credentials.username,
             password: credentials.password
@@ -46,18 +44,18 @@ export default class UserAPI {
    * @param {String} username 
    * @param {Function} cb 
    */
-  static verifyStatus(username, cb){
-    axios.get("public/accounts/auth/active?username="+username)
-    .then(result=>{
+  static verifyStatus(username, cb) {
+    axios.get("public/accounts/auth/active?username=" + username)
+      .then(result => {
         if (result.data.success) {
           cb(result.data.model);
         } else {
           cb(null, result.data.errors);
         }
-    }).catch(err =>{
+      }).catch(err => {
         console.log("err... " + err);
         cb(null, err);
-    })
+      })
   }
 
 
@@ -66,19 +64,21 @@ export default class UserAPI {
    * @param {String} email 
    * @param {Function} cb 
    */
-  static forgotPassword(email,cb){
-    axios.post("public/accounts/auth/recovery", {email})
-    .then(result=>{
-      if (result.data.success) {
-        cb(result.data.model);
-      } else {
-        cb(null, result.data.errors);
-      }
-    })
-    .catch(err=>{
-      console.log("err... " + err);
-      cb(null, err);
-    })
+  static forgotPassword(email, cb) {
+    axios.post("public/accounts/auth/recovery", {
+        email
+      })
+      .then(result => {
+        if (result.data.success) {
+          cb(result.data.model);
+        } else {
+          cb(null, result.data.errors);
+        }
+      })
+      .catch(err => {
+        console.log("err... " + err);
+        cb(null, err);
+      })
   }
 
   /**
@@ -86,19 +86,19 @@ export default class UserAPI {
    * @param {String} key 
    * @param {Function} cb 
    */
-  static confirmAccountRecovery(key, cb){
+  static confirmAccountRecovery(key, cb) {
     axios.get('public/accounts/auth/recovery/confirmation?key=' + key)
-    .then(result=>{
-      if (result.data.success) {
-        cb(result.data.model);
-      } else {
-        cb(null, result.data.errors);
-      }
-    })
-    .catch(err=>{
-      console.log("err... " + err);
-      cb(null, err);
-    })
+      .then(result => {
+        if (result.data.success) {
+          cb(result.data.model);
+        } else {
+          cb(null, result.data.errors);
+        }
+      })
+      .catch(err => {
+        console.log("err... " + err);
+        cb(null, err);
+      })
   }
 
   /**
@@ -106,21 +106,21 @@ export default class UserAPI {
    * @param {AccountModel} account 
    * @param {Function} cb 
    */
-  static changePassword(account, cb){
+  static changePassword(account, cb) {
     console.log("calling changePassword...")
     axios.post('public/accounts/auth/recovery/password', account)
-    .then(result=>{
-      console.log("RESULT: " + JSON.stringify(result))
-      if (result.data.success) {
-        cb(result.data.model);
-      } else {
-        cb(null, result.data.errors);
-      }
-    })
-    .catch(err=>{
-      console.log("err... " + err);
-      cb(null, err);
-    })
+      .then(result => {
+        console.log("RESULT: " + JSON.stringify(result))
+        if (result.data.success) {
+          cb(result.data.model);
+        } else {
+          cb(null, result.data.errors);
+        }
+      })
+      .catch(err => {
+        console.log("err... " + err);
+        cb(null, err);
+      })
   }
 
   /**
@@ -128,19 +128,19 @@ export default class UserAPI {
    * @param {AccountsModel} account 
    * @param {Function} cb 
    */
-  static updateAccount(account, cb){
-    axios.post('secured/accounts/'+account._id, account)
-    .then(result=>{
-      if (result.data.success) {
-        cb(result.data.model);
-      } else {
-        cb(null, result.data.errors);
-      }
-    })
-    .catch(err=>{
-      console.log("err... " + err);
-      cb(null, err);
-    })
+  static updateAccount(account, cb) {
+    axios.post('secured/accounts/' + account._id, account)
+      .then(result => {
+        if (result.data.success) {
+          cb(result.data.model);
+        } else {
+          cb(null, result.data.errors);
+        }
+      })
+      .catch(err => {
+        console.log("err... " + err);
+        cb(null, err);
+      })
   }
 
 }

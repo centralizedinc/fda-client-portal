@@ -8,23 +8,26 @@ import store from "@/store";
 
 Vue.use(Router)
 
-function isAuthorized(to, from, next){
+function isAuthorized(to, from, next) {
   store.dispatch('CHECK_SESSION', store.state.user_session.user.username)
-  .then(result=>{
-    if(result.status === 2){ 
-      //leaving breadcrumbs behind    
-      store.commit('DROP_BREADCRUMBS', {name: to.name, href: to.path})     
-      next()
-    } else{      
+    .then(result => {
+      if (result.status === 2) {
+        //leaving breadcrumbs behind    
+        store.commit('DROP_BREADCRUMBS', {
+          name: to.name,
+          href: to.path
+        })
+        next()
+      } else {
+        next("/app")
+      }
+    })
+    .catch(err => {
       next("/app")
-    }
-  })
-  .catch(err=>{
-    next("/app")
-  })
+    })
 }
 
-function isAuthenticated(to, from, next){
+function isAuthenticated(to, from, next) {
   if (store.state.user_session.isAuthenticated) {
     next('/app');
   } else {
@@ -33,48 +36,54 @@ function isAuthenticated(to, from, next){
 }
 
 function isActiveSession(to, from, next) {
-  if(!store.state.user_session.isAuthenticated){
+  if (!store.state.user_session.isAuthenticated) {
     next("/");
   } else {
-    store.commit('DROP_BREADCRUMBS', {name: to.name, href: to.path})
+    store.commit('DROP_BREADCRUMBS', {
+      name: to.name,
+      href: to.path
+    })
     next();
   }
 }
 
 function dropBreadcrumbs(to, from, next) {
-  store.commit('DROP_BREADCRUMBS', {name: to.name, href: to.path})
+  store.commit('DROP_BREADCRUMBS', {
+    name: to.name,
+    href: to.path
+  })
   next();
 }
 
 
 
-var router =  new Router({
+var router = new Router({
   routes: [{
       path: '/',
       name: 'Main',
       component: MainLayout,
       children: [{
-        path: '',
-        name: 'Login',
-        component: () => import('@/views/Login.vue'),
-        beforeEnter: isAuthenticated
-      },
-      {
-        path: '/signup',
-        name: 'Registration',
-        component: () => import('@/views/Registration.vue')
-      },
-      {
-        path: '/confirmation',
-        name: 'Confirmation',
-        component: () => import('@/views/Confirmation.vue')
-      },
-      {
-        path: '/recovery',
-        name: 'Account Recovery',
-        component: () => import('@/views/Recovery.vue')
-      }
-    ]
+          path: '',
+          name: 'Login',
+          component: () => import('@/views/Login.vue'),
+          beforeEnter: isAuthenticated
+        },
+        {
+          path: '/signup',
+          name: 'Registration',
+          component: () => import('@/views/Registration.vue')
+        },
+        {
+          path: '/confirmation',
+          name: 'Confirmation',
+          component: () => import('@/views/Confirmation.vue')
+        },
+        {
+          path: '/recovery',
+          name: 'Account Recovery',
+          component: () => import('@/views/Recovery.vue')
+        }
+      ]
 
     },
     {
@@ -136,9 +145,15 @@ var router =  new Router({
           beforeEnter: isAuthorized
         },
         {
-          path: 'payments/creaditcard',
-          name: 'Creadit Card Payment',
-          component: () => import('@/views/app/payment/CreaditCardPayment.vue'),
+          path: 'payments/paylater',
+          name: 'Pay Later',
+          component: () => import('@/views/app/payment/PayLater.vue'),
+          beforeEnter: isAuthorized
+        },
+        {
+          path: 'payments/creditcard',
+          name: 'Credit Card Payment',
+          component: () => import('@/views/app/payment/CreditCardPayment.vue'),
           beforeEnter: isAuthorized
         },
         {
@@ -147,12 +162,6 @@ var router =  new Router({
           component: () => import('@/views/app/payment/PaymentSummary.vue'),
           beforeEnter: isAuthorized
         },
-        // {
-        //   path: 'track',
-        //   name: 'FDA Doctrack Status',
-        //   component: () => import('@/views/app/DocTracker.vue'),
-        //   beforeEnter: isAuthorized
-        // },
         {
           path: 'profile',
           name: 'Profile',

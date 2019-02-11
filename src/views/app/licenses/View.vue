@@ -162,24 +162,26 @@
                             class="headline mt-2 mb-4 pt-3 font-weight-thin"
                             style="padding: 2px"
                           >Qualified Personnel</v-flex>
-                          <v-layout row wrap>
-                            <v-flex xs12>
-                              <v-data-table
-                                :headers="headers"
-                                :items="form.qualified_personnel"
-                                class="elevation-1"
-                              >
-                                <template slot="items" slot-scope="props">
-                                  <td>{{props.item.firstname + " " + props.item.lastname }}</td>
-                                  <td>{{props.item.designation}}</td>
-                                  <td>{{props.item.birthday}}</td>
-                                  <td>{{props.item.tin}}</td>
-                                  <td>{{props.item.id_type + "-" + props.item.id_no}}</td>
-                                  <td></td>
-                                </template>
-                              </v-data-table>
-                            </v-flex>
-                          </v-layout>
+                          <v-container grid-list-md text-xs-left>
+                            <v-layout row wrap>
+                              <v-flex xs12>
+                                <v-data-table
+                                  :headers="headers"
+                                  :items="form.qualified_personnel"
+                                  class="elevation-1"
+                                >
+                                  <template slot="items" slot-scope="props">
+                                    <td>{{props.item.firstname + " " + props.item.lastname }}</td>
+                                    <td>{{props.item.designation}}</td>
+                                    <td>{{props.item.birthday}}</td>
+                                    <td>{{props.item.tin}}</td>
+                                    <td>{{props.item.id_type + "-" + props.item.id_no}}</td>
+                                    <td></td>
+                                  </template>
+                                </v-data-table>
+                              </v-flex>
+                            </v-layout>
+                          </v-container>
                         </v-layout>
                       </v-container>
                     </v-card>
@@ -213,11 +215,83 @@
 
                     <!-- Payment Details -->
                     <v-card flat v-show="window===5">
-                      <v-container grid-list-md text-xs-left>
+                      <!-- PENDING TRANSACTION -->
+                      <v-container grid-list-md text-xs-left v-show="!paymentDialog">
                         <v-layout row wrap>
-                          <slot name="paymentdetails"></slot>
+                          <v-flex xs3>
+                            <span class="headline font-weight-bold">Case Number:</span>
+                          </v-flex>
+                          <v-flex xs9>
+                            <span class="headline font-weight-bold">1425226272</span>
+                          </v-flex>
+                          <v-flex xs12>
+                            To confirm your application, please pay the amount of
+                            <b
+                              class="font-weight-bold"
+                            >PHP XXXX.XX</b> to your selected accredited payment channels. To avoid late charges/ penalties, we encourage you to pay on or before the payment due date.
+                          </v-flex>
+                          <v-layout row wrap>
+                            <v-flex xs4 mt-2 ml-3>
+                              <span class="body-2">Application Status</span>
+                            </v-flex>
+                            <v-flex xs4 mr-5>
+                              <v-chip
+                                class="font-weight-bold"
+                                label
+                                color="fdaYellow"
+                                text-color="black"
+                              >PENDING</v-chip>
+                            </v-flex>
+                            <v-flex xs4 mt-2 ml-3>
+                              <span class="body-2">Due Date</span>
+                            </v-flex>
+                            <v-flex xs4 mr-5 ml-2>MM DD, YYYY HH:MM:SS AM/PM</v-flex>
+                          </v-layout>
+                          <v-flex xs12>
+                            <v-divider></v-divider>
+                          </v-flex>
+                          <v-btn block color="success" @click="pay">Pay now</v-btn>
                         </v-layout>
                       </v-container>
+                      <payment-summary v-show="paymentDialog"></payment-summary>
+                      <!-- PAID TRANSACTION -->
+                      <!-- <v-container grid-list-md text-xs-left>
+                        <v-layout row wrap>
+                          <v-flex xs12>
+                            <span
+                              class="headline font-weight-bold"
+                            >Your License application is in process.</span>
+                          </v-flex>
+                          <v-layout row wrap>
+                            <v-flex xs4 mt-2 ml-3>
+                              <span class="body-2">Case Number</span>
+                            </v-flex>
+                            <v-flex xs4 mr-5>
+                              <v-chip
+                                class="font-weight-bold"
+                                label
+                                color="fdaGreen"
+                                text-color="white"
+                              >10001919029</v-chip>
+                            </v-flex>
+                            <v-flex xs4 ml-3>
+                              <span class="body-2">Application Type</span>
+                            </v-flex>
+                            <v-flex xs4 mr-5 ml-1>{{form.application_type + " - " + "LICENSE"}}</v-flex>
+                            <v-flex xs4 ml-3>
+                              <span class="body-2">Establishment</span>
+                            </v-flex>
+                            <v-flex xs4 mr-5 ml-1>{{form.estab_details.establishment_name}}</v-flex>
+                            <v-flex xs12 text-xs-center>
+                              <a href="#">Click here to download your official receipt</a>
+                            </v-flex>
+                          </v-layout>
+                          <v-flex xs12>
+                            <v-divider></v-divider>
+                          </v-flex>
+                          <v-btn block color="success">Back to Main</v-btn>
+                        </v-layout>
+                      </v-container>-->
                     </v-card>
                   </v-card-text>
                 </v-card>
@@ -226,18 +300,22 @@
           </v-flex>
         </v-layout>
       </v-card-text>
-      <v-card-actions>
-        <v-btn block color="success">submit</v-btn>
-      </v-card-actions>
+      <!-- <v-card-actions>
+        <v-btn block color="success" >submit</v-btn>
+      </v-card-actions>-->
     </v-card>
   </v-layout>
 </template>
 
 <script>
 export default {
+  components: {
+    PaymentSummary: () => import("../payment/PaymentSummary.vue")
+  },
   props: ["form"],
   data() {
     return {
+      paymentDialog: false,
       length: 3,
       window: 0,
       headers: [
@@ -274,7 +352,7 @@ export default {
         "Uploaded Files",
         "Output Documents",
         "History",
-        "Payment Details"
+        "Payment"
       ],
       form: null
     };
@@ -282,6 +360,11 @@ export default {
   created() {
     this.form = this.$store.state.licenses.form;
     console.log("VIEW ########################: " + JSON.stringify(this.form));
+  },
+  methods: {
+    pay() {
+      this.paymentDialog = true;
+    }
   }
 };
 </script>
