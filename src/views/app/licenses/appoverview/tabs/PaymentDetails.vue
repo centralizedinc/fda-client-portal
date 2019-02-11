@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap>
     <v-flex xs8 class="subheading">Application Fee:</v-flex>
-    <v-flex xs4>dd</v-flex>
+    <v-flex xs4>{{dd}}</v-flex>
     <v-flex xs8 class="subheading">No. of year/s applied:</v-flex>
     <v-flex xs4>dd</v-flex>
     <v-flex xs8 class="subheading">Surcharge:</v-flex>

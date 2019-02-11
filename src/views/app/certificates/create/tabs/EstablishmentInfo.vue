@@ -164,8 +164,7 @@ export default {
     uploadError() {
       this.$notify({
         message: "File is invalid. Only PDF File is supported.",
-        icon: "add_alert",
-        type: "warning",
+        color: "warning",
         initialMargin: 100
       });
     }

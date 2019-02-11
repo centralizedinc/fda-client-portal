@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <v-flex xs12>kkk</v-flex>
+    <v-flex xs12>No documents generated yet</v-flex>
   </v-layout>
 </template>
 

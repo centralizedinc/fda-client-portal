@@ -60,8 +60,8 @@
 
     <v-layout column class="fab-container">
       <v-tooltip top>
-        <v-btn slot="activator" fab color="primary" @click="dialog=true">
-          <v-icon>add</v-icon>
+        <v-btn slot="activator" fab color="fdaMed" @click="dialog=true">
+          <v-icon large color="fdaSilver">add</v-icon>
         </v-btn>Apply New
       </v-tooltip>
     </v-layout>

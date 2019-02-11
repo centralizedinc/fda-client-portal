@@ -4,7 +4,6 @@
       <v-flex xs12>Invalid Request: 404 status code.</v-flex>
     </v-layout>
     <form-layout
-      v-show="!paymentDialog"
       v-else
       :step="e1"
       :steps="6"
@@ -82,7 +81,7 @@
       <app-history slot="apphistory" :form="form"></app-history>
       <payment slot="paymentdetails" :form="form"></payment>
     </application-overview>
-    <payment-summary v-show="paymentDialog" @close="confirmDialog=false"></payment-summary>
+    <!-- <payment-summary v-show="paymentDialog" @close="confirmDialog=false"></payment-summary> -->
   </div>
 </template>
 
@@ -265,14 +264,15 @@ export default {
 
       this.paymentDialog = true;
       this.confirmDialog = false;
+      this.$router.push("/app/payments/summary");
       console.log("#########submit: " + JSON.stringify(this.form));
       this.$store.dispatch("SAVE_LICENSES", this.form).then(result =>{
         console.log("result to save licenses: " + result)
       })
       this.$notify({
-        message: "You have successfully applied a new license ",
+        message: "You have successfully applied a new license",
         color: "success",
-        icon: "check_circle_outline"
+        icon: "check_circle"
       });
     }
   }

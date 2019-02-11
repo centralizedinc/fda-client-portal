@@ -147,6 +147,12 @@ var router = new Router({
           beforeEnter: isAuthorized
         },
         {
+          path: 'payments/paylater',
+          name: 'Pay Later',
+          component: () => import('@/views/app/payment/PayLater.vue'),
+          beforeEnter: isAuthorized
+        },
+        {
           path: 'payments/creditcard',
           name: 'Credit Card Payment',
           component: () => import('@/views/app/payment/CreditCardPayment.vue'),

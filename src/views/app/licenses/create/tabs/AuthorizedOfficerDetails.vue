@@ -137,13 +137,15 @@
             readonly
           ></v-text-field>
           <v-date-picker
-            ref="picker"
             color="green darken-1"
             v-model="form.auth_officer.id_expiry"
-            :max="new Date().toISOString().substr(0, 10)"
-            min="1950-01-01"
-            @input="$refs.menu.save(form.auth_officer.id_expiry)"
-          ></v-date-picker>
+            no-title
+            scrollable
+          >
+            <v-spacer></v-spacer>
+            <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+            <v-btn flat color="primary" @click="$refs.menu.save(form.auth_officer.id_expiry)">OK</v-btn>
+          </v-date-picker>
         </v-menu>
       </v-flex>
     </v-flex>
@@ -237,9 +239,6 @@ export default {
     }
   }),
   watch: {
-    menu(val) {
-      val && this.$nextTick(() => (this.$refs.picker.activePicker = "YEAR"));
-    },
     menu2(val) {
       val && this.$nextTick(() => (this.$refs.picker2.activePicker = "YEAR"));
     }

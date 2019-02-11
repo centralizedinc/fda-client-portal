@@ -71,9 +71,6 @@
           details="0"
           color="fdaBlueGreen"
         ></dashboard-card>
-        <v-btn color="success" dark absolute top right fab small>
-          <v-icon>call_made</v-icon>
-        </v-btn>
       </v-card>
     </v-flex>
     <!-- <v-flex xs12 md6 lg4 pa-2>
@@ -188,6 +185,7 @@
     <v-flex xs12 mt-5>
       <div class="headline">Reference</div>
     </v-flex>
+    <!-- Calendar -->
     <v-layout row wrap>
       <v-flex xs5 sm5 class="my-3 ml-2">
         <v-card class="dcard">
@@ -202,7 +200,7 @@
       <!-- USer Activity -->
       <v-flex xs6 sm6 mt-3 ml-3>
         <v-card width="530" class="dcard" height="410">
-          <v-toolbar color="fdaTan">
+          <v-toolbar style="background: linear-gradient(45deg, #e0c71c 0%, #e9d758 100%);">
             <v-toolbar-title>User Activity</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon>
@@ -214,7 +212,7 @@
             <template v-for="(item, index) in items">
               <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
               <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
-              <v-list-tile v-else avatar>
+              <v-list-tile v-else avatar :key="index">
                 <v-list-tile-avatar>
                   <img :src="item.avatar">
                 </v-list-tile-avatar>
@@ -284,10 +282,9 @@ export default {
 .v-picker__title__btn:not(.v-picker__title__btn--active) {
   font-size: 50px;
 }
-
-.primary {
-  background: linear-gradient(45deg, #e0c71c 0%, #e9d758 100%) !important;
-  /* border-color: #104b2a !important; */
-}
 </style>
 
+// .primary {
+//   background: linear-gradient(45deg, #e0c71c 0%, #e9d758 100%);
+//   /* border-color: #104b2a !important; */
+// }
