@@ -61,6 +61,19 @@ var actions = {
             })
         })
     },
+    SAVE_MODIFY_LICENSES(context, license){
+        return new Promise((resolve, reject) => {
+            new LicenseAPI(context.rootState.user_session.token).modifyLicenses(license,(licenses, err) => {
+                if(!err){
+                    console.log('actions save modify licenses: ' + JSON.stringify(licenses))
+                    resolve()
+                } else {
+                    console.log("actions save modify licenses error: " + JSON.stringify(err))
+                    reject()
+                }
+            })
+        })
+    },
     UPLOAD_LICENSES(context, uploadData){
         return new Promise((resolve, reject) => {
             new LicenseAPI(context.rootState.user_session.token).uploadLicenses(uploadData,(uploadedData, err) =>{

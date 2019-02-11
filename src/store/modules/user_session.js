@@ -5,7 +5,7 @@ import RegistrationAPI from "@/api/RegistrationAPI";
 import UserAPI from "@/api/UserAPI";
 
 const state = {
-  isAuthenticated: true,
+  isAuthenticated: false,
   token: null,
   user: {},
   task: {},

@@ -47,7 +47,7 @@ export default class ProductAPI {
     }
 
     additional(primary, cb) {
-        axios.get("core/additional/"+primary)
+        axios.get("core/additional/additional"+primary)
         .then(result => {
           if (result.data.success) {
             cb(result.data.model)
@@ -59,7 +59,7 @@ export default class ProductAPI {
     }
 
     declared(primary, cb) {
-        axios.get("core/declared/"+ primary)
+        axios.get("core/declared/declared"+ primary)
         .then(result => {
           if (result.data.success) {
             cb(result.data.model)

@@ -13,7 +13,7 @@
             <td>{{ props.item.case_no }}</td>
             <td>{{ props.item.licenses_no }}</td>
             <td>{{ getAppType(props.item.application_type) }}</td>
-            <td>{{ props.item.current_task }}</td>
+            <td>{{ getTask(props.item.current_task) }}</td>
             <td>{{ formatDate (props.item.date_created) }}</td>
             <td>{{ formatDate (props.item.date_variation) }}</td>
             <td>
@@ -92,7 +92,7 @@ export default {
         { text: "Actions", value: "" }
       ],
       licenses: [],
-      licensesData: []
+      tasks: []
     };
   },
   created() {
@@ -100,6 +100,7 @@ export default {
   },
   methods: {
     init() {
+      
       this.$store.dispatch("GET_LICENSES");
       var licenseData = this.$store.state.licenses.licenses;
       // this.licenses = this.$store.state.licenses.licenses;
@@ -123,7 +124,12 @@ export default {
         // this.licensesData.push(data);
         this.licenses.push(element);
       });
-      // console.log("####################License data: " + JSON.stringify(this.licensesData)2)
+      this.$store.dispatch("GET_TASKS").then(result =>{
+        this.tasks = this.$store.state.tasks.tasks;
+      console.log("tasks data: " + JSON.stringify(this.tasks))
+      })
+      
+      console.log("####################License data: " + JSON.stringify(this.licenses))
     },
     viewForm(item) {
       console.log("$$$$$$$$$$$$$$$$$ view data: " + JSON.stringify(item));
@@ -132,15 +138,18 @@ export default {
       this.$router.push("/app/licenses/view");
     },
     renewForm(item) {
-      this.loadForm(item);
+      
       console.log("renew data: " + JSON.stringify(item.application_type));
-      // item.application_type = "R"
+      item.application_type = "R"
+      this.loadForm(item);
       // this.$store.commit("SET_FORM", item)
     },
     variationForm(item) {
+      item.application_type = "V"
+      console.log("variation data: " + JSON.stringify(item.application_type));
       this.loadForm(item);
       this.dialog = true;
-      // item.application_type = "V"
+      
       // this.$store.commit("SET_FORM", item)
     },
     loadForm(form) {
@@ -155,24 +164,12 @@ export default {
     launchAppForm() {
       this.$router.push("/app/licenses/apply");
     },
-    getAppType(type) {
-      if (type === "I") {
-        return "Initial";
-      } else if (type === "R") {
-        return "Renewal";
-      } else if (type === "V") {
-        return "Variation";
-      }
+    getTask(task_id){
+      var index = this.tasks.find(x => {
+        return x._id === task_id
+      })
+      return index.name
     }
-    // getTask(task_id){
-    //   console.log("task id: " + JSON.stringify(task_id))
-    //   this.$store.dispatch("GET_TASKS");
-    //   // console.log("tasks: " + JSON.stringify(this.$store.state.tasks.tasks))
-    //   var index = this.$store.state.tasks.tasks.findIndex(x => {
-    //     return x._id === task_id
-    //   })
-    //   return index.name
-    // }
   }
 };
 </script>

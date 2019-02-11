@@ -9,7 +9,7 @@
               <v-text-field
                 label="*Credit Card Number"
                 mask="####-####-####-####"
-                v-model="card_details.number"
+                v-model="full_details.card_details.number"
                 :rules="[rules.required, rules.card_validity]"
               >
                 <v-fade-transition slot="append">
@@ -22,7 +22,7 @@
               <v-text-field
                 label="*Expiration Month(MM)"
                 mask="##"
-                v-model="card_details.exp_month"
+                v-model="full_details.card_details.exp_month"
                 :rules="[rules.required, rules.expiry_validity]"
               ></v-text-field>
             </v-flex>
@@ -30,59 +30,59 @@
               <v-text-field
                 label="*Expiration Year(YYYY)"
                 mask="####"
-                v-model="card_details.exp_year"
+                v-model="full_details.card_details.exp_year"
                 :rules="[rules.required, rules.expiry_validity]"
               ></v-text-field>
             </v-flex>
             <v-flex xs4>
               <v-text-field
                 label="*CVC"
-                v-model="card_details.cvc"
+                v-model="full_details.card_details.cvc"
                 :rules="[rules.required, rules.cvc_validity]"
               ></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field
                 label="*Card Holder Full Name"
-                v-model="card_details.name"
+                v-model="full_details.card_details.name"
                 :rules="[rules.required]"
               ></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field
                 label="*Email Address"
-                v-model="card_details.email"
+                v-model="full_details.card_details.email"
                 :rules="[rules.required]"
               ></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field
                 label="*Address Line 1"
-                v-model="card_details.address_line1"
+                v-model="full_details.card_details.address_line1"
                 :rules="[rules.required]"
               ></v-text-field>
             </v-flex>
             <v-flex xs12>
-              <v-text-field label="Address Line 2" v-model="card_details.address_line2"></v-text-field>
+              <v-text-field label="Address Line 2" v-model="full_details.card_details.address_line2"></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field
                 label="*City"
-                v-model="card_details.address_city"
+                v-model="full_details.card_details.address_city"
                 :rules="[rules.required]"
               ></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field
                 label="*Region/State"
-                v-model="card_details.state"
+                v-model="full_details.card_details.state"
                 :rules="[rules.required]"
               ></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field
                 label="*Zip Code"
-                v-model="card_details.zip"
+                v-model="full_details.card_details.zip"
                 mask="#####"
                 :rules="[rules.required]"
               ></v-text-field>
@@ -104,42 +104,47 @@ export default {
     return {
       card_logo: "",
       loading: false,
-      card_details: {
-        number: "",
-        exp_month: "",
-        exp_year: "",
-        cvc: "",
-        name: "",
-        email: "",
-        address_line1: "",
-        address_line2: "",
-        address_city: "",
-        state: "",
-        zip: ""
-      },
-      payment_details: {
-      amount: 0,
-      currency: "php",
-      description: "",
-      statement_descriptor: "",
-      capture: true
-      },
-      transaction_details: {
-        application_type: "",
-        application: "",
-        case_no: "",
-        order_payment: {}
+      full_details:{
+        card_details: {
+          number: "",
+          exp_month: "",
+          exp_year: "",
+          cvc: "",
+          name: "",
+          email: "",
+          address_line1: "",
+          address_line2: "",
+          address_city: "",
+          state: "",
+          zip: ""
+        },
+        payment_details: {
+        amount: 0,
+        currency: "php",
+        description: "",
+        statement_descriptor: "",
+        capture: true
+        },
+        transaction_details: {
+          application_type: "",
+          application: "",
+          case_no: "",
+          order_payment: {}
+        }
       },
       rules: {
         required: value => !!value || "This is a required field",
         card_validity: true,
         expiry_validity: true,
         cvc_validity: true
-      }
+      },
+       gaps: [],
+       cvc_max: 3,
+       code_name: "CVC"
     };
   },
   watch:{
-    "card_details.number": function(val){
+    "full_details.card_details.number": function(val){
       this.loading = true;
       this.card_logo = "";
       this.$store.state.payments.credit_card = "";
@@ -147,14 +152,15 @@ export default {
         this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result=>{
           var creditCard = this.$store.state.payments.credit_card
           if(creditCard.isValid){
+            console.log("####### credit card details: " + JSON.stringify(creditCard.isValid))
+            this.loading = false;
             this.card_logo =
                   "https://fda-portal-user.herokuapp.com/assets/img/cc-icons/" +
                   creditCard.card.type +
                   ".png";
-
-                this.gaps = creditCard.card.gaps;
-                this.cvc_max = creditCard.card.code.size;
-                this.code_name = creditCard.card.code.name;
+            this.gaps = creditCard.card.gaps;
+            this.cvc_max = creditCard.card.code.size;
+            this.code_name = creditCard.card.code.name;
           }
         })
       }else{
@@ -177,21 +183,25 @@ export default {
     submit() {
       if (
         !this.isEmptyStrings([
-          this.card_details.number,
-          this.card_details.exp_month,
-          this.card_details.exp_year,
-          this.card_details.cvc,
-          this.card_details.name,
-          this.card_details.email,
-          this.card_details.address_line1,
-          this.card_details.address_city,
-          this.card_details.state,
-          this.card_details.zip
+          this.full_details.card_details.number,
+          this.full_details.card_details.exp_month,
+          this.full_details.card_details.exp_year,
+          this.full_details.card_details.cvc,
+          this.full_details.card_details.name,
+          this.full_details.card_details.email,
+          this.full_details.card_details.address_line1,
+          this.full_details.card_details.address_city,
+          this.full_details.card_details.state,
+          this.full_details.card_details.zip
         ])
       ) {
-        this.$store.dispatch("SAVE_PAYMENT", this.card_details, this.payment_details, this.transaction_details)
+        this.$store.dispatch("SAVE_PAYMENT", this.full_details).then(result =>{
+          console.log("saved payment" + JSON.stringify(result.data))
+        })
+        this.$router.push("/app/payments/summary");
+      } else {
+        console.log("complete card details")
       }
-      this.$router.push("/app/payments/summary");
     }
   }
 };

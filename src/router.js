@@ -28,6 +28,8 @@ function isAuthorized(to, from, next) {
 }
 
 function isAuthenticated(to, from, next) {
+  console.log('isAuth: ' + store.state.user_session.isAuthenticated);
+  
   if (store.state.user_session.isAuthenticated) {
     next('/app');
   } else {
