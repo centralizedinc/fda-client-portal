@@ -312,7 +312,7 @@ export default {
       this.$router.push(router);
     },
     showLogout(){
-      this.logout = true;
+      this.show_logout = true;
     },
     confirmLogout(){
       this.$store.dispatch('LOGOUT')
