@@ -35,7 +35,7 @@ var actions = {
     },
     VALIDATE_CVV(context, cvv){
         return new Promise((resolve, reject) => {
-            new PaymentAPI(context.rootState.user_session.token).creditCard(cvv,(credit, err) =>{
+            new PaymentAPI(context.rootState.user_session.token).cvv(cvv,(credit, err) =>{
                 if(!err){
                     context.commit('CVV', credit)
                     resolve()
@@ -48,7 +48,7 @@ var actions = {
     },
     VALIDATE_EXPIRATION_DATE(context, expirationDate){
         return new Promise((resolve, reject) => {
-            new PaymentAPI(context.rootState.user_session.token).creditCard(expirationDate,(credit, err) =>{
+            new PaymentAPI(context.rootState.user_session.token).expirationDate(expirationDate,(credit, err) =>{
                 if(!err){
                     context.commit('EXPIRY', credit)
                     resolve()
