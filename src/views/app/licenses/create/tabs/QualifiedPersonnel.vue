@@ -169,7 +169,14 @@
             <td>{{props.item.id_no}}</td>
             <td>
               <v-layout row wrap>
-                <v-flex xs6>
+                <v-flex xs3>
+                  <v-tooltip top>
+                    <v-btn slot="activator" flat icon color="primary" @click="editItem(props.item)">
+                      <v-icon color="success" small>edit</v-icon>
+                    </v-btn>Edit item
+                  </v-tooltip>
+                </v-flex>
+                <v-flex xs3>
                   <v-tooltip top>
                     <v-btn slot="activator" flat icon color="primary" @click="deleteItem(item)">
                       <v-icon color="error" small>fas fa-trash-alt</v-icon>
@@ -286,6 +293,10 @@ export default {
     deleteItem(item) {
       confirm("Are you sure you want to delete this item?") &&
         this.addedPersonnel.splice(item, 1);
+    },
+    editItem(item) {
+      this.qualified = Object.assign({}, item);
+      this.addToListDialog = true;
     }
   }
 };

@@ -254,7 +254,7 @@
                         </v-layout>
                       </v-container>
                       <payment-summary v-show="paymentDialog"></payment-summary>
-                      <!-- PAID TRANSACTION -->
+                      <!-- DISPLAY FOR PAID TRANSACTION -->
                       <!-- <v-container grid-list-md text-xs-left>
                         <v-layout row wrap>
                           <v-flex xs12>

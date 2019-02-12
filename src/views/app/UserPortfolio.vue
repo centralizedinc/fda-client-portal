@@ -42,7 +42,7 @@
     <v-flex xs12 md6 lg3 pa-2>
       <v-card>
         <v-tooltip top>
-          <v-btn slot="activator" color="success" dark absolute top right fab small>
+          <v-btn slot="activator" color="success" dark absolute top right fab small @click>
             <v-icon>call_made</v-icon>
           </v-btn>Go to Product Notification
         </v-tooltip>
@@ -187,10 +187,10 @@
     </v-flex>
     <!-- Calendar -->
     <v-layout row wrap>
-      <v-flex xs5 sm5 class="my-3 ml-2">
-        <v-card class="dcard">
+      <v-flex ml-2 class="my-3">
+        <v-card class="dcard" width="calc(100% - 10px)">
           <v-date-picker
-            width="calc(100%-10px)"
+            width="calc(100% - 10px)"
             v-model="calendar"
             :event-color="date => date[9] % 2 ? 'red' : 'yellow'"
             :events="functionEvents"
@@ -198,9 +198,12 @@
         </v-card>
       </v-flex>
       <!-- USer Activity -->
-      <v-flex xs6 sm6 mt-3 ml-3>
-        <v-card width="530" class="dcard" height="410">
-          <v-toolbar style="background: linear-gradient(45deg, #e0c71c 0%, #e9d758 100%);">
+      <v-flex mt-3 ml-2>
+        <v-card width="calc(100% - 10px)" class="dcard" height="410">
+          <v-toolbar
+            width="calc(100% - 10px)"
+            style="background: linear-gradient(45deg, #e0c71c 0%, #e9d758 100%);"
+          >
             <v-toolbar-title>User Activity</v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon>
@@ -208,7 +211,7 @@
             </v-btn>
           </v-toolbar>
 
-          <v-list two-line widht>
+          <v-list two-line width>
             <template v-for="(item, index) in items">
               <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
               <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
@@ -250,9 +253,9 @@ export default {
       { divider: true, inset: true },
       {
         avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-        title: "Qualified Personnel 1 ",
+        title: "Cashier ",
         subtitle:
-          "<span class='text--primary'>Godfrey Rivera</span> &mdash; Paid Certificate 0005679"
+          "<span class='text--primary'>Godfrey Rivera</span> &mdash; accepted License Application "
       },
       { divider: true, inset: true },
       {

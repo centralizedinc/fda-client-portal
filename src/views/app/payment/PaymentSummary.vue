@@ -55,16 +55,16 @@
           <v-flex>
             <v-btn class="font-weight-light" color="success" @click="generatePDF">FDA Cashier/Bank</v-btn>
           </v-flex>
-          <v-flex>
+          <!-- <v-flex>
             <v-btn class="font-weight-light" color="success">VFS Payment</v-btn>
-          </v-flex>
+          </v-flex>-->
           <v-spacer></v-spacer>
           <v-flex>
             <v-btn class="font-weight-light" color="success" @click="creditCard">Credit Card</v-btn>
           </v-flex>
           <v-spacer></v-spacer>
           <v-flex>
-            <v-btn class="font-weight-light" color="success">EZ Pay</v-btn>
+            <v-btn class="font-weight-light" color="success" @click="ecPay">ECPay</v-btn>
           </v-flex>
           <v-spacer></v-spacer>
           <v-btn class="font-weight-light" color="success" @click="payLater">Pay Later</v-btn>
@@ -74,7 +74,7 @@
     </v-flex>
     <v-layout row wrap>
       <v-dialog
-        v-model="finalStep"
+        v-model="cashierPayment"
         scrollable
         persistent
         transition="dialog-transition"
@@ -85,11 +85,11 @@
             color="fdaGreen"
             style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
           >
-            <span class="font-weight-light headline">Final Step</span>
+            <span class="font-weight-light headline">FDA Cashier/Bank</span>
 
             <v-spacer></v-spacer>
             <v-tooltip top>
-              <v-btn slot="activator" flat icon color="black" @click="finalStep =false">
+              <v-btn slot="activator" flat icon color="black" @click="cashierPayment =false">
                 <i class="fas fa-times-circle"></i>
               </v-btn>Close
             </v-tooltip>
@@ -115,6 +115,54 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-btn flat block color="error" @click="finalStep =false">close</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-layout>
+
+    <v-layout row wrap>
+      <v-dialog
+        v-model="ecPayDialog"
+        scrollable
+        persistent
+        transition="dialog-transition"
+        max-width="500"
+      >
+        <v-card>
+          <v-toolbar
+            color="fdaGreen"
+            style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+          >
+            <span class="font-weight-light headline">ECPay</span>
+
+            <v-spacer></v-spacer>
+            <v-tooltip top>
+              <v-btn slot="activator" flat icon color="black" @click="ecPayDialog =false">
+                <i class="fas fa-times-circle"></i>
+              </v-btn>Close
+            </v-tooltip>
+          </v-toolbar>
+
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-flex xs12>
+              <p class="body-2">Your Reference Number has been downloaded.</p>
+              <p>General Guidelines:</p>
+              <ol>
+                <li>Print the system generated Reference Number</li>
+                <li>Reference number can only be used once. If you made a short payment by mistake, do not try to correct it by making another bills payment with the same reference number.</li>
+                <li>Amount is inclusive of convenience fee/ If you are paying for multiple reference numbers, pay separaely for each reference number. Only one (1) transaction per reference number.</li>
+              </ol>
+              <div></div>
+              <p
+                class="caption mt-2"
+                style="color: grey; font-family:courier"
+              >Note: The payment of fee is not a guarantee that the application will be granted. The processing of the application will still be subject to the evaluation of the concerned FDA personnel and its compliance with the pertinent laws, rules and regulations</p>
+            </v-flex>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-btn flat block color="error" @click="ecPayDialog =false">close</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -166,7 +214,8 @@ export default {
         fee: 5000,
         lrf: 50
       },
-      finalStep: false
+      cashierPayment: false,
+      ecPayDialog: false
       // bancnetDialog: false
     };
   },
@@ -178,7 +227,7 @@ export default {
       console.log("Welcome to payment summary");
     },
     generatePDF() {
-      this.finalStep = true;
+      this.cashierPayment = true;
       OrderOfPaymentGenerator.generateOrderOfPayment(this.form, this.rates);
     },
     creditCard() {
@@ -186,11 +235,11 @@ export default {
     },
     payLater() {
       this.$router.push("/app/payments/paylater");
+    },
+    ecPay() {
+      this.ecPayDialog = true;
+      OrderOfPaymentGenerator.generateOrderOfPayment(this.form, this.rates);
     }
-    // redirect() {
-    //   this.bancnetDialog = true;
-    //   window.open("https://www.bancnetonline.com/BancnetWeb/login.do");
-    // }
   }
 };
 </script>

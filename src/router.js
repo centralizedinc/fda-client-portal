@@ -150,6 +150,7 @@ var router = new Router({
           component: () => import('@/views/app/payment/PayLater.vue'),
           beforeEnter: isAuthorized
         },
+
         {
           path: 'payments/creditcard',
           name: 'Credit Card Payment',
