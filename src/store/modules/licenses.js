@@ -15,7 +15,7 @@ const state = {
 
 const mutations = {
     SET_LICENSES(state, licenses) {
-        state.license = null;
+        state.licenses = null;
         state.licenses = licenses;
     },
     SET_FORM(state, form) {
@@ -52,7 +52,8 @@ var actions = {
         return new Promise((resolve, reject) => {
             new LicenseAPI(context.rootState.user_session.token).saveLicenses(license,(licenses, err) => {
                 if(!err){
-                    console.log('actions save licenses: ' + JSON.stringify(licenses))
+                    console.log('actions save licenses store: ' + JSON.stringify(licenses))
+                    context.commit('SET_FORM', licenses)
                     resolve()
                 } else {
                     console.log("actions save licenses error: " + JSON.stringify(err))

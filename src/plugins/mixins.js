@@ -44,12 +44,13 @@ export default {
                 var newDT = date.getFullYear() + "-" + month + "-" + date.getDate();
                 return newDT
               },
-              formatDates(dt){
-                var date = new Date(dt);
-                var month = date.getMonth() + 1;
-                var newDT = month + "/" + date.getFullYear();
-                return newDT
-              },
+              // formatDates(dt){
+              //   var date = new Date(dt);
+              //   var month = date.getMonth() + 1;
+              //   var year = date.getFullYear();
+              //   var newDT = {month: month, year: year}
+              //   return newDT
+              // },
               formatCurrency: amount => {
                 var parts = amount.toString().split(".");
                 return (

@@ -28,18 +28,18 @@ export default class LicenseAPI {
             console.log("post licenses: " + JSON.stringify(result.data));
            cb(result.data.model)
         }).catch(err => {
-            console.log('##########error save: ' + JSON.stringify(err))
+            console.log('##########error save uploadLicenses: ' + JSON.stringify(err))
             cb(null, err)
         })
     }
 
     saveLicenses(licenses, cb) {
-        console.log('actions save licenses: ' + JSON.stringify(licenses))
+        console.log('actions save licenses api: ' + JSON.stringify(licenses))
         axios.post('lto-api/', licenses).then((result) => {
             console.log("post licenses: " + JSON.stringify(result.data.model));
            cb(result.data.model)
         }).catch(err => {
-            console.log('##########error save: ' + JSON.stringify(err))
+            console.log('##########error save saveLicenses: ' + JSON.stringify(err))
             cb(null, err)
         })
     }
@@ -50,7 +50,7 @@ export default class LicenseAPI {
             console.log("post  claim licenses: " + JSON.stringify(result.data.model));
            cb(result.data.model)
         }).catch(err => {
-            console.log('##########error save: ' + JSON.stringify(err))
+            console.log('##########error save modifyLicenses: ' + JSON.stringify(err))
             cb(null, err)
         })
     }

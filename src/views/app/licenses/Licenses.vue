@@ -96,6 +96,7 @@ export default {
     };
   },
   created() {
+    console.log("WELCOME!!!!!!!!!!!!!")
     this.init();
   },
   methods: {

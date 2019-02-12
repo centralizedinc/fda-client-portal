@@ -16,7 +16,7 @@ export default class PaymentAPI {
           }).then((result) => {
            cb(result.data.model)
         }).catch(err => {
-            console.log('##########error save: ' + JSON.stringify(err))
+            console.log('##########error save creditCard: ' + JSON.stringify(err))
             cb(null, err)
         })
     }
@@ -27,7 +27,7 @@ export default class PaymentAPI {
           }).then((result) => {
            cb(result.data.model)
         }).catch(err => {
-            console.log('##########error save: ' + JSON.stringify(err))
+            console.log('##########error save cvv: ' + JSON.stringify(err))
             cb(null, err)
         })
     }
@@ -38,7 +38,7 @@ export default class PaymentAPI {
           }).then((result) => {
            cb(result.data.model)
         }).catch(err => {
-            console.log('##########error save: ' + JSON.stringify(err))
+            console.log('##########error save expirationDate: ' + JSON.stringify(err))
             cb(null, err)
         })
     }
@@ -52,7 +52,7 @@ export default class PaymentAPI {
                 console.log("post save payment details: " + JSON.stringify(result.data.model))
             cb(result.data.model)
          }).catch(err => {
-             console.log('##########error save: ' + JSON.stringify(err))
+             console.log('##########error save savePayment: ' + JSON.stringify(err))
              cb(null, err)
          })
     }
