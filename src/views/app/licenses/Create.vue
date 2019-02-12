@@ -216,8 +216,16 @@ export default {
     ) {
       this.form = this.$store.state.licenses.form;
       this.$store.state.licenses.form = "";
+    }else if(this.$store.state.licenses.form &&
+      this.$store.state.licenses.form._id &&
+      this.$store.state.licenses.form.application_type == "R"){
+        this.form = this.$store.state.licenses.form;
+        this.$store.state.licenses.form = "";
+      }
+    else{
+      this.form.application_type = "I";
     }
-    this.form.application_type = "I";
+    
 
     console.log("created porps: " + JSON.stringify(this.form));
   },
@@ -261,7 +269,9 @@ export default {
       this.confirmDialog = false;
       this.$router.push("/app/payments/summary");
       console.log("#########submit: " + JSON.stringify(this.form));
-      this.$store.dispatch("SAVE_LICENSES", this.form);
+      this.$store.dispatch("SAVE_LICENSES", this.form).then(result =>{
+        console.log("result to save licenses: " + result)
+      })
       this.$notify({
         message: "You have successfully applied a new license",
         color: "success",

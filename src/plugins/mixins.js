@@ -3,7 +3,24 @@ export default {
 
     install(Vue){
         Vue.mixin({
-            methods: {              
+            methods: {
+              getAppType(type) {
+                if (type === "I") {
+                  return "Initial";
+                } else if (type === "R") {
+                  return "Renewal";
+                } else if (type === "V") {
+                  return "Variation";
+                }
+              },
+              getProduct(product_id){
+                var product = this.$store.state.product.productType;
+                console.log("all product data: " + JSON.stringify(product))
+                var index = product.find(x => {
+                  return x._id === product_id
+                })
+                return index.name
+              },             
               formatDate: (date, type) => {
                 if (!date) {
                   return "";
@@ -27,6 +44,13 @@ export default {
                 var newDT = date.getFullYear() + "-" + month + "-" + date.getDate();
                 return newDT
               },
+              // formatDates(dt){
+              //   var date = new Date(dt);
+              //   var month = date.getMonth() + 1;
+              //   var year = date.getFullYear();
+              //   var newDT = {month: month, year: year}
+              //   return newDT
+              // },
               formatCurrency: amount => {
                 var parts = amount.toString().split(".");
                 return (
