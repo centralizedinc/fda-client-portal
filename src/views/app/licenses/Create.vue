@@ -213,14 +213,17 @@ export default {
     ) {
       this.form = this.$store.state.licenses.form;
       this.$store.state.licenses.form = "";
+      console.log("variation store form: " + JSON.stringify(this.$store.state.licenses.form))
     }else if(this.$store.state.licenses.form &&
       this.$store.state.licenses.form._id &&
       this.$store.state.licenses.form.application_type == "R"){
         this.form = this.$store.state.licenses.form;
         this.$store.state.licenses.form = "";
+        console.log("renew store form: " + JSON.stringify(this.$store.state.licenses.form))
       }
     else{
       this.form.application_type = "I";
+      console.log("initial store form: " + JSON.stringify(this.$store.state.licenses.form))
     }
     
 

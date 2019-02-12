@@ -13,6 +13,12 @@ export default {
                   return "Variation";
                 }
               },
+              getTask(task_id){
+                var task = this.$store.state.tasks.tasks.find(x => {
+                  return x._id === task_id
+                })
+                return task;
+              },
               getProduct(product_id){
                 var product = this.$store.state.product.productType;
                 console.log("all product data: " + JSON.stringify(product))

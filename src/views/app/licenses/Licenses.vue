@@ -13,7 +13,7 @@
             <td>{{ props.item.case_no }}</td>
             <td>{{ props.item.licenses_no }}</td>
             <td>{{ getAppType(props.item.application_type) }}</td>
-            <td>{{ getTask(props.item.current_task) }}</td>
+            <td>{{ getTask(props.item.current_task) ? getTask(props.item.current_task).name : '' }}</td>
             <td>{{ formatDate (props.item.date_created) }}</td>
             <td>{{ formatDate (props.item.date_variation) }}</td>
             <td>
@@ -125,10 +125,10 @@ export default {
         // this.licensesData.push(data);
         this.licenses.push(element);
       });
-      this.$store.dispatch("GET_TASKS").then(result =>{
-        this.tasks = this.$store.state.tasks.tasks;
-      console.log("tasks data: " + JSON.stringify(this.tasks))
-      })
+      // this.$store.dispatch("GET_TASKS").then(result =>{
+      //   this.tasks = this.$store.state.tasks.tasks;
+      // console.log("tasks data: " + JSON.stringify(this.tasks))
+      // })
       
       console.log("####################License data: " + JSON.stringify(this.licenses))
     },
@@ -139,9 +139,8 @@ export default {
       this.$router.push("/app/licenses/view");
     },
     renewForm(item) {
-      
-      console.log("renew data: " + JSON.stringify(item.application_type));
       item.application_type = "R"
+      console.log("renew data: " + JSON.stringify(item.application_type));
       this.loadForm(item);
       // this.$store.commit("SET_FORM", item)
     },
@@ -165,12 +164,12 @@ export default {
     launchAppForm() {
       this.$router.push("/app/licenses/apply");
     },
-    getTask(task_id){
-      var index = this.tasks.find(x => {
-        return x._id === task_id
-      })
-      return index.name
-    }
+    // getTask(task_id){
+    //   var index = this.tasks.find(x => {
+    //     return x._id === task_id
+    //   })
+    //   return index.name
+    // }
   }
 };
 </script>
