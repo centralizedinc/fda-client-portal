@@ -13,7 +13,7 @@
             <td>{{ props.item.case_no }}</td>
             <td>{{ props.item.licenses_no }}</td>
             <td>{{ getAppType(props.item.application_type) }}</td>
-            <td>{{ getTask(props.item.current_task) ? getTask(props.item.current_task) : '' }}</td>
+            <td>{{ getTask(props.item.current_task) ? getTask(props.item.current_task).name : '' }}</td>
             <td>{{ formatDate (props.item.date_created) }}</td>
             <td>{{ formatDate (props.item.date_variation) }}</td>
             <td>
@@ -101,37 +101,43 @@ export default {
   },
   methods: {
     init() {
-      this.$store.dispatch("GET_LICENSES");
-      var licenseData = this.$store.state.licenses.licenses;
-      // this.licenses = this.$store.state.licenses.licenses;
-      licenseData.forEach(element => {
-        // var app_type = null;
-        // if(element.application_type === "I"){
-        //   app_type = "Initial"
-        // } else if(element.application_type === "V"){
-        //   app_type = "Variation"
-        // } else if(element.application_type === "R"){
-        //   app_type = "Renewal"
-        // }
-        // var data = {
-        //   case_no: element.case_no,
-        //   licenses_no: element.auto_id,
-        //   application_type: app_type,
-        //   current_task: element.current_task,
-        //   date_created: element.date_created,
-        //   date_variation: element.date_variation
-        // }
-        // this.licensesData.push(data);
-        this.licenses.push(element);
-      });
-      this.$store.dispatch("GET_TASKS").then(result => {
-        this.tasks = this.$store.state.tasks.tasks;
-        console.log("tasks data: " + JSON.stringify(this.tasks));
-      });
+      this.$store
+        .dispatch("GET_LICENSES")
+        .then(result => {
+          var licenseData = this.$store.state.licenses.licenses;
+          // this.licenses = this.$store.state.licenses.licenses;
+          licenseData.forEach(element => {
+            // var app_type = null;
+            // if(element.application_type === "I"){
+            //   app_type = "Initial"
+            // } else if(element.application_type === "V"){
+            //   app_type = "Variation"
+            // } else if(element.application_type === "R"){
+            //   app_type = "Renewal"
+            // }
+            // var data = {
+            //   case_no: element.case_no,
+            //   licenses_no: element.auto_id,
+            //   application_type: app_type,
+            //   current_task: element.current_task,
+            //   date_created: element.date_created,
+            //   date_variation: element.date_variation
+            // }
+            // this.licensesData.push(data);
+            this.licenses.push(element);
+          });
+          this.$store.dispatch("GET_TASKS").then(result => {
+            this.tasks = this.$store.state.tasks.tasks;
+            console.log("tasks data: " + JSON.stringify(this.tasks));
+          });
 
-      console.log(
-        "####################License data: " + JSON.stringify(this.licenses)
-      );
+          console.log(
+            "####################License data: " + JSON.stringify(this.licenses)
+          );
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     viewForm(item) {
       console.log("$$$$$$$$$$$$$$$$$ view data: " + JSON.stringify(item));
@@ -164,12 +170,6 @@ export default {
     },
     launchAppForm() {
       this.$router.push("/app/licenses/apply");
-    },
-    getTask(task_id) {
-      var index = this.tasks.find(x => {
-        return x._id === task_id;
-      });
-      return index.name;
     }
   }
 };
