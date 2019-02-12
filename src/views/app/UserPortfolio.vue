@@ -7,8 +7,18 @@
     <v-flex xs12 md6 lg3 pa-2>
       <v-card>
         <v-tooltip top>
-          <v-btn slot="activator" color="success" dark absolute top right fab small>
-            <v-icon>call_made</v-icon>
+          <v-btn
+            slot="activator"
+            color="success"
+            dark
+            absolute
+            top
+            right
+            fab
+            small
+            @click="$router.push('/app/licenses')"
+          >
+            <v-icon small>call_made</v-icon>
           </v-btn>Go to Licenses
         </v-tooltip>
 
@@ -25,7 +35,17 @@
     <v-flex xs12 md6 lg3 pa-2>
       <v-card>
         <v-tooltip top>
-          <v-btn slot="activator" color="success" dark absolute top right fab small>
+          <v-btn
+            slot="activator"
+            color="success"
+            dark
+            absolute
+            top
+            right
+            fab
+            small
+            @click="$router.push('/app/certificates')"
+          >
             <v-icon>call_made</v-icon>
           </v-btn>Go to Certificates
         </v-tooltip>
@@ -42,7 +62,17 @@
     <v-flex xs12 md6 lg3 pa-2>
       <v-card>
         <v-tooltip top>
-          <v-btn slot="activator" color="success" dark absolute top right fab small>
+          <v-btn
+            slot="activator"
+            color="success"
+            dark
+            absolute
+            top
+            right
+            fab
+            small
+            @click="$router.push('/app/notification')"
+          >
             <v-icon>call_made</v-icon>
           </v-btn>Go to Product Notification
         </v-tooltip>
@@ -59,7 +89,17 @@
     <v-flex xs12 md6 lg3 pa-2>
       <v-card>
         <v-tooltip top>
-          <v-btn slot="activator" color="success" dark absolute top right fab small>
+          <v-btn
+            slot="activator"
+            color="success"
+            dark
+            absolute
+            top
+            right
+            fab
+            small
+            @click="$router.push('/app/payments')"
+          >
             <v-icon>call_made</v-icon>
           </v-btn>Go to Payments
         </v-tooltip>
