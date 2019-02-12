@@ -96,7 +96,7 @@ export default {
     };
   },
   created() {
-    console.log("WELCOME!!!!!!!!!!!!!")
+    console.log("WELCOME!!!!!!!!!!!!!");
     this.init();
   },
   methods: {
@@ -145,11 +145,11 @@ export default {
       // this.$store.commit("SET_FORM", item)
     },
     variationForm(item) {
-      item.application_type = "V"
+      item.application_type = "V";
       console.log("variation data: " + JSON.stringify(item.application_type));
       this.loadForm(item);
       this.dialog = true;
-      
+
       // this.$store.commit("SET_FORM", item)
     },
     loadForm(form) {
@@ -163,13 +163,7 @@ export default {
     },
     launchAppForm() {
       this.$router.push("/app/licenses/apply");
-    },
-    // getTask(task_id){
-    //   var index = this.tasks.find(x => {
-    //     return x._id === task_id
-    //   })
-    //   return index.name
-    // }
+    }
   }
 };
 </script>

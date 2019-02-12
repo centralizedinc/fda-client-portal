@@ -4,6 +4,7 @@
       <v-flex xs12>Invalid Request: 404 status code.</v-flex>
     </v-layout>
     <form-layout
+      v-show="!ecpayDialog"
       v-else
       :step="e1"
       :steps="6"
@@ -108,6 +109,8 @@ export default {
   data: () => ({
     e1: 1,
     confirmDialog: false,
+    ecpayDialog: false,
+
     paymentDialog: false,
     showAppOverview: false,
     invalid: false,

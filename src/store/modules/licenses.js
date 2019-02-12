@@ -23,7 +23,7 @@ const mutations = {
         state.form = form;
         console.log("set form store mutation: " + JSON.stringify(state.form))
     },
-    UPLOADED_DATA(state,form){
+    UPLOADED_DATA(state, form) {
         state.uploaded = form
     }
 }
@@ -40,6 +40,8 @@ var actions = {
         return new Promise((resolve, reject) => {
             new LicenseAPI(context.rootState.user_session.token).getLicenses((licenses, err) => {
                 if (!err) {
+                    console.log('license: ' + JSON.stringify(licenses));
+
                     context.commit('SET_LICENSES', licenses)
                     resolve()
                 } else {
@@ -49,10 +51,10 @@ var actions = {
             })
         })
     },
-    SAVE_LICENSES(context, license){
+    SAVE_LICENSES(context, license) {
         return new Promise((resolve, reject) => {
-            new LicenseAPI(context.rootState.user_session.token).saveLicenses(license,(licenses, err) => {
-                if(!err){
+            new LicenseAPI(context.rootState.user_session.token).saveLicenses(license, (licenses, err) => {
+                if (!err) {
                     console.log('actions save licenses store: ' + JSON.stringify(licenses))
                     context.commit('SET_FORM', licenses)
                     resolve()
@@ -63,10 +65,10 @@ var actions = {
             })
         })
     },
-    SAVE_MODIFY_LICENSES(context, license){
+    SAVE_MODIFY_LICENSES(context, license) {
         return new Promise((resolve, reject) => {
-            new LicenseAPI(context.rootState.user_session.token).modifyLicenses(license,(licenses, err) => {
-                if(!err){
+            new LicenseAPI(context.rootState.user_session.token).modifyLicenses(license, (licenses, err) => {
+                if (!err) {
                     console.log('actions save modify licenses: ' + JSON.stringify(licenses))
                     resolve()
                 } else {
@@ -76,13 +78,13 @@ var actions = {
             })
         })
     },
-    UPLOAD_LICENSES(context, uploadData){
+    UPLOAD_LICENSES(context, uploadData) {
         return new Promise((resolve, reject) => {
-            new LicenseAPI(context.rootState.user_session.token).uploadLicenses(uploadData,(uploadedData, err) =>{
-                if(!err){
+            new LicenseAPI(context.rootState.user_session.token).uploadLicenses(uploadData, (uploadedData, err) => {
+                if (!err) {
                     context.commit('UPLOADED_DATA', uploadedData)
                     resolve()
-                }else{
+                } else {
                     console.log(JSON.stringify(err))
                     reject()
                 }
