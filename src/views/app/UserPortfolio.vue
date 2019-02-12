@@ -42,7 +42,7 @@
     <v-flex xs12 md6 lg3 pa-2>
       <v-card>
         <v-tooltip top>
-          <v-btn slot="activator" color="success" dark absolute top right fab small @click>
+          <v-btn slot="activator" color="success" dark absolute top right fab small>
             <v-icon>call_made</v-icon>
           </v-btn>Go to Product Notification
         </v-tooltip>
