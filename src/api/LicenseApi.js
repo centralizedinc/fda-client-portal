@@ -4,8 +4,6 @@ import axios from 'axios';
 
 export default class LicenseAPI {
     constructor(token) {
-        console.log('token: ' + token);
-
         axios.defaults.baseURL = 'https://fda-services.herokuapp.com/v1.0';
         axios.defaults.headers.common['Content-Type'] = 'application/json'
         axios.defaults.headers.common['access_token'] = token;
@@ -13,6 +11,8 @@ export default class LicenseAPI {
 
     getLicenses(cb) {
         axios.get('lto-api/').then((result) => {
+            console.log('get licenses: ' + JSON.stringify(result));
+            
             if (result.data.success) {
                 cb(result.data.model)
             } else {

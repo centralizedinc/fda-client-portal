@@ -139,13 +139,13 @@ export default {
       this.$router.push("/app/licenses/view");
     },
     renewForm(item) {
-      item.application_type = "R"
+      item.application_type = 2
       console.log("renew data: " + JSON.stringify(item.application_type));
       this.loadForm(item);
       // this.$store.commit("SET_FORM", item)
     },
     variationForm(item) {
-      item.application_type = "V";
+      item.application_type = 1;
       console.log("variation data: " + JSON.stringify(item.application_type));
       this.loadForm(item);
       this.dialog = true;
