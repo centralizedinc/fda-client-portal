@@ -101,43 +101,36 @@ export default {
   },
   methods: {
     init() {
-      this.$store
-        .dispatch("GET_LICENSES")
-        .then(result => {
-          var licenseData = this.$store.state.licenses.licenses;
-          // this.licenses = this.$store.state.licenses.licenses;
-          licenseData.forEach(element => {
-            // var app_type = null;
-            // if(element.application_type === "I"){
-            //   app_type = "Initial"
-            // } else if(element.application_type === "V"){
-            //   app_type = "Variation"
-            // } else if(element.application_type === "R"){
-            //   app_type = "Renewal"
-            // }
-            // var data = {
-            //   case_no: element.case_no,
-            //   licenses_no: element.auto_id,
-            //   application_type: app_type,
-            //   current_task: element.current_task,
-            //   date_created: element.date_created,
-            //   date_variation: element.date_variation
-            // }
-            // this.licensesData.push(data);
-            this.licenses.push(element);
-          });
-          this.$store.dispatch("GET_TASKS").then(result => {
-            this.tasks = this.$store.state.tasks.tasks;
-            console.log("tasks data: " + JSON.stringify(this.tasks));
-          });
-
-          console.log(
-            "####################License data: " + JSON.stringify(this.licenses)
-          );
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      
+      this.$store.dispatch("GET_LICENSES");
+      var licenseData = this.$store.state.licenses.licenses;
+      // this.licenses = this.$store.state.licenses.licenses;
+      licenseData.forEach(element => {
+        // var app_type = null;
+        // if(element.application_type === "I"){
+        //   app_type = "Initial"
+        // } else if(element.application_type === "V"){
+        //   app_type = "Variation"
+        // } else if(element.application_type === "R"){
+        //   app_type = "Renewal"
+        // }
+        // var data = {
+        //   case_no: element.case_no,
+        //   licenses_no: element.auto_id,
+        //   application_type: app_type,
+        //   current_task: element.current_task,
+        //   date_created: element.date_created,
+        //   date_variation: element.date_variation
+        // }
+        // this.licensesData.push(data);
+        this.licenses.push(element);
+      });
+      // this.$store.dispatch("GET_TASKS").then(result =>{
+      //   this.tasks = this.$store.state.tasks.tasks;
+      // console.log("tasks data: " + JSON.stringify(this.tasks))
+      // })
+      
+      console.log("####################License data: " + JSON.stringify(this.licenses))
     },
     viewForm(item) {
       console.log("$$$$$$$$$$$$$$$$$ view data: " + JSON.stringify(item));
@@ -146,13 +139,13 @@ export default {
       this.$router.push("/app/licenses/view");
     },
     renewForm(item) {
+      item.application_type = 2
       console.log("renew data: " + JSON.stringify(item.application_type));
-      item.application_type = "R";
       this.loadForm(item);
       // this.$store.commit("SET_FORM", item)
     },
     variationForm(item) {
-      item.application_type = "V";
+      item.application_type = 1;
       console.log("variation data: " + JSON.stringify(item.application_type));
       this.loadForm(item);
       this.dialog = true;

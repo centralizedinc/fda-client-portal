@@ -212,18 +212,21 @@ export default {
     if (
       this.$store.state.licenses.form &&
       this.$store.state.licenses.form._id &&
-      this.$store.state.licenses.form.application_type == "V"
+      this.$store.state.licenses.form.application_type === 1
     ) {
       this.form = this.$store.state.licenses.form;
       this.$store.state.licenses.form = "";
+      console.log("variation store form: " + JSON.stringify(this.$store.state.licenses.form))
     }else if(this.$store.state.licenses.form &&
       this.$store.state.licenses.form._id &&
-      this.$store.state.licenses.form.application_type == "R"){
+      this.$store.state.licenses.form.application_type === 2){
         this.form = this.$store.state.licenses.form;
         this.$store.state.licenses.form = "";
+        console.log("renew store form: " + JSON.stringify(this.$store.state.licenses.form))
       }
     else{
-      this.form.application_type = "I";
+      this.form.application_type = 0;
+      console.log("initial store form: " + JSON.stringify(this.$store.state.licenses.form))
     }
     
 

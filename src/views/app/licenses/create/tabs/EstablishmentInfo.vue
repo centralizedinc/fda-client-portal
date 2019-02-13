@@ -63,7 +63,7 @@
           :rules="[rules.required, rules.email]"
           label="1. Email Address"
           v-model="form.estab_details.email"
-          :disabled="form.application_type==='R'"
+          :disabled="form.application_type=== 2"
           hint="Establishment's main email address. If possible, enter an email address that is not specific to an employee"
           class="input-group--focused"
         ></v-text-field>
@@ -74,7 +74,7 @@
           :rules="[rules.required]"
           label="2. Landline Number"
           v-model="form.estab_details.landline"
-          :disabled="form.application_type==='R'"
+          :disabled="form.application_type===2"
           hint="Establishment's primary landline number"
           class="input-group--focused"
         ></v-text-field>
@@ -85,7 +85,7 @@
           :rules="[rules.required]"
           label="3. Fax Number"
           v-model="form.estab_details.fax"
-          :disabled="form.application_type==='R'"
+          :disabled="form.application_type===2"
         ></v-text-field>
       </v-flex>
       <v-flex xs5 ml-5>
@@ -94,7 +94,7 @@
           :rules="[rules.required]"
           label="4. Mobile Number"
           v-model="form.estab_details.mobile"
-          :disabled="form.application_type==='R'"
+          :disabled="form.application_type===2"
           hint="Establisment's or administrator's mobile number"
           class="input-group--focused"
         ></v-text-field>
