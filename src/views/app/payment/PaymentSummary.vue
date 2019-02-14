@@ -53,7 +53,7 @@
           <v-spacer></v-spacer>
 
           <v-flex>
-            <v-btn class="font-weight-light" color="success" @click="generatePDF">FDA Cashier/Bank</v-btn>
+            <v-btn class="font-weight-light" color="success" @click="generatePDF">FDAC</v-btn>
           </v-flex>
           <!-- <v-flex>
             <v-btn class="font-weight-light" color="success">VFS Payment</v-btn>

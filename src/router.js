@@ -29,7 +29,7 @@ function isAuthorized(to, from, next) {
 
 function isAuthenticated(to, from, next) {
   console.log('isAuth: ' + store.state.user_session.isAuthenticated);
-  
+
   if (store.state.user_session.isAuthenticated) {
     next('/app');
   } else {
@@ -66,6 +66,12 @@ var router = new Router({
       component: MainLayout,
       children: [{
           path: '',
+          name: 'Preface',
+          component: () => import('@/views/Preface.vue'),
+          beforeEnter: isAuthenticated
+        },
+        {
+          path: 'login',
           name: 'Login',
           component: () => import('@/views/Login.vue'),
           beforeEnter: isAuthenticated
