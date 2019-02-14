@@ -28,6 +28,8 @@ function isAuthorized(to, from, next) {
 }
 
 function isAuthenticated(to, from, next) {
+  console.log('isAuth: ' + store.state.user_session.isAuthenticated);
+  
   if (store.state.user_session.isAuthenticated) {
     next('/app');
   } else {
@@ -72,6 +74,11 @@ var router = new Router({
           path: '/signup',
           name: 'Registration',
           component: () => import('@/views/Registration.vue')
+        },
+        {
+          path: '/registration/existing',
+          name: 'Registration of Existing License',
+          component: () => import('@/views/registration/existing/Validate.vue')
         },
         {
           path: '/confirmation',
@@ -150,6 +157,7 @@ var router = new Router({
           component: () => import('@/views/app/payment/PayLater.vue'),
           beforeEnter: isAuthorized
         },
+
         {
           path: 'payments/creditcard',
           name: 'Credit Card Payment',

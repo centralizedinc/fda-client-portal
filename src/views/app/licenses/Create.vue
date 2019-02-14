@@ -4,6 +4,7 @@
       <v-flex xs12>Invalid Request: 404 status code.</v-flex>
     </v-layout>
     <form-layout
+      v-show="!ecpayDialog"
       v-else
       :step="e1"
       :steps="6"
@@ -108,6 +109,8 @@ export default {
   data: () => ({
     e1: 1,
     confirmDialog: false,
+    ecpayDialog: false,
+
     paymentDialog: false,
     showAppOverview: false,
     invalid: false,
@@ -209,12 +212,23 @@ export default {
     if (
       this.$store.state.licenses.form &&
       this.$store.state.licenses.form._id &&
-      this.$store.state.licenses.form.application_type == "V"
+      this.$store.state.licenses.form.application_type === 1
     ) {
       this.form = this.$store.state.licenses.form;
       this.$store.state.licenses.form = "";
+      console.log("variation store form: " + JSON.stringify(this.$store.state.licenses.form))
+    }else if(this.$store.state.licenses.form &&
+      this.$store.state.licenses.form._id &&
+      this.$store.state.licenses.form.application_type === 2){
+        this.form = this.$store.state.licenses.form;
+        this.$store.state.licenses.form = "";
+        console.log("renew store form: " + JSON.stringify(this.$store.state.licenses.form))
+      }
+    else{
+      this.form.application_type = 0;
+      console.log("initial store form: " + JSON.stringify(this.$store.state.licenses.form))
     }
-    this.form.application_type = "I";
+    
 
     console.log("created porps: " + JSON.stringify(this.form));
   },
@@ -258,7 +272,9 @@ export default {
       this.confirmDialog = false;
       this.$router.push("/app/payments/summary");
       console.log("#########submit: " + JSON.stringify(this.form));
-      this.$store.dispatch("SAVE_LICENSES", this.form);
+      this.$store.dispatch("SAVE_LICENSES", this.form).then(result =>{
+        console.log("result to save licenses: " + result)
+      })
       this.$notify({
         message: "You have successfully applied a new license",
         color: "success",
