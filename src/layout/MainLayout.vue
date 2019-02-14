@@ -2,7 +2,6 @@
   <v-app>
     <notification></notification>
     <v-toolbar dark style="background: linear-gradient(45deg, #104b2a 0%, #b5c25a 100%)">{{title}}</v-toolbar>
-    <!-- <v-parallax src="https://i.postimg.cc/XYmyNYy9/FDASlider1-1920x675.png"> -->
     <v-container fluid class="bg">
       <router-view></router-view>
     </v-container>
@@ -11,7 +10,6 @@
       <v-spacer></v-spacer>
       <span class="caption">Food And Drug Administration of the Philippines</span>
     </v-footer>
-    <!-- </v-parallax> -->
   </v-app>
 </template>
 
@@ -33,7 +31,7 @@ export default {
 <style>
 .bg {
   /* The image used */
-  background-image: url("https://i.postimg.cc/LX7Lv8Fg/fda.jpg");
+  background-image: url("https://i.postimg.cc/DfcXBGkW/bg.png");
 
   /* Full height */
   height: 100%;
