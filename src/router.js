@@ -76,6 +76,11 @@ var router = new Router({
           component: () => import('@/views/Registration.vue')
         },
         {
+          path: '/registration/existing',
+          name: 'Registration of Existing License',
+          component: () => import('@/views/registration/existing/Validate.vue')
+        },
+        {
           path: '/confirmation',
           name: 'Confirmation',
           component: () => import('@/views/Confirmation.vue')
