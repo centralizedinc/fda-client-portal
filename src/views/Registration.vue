@@ -199,15 +199,13 @@
           </v-form>
 
           <v-form v-else-if="step_curr===4" key="step4">
-            <v-select class="font-weight-light" outline name="name" label="Government ID" id="id"></v-select>
-            <v-text-field class="font-weight-light" outline name="name" label="ID Number" id="id"></v-text-field>
+            <v-select class="font-weight-light" outline label="Government ID"></v-select>
+            <v-text-field class="font-weight-light" outline label="ID Number"></v-text-field>
             <v-text-field
               class="font-weight-light"
               outline
-              name="name"
               label="Expiry Date"
               placeholder="mm/dd/yyyy"
-              id="id"
             ></v-text-field>
           </v-form>
 
@@ -223,9 +221,7 @@
                 <v-text-field
                   class="font-weight-light"
                   outline
-                  name="name"
                   label="Username/Email"
-                  id="id"
                   v-model="account.username"
                 ></v-text-field>
                 <v-text-field

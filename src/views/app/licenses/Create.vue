@@ -21,7 +21,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-one slot="content-step-1" :form="form"></step-one>
+      <step-one slot="content-step-1" :form="form" @product_select="load_primaries" @primary_select="load_references"></step-one>
       <template slot="header-step-2">Establishment Information
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -209,28 +209,7 @@ export default {
     }
   }),
   created() {
-    if (
-      this.$store.state.licenses.form &&
-      this.$store.state.licenses.form._id &&
-      this.$store.state.licenses.form.application_type === 1
-    ) {
-      this.form = this.$store.state.licenses.form;
-      this.$store.state.licenses.form = "";
-      console.log("variation store form: " + JSON.stringify(this.$store.state.licenses.form))
-    }else if(this.$store.state.licenses.form &&
-      this.$store.state.licenses.form._id &&
-      this.$store.state.licenses.form.application_type === 2){
-        this.form = this.$store.state.licenses.form;
-        this.$store.state.licenses.form = "";
-        console.log("renew store form: " + JSON.stringify(this.$store.state.licenses.form))
-      }
-    else{
-      this.form.application_type = 0;
-      console.log("initial store form: " + JSON.stringify(this.$store.state.licenses.form))
-    }
-    
-
-    console.log("created porps: " + JSON.stringify(this.form));
+    this.init();
   },
   // watch: {
   //   form(){
@@ -239,6 +218,48 @@ export default {
   //   }
   // },
   methods: {
+    init() {
+      this.$store
+        .dispatch("GET_PRODUCT_TYPE")
+        .then(result => {
+          if (
+            this.$store.state.licenses.form &&
+            this.$store.state.licenses.form._id &&
+            this.$store.state.licenses.form.application_type === 1
+          ) {
+            this.form = this.$store.state.licenses.form;
+            this.$store.state.licenses.form = "";
+          } else if (
+            this.$store.state.licenses.form &&
+            this.$store.state.licenses.form._id &&
+            this.$store.state.licenses.form.application_type === 2
+          ) {
+            this.form = this.$store.state.licenses.form;
+            this.$store.state.licenses.form = "";
+          } else {
+            this.form.application_type = 0;
+          }
+        })
+        .catch(err => {
+          console.log("loading products error: " + err);
+        });
+    },
+    load_primaries(product_id) {
+      this.$store.dispatch("GET_PRIMARY_ACTIVITY", product_id);
+    },
+    load_references(primary_id) {
+      this.$store
+        .dispatch("GET_SECONDARY_ACTIVITY", primary_id)
+        .then(result => {
+          return this.$store.dispatch("GET_ADDITIONAL", primary_id);
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_DECLARED", primary_id);
+        })
+        .catch(err => {
+          console.log("loading references: " + err);
+        });
+    },
     close() {
       this.showAppOverview = false;
       this.confirmDialog = true;
@@ -272,9 +293,9 @@ export default {
       this.confirmDialog = false;
       this.$router.push("/app/payments/summary");
       console.log("#########submit: " + JSON.stringify(this.form));
-      this.$store.dispatch("SAVE_LICENSES", this.form).then(result =>{
-        console.log("result to save licenses: " + result)
-      })
+      this.$store.dispatch("SAVE_LICENSES", this.form).then(result => {
+        console.log("result to save licenses: " + result);
+      });
       this.$notify({
         message: "You have successfully applied a new license",
         color: "success",

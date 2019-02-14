@@ -177,7 +177,7 @@
           color="green darken-1"
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.region"
-          :items="region"
+          :items="regions"
           hide-no-data
           hide-selected
           label="Region"
@@ -188,7 +188,7 @@
           color="green darken-1"
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.province"
-          :items="province"
+          :items="provinces"
           hide-no-data
           hide-selected
           label="Province"
@@ -199,7 +199,7 @@
           color="green darken-1"
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.city"
-          :items="city"
+          :items="cities"
           hide-no-data
           hide-selected
           label="City / Town"
@@ -210,7 +210,7 @@
           color="green darken-1"
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.zipcode"
-          :items="zip"
+          :items="zipcodes"
           hide-no-data
           hide-selected
           label="Zip Code"
@@ -234,11 +234,21 @@ export default {
       "Head, Production"
     ],
     id_type: ["PRC", "TIN"],
+    regions: [],
+    provinces: [],
+    cities: [],
+    zipcodes: [],
     rules: {
       required: value => !!value || "This field is required"
     }
   }),
   watch: {
+    form: {
+      handler(val) {
+        console.log("form auth: " + JSON.stringify(val));
+      },
+      deep: true
+    },
     menu2(val) {
       val && this.$nextTick(() => (this.$refs.picker2.activePicker = "YEAR"));
     }

@@ -7,18 +7,16 @@
           <slot :name="'header-step-' + step"></slot>
         </v-card-title>
         <v-window v-model="onboarding">
-          <v-window-item v-for="st in steps" :key="`card-${st}`">
+          <v-window-item v-for="st in steps" :key="st">
             <v-card style="box-shadow: none  !important;" height="calc(100% - 80px)">
               <v-progress-linear></v-progress-linear>
               <v-container
                 mt-3
                 id="scroll-target"
                 style="max-height: calc(100% - 80px)"
-                class="scroll-y"
-              >
+                class="scroll-target scroll-y">
                 <v-layout
                   mt-3
-                  v-scroll:#scroll-target="onScroll"
                   column
                   style="height: calc(100% - 80px)"
                   align-center

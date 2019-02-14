@@ -1,19 +1,13 @@
 <template>
-    
   <div>
-    <v-layout row wrap v-if="invalid">
-      <v-flex xs12>Invalid Request: 404 status code.</v-flex>
-    </v-layout>
     <form-layout
-      v-show="!ecpayDialog"
-      v-else
       :step="e1"
-      :steps="6"
+      :steps="7"
       @prev="prev"
       @next="next"
       @changePage="changePage"
       @submit="confirmDialog=true"
-    >
+      submitText="Continue">
       <template slot="header-step-1">General Information
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -22,7 +16,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-one slot="content-step-1" :form="form"></step-one>
+      <step-one slot="content-step-1" :form="form" @product_select="load_primaries" @primary_select="load_references"></step-one>
       <template slot="header-step-2">Establishment Information
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -68,6 +62,15 @@
         </v-tooltip>
       </template>
       <step-six slot="content-step-6" :form="form"></step-six>
+      <template slot="header-step-7">Account Info
+        <v-spacer></v-spacer>
+        <v-tooltip left>
+          <v-btn slot="activator" flat icon color="error">
+            <i class="fas fa-question fa-lg"></i>
+          </v-btn>Get Help
+        </v-tooltip>
+      </template>
+      <step-seven slot="content-step-7" :account="account"></step-seven>
     </form-layout>
     <confirm-to-review-app
       :show="confirmDialog"
@@ -94,10 +97,8 @@ export default {
   data: () => ({
     e1: 1,
     confirmDialog: false,
-    ecpayDialog: false,
     paymentDialog: false,
     showAppOverview: false,
-    invalid: false,
     form: {
       current_task: "",
       user: "",
@@ -190,55 +191,90 @@ export default {
           file: null
         }
       ]
+    },
+    account: {
+      username: "",
+      password: "",
+      name: {}
     }
   }),
   created() {
-    if (
-      this.$store.state.licenses.form &&
-      this.$store.state.licenses.form._id &&
-      this.$store.state.licenses.form.application_type == "V"
-    ) {
-      this.form = this.$store.state.licenses.form;
-      this.$store.state.licenses.form = "";
-    } else if (
-      this.$store.state.licenses.form &&
-      this.$store.state.licenses.form._id &&
-      this.$store.state.licenses.form.application_type == "R"
-    ) {
-      this.form = this.$store.state.licenses.form;
-      this.$store.state.licenses.form = "";
-    } else {
-      this.form.application_type = "I";
-    }
-
-    console.log("created porps: " + JSON.stringify(this.form));
+    this.init();
   },
-  // watch: {
-  //   form(){
-  //     this.editedForm = this.form;
-  //     console.log("form updated: " + JSON.stringify(this.editedForm))
-  //   }
-  // },
+  watch: {
+    form: {
+      handler(license) {
+        this.account.name = {
+          first: license.auth_officer.firstname,
+          middle: license.auth_officer.middlename,
+          last: license.auth_officer.lastname,
+          display:
+            license.auth_officer.firstname + " " + license.auth_officer.lastname
+        };
+        this.account.email = license.auth_officer.email;
+      },
+      deep: true
+    }
+  },
   methods: {
+    init() {
+      this.$store
+        .dispatch("GET_PRODUCT_TYPE")
+        .then(result => {
+          if (
+            this.$store.state.licenses.form &&
+            this.$store.state.licenses.form._id &&
+            this.$store.state.licenses.form.application_type === 1
+          ) {
+            this.form = this.$store.state.licenses.form;
+            this.$store.state.licenses.form = "";
+          } else if (
+            this.$store.state.licenses.form &&
+            this.$store.state.licenses.form._id &&
+            this.$store.state.licenses.form.application_type === 2
+          ) {
+            this.form = this.$store.state.licenses.form;
+            this.$store.state.licenses.form = "";
+          } else {
+            this.form.application_type = 0;
+          }
+        })
+        .catch(err => {
+          console.log("loading products error: " + err);
+        });
+    },
+    load_primaries(product_id) {
+      this.$store.dispatch("GET_PRIMARY_ACTIVITY", product_id);
+    },
+    load_references(primary_id) {
+      this.$store
+        .dispatch("GET_SECONDARY_ACTIVITY", primary_id)
+        .then(result => {
+          return this.$store.dispatch("GET_ADDITIONAL", primary_id);
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_DECLARED", primary_id);
+        })
+        .catch(err => {
+          console.log("loading references: " + err);
+        });
+    },
     close() {
       this.showAppOverview = false;
       this.confirmDialog = true;
     },
     prev() {
-      console.log("next is clicked!!! ");
       this.e1--;
     },
     next() {
-      console.log("next is clicked!!! ");
       this.e1++;
     },
     changePage(val) {
-      console.log("change page value: " + JSON.stringify(val));
       this.e1 = val;
-      this.editedForm = this.form;
-      console.log("form updated: " + JSON.stringify(this.editedForm));
     },
     submit() {
+      console.log("##### form: " + JSON.stringify(this.form));
+      console.log("##### account: " + JSON.stringify(this.account));
       var files = this.form.uploaded_files;
       const formData = new FormData();
       for (let i = 0; i < files.length; i++) {
@@ -246,21 +282,28 @@ export default {
           formData.append("lto", files[i].file, files[i].file["name"]);
         }
       }
-      this.$store.dispatch("UPLOAD_LICENSES", formData);
-      this.form.uploaded_files = this.$store.state.licenses.uploaded;
-
-      this.paymentDialog = true;
-      this.confirmDialog = false;
-      this.$router.push("/app/payments/summary");
-      console.log("#########submit: " + JSON.stringify(this.form));
-      this.$store.dispatch("SAVE_LICENSES", this.form).then(result => {
-        console.log("result to save licenses: " + result);
-      });
-      this.$notify({
-        message: "You have successfully applied a new license",
-        color: "success",
-        icon: "check_circle"
-      });
+      this.$store
+        .dispatch("UPLOAD_LICENSES", formData)
+        .then(files => {
+          this.form.uploaded_files = files;
+          this.paymentDialog = true;
+          this.confirmDialog = false;
+          return this.$store.dispatch("REGISTER", {
+            license: this.form,
+            account: this.account
+          });
+        })
+        .then(result => {
+          this.$notify({
+            message: "You have successfully applied a new license",
+            color: "success",
+            icon: "check_circle"
+          });
+          this.$router.push("/");
+        })
+        .catch(err => {
+          console.log("error in uploading files: " + err);
+        });
     }
   }
 };

@@ -23,12 +23,15 @@ export default {
           }
         },
         getProduct(product_id) {
-          var product = this.$store.state.product.productType;
-          console.log("all product data: " + JSON.stringify(product))
-          var index = product.find(x => {
-            return x._id === product_id
-          })
-          return index.name
+          if (this.$store.state.products.productType) {
+            var product = null;
+            product = this.$store.state.products.productType.find(x => {
+              return x._id === product_id
+            })
+            return product ? product.name : ''
+          } else {
+            return ''
+          }
         },
         formatDate: (date, type) => {
           if (!date) {

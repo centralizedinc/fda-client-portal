@@ -87,7 +87,7 @@ var actions = {
     return new Promise((resolve, reject) => {
       UserAPI.login(credentials, (res, err) => {
         if (!err) {
-          context.commit('LOGIN', res);
+          if (res.isConfirmed) context.commit('LOGIN', res);
           resolve(res)
         } else {
           console.log(JSON.stringify(err));

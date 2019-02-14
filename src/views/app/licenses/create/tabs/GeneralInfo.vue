@@ -2,12 +2,12 @@
   <v-layout row wrap>
     <v-flex xs12>
       <v-autocomplete
-        v-model="editForm.general_info.product_type"
-        :items="types"
+        v-model="form.general_info.product_type"
+        :items="product_items"
         :rules="[rules.required]"
         hide-no-data
         hide-selected
-        @change="loadPrimary"
+        @change="load_primary_items"
         item-text="name"
         color="green darken-1"
         item-value="_id"
@@ -17,13 +17,13 @@
     <v-flex xs12>
       <v-autocomplete
         v-model="form.general_info.primary_activity"
-        :items="activity"
+        :items="primary_items"
         hide-no-data
         color="green darken-1"
         hide-selected
         label="Primary Activity"
         type="text"
-        @change="loadItems"
+        @change="load_items"
         item-text="name"
         item-value="_id"
         :rules="[rules.required]"
@@ -33,7 +33,7 @@
       <v-autocomplete
         v-model="form.general_info.addtl_activity"
         :rules="[rules.required]"
-        :items="addtl"
+        :items="secondary_items"
         hide-no-data
         color="green darken-1"
         hide-selected
@@ -41,13 +41,13 @@
         type="text"
         item-text="name"
         item-value="_id"
-        v-if="form.general_info.primary_activity&&form.general_info.primary_activity!==''&&addtl.length!==0"
+        v-if="form.general_info.primary_activity&&form.general_info.primary_activity!==''&&secondary_items.length!==0"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
       <v-autocomplete
         v-model="form.general_info.primary_capital"
-        :items="capital"
+        :items="declared_items"
         hide-no-data
         color="green darken-1"
         hide-selected
@@ -57,7 +57,7 @@
         type="text"
         item-text="name"
         item-value="_id"
-        v-if="form.general_info.primary_activity&&form.general_info.primary_activity!==''&&capital.length!==0"
+        v-if="form.general_info.primary_activity&&form.general_info.primary_activity!==''&&declared_items.length!==0"
       ></v-autocomplete>
     </v-flex>
   </v-layout>
@@ -67,64 +67,35 @@
 export default {
   props: ["form"],
   data: () => ({
-    types: [],
-    activity: [],
-    addtl: [],
-    capital: [],
-    product: [],
-    primary: [],
     rules: {
       required: value => !!value || "This field is required",
       declare: () =>
         "Please declare your capital. If none, select Not Applicable"
     }
   }),
-  created() {
-    this.init();
-  },
   computed: {
-    loadPrimary() {
-      this.editForm = this.form;
-      this.form.general_info.primary_activity = "";
-      this.$store
-        .dispatch("GET_PRIMARY_ACTIVITY", this.form.general_info.product_type)
-        .then(result => {
-          return (this.activity = this.$store.state.products.primaryActivity);
-        });
+    product_items() {
+      return this.$store.state.products.productType;
     },
-    loadItems() {
-      this.form.general_info.addtl_activity = "";
-      this.form.general_info.primary_capital = "";
-      // this.$store.dispatch("GET_SECONDARY_ACTIVITY", this.form.general_info.primary_activity).then(result =>{
-      //   return this.addtl = this.$store.state.products.secondaryActivity
-      // })
-      // this.$store.dispatch("GET_ADDITIONAL", this.form.general_info.primary_activity).then(result =>{
-      //   return this.addtl = this.$store.state.products.secondaryActivity
-      // })
-      // this.$store.dispatch("GET_DECLARED", this.form.general_info.primary_activity).then(result =>{
-      //   return this.capital = this.$store.state.products.declared
-      // })
-       this.$store.dispatch("GET_SECONDARY_ACTIVITY", this.form.general_info.primary_activity).then(result =>{
-        this.addtl = this.$store.state.products.secondaryActivity
-        return this.$store.dispatch("GET_ADDITIONAL", this.form.general_info.primary_activity)
-      })
-      .then(result =>{
-        this.addtl = this.$store.state.products.secondaryActivity
-        return this.$store.dispatch("GET_DECLARED", this.form.general_info.primary_activity)
-      })
-      .then(result =>{
-        return this.capital = this.$store.state.products.declared
-      })
+    primary_items() {
+      return this.$store.state.products.primaryActivity;
+    },
+    secondary_items() {
+      return this.$store.state.products.secondaryActivity;
+    },
+    declared_items() {
+      return this.$store.state.products.declared;
     }
   },
   methods: {
-    init() {
-      this.$store
-        .dispatch("GET_PRODUCT_TYPE")
-        .then(result => {
-          this.types = this.$store.state.products.productType;
-        })
-        .catch(err => {});
+    load_primary_items() {
+      this.form.general_info.primary_activity = "";
+      this.$emit("product_select", this.form.general_info.product_type);
+    },
+    load_items() {
+      this.form.general_info.addtl_activity = "";
+      this.form.general_info.primary_capital = "";
+      this.$emit("primary_select", this.form.general_info.primary_activity);
     }
   }
 };

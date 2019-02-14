@@ -18,7 +18,7 @@ import {
 }
 from "@/views/app/licenses/appoverview/tabs";
 
-module.exports = {
+export default {
     FormLayout: () => import('@/components/FormLayout'),
     ApplicationOverview: () => import('@/components/ApplicationOverview'),
     ConfirmToReviewApp: ConfirmDialog,
@@ -28,6 +28,7 @@ module.exports = {
     StepFour: AuthorizedOfficerDetails,
     StepFive: QualifiedPersonnel,
     StepSix: DocumentsUpload,
+    StepSeven: () => import('./Account.vue'),
     AppHistory: AppHistory,
     AppSummary: AppSummary,
     AppData: Data,

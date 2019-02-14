@@ -18,9 +18,8 @@
                                 
           <v-text-field 
           outline
-            name="name" 
             label="Email/Username" 
-            @keypress.enter="login" id="id"
+            @keypress.enter="login"
             v-model="credentials.username"
             color="primary"></v-text-field>
           <v-text-field
@@ -81,9 +80,7 @@
           class="font-weight-thin"
           outline
           v-model="email"
-            name="name"
             label="Email Address"
-            id="id"
           ></v-text-field>
           <v-divider></v-divider>
         </v-card-text>
@@ -102,58 +99,92 @@ export default {
   data() {
     return {
       value: true,
-      credentials:{},
-      loading:false,
-      loading2:false,
-      dialog:false,
-      email:""
+      credentials: {},
+      loading: false,
+      loading2: false,
+      dialog: false,
+      email: ""
     };
   },
   methods: {
     login() {
       this.loading = true;
-      this.$store.dispatch('LOGIN', this.credentials)
-        .then((res)=>{          
+      this.$store
+        .dispatch("LOGIN", this.credentials)
+        .then(res => {
           this.loading = false;
-          if(res.isMatch){
-            console.log("RESULT: " + JSON.stringify(res))
-            if(res.user.status === 2){
-              this.$notify({message:'Welcome ' + res.user.username + "!", color:'success', icon:'error_outline'})
-            }else{
-              this.$notify({message:'Welcome ' + res.user.username + "! You have limited access since your account is not yet activated.", color:'warning', icon:'error_outline'})
+          if (res.isMatch && res.isConfirmed) {
+            console.log("RESULT: " + JSON.stringify(res));
+            if (res.user.status === 2) {
+              this.$notify({
+                message: "Welcome " + res.user.username + "!",
+                color: "success",
+                icon: "error_outline"
+              });
+            } else {
+              this.$notify({
+                message:
+                  "Welcome " +
+                  res.user.username +
+                  "! You have limited access since your account is not yet activated.",
+                color: "warning",
+                icon: "error_outline"
+              });
             }
-            this.$router.push("/app");                        
-          }else{
+            this.$router.push("/app");
+          } else if (!res.isConfirmed) {
+            this.$notify({
+              message: "Please confirm your account at " + res.user.email,
+              color: "warning",
+              icon: "error_outline"
+            });
+          } else {
             this.credentials.password = "";
-            this.$notify({message:'Invalid User Credentials', color:'warning', icon:'error_outline'})
+            this.$notify({
+              message: "Invalid User Credentials",
+              color: "warning",
+              icon: "error_outline"
+            });
           }
-          
         })
-        .catch((err)=>{
+        .catch(err => {
           this.loading = false;
-          this.$notify({message:'Oops! Something went wrong. Please try again.', color:'error', icon:'error_outline'})
-        })
+          this.$notify({
+            message: "Oops! Something went wrong. Please try again.",
+            color: "error",
+            icon: "error_outline"
+          });
+        });
     },
-    signup(){
-      this.$router.push("/signup")
+    signup() {
+      this.$router.push("/signup");
     },
-    forgot_password(){
+    forgot_password() {
       this.loading2 = true;
-      this.$store.dispatch('FORGOT_PASSWORD', this.email)
-      .then(res=>{
-        this.loading2 = false;
-        this.dialog = false
-        this.$notify({
-        message:"We have received your request for account recovery. Please check your email ("+this.email+") in order to proceed.", color:"success"})
-      })
-      .catch(err=>{
-        this.loading2 = false;
-        this.dialog = false
-        this.$notify({
-        message:"Could not associate your email ("+this.email+ ") to any user account.", color:"error"})
-      })
-      
-      
+      this.$store
+        .dispatch("FORGOT_PASSWORD", this.email)
+        .then(res => {
+          this.loading2 = false;
+          this.dialog = false;
+          this.$notify({
+            message:
+              "We have received your request for account recovery. Please check your email (" +
+              this.email +
+              ") in order to proceed.",
+            color: "success"
+          });
+        })
+        .catch(err => {
+          this.loading2 = false;
+          this.dialog = false;
+          this.$notify({
+            message:
+              "Could not associate your email (" +
+              this.email +
+              ") to any user account.",
+            color: "error"
+          });
+        });
     }
   }
 };

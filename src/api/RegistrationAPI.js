@@ -31,19 +31,19 @@ export default class RegistrationAPI {
    * @param {String} key 
    * @param {Function} cb 
    */
-  static confirm(key, cb){
+  static confirm(key, cb) {
     axios
-    .get("public/accounts/register/confirm?key=" + key)
-    .then(result => {
-      if(result.data.success){
-        cb(result.data.model)
-      }else{
-        cb(null, result.data.errors)
-      }      
-    })
-    .catch(err =>{
-      cb(null, err)
-    })
+      .get("public/accounts/register/confirm?key=" + key)
+      .then(result => {
+        if (result.data.success) {
+          cb(result.data.model)
+        } else {
+          cb(null, result.data.errors)
+        }
+      })
+      .catch(err => {
+        cb(null, err)
+      })
   }
 
 }
