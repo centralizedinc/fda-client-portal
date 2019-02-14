@@ -94,7 +94,7 @@ var router = new Router({
           path: '',
           name: 'Dashboard',
           component: () => import('@/views/app/UserPortfolio.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
         {
           path: 'licenses',
