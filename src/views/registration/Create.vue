@@ -1,18 +1,13 @@
 <template>
   <div>
-    <v-layout row wrap v-if="invalid">
-      <v-flex xs12>Invalid Request: 404 status code.</v-flex>
-    </v-layout>
     <form-layout
-      v-show="!ecpayDialog"
-      v-else
       :step="e1"
-      :steps="6"
+      :steps="7"
       @prev="prev"
       @next="next"
       @changePage="changePage"
       @submit="confirmDialog=true"
-    >
+      submitText="Continue">
       <template slot="header-step-1">General Information
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -67,6 +62,15 @@
         </v-tooltip>
       </template>
       <step-six slot="content-step-6" :form="form"></step-six>
+      <template slot="header-step-7">Account Info
+        <v-spacer></v-spacer>
+        <v-tooltip left>
+          <v-btn slot="activator" flat icon color="error">
+            <i class="fas fa-question fa-lg"></i>
+          </v-btn>Get Help
+        </v-tooltip>
+      </template>
+      <step-seven slot="content-step-7" :account="account"></step-seven>
     </form-layout>
     <confirm-to-review-app
       :show="confirmDialog"
@@ -82,38 +86,19 @@
       <app-history slot="apphistory" :form="form"></app-history>
       <payment slot="paymentdetails" :form="form"></payment>
     </application-overview>
-    <!-- <payment-summary v-show="paymentDialog" @close="confirmDialog=false"></payment-summary> -->
   </div>
 </template>
 
 <script>
+import tabscomponents from "./tabs";
+
 export default {
-  components: {
-    FormLayout: () => import("@/components/FormLayout"),
-    ApplicationOverview: () => import("@/components/ApplicationOverview.vue"),
-    ConfirmToReviewApp: () => import("./create/tabs/ConfirmDialog.vue"),
-    StepOne: () => import("./create/tabs/GeneralInfo.vue"),
-    StepTwo: () => import("./create/tabs/EstablishmentInfo.vue"),
-    StepThree: () => import("./create/tabs/OfficeAddress.vue"),
-    StepFour: () => import("./create/tabs/AuthorizedOfficerDetails.vue"),
-    StepFive: () => import("./create/tabs/QualifiedPersonnel.vue"),
-    StepSix: () => import("./create/tabs/DocumentsUpload.vue"),
-    AppSummary: () => import("./appoverview/tabs/AppSummary.vue"),
-    AppData: () => import("./appoverview/tabs/Data.vue"),
-    UploadedFiles: () => import("./appoverview/tabs/Files.vue"),
-    OutputDocs: () => import("./appoverview/tabs/OutputDocs.vue"),
-    AppHistory: () => import("./appoverview/tabs/AppHistory.vue"),
-    Payment: () => import("./appoverview/tabs/PaymentDetails.vue"),
-    PaymentSummary: () => import("../payment/PaymentSummary.vue")
-  },
+  components: tabscomponents,
   data: () => ({
     e1: 1,
     confirmDialog: false,
-    ecpayDialog: false,
-
     paymentDialog: false,
     showAppOverview: false,
-    invalid: false,
     form: {
       current_task: "",
       user: "",
@@ -206,17 +191,31 @@ export default {
           file: null
         }
       ]
+    },
+    account: {
+      username: "",
+      password: "",
+      name: {}
     }
   }),
   created() {
     this.init();
   },
-  // watch: {
-  //   form(){
-  //     this.editedForm = this.form;
-  //     console.log("form updated: " + JSON.stringify(this.editedForm))
-  //   }
-  // },
+  watch: {
+    form: {
+      handler(license) {
+        this.account.name = {
+          first: license.auth_officer.firstname,
+          middle: license.auth_officer.middlename,
+          last: license.auth_officer.lastname,
+          display:
+            license.auth_officer.firstname + " " + license.auth_officer.lastname
+        };
+        this.account.email = license.auth_officer.email;
+      },
+      deep: true
+    }
+  },
   methods: {
     init() {
       this.$store
@@ -265,20 +264,17 @@ export default {
       this.confirmDialog = true;
     },
     prev() {
-      console.log("next is clicked!!! ");
       this.e1--;
     },
     next() {
-      console.log("next is clicked!!! ");
       this.e1++;
     },
     changePage(val) {
-      console.log("change page value: " + JSON.stringify(val));
       this.e1 = val;
-      this.editedForm = this.form;
-      console.log("form updated: " + JSON.stringify(this.editedForm));
     },
     submit() {
+      console.log("##### form: " + JSON.stringify(this.form));
+      console.log("##### account: " + JSON.stringify(this.account));
       var files = this.form.uploaded_files;
       const formData = new FormData();
       for (let i = 0; i < files.length; i++) {
@@ -286,21 +282,28 @@ export default {
           formData.append("lto", files[i].file, files[i].file["name"]);
         }
       }
-      this.$store.dispatch("UPLOAD_LICENSES", formData);
-      this.form.uploaded_files = this.$store.state.licenses.uploaded;
-
-      this.paymentDialog = true;
-      this.confirmDialog = false;
-      this.$router.push("/app/payments/summary");
-      console.log("#########submit: " + JSON.stringify(this.form));
-      this.$store.dispatch("SAVE_LICENSES", this.form).then(result => {
-        console.log("result to save licenses: " + result);
-      });
-      this.$notify({
-        message: "You have successfully applied a new license",
-        color: "success",
-        icon: "check_circle"
-      });
+      this.$store
+        .dispatch("UPLOAD_LICENSES", formData)
+        .then(files => {
+          this.form.uploaded_files = files;
+          this.paymentDialog = true;
+          this.confirmDialog = false;
+          return this.$store.dispatch("REGISTER", {
+            license: this.form,
+            account: this.account
+          });
+        })
+        .then(result => {
+          this.$notify({
+            message: "You have successfully applied a new license",
+            color: "success",
+            icon: "check_circle"
+          });
+          this.$router.push("/");
+        })
+        .catch(err => {
+          console.log("error in uploading files: " + err);
+        });
     }
   }
 };

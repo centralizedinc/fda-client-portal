@@ -122,7 +122,7 @@
           <v-autocomplete
             color="green darken-1"
             v-model="item.prod_line"
-            :items="lines"
+            :items="product_lines"
             hide-no-data
             hide-selected
             :rules="[rules.required]"
@@ -167,8 +167,9 @@
 export default {
   props: ["form"],
   data: () => ({
+    tin: "###-###-###-###",
     products: [],
-    lines: [
+    product_lines: [
       "Creams, emulsions, lotions, gels and oils for skin (hands, face, feet, etc.)",
       "Face masks (with the exception of chemical peeling products)",
       "Tinted bases (liquids, pastes, powders)",
@@ -209,11 +210,6 @@ export default {
     removeItem(index) {
       console.log(index);
       this.form.estab_details.products.splice(index, 1);
-    }
-  },
-  watch: {
-    form() {
-      console.log("establishment form: " + JSON.stringify(this.form));
     }
   }
 };

@@ -14,7 +14,7 @@
       <v-autocomplete
         color="green darken-1"
         v-model="form.addresses.office.region"
-        :items="region"
+        :items="regions"
         hide-no-data
         hide-selected
         label="Region"
@@ -25,7 +25,7 @@
       <v-autocomplete
         color="green darken-1"
         v-model="form.addresses.office.province"
-        :items="province"
+        :items="provinces"
         hide-no-data
         hide-selected
         label="Province"
@@ -36,7 +36,7 @@
       <v-autocomplete
         color="green darken-1"
         v-model="form.addresses.office.city"
-        :items="city"
+        :items="cities"
         hide-no-data
         hide-selected
         label="City / Town"
@@ -47,7 +47,7 @@
       <v-autocomplete
         color="green darken-1"
         v-model="form.addresses.office.zipcode"
-        :items="zip"
+        :items="zipcodes"
         hide-no-data
         hide-selected
         label="Zip Code"
@@ -108,7 +108,7 @@
             <v-autocomplete
               color="green darken-1"
               v-model="warehouse.region"
-              :items="region"
+              :items="regions"
               hide-no-data
               hide-selected
               label="Region"
@@ -119,7 +119,7 @@
             <v-autocomplete
               color="green darken-1"
               v-model="warehouse.province"
-              :items="province"
+              :items="provinces"
               hide-no-data
               hide-selected
               label="Province"
@@ -130,7 +130,7 @@
             <v-autocomplete
               color="green darken-1"
               v-model="warehouse.city"
-              :items="city"
+              :items="cities"
               hide-no-data
               hide-selected
               label="City / Town"
@@ -141,7 +141,7 @@
             <v-autocomplete
               color="green darken-1"
               v-model="warehouse.zipcode"
-              :items="zip"
+              :items="zipcodes"
               hide-no-data
               hide-selected
               label="Zip Code"
@@ -224,7 +224,7 @@
         <v-autocomplete
           color="green darken-1"
           v-model="form.addresses.plant.region"
-          :items="region"
+          :items="regions"
           hide-no-data
           hide-selected
           label="Region"
@@ -235,7 +235,7 @@
         <v-autocomplete
           color="green darken-1"
           v-model="form.addresses.plant.province"
-          :items="province"
+          :items="provinces"
           hide-no-data
           hide-selected
           label="Province"
@@ -246,7 +246,7 @@
         <v-autocomplete
           color="green darken-1"
           v-model="form.addresses.plant.city"
-          :items="city"
+          :items="cities"
           hide-no-data
           hide-selected
           label="City / Town"
@@ -257,7 +257,7 @@
         <v-autocomplete
           color="green darken-1"
           v-model="form.addresses.plant.zipcode"
-          :items="zip"
+          :items="zipcodes"
           hide-no-data
           hide-selected
           label="Zip Code"
@@ -304,11 +304,11 @@ export default {
       }
     ],
     addedWarehouse: [],
-    region: [],
-    province: [],
-    city: [],
-    zipcode: [],
-    warehouse: [],
+    regions: [],
+    provinces: [],
+    cities: [],
+    zipcodes: [],
+    warehouse: {},
     rules: {
       required: value => !!value || "This field is required"
     }

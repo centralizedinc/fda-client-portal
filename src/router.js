@@ -75,6 +75,10 @@ var router = new Router({
           name: 'Login',
           component: () => import('@/views/Login.vue'),
           beforeEnter: isAuthenticated
+        }, {
+          path: '/registration/new',
+          name: 'Registrations',
+          component: () => import('@/views/registration/Create.vue')
         },
         {
           path: '/signup',
@@ -107,74 +111,74 @@ var router = new Router({
           path: '',
           name: 'Dashboard',
           component: () => import('@/views/app/UserPortfolio.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
         {
           path: 'licenses',
           name: 'License to Operate',
           component: () => import('@/views/app/licenses/Licenses.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
         {
           path: 'licenses/apply',
           name: 'New License Application',
           component: () => import('@/views/app/licenses/Create.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
         {
           path: 'licenses/view',
           name: 'View License Application',
           component: () => import('@/views/app/licenses/View.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
         {
           path: 'certificates',
           name: 'Certificate of Product Registration',
           component: () => import('@/views/app/certificates/Certificates.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
         {
           path: 'certificates/apply',
           name: 'New Certificate of Product Registration',
           component: () => import('@/views/app/certificates/Apply.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
         {
           path: 'notification',
           name: 'Product Notification',
           component: () => import('@/views/app/notification/Notification.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
         {
           path: 'notification/apply',
           name: 'New Product Notification',
           component: () => import('@/views/app/notification/Apply.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
         {
           path: 'payments',
           name: 'Payments',
           component: () => import('@/views/app/payment/Payment.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
         {
           path: 'payments/paylater',
           name: 'Pay Later',
           component: () => import('@/views/app/payment/PayLater.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
 
         {
           path: 'payments/creditcard',
           name: 'Credit Card Payment',
           component: () => import('@/views/app/payment/CreditCardPayment.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
         {
           path: 'payments/summary',
           name: 'Payment Summary',
           component: () => import('@/views/app/payment/PaymentSummary.vue'),
-          beforeEnter: isAuthorized
+          // beforeEnter: isAuthorized
         },
         {
           path: 'profile',

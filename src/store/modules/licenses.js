@@ -83,10 +83,10 @@ var actions = {
             new LicenseAPI(context.rootState.user_session.token).uploadLicenses(uploadData, (uploadedData, err) => {
                 if (!err) {
                     context.commit('UPLOADED_DATA', uploadedData)
-                    resolve()
+                    resolve(uploadedData)
                 } else {
                     console.log(JSON.stringify(err))
-                    reject()
+                    reject(err)
                 }
             })
         })

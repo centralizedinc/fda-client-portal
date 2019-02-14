@@ -187,7 +187,7 @@
           <v-card-text>
             <v-layout row wrap>
               <v-flex xs12 ml-1>
-                <v-text-field box name="name" label="Enter OR/Transaction Number" id="id"></v-text-field>
+                <v-text-field box label="Enter OR/Transaction Number"></v-text-field>
               </v-flex>
               <v-spacer></v-spacer>
               <v-btn class="ml-1" color="success">Upload Payment receipt</v-btn>

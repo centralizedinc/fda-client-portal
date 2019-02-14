@@ -86,7 +86,7 @@
           </v-btn>Add another file
         </v-tooltip>
         </v-flex>-->
-        <v-card class="mt-2" @click="addItem" hover ripple="hover">
+        <v-card class="mt-2" @click="addItem" hover ripple>
           <v-card-text>
             <v-layout row wrap>
               <v-spacer></v-spacer>
