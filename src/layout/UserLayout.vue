@@ -305,8 +305,8 @@ export default {
     goTo(router) {
       this.$router.push(router);
     },
-    showLogout() {
-      this.logout = true;
+    showLogout(){
+      this.show_logout = true;
     },
     confirmLogout() {
       this.$store.dispatch("LOGOUT");
