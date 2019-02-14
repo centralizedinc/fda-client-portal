@@ -21,6 +21,7 @@ const mutations = {
     SET_FORM(state, form) {
         state.form = null;
         state.form = form;
+        console.log("set form store mutation: " + JSON.stringify(state.form))
     },
     UPLOADED_DATA(state, form) {
         state.uploaded = form

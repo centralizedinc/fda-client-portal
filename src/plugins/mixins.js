@@ -4,11 +4,11 @@ export default {
     Vue.mixin({
       methods: {
         getAppType(type) {
-          if (type === "I") {
+          if (type === 0) {
             return "Initial";
-          } else if (type === "R") {
+          } else if (type === 2) {
             return "Renewal";
-          } else if (type === "V") {
+          } else if (type === 1) {
             return "Variation";
           }
         },
