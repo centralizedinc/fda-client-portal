@@ -32,41 +32,42 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        headers: [
-          { text: 'Case No', value: 'case_no'},
-          { text: 'License No', value: 'case_no' },
-          { text: 'Type', value: 'application_type' },
-          { text: 'Task', value: 'current_task' },
-          { text: 'Application Date', value: 'date_created' },
-          { text: 'Variation Date', value: 'date_variation' },
-          { text: 'Actions', value: '' }
-        ],
-        payment: [{    
-        case_no: "00",
-        application_type: "sample application",
-        current_task: "sample task",
-        date_created: "01/01/2019",
-        date_variation: "01/01/2019"    
-    }]
-      }
-    },
-    created(){
-        this.init()
-    },
-    methods:{
-        init(){
-            this.$store.dispatch('SET_LICENSES');
-        },
-        pay(){
-            this.$router.push('/app/payments/summary')
+export default {
+  data() {
+    return {
+      headers: [
+        { text: "Case No", value: "case_no" },
+        { text: "License No", value: "case_no" },
+        { text: "Type", value: "application_type" },
+        { text: "Task", value: "current_task" },
+        { text: "Application Date", value: "date_created" },
+        { text: "Variation Date", value: "date_variation" },
+        { text: "Actions", value: "" }
+      ],
+      payment: [
+        {
+          case_no: "00",
+          application_type: "sample application",
+          current_task: "sample task",
+          date_created: "01/01/2019",
+          date_variation: "01/01/2019"
         }
+      ]
+    };
+  },
+  created() {
+    this.init();
+  },
+  methods: {
+    init() {
+      this.$store.dispatch("SET_LICENSES");
+    },
+    pay() {
+      this.$router.push("/app/payments/summary");
     }
   }
+};
 </script>
 
 <style>
-
 </style>

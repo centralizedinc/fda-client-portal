@@ -1,11 +1,5 @@
 <template>
     <v-layout row wrap>
-        <v-flex xs12 class="display">
-            <span>Name: </span>{{displayName}}
-        </v-flex>
-        <v-flex xs12 class="display">
-            <span>Email: </span>{{account.email}}
-        </v-flex>
         <v-flex xs12>
             <v-text-field label="Username" v-model="account.username"></v-text-field>
         </v-flex>
@@ -28,24 +22,6 @@ export default {
     return {
       value: true
     };
-  },
-  computed: {
-    displayName() {
-      var name = this.account.name.last ? this.account.name.last : "";
-      if (
-        name !== "" &&
-        this.account.name.first &&
-        this.account.name.first !== ""
-      )
-        name += ", ";
-      name += this.account.name.first ? this.account.name.first : "";
-      return name;
-    }
-  },
-  watch: {
-    account(val) {
-      console.log(JSON.stringify(val));
-    }
   }
 };
 </script>

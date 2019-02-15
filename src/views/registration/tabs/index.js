@@ -34,5 +34,6 @@ export default {
     AppData: Data,
     UploadedFiles: Files,
     OutputDocs: OutputDocs,
-    Payment: PaymentDetails
+    Payment: PaymentDetails,
+    PaymentSummary: () => import('@/views/app/payment/PaymentSummary')
 }

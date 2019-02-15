@@ -1,6 +1,8 @@
 <template>
   <div>
+    <payment-summary v-if="paymentDialog" :form="form"></payment-summary>
     <form-layout
+      v-else
       :step="e1"
       :steps="7"
       @prev="prev"
@@ -72,8 +74,7 @@
       </template>
       <step-seven slot="content-step-7" :account="account"></step-seven>
     </form-layout>
-    <confirm-to-review-app
-      :show="confirmDialog"
+    <confirm-to-review-app :show="confirmDialog"
       @close="confirmDialog=false"
       @submit="submit"
       @overview="dialog = false ; showAppOverview = true"
@@ -201,21 +202,6 @@ export default {
   created() {
     this.init();
   },
-  watch: {
-    form: {
-      handler(license) {
-        this.account.name = {
-          first: license.auth_officer.firstname,
-          middle: license.auth_officer.middlename,
-          last: license.auth_officer.lastname,
-          display:
-            license.auth_officer.firstname + " " + license.auth_officer.lastname
-        };
-        this.account.email = license.auth_officer.email;
-      },
-      deep: true
-    }
-  },
   methods: {
     init() {
       this.$store
@@ -286,8 +272,6 @@ export default {
         .dispatch("UPLOAD_LICENSES", formData)
         .then(files => {
           this.form.uploaded_files = files;
-          this.paymentDialog = true;
-          this.confirmDialog = false;
           return this.$store.dispatch("REGISTER", {
             license: this.form,
             account: this.account
@@ -299,7 +283,9 @@ export default {
             color: "success",
             icon: "check_circle"
           });
-          this.$router.push("/");
+          this.confirmDialog = false;
+          this.showAppOverview = false;
+          this.paymentDialog = true;
         })
         .catch(err => {
           console.log("error in uploading files: " + err);

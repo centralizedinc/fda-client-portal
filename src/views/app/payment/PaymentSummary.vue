@@ -1,53 +1,59 @@
 <template>
   <v-layout row wrap>
-    <v-flex xs12>
+    <v-layout row wrap v-if="showPayLater">
+      <pay-later :form="app_form"></pay-later>
+    </v-layout>
+
+    <v-layout row wrap v-else-if="showCreditCard">
+      <credit-card :form="app_form" @cancel="cancel"></credit-card>
+    </v-layout>
+
+    <v-flex xs12 v-else>
       <v-card>
         <v-card-title primary-title class="font-weight-light headline">Payment Summary</v-card-title>
-        <form-layout>
-          <v-container slot="content-step-1" grid-list-xl>
-            <v-card flat>
-              <v-layout row wrap mt-2 pl-5>
-                <v-flex xs6>
-                  <v-flex xs12 pl-5 pt-3 pb-3 ml-2>
-                    <label class="subheading">Application Fee:</label>
-                  </v-flex>
-                  <v-flex xs12 pl-5 pt-3 pb-3 ml-2>
-                    <label class="subheading"># of year/s applied:</label>
-                  </v-flex>
-                  <v-flex xs12 pl-5 pt-3 pb-3 ml-2>
-                    <label class="subheading">Surcharge:</label>
-                  </v-flex>
-                  <v-flex xs12 pl-5 pt-3 pb-3 ml-2>
-                    <label class="subheading">Legal Research Fund (LRF):</label>
-                  </v-flex>
-                  <v-flex xs12 pl-5 pt-3 pb-3 ml-2>
-                    <label class="subheading" color="error">Total Payment Due:</label>
-                  </v-flex>
+        <v-container grid-list-xl>
+          <v-card flat>
+            <v-layout row wrap mt-2 pl-5>
+              <v-flex xs6>
+                <v-flex xs12 pl-5 pt-3 pb-3 ml-2>
+                  <label class="subheading">Application Fee:</label>
                 </v-flex>
+                <v-flex xs12 pl-5 pt-3 pb-3 ml-2>
+                  <label class="subheading"># of year/s applied:</label>
+                </v-flex>
+                <v-flex xs12 pl-5 pt-3 pb-3 ml-2>
+                  <label class="subheading">Surcharge:</label>
+                </v-flex>
+                <v-flex xs12 pl-5 pt-3 pb-3 ml-2>
+                  <label class="subheading">Legal Research Fund (LRF):</label>
+                </v-flex>
+                <v-flex xs12 pl-5 pt-3 pb-3 ml-2>
+                  <label class="subheading" color="error">Total Payment Due:</label>
+                </v-flex>
+              </v-flex>
 
-                <v-flex xs4>
-                  <v-flex xs12 pr-5 pt-3 pb-3>
-                    <label class="subheading">Php {{rates.fee}}</label>
-                  </v-flex>
-                  <v-flex xs12 pr-5 pt-3 pb-3>
-                    <label class="subheading">1</label>
-                  </v-flex>
-                  <v-flex xs12 pr-5 pt-3 pb-3>
-                    <label class="subheading">
-                      <v-icon medium color="error">close</v-icon>
-                    </label>
-                  </v-flex>
-                  <v-flex xs12 pr-5 pt-3 pb-3>
-                    <label class="subheading">Php {{rates.lrf}}</label>
-                  </v-flex>
-                  <v-flex xs12 pr-5 pt-3 pb-3>
-                    <label class="subheading">Php 5,050.00</label>
-                  </v-flex>
+              <v-flex xs4>
+                <v-flex xs12 pr-5 pt-3 pb-3>
+                  <label class="subheading">Php {{rates.fee}}</label>
                 </v-flex>
-              </v-layout>
-            </v-card>
-          </v-container>
-        </form-layout>
+                <v-flex xs12 pr-5 pt-3 pb-3>
+                  <label class="subheading">1</label>
+                </v-flex>
+                <v-flex xs12 pr-5 pt-3 pb-3>
+                  <label class="subheading">
+                    <v-icon medium color="error">close</v-icon>
+                  </label>
+                </v-flex>
+                <v-flex xs12 pr-5 pt-3 pb-3>
+                  <label class="subheading">Php {{rates.lrf}}</label>
+                </v-flex>
+                <v-flex xs12 pr-5 pt-3 pb-3>
+                  <label class="subheading">Php 5,050.00</label>
+                </v-flex>
+              </v-flex>
+            </v-layout>
+          </v-card>
+        </v-container>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -71,15 +77,13 @@
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
-    </v-flex>
-    <v-layout row wrap>
+      
       <v-dialog
         v-model="cashierPayment"
         scrollable
         persistent
         transition="dialog-transition"
-        max-width="500"
-      >
+        max-width="500">
         <v-card>
           <v-toolbar
             color="fdaGreen"
@@ -118,16 +122,13 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-layout>
 
-    <v-layout row wrap>
       <v-dialog
         v-model="ecPayDialog"
         scrollable
         persistent
         transition="dialog-transition"
-        max-width="500"
-      >
+        max-width="500">
         <v-card>
           <v-toolbar
             color="fdaGreen"
@@ -166,7 +167,8 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-layout>
+    </v-flex>
+
     <!-- <v-layout row wrap>
       <v-dialog
         v-model="bancnetDialog"
@@ -208,14 +210,21 @@ import * as OrderOfPaymentGenerator from "./OrderOfPaymentGenerator";
 
 export default {
   props: ["form"],
+  components: {
+    CreditCard: () => import("./CreditCardPayment.vue"),
+    PayLater: () => import("./PayLater.vue")
+  },
   data() {
     return {
       rates: {
         fee: 5000,
         lrf: 50
       },
+      app_form: {},
       cashierPayment: false,
-      ecPayDialog: false
+      ecPayDialog: false,
+      showCreditCard: false,
+      showPayLater: false
       // bancnetDialog: false
     };
   },
@@ -224,21 +233,32 @@ export default {
   },
   methods: {
     init() {
+      this.app_form = this.form ? this.form : this.$store.state.licenses.form;
       console.log("Welcome to payment summary");
+    },
+    cancel() {
+      this.showCreditCard = false;
+      this.showPayLater = false;
     },
     generatePDF() {
       this.cashierPayment = true;
-      OrderOfPaymentGenerator.generateOrderOfPayment(this.form, this.rates);
+      OrderOfPaymentGenerator.generateOrderOfPayment(this.app_form, this.rates);
     },
     creditCard() {
-      this.$router.push("/app/payments/creditcard");
+      this.cashierPayment = false;
+      this.ecPayDialog = false;
+      this.showCreditCard = true;
+      // this.$router.push("/app/payments/creditcard");
     },
     payLater() {
-      this.$router.push("/app/payments/paylater");
+      this.cashierPayment = false;
+      this.ecPayDialog = false;
+      this.showPayLater = true;
+      // this.$router.push("/app/payments/paylater");
     },
     ecPay() {
       this.ecPayDialog = true;
-      OrderOfPaymentGenerator.generateOrderOfPayment(this.form, this.rates);
+      OrderOfPaymentGenerator.generateOrderOfPayment(this.app_form, this.rates);
     }
   }
 };
