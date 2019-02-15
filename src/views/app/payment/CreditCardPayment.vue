@@ -1,17 +1,18 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12>
-      <form-layout @submit="submit">
-        <template slot="header-step-1">Credit Card Details</template>
-        <v-container slot="content-step-1" grid-list-xl>
+      <v-card>
+        <v-card-title class="display-1">
+          Credit Card Details
+        </v-card-title>
+        <v-container grid-list-xl>
           <v-layout row wrap>
             <v-flex xs12>
               <v-text-field
                 label="*Credit Card Number"
                 mask="####-####-####-####"
                 v-model="full_details.card_details.number"
-                :rules="[rules.required, rules.card_validity]"
-              >
+                :rules="[rules.required, rules.card_validity]">
                 <v-fade-transition slot="append">
                   <v-progress-circular v-if="loading" size="24" color="info" indeterminate></v-progress-circular>
                   <img v-else :src="card_logo" alt>
@@ -36,32 +37,29 @@
             </v-flex> -->
             <!-- ---------------------------------- -->
             <v-flex xs8>
-      <v-menu
-            ref="menu1"
-            v-model="menu1"
-            :close-on-content-click="false"
-            :nudge-right="40"
-            lazy
-            transition="scale-transition"
-            offset-y
-            full-width
-            max-width="290px"
-            min-width="290px"
-          >
-            <v-text-field
-              slot="activator"
-              v-model="dateFormatted"
-              label="Date"
-              persistent-hint
-              prepend-icon="event"
-              @blur="date = parseDate(dateFormatted)"
-            ></v-text-field>
-            <v-date-picker v-model="date" no-title @input="menu1 = false" type="month"
-            :min ="new Date().toISOString().substr(0, 10)"
-                           ></v-date-picker>
-          </v-menu>
-    </v-flex>
-<!-- ------------------------------------------------- -->
+              <v-menu
+                ref="menu1"
+                v-model="menu1"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                max-width="290px"
+                min-width="290px">
+                <v-text-field
+                  slot="activator"
+                  v-model="dateFormatted"
+                  label="Date"
+                  persistent-hint
+                  prepend-icon="event"
+                  @blur="date = parseDate(dateFormatted)"
+                ></v-text-field>
+                <v-date-picker v-model="date" no-title @input="menu1 = false" type="month"
+                  :min ="new Date().toISOString().substr(0, 10)"></v-date-picker>
+              </v-menu>
+            </v-flex>
             <v-flex xs4>
               <v-text-field
                 label="*CVC"
@@ -119,23 +117,26 @@
         </v-container>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn block color="success" @click="submit">Submit</v-btn>
+          <v-btn color="error" @click="$emit('cancel')">Cancel</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="success" @click="submit">Submit</v-btn>
         </v-card-actions>
-      </form-layout>
+      </v-card>
     </v-flex>
   </v-layout>
 </template>
 
 <script>
 export default {
+  props: ["form"],
   data() {
     return {
       card_logo: "",
       loading: false,
       date: new Date().toISOString().substr(0, 7),
       menu1: false,
-      expiry:"",
-      full_details:{
+      expiry: "",
+      full_details: {
         card_details: {
           number: "",
           exp_month: "",
@@ -150,11 +151,11 @@ export default {
           zip: ""
         },
         payment_details: {
-        amount: 5000,
-        currency: "php",
-        description: "test description",
-        statement_descriptor: "test statement",
-        capture: true
+          amount: 5000,
+          currency: "php",
+          description: "test description",
+          statement_descriptor: "test statement",
+          capture: true
         },
         transaction_details: {
           application_type: "",
@@ -165,73 +166,82 @@ export default {
       },
       rules: {
         required: value => !!value || "This is a required field",
-        card_validity: value => this.loading || "Invalid Credit Card Number",
+        card_validity: value => this.loading || "Invalid Credit Card Number"
         // expiry_validity: value2 => !!this.loading2 || "Invalid Expiration Date",
         // cvc_validity: value3 => this.loading3 === true || "Invalid CVV"
       },
-       gaps: [],
-       cvc_max: 3,
-       code_name: "CVC",
+      gaps: [],
+      cvc_max: 3,
+      code_name: "CVC"
     };
   },
-  watch:{
-    date (val) {
-      this.dateFormatted = this.formatDate(this.date)
-
+  watch: {
+    date(val) {
+      this.dateFormatted = this.formatDate(this.date);
     },
-    "full_details.card_details.number": function(val){
+    "full_details.card_details.number": function(val) {
       this.loading = true;
       this.card_logo = "";
       this.$store.state.payments.credit_card = "";
-      if(val !== ""){
-        this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result=>{
-          var creditCard = this.$store.state.payments.credit_card
-          if(creditCard.isValid){
-            console.log("####### credit card details: " + JSON.stringify(creditCard.isValid))
+      if (val !== "") {
+        this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result => {
+          var creditCard = this.$store.state.payments.credit_card;
+          if (creditCard.isValid) {
+            console.log(
+              "####### credit card details: " +
+                JSON.stringify(creditCard.isValid)
+            );
             this.loading = false;
             this.card_logo =
-                  "https://fda-portal-user.herokuapp.com/assets/img/cc-icons/" +
-                  creditCard.card.type +
-                  ".png";
+              "https://fda-portal-user.herokuapp.com/assets/img/cc-icons/" +
+              creditCard.card.type +
+              ".png";
             this.gaps = creditCard.card.gaps;
             this.cvc_max = creditCard.card.code.size;
             this.code_name = creditCard.card.code.name;
-          }else{
-            this.loading = true
+          } else {
+            this.loading = true;
           }
-        })
+        });
       }
     },
-    "full_details.card_details.cvc": function(val){
+    "full_details.card_details.cvc": function(val) {
       // this.loading3 = true;
       this.$store.state.payments.cvv = "";
-      if(val !== ""){
-        console.log("cvv number data: " + JSON.stringify(val))
-        this.$store.dispatch("VALIDATE_CVV", val).then(result=>{
-          var cvv = this.$store.state.payments.cvv
-          if(cvv.isValid){
-            console.log("####### cvv/cvc details: " + JSON.stringify(cvv.isValid))
+      if (val !== "") {
+        console.log("cvv number data: " + JSON.stringify(val));
+        this.$store.dispatch("VALIDATE_CVV", val).then(result => {
+          var cvv = this.$store.state.payments.cvv;
+          if (cvv.isValid) {
+            console.log(
+              "####### cvv/cvc details: " + JSON.stringify(cvv.isValid)
+            );
             // this.loading3 = false;
           }
-        })
-      }else{
+        });
+      } else {
         // this.loading3 = false
       }
     }
   },
-  created(){
-    this.full_details.transaction_details.application_type = this.$store.state.licenses.form.application_type
-    this.full_details.transaction_details.case_no = this.$store.state.licenses.form.case_no
+  created() {
+    this.full_details.transaction_details.application_type =
+      form.application_type;
+    this.full_details.transaction_details.case_no = form.case_no;
   },
   methods: {
-     formatDate (date) {
-      if (!date) return null
-
-      const [year, month] = date.split('-')
-      this.full_details.card_details.exp_month = `${month}`
-      this.full_details.card_details.exp_year = `${year}`
-      console.log("expiry: " + this.full_details.card_details.exp_month + "/" + this.full_details.card_details.exp_year)
-      return `${month}/${year}`
+    formatDate(date) {
+      if (!date) return null;
+      const [year, month] = date.split("-");
+      this.full_details.card_details.exp_month = `${month}`;
+      this.full_details.card_details.exp_year = `${year}`;
+      console.log(
+        "expiry: " +
+          this.full_details.card_details.exp_month +
+          "/" +
+          this.full_details.card_details.exp_year
+      );
+      return `${month}/${year}`;
     },
     isEmpty(str) {
       return !str || str === null || str === "";
@@ -245,7 +255,7 @@ export default {
       return false;
     },
     submit() {
-      console.log("submit: " + JSON.stringify(this.full_details))
+      console.log("submit: " + JSON.stringify(this.full_details));
       if (
         !this.isEmptyStrings([
           this.full_details.card_details.number,
@@ -260,12 +270,12 @@ export default {
           this.full_details.card_details.zip
         ])
       ) {
-        
-        this.$store.dispatch("SAVE_PAYMENT", this.full_details).then(result =>{
-          console.log("saved payment")
-        })
+        this.$store.dispatch("SAVE_PAYMENT", this.full_details).then(result => {
+          this.$router.push("/");
+          console.log("saved payment");
+        });
         // this.$router.push("/app/payments/summary");
-      } 
+      }
     }
   }
 };
