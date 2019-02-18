@@ -9,7 +9,8 @@
       @next="next"
       @changePage="changePage"
       @submit="confirmDialog=true"
-      submitText="Continue">
+      submitText="Continue"
+    >
       <template slot="header-step-1">General Information
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -18,7 +19,12 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-one slot="content-step-1" :form="form" @product_select="load_primaries" @primary_select="load_references"></step-one>
+      <step-one
+        slot="content-step-1"
+        :form="form"
+        @product_select="load_primaries"
+        @primary_select="load_references"
+      ></step-one>
       <template slot="header-step-2">Establishment Information
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -74,7 +80,8 @@
       </template>
       <step-seven slot="content-step-7" :account="account"></step-seven>
     </form-layout>
-    <confirm-to-review-app :show="confirmDialog"
+    <confirm-to-review-app
+      :show="confirmDialog"
       @close="confirmDialog=false"
       @submit="submit"
       @overview="dialog = false ; showAppOverview = true"

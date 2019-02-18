@@ -78,16 +78,10 @@ export default {
   components: {
     ExistingUser: () => import("./registration/existing/Validate.vue")
   },
-  data() {
-    return {
-      validationDialog: false
-    };
-    //   },
-    //   methods: {
-    //     validateExistingUser() {
-    //       this.validationDialog = true;
-    //     }
-  }
+  props: ["account"],
+  data: () => ({
+    validationDialog: false
+  })
 };
 </script>
 

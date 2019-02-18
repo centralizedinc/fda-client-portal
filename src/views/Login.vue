@@ -3,7 +3,7 @@
     <v-flex xs4 pa-2 mt-4>
       <v-card pa-5>
         <v-toolbar
-        dark
+          dark
           color="primary"
           style="background: linear-gradient(45deg, #b5c25a 0%, #104b2a 100%); box-shadow: 0 6px 20px 0 rgba(77, 182, 172, 0.5)"
         >
@@ -12,60 +12,57 @@
           <!-- <v-btn flat color="white">REGISTER</v-btn> -->
         </v-toolbar>
         <v-divider></v-divider>
-        <v-form class="mt-4 login" @submit.prevent="login">  
-        <v-card-text>
-          
-                                
-          <v-text-field 
-          outline
-            label="Email/Username" 
-            @keypress.enter="login"
-            v-model="credentials.username"
-            color="primary"></v-text-field>
-          <v-text-field
-          outline
-            name="name"
-            label="Enter your password"
-            min="8"
-            @keypress.enter="login"
-            :append-icon="value ? 'visibility' : 'visibility_off'"
-            :append-icon-cb="() => (value = !value)"
-            :type="value ? 'password' : 'text'"
-            v-model="credentials.password"
-            color="primary"
-          ></v-text-field>
-          
-          <!-- <v-divider></v-divider> -->
-        </v-card-text>
+        <v-form class="mt-4 login" @submit.prevent="login">
+          <v-card-text>
+            <v-text-field
+              outline
+              label="Email/Username"
+              @keypress.enter="login"
+              v-model="credentials.username"
+              color="primary"
+            ></v-text-field>
+            <v-text-field
+              outline
+              name="name"
+              label="Enter your password"
+              min="8"
+              @keypress.enter="login"
+              :append-icon="value ? 'visibility_off' : 'visibility'"
+              :append-icon-cb="() => (value = !value)"
+              :type="value ? 'password' : 'text'"
+              v-model="credentials.password"
+              color="primary"
+            ></v-text-field>
+
+            <!-- <v-divider></v-divider> -->
+          </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn 
-              outline 
-              color="secondary" 
+            <v-btn
+              outline
+              color="secondary"
               class="caption font-weight-light"
-              @click="signup()">Sign-up</v-btn>
+              @click="signup()"
+            >Sign-up</v-btn>
             <v-btn
               color="primary"
               :loading="loading"
               type="submit"
-              class="caption font-weight-light">Login</v-btn>              
-          </v-card-actions>  
-          <v-divider></v-divider>    
-          <v-btn 
-            flat 
-            block 
-            color="primary" 
+              class="caption font-weight-light"
+            >Login</v-btn>
+          </v-card-actions>
+          <v-divider></v-divider>
+          <v-btn
+            flat
+            block
+            color="primary"
             class="caption font-weight-light"
-            @click.native="dialog =true">Forgot Password?</v-btn>
-            </v-form>
+            @click.native="dialog =true"
+          >Forgot Password?</v-btn>
+        </v-form>
       </v-card>
     </v-flex>
-    <v-dialog
-      v-model="dialog"
-      persistent
-      max-width="300px"
-      transition="dialog-transition"
-    >
+    <v-dialog v-model="dialog" persistent max-width="300px" transition="dialog-transition">
       <v-card>
         <v-toolbar dark color="primary">
           <span class="title font-weight-light">Forgot Password</span>
@@ -75,19 +72,26 @@
           </v-btn>
         </v-toolbar>
         <v-card-text>
-          <span class="subheading font-weight-thin">Enter your email address to recover your account.</span>
-          <v-text-field
-          class="font-weight-thin"
-          outline
-          v-model="email"
-            label="Email Address"
-          ></v-text-field>
+          <span
+            class="subheading font-weight-thin"
+          >Enter your email address to recover your account.</span>
+          <v-text-field class="font-weight-thin" outline v-model="email" label="Email Address"></v-text-field>
           <v-divider></v-divider>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn outline color="secondary" class="caption font-weight-light" @click.native="dialog =false">Cancel</v-btn>
-          <v-btn color="primary" class="caption font-weight-light" :loading="loading2" @click="forgot_password">Submit</v-btn>
+          <v-btn
+            outline
+            color="secondary"
+            class="caption font-weight-light"
+            @click.native="dialog =false"
+          >Cancel</v-btn>
+          <v-btn
+            color="primary"
+            class="caption font-weight-light"
+            :loading="loading2"
+            @click="forgot_password"
+          >Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -119,7 +123,7 @@ export default {
               this.$notify({
                 message: "Welcome " + res.user.username + "!",
                 color: "success",
-                icon: "error_outline"
+                icon: "check_circle"
               });
             } else {
               this.$notify({

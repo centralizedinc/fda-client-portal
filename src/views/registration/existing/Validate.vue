@@ -1,8 +1,9 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="show" width="650" persistent>
+    <v-dialog v-model="show" persistent>
       <v-form v-model="valid">
         <v-card>
+          <user-account v-show="!showUserAccount"></user-account>
           <v-card-title style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
             <span class="headline font-weight-thin white--text">Validate User</span>
             <v-spacer></v-spacer>
@@ -17,7 +18,9 @@
               <v-divider></v-divider>
               <v-stepper-step :complete="e1 > 2" step="2">Establishment Information</v-stepper-step>
               <v-divider></v-divider>
-              <v-stepper-step step="3">Authorized Personnel</v-stepper-step>
+              <v-stepper-step :complete="e1 > 3" step="3">Authorized Personnel</v-stepper-step>
+              <v-divider></v-divider>
+              <v-stepper-step step="4">Create Login Credentials</v-stepper-step>
             </v-stepper-header>
 
             <v-stepper-items>
@@ -28,7 +31,9 @@
                   :rules="ltoRules"
                   :counter="13"
                   :mask="ltoNumber"
-                >"Enter existing license number"></v-text-field>
+                  label="Enter existing License Number"
+                  @keypress.enter="validateLicense"
+                ></v-text-field>
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -40,7 +45,12 @@
                 <v-container grid-list-xs text-xs-justified>
                   <v-layout row wrap>
                     <v-flex xs8>
-                      <v-text-field required :rules="genericRules" label="Name of Establishment"></v-text-field>
+                      <v-text-field
+                        required
+                        :rules="genericRules"
+                        label="Name of Establishment"
+                        v-model="form.estab_details.establishment_name"
+                      ></v-text-field>
                     </v-flex>
                     <v-flex xs4>
                       <v-text-field
@@ -50,6 +60,7 @@
                         :rules="genericRules"
                         label="TIN"
                         :mask="tin"
+                        v-model="form.estab_details.tin"
                         id="id"
                       ></v-text-field>
                     </v-flex>
@@ -60,6 +71,8 @@
                         name="name"
                         label="Establishment Owner"
                         id="id"
+                        @keypress.enter="e1 = 3"
+                        v-model="form.estab_details.establishment_owner"
                       ></v-text-field>
                     </v-flex>
                   </v-layout>
@@ -76,13 +89,19 @@
                 <v-container grid-list-xs text-xs-center>
                   <v-layout row wrap>
                     <v-flex xs4>
-                      <v-text-field required :rules="nameRules" label="Last Name"></v-text-field>
+                      <v-text-field
+                        required
+                        :rules="nameRules"
+                        label="Last Name"
+                        v-model="form.auth_officer.lastname"
+                      ></v-text-field>
                     </v-flex>
                     <v-flex xs4>
                       <v-text-field
                         required
                         :rules="nameRules"
                         name="name"
+                        v-model="form.auth_officer.firstname"
                         label="First Name"
                         id="id"
                       ></v-text-field>
@@ -93,17 +112,27 @@
                         :rules="nameRules"
                         name="name"
                         label="Middle Name"
+                        v-model="form.auth_officer.middlename"
                         id="id"
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs4>
-                      <v-text-field required :rules="genericRules" label="Designation"></v-text-field>
+                    <v-flex xs5>
+                      <v-autocomplete
+                        color="green darken-1"
+                        :rules="genericRules"
+                        v-model="form.auth_officer.designation"
+                        :items="designation"
+                        hide-no-data
+                        hide-selected
+                        label="Designation"
+                      ></v-autocomplete>
                     </v-flex>
-                    <v-flex xs4>
+                    <v-flex xs3>
                       <v-text-field
                         required
                         :rules="genericRules"
                         name="name"
+                        v-model="form.auth_officer.tin"
                         :counter="12"
                         :mask="tin"
                         label="TIN"
@@ -111,15 +140,38 @@
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs4>
-                      <v-text-field required :rules="emailRules" name="name" label="Email" id="id"></v-text-field>
+                      <v-text-field
+                        required
+                        v-model="form.auth_officer.email"
+                        :rules="emailRules"
+                        name="name"
+                        label="Email"
+                        id="id"
+                        @keypress.enter="proceed"
+                      ></v-text-field>
                     </v-flex>
                   </v-layout>
                 </v-container>
                 <v-divider></v-divider>
                 <v-card-actions>
-                  <v-spacer></v-spacer>
                   <v-btn flat color="error" @click="e1 = 2">Back</v-btn>
-                  <v-btn flat color="success" @click="$router.push('/signup')">Submit</v-btn>
+                  <v-btn block color="success" @click="proceed">Submit</v-btn>
+                </v-card-actions>
+              </v-stepper-content>
+
+              <v-stepper-content step="4">
+                <v-container grid-list-xs text-xs-center>
+                  <v-layout row wrap>
+                    <user-account
+                      slot="acctInfo"
+                      :account="account"
+                      @keypress.enter="submitExisting"
+                    ></user-account>
+                  </v-layout>
+                </v-container>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-btn block color="success" @click="submitExisting">Submit</v-btn>
                 </v-card-actions>
               </v-stepper-content>
             </v-stepper-items>
@@ -132,6 +184,9 @@
 
 <script>
 export default {
+  components: {
+    UserAccount: () => import("../tabs/Account.vue")
+  },
   props: {
     show: {
       type: Boolean,
@@ -144,6 +199,7 @@ export default {
       e1: 0,
       tin: "###-###-###-###",
       ltoNumber: "#############",
+
       ltoRules: [
         v => !!v || "License number is required",
         v => v.length <= 13 || "License number must be 13 characters"
@@ -153,7 +209,14 @@ export default {
         v => !!v || "E-mail is required",
         v => /.+@.+/.test(v) || "E-mail must be valid"
       ],
-      genericRules: [v => !!v || "This field is required"],
+      genericRules: [v => !!v || "This is a required field"],
+      designation: [
+        "Owner (for sole proprietorships)",
+        "CEO/ President/ General Manager",
+        "Head, Quality Assurance/ Control",
+        "Head, Regulatory Affairs",
+        "Head, Production"
+      ],
       form: {
         license_no: "",
         estab_details: {
@@ -170,20 +233,51 @@ export default {
           tin: "",
           birthday: ""
         }
+      },
+      account: {
+        username: "",
+        password: "",
+        name: {}
       }
     };
   },
   methods: {
     validateLicense() {
-      if (!this.form.license_no || this.form.license_no.length < 13) {
+      if (!this.form.license_no) {
         this.$notify({
-          message: "Please enter valid License Number",
+          message: "Please enter a valid License Number",
           color: "error",
           icon: "error_outline"
         });
       } else {
         this.e1 = 2;
       }
+    },
+    proceed() {
+      if (this.form.license_no.length < 13) {
+        this.$notify({
+          message: "Please enter a valid License Number",
+          color: "error",
+          icon: "error_outline"
+        });
+        this.e1 = 1;
+      } else {
+        this.$notify({
+          message:
+            "Form submitted succesfully. Now, create your username and password for your login credentials",
+          color: "success",
+          icon: "check_circle"
+        });
+        this.e1 = 4;
+      }
+    },
+    submitExisting() {
+      this.$notify({
+        message: "A confirmation email has been sent at",
+        color: "warning",
+        icon: "check_circle"
+      });
+      this.$router.push("/login");
     }
   }
 };
