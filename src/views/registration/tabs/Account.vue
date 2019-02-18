@@ -1,18 +1,18 @@
 <template>
-    <v-layout row wrap>
-        <v-flex xs12>
-            <v-text-field label="Username" v-model="account.username"></v-text-field>
-        </v-flex>
-        <v-flex xs12>
-            <v-text-field 
-                label="Password" 
-                v-model="account.password"
-                :append-icon="value ? 'visibility' : 'visibility_off'"
-                :append-icon-cb="() => (value = !value)"
-                :type="value ? 'password' : 'text'">
-            </v-text-field>
-        </v-flex>
-    </v-layout>
+  <v-layout row wrap>
+    <v-flex xs12>
+      <v-text-field label="Username" v-model="account.username"></v-text-field>
+    </v-flex>
+    <v-flex xs12>
+      <v-text-field
+        label="Password"
+        v-model="account.password"
+        :append-icon="value ? 'visibility_off' : 'visibility'"
+        :append-icon-cb="() => (value = !value)"
+        :type="value ? 'password' : 'text'"
+      ></v-text-field>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

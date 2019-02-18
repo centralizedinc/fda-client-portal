@@ -59,7 +59,7 @@
           <v-spacer></v-spacer>
 
           <v-flex>
-            <v-btn class="font-weight-light" color="success" @click="generatePDF">FDA Cashier/Bank</v-btn>
+            <v-btn class="font-weight-light" color="success" @click="generatePDF">FDAC</v-btn>
           </v-flex>
           <!-- <v-flex>
             <v-btn class="font-weight-light" color="success">VFS Payment</v-btn>
@@ -77,13 +77,14 @@
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
-      
+
       <v-dialog
         v-model="cashierPayment"
         scrollable
         persistent
         transition="dialog-transition"
-        max-width="500">
+        max-width="500"
+      >
         <v-card>
           <v-toolbar
             color="fdaGreen"
@@ -128,7 +129,8 @@
         scrollable
         persistent
         transition="dialog-transition"
-        max-width="500">
+        max-width="500"
+      >
         <v-card>
           <v-toolbar
             color="fdaGreen"
@@ -168,40 +170,6 @@
         </v-card>
       </v-dialog>
     </v-flex>
-
-    <!-- <v-layout row wrap>
-      <v-dialog
-        v-model="bancnetDialog"
-        scrollable
-        persistent
-        transition="dialog-transition"
-        max-width="400"
-      >
-        <v-card>
-          <v-card-title primary-title>
-            <v-spacer></v-spacer>
-            <v-tooltip top>
-              <v-btn slot="activator" flat icon color="black" @click="bancnetDialog =false">
-                <i class="fas fa-times-circle"></i>
-              </v-btn>Close
-            </v-tooltip>
-          </v-card-title>
-          <v-card-text>
-            <v-layout row wrap>
-              <v-flex xs12 ml-1>
-                <v-text-field box label="Enter OR/Transaction Number"></v-text-field>
-              </v-flex>
-              <v-spacer></v-spacer>
-              <v-btn class="ml-1" color="success">Upload Payment receipt</v-btn>
-            </v-layout>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-btn block flat color="success">submit</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-    </v-layout>-->
   </v-layout>
 </template>
 

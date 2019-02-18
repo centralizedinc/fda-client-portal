@@ -21,7 +21,12 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-one slot="content-step-1" :form="form" @product_select="load_primaries" @primary_select="load_references"></step-one>
+      <step-one
+        slot="content-step-1"
+        :form="form"
+        @product_select="load_primaries"
+        @primary_select="load_references"
+      ></step-one>
       <template slot="header-step-2">Establishment Information
         <v-spacer></v-spacer>
         <v-tooltip left>

@@ -308,10 +308,17 @@
 </template>
 
 <script>
-export default {
-  components: {
+import tabs from "./appoverview/tabs";
+
+const tabscomponents = Object.assign(
+  {
     PaymentSummary: () => import("../payment/PaymentSummary.vue")
   },
+  tabs
+);
+
+export default {
+  components: tabscomponents,
   props: ["form"],
   data() {
     return {

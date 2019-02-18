@@ -66,6 +66,12 @@ var router = new Router({
       component: MainLayout,
       children: [{
           path: '',
+          name: 'Preface',
+          component: () => import('@/views/Preface.vue'),
+          beforeEnter: isAuthenticated
+        },
+        {
+          path: 'login',
           name: 'Login',
           component: () => import('@/views/Login.vue'),
           beforeEnter: isAuthenticated

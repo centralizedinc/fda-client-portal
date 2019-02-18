@@ -113,121 +113,12 @@
         ></dashboard-card>
       </v-card>
     </v-flex>
-    <!-- <v-flex xs12 md6 lg4 pa-2>
-      <v-card>
-        <v-toolbar dark color="#00bfa5">
-          <span class="subheadline font-weight-light">License Applications</span>
-          <v-btn color="success" dark absolute bottom right fab small>
-            <v-icon>call_made</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <v-card-text>
-          <v-list two-line subheader>
-            <v-list-tile>
-              <v-list-tile-content>
-                <v-list-tile-title>CASE-123-45656</v-list-tile-title>
-                <v-list-tile-sub-title>Application</v-list-tile-sub-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-btn icon ripple>
-                  <v-icon color="grey lighten-1">info</v-icon>
-                </v-btn>
-              </v-list-tile-action>
-            </v-list-tile>
-            <v-divider></v-divider>
-            <v-list-tile>
-              <v-list-tile-content>
-                <v-list-tile-title>CASE-123-45656</v-list-tile-title>
-                <v-list-tile-sub-title>Application</v-list-tile-sub-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-btn icon ripple>
-                  <v-icon color="grey lighten-1">info</v-icon>
-                </v-btn>
-              </v-list-tile-action>
-            </v-list-tile>
-          </v-list>
-        </v-card-text>
-      </v-card>
-    </v-flex>
-    <v-flex xs12 md6 lg4 pa-2>
-      <v-card>
-        <v-toolbar dark color="#ff6e40">
-          <span class="subheadline font-weight-light">Certificates Applications</span>
-          <v-btn color="warning" dark absolute bottom right fab small>
-            <v-icon>call_made</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <v-card-text>
-          <v-list two-line subheader>
-            <v-list-tile>
-              <v-list-tile-content>
-                <v-list-tile-title>CASE-123-45656</v-list-tile-title>
-                <v-list-tile-sub-title>Application</v-list-tile-sub-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-btn icon ripple>
-                  <v-icon color="grey lighten-1">info</v-icon>
-                </v-btn>
-              </v-list-tile-action>
-            </v-list-tile>
-            <v-divider></v-divider>
-            <v-list-tile>
-              <v-list-tile-content>
-                <v-list-tile-title>CASE-123-45656</v-list-tile-title>
-                <v-list-tile-sub-title>Application</v-list-tile-sub-title>
-              </v-list-tile-content>
-              <v-list-tile-action>
-                <v-btn icon ripple>
-                  <v-icon color="grey lighten-1">info</v-icon>
-                </v-btn>
-              </v-list-tile-action>
-            </v-list-tile>
-            <v-divider></v-divider>
-          </v-list>
-        </v-card-text>
-      </v-card>
-    </v-flex>
-    <v-flex xs12 md6 lg4 pa-2>
-      <v-card>
-        <v-toolbar
-          extended
-          style="background:url('https://pixinvent.com/free-materialize-material-design-admin-template/images/gallary/12.png') no-repeat center"
-        >
-          <v-btn color="error" dark absolute bottom right fab small>
-            <v-icon>edit</v-icon>
-          </v-btn>
-
-          <v-btn dark absolute bottom left fab color="white">
-            <v-avatar>
-              <img src="http://i.pravatar.cc/400" alt="alt" size="400">
-            </v-avatar>
-          </v-btn>
-        </v-toolbar>
-      
-        <v-card-text>
-          <v-layout row wrap mt-4>
-            <v-flex xs12>
-              <span class="title font-width-light">Ariel Balita</span>
-            </v-flex>
-            <v-flex xs12 pa-1>
-              <v-icon small>email</v-icon>
-              <span class="subheader font-width-light">ariel.a.balita@gmail.com</span>
-            </v-flex>
-            <v-flex xs12 pa-1>
-              <v-icon small>phone</v-icon>
-              <span class="subheader font-width-light">+63 917 709 4930</span>
-            </v-flex>
-          </v-layout>
-        </v-card-text>
-      </v-card>
-    </v-flex>-->
     <v-flex xs12 mt-5>
       <div class="headline">Reference</div>
     </v-flex>
     <!-- Calendar -->
     <v-layout row wrap>
-      <v-flex ml-2 class="my-3">
+      <v-flex xs6 md6 ml-2 class="my-3">
         <v-card class="dcard" width="calc(100% - 10px)">
           <v-date-picker
             width="calc(100% - 10px)"
@@ -272,6 +163,71 @@
           </v-card-actions>
         </v-card>
       </v-flex>
+      <!-- Reminders -->
+      <v-flex mt-3 ml-2>
+        <v-card class="dcard" width="calc(100% - 10px)">
+          <v-text-field
+            v-model="task"
+            label="Reminder / To do's"
+            box
+            color="green"
+            @keydown.enter="create"
+          >
+            <v-fade-transition slot="append">
+              <v-icon v-if="task" @click="create">add_circle</v-icon>
+            </v-fade-transition>
+          </v-text-field>
+
+          <h2 class="display-2 fdaOrange--text pl-3">Tasks:&nbsp;
+            <v-fade-transition leave-absolute>
+              <span :key="`tasks-${tasks.length}`">{{ tasks.length }}</span>
+            </v-fade-transition>
+          </h2>
+
+          <v-divider class="mt-3"></v-divider>
+
+          <v-layout my-1 align-center>
+            <strong class="mx-3 info--text text--darken-3">Remaining: {{ remainingTasks }}</strong>
+
+            <v-divider vertical></v-divider>
+
+            <strong class="mx-3 black--text">Completed: {{ completedTasks }}</strong>
+
+            <v-spacer></v-spacer>
+
+            <v-progress-circular :value="progress" class="mr-2"></v-progress-circular>
+          </v-layout>
+
+          <v-divider class="mb-3"></v-divider>
+
+          <v-card v-if="tasks.length > 0">
+            <v-slide-y-transition class="py-0" group tag="v-list">
+              <template v-for="(task, i) in tasks">
+                <v-divider v-if="i !== 0" :key="`${i}-divider`"></v-divider>
+
+                <v-list-tile :key="`${i}-${task.text}`">
+                  <v-list-tile-action>
+                    <v-checkbox v-model="task.done" color="info darken-3">
+                      <div
+                        slot="label"
+                        :class="task.done && 'grey--text' || 'text--primary'"
+                        class="ml-3"
+                        v-text="task.text"
+                      ></div>
+                    </v-checkbox>
+                  </v-list-tile-action>
+
+                  <v-spacer></v-spacer>
+
+                  <v-scroll-x-transition>
+                    <v-icon v-if="task.done" color="success">check</v-icon>
+                  </v-scroll-x-transition>
+                </v-list-tile>
+              </template>
+            </v-slide-y-transition>
+          </v-card>
+        </v-card>
+      </v-flex>
     </v-layout>
   </v-layout>
 </template>
@@ -304,14 +260,44 @@ export default {
         subtitle:
           "<span class='text--primary'>Chz Quiocho</span> &mdash; Renewed License 0001111"
       }
-    ]
+    ],
+    tasks: [
+      {
+        done: false,
+        text: "Renewal of License"
+      },
+      {
+        done: false,
+        text: "Check and log validity of Certificates"
+      }
+    ],
+    task: null
   }),
+  computed: {
+    completedTasks() {
+      return this.tasks.filter(task => task.done).length;
+    },
+    progress() {
+      return (this.completedTasks / this.tasks.length) * 100;
+    },
+    remainingTasks() {
+      return this.tasks.length - this.completedTasks;
+    }
+  },
   methods: {
     functionEvents(date) {
       const [, , day] = date.split("-");
       if ([12, 17, 28].includes(parseInt(day, 10))) return true;
       if ([1, 19, 22].includes(parseInt(day, 10))) return ["red", "#00f"];
       return false;
+    },
+    create() {
+      this.tasks.push({
+        done: false,
+        text: this.task
+      });
+
+      this.task = null;
     }
   }
 };
