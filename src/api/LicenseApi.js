@@ -12,7 +12,7 @@ export default class LicenseAPI {
     getLicenses(cb) {
         axios.get('lto-api/').then((result) => {
             console.log('get licenses: ' + JSON.stringify(result));
-            
+
             if (result.data.success) {
                 cb(result.data.model)
             } else {
@@ -21,6 +21,16 @@ export default class LicenseAPI {
         }).catch(err => {
             console.log('##########error: ' + JSON.stringify(err))
             cb(null, err)
+        })
+    }
+
+    getUnapprovedLicense(cb) {
+        axios.get('lto-api/unapproved/').then((result) => {
+            console.log('getUnapprovedLicense: ' + JSON.stringify(result));
+            cb(result.data.errors, result.data.model)
+        }).catch(err => {
+            console.log('##########error: ' + JSON.stringify(err))
+            cb(err)
         })
     }
 

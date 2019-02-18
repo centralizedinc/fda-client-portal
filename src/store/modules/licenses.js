@@ -36,6 +36,19 @@ var actions = {
     //         })
     //     }
     // },
+    GET_UNAPPROVED_LICENSES(context) {
+        return new Promise((resolve, reject) => {
+            new LicenseAPI(context.rootState.user_session.token).getUnapprovedLicense((license, err) => {
+                if (!err) {
+                    console.log('getUnapprovedLicense: ' + JSON.stringify(license));
+                    resolve(license)
+                } else {
+                    console.log(JSON.stringify(err))
+                    reject(err)
+                }
+            })
+        })
+    },
     GET_LICENSES(context) {
         return new Promise((resolve, reject) => {
             new LicenseAPI(context.rootState.user_session.token).getLicenses((licenses, err) => {
