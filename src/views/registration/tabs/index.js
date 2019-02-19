@@ -11,7 +11,7 @@ import {
 import {
     AppHistory,
     AppSummary,
-    Data,
+    AppData,
     Files,
     OutputDocs,
     PaymentDetails
@@ -29,9 +29,9 @@ export default {
     StepFive: QualifiedPersonnel,
     StepSix: DocumentsUpload,
     StepSeven: () => import('./Account.vue'),
-    AppHistory: AppHistory,
-    AppSummary: AppSummary,
-    AppData: Data,
+    AppHistory,
+    AppSummary,
+    AppData,
     UploadedFiles: Files,
     OutputDocs: OutputDocs,
     Payment: PaymentDetails,

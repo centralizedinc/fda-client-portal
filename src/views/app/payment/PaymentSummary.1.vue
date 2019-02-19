@@ -73,12 +73,7 @@
             <v-btn class="font-weight-light" color="success" @click="ecPay">ECPay</v-btn>
           </v-flex>
           <v-spacer></v-spacer>
-          <v-btn
-            class="font-weight-light"
-            color="success"
-            @click="payLater"
-            v-if="allow_paylater"
-          >Pay Later</v-btn>
+          <v-btn class="font-weight-light" color="success" @click="payLater">Pay Later</v-btn>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -182,15 +177,7 @@
 import * as OrderOfPaymentGenerator from "./OrderOfPaymentGenerator";
 
 export default {
-  props: {
-    form: {
-      type: Object
-    },
-    allow_paylater: {
-      type: Boolean,
-      default: true
-    }
-  },
+  props: ["form"],
   components: {
     CreditCard: () => import("./CreditCardPayment.vue"),
     PayLater: () => import("./PayLater.vue")

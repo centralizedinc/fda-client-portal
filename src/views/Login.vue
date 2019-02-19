@@ -131,8 +131,8 @@ export default {
                   "Welcome " +
                   res.user.username +
                   "! You have limited access since your account is not yet activated.",
-                color: "warning",
-                icon: "error_outline"
+                color: "success",
+                icon: "check_circle"
               });
             }
             this.$router.push("/app");

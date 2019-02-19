@@ -132,6 +132,12 @@ var router = new Router({
           // beforeEnter: isAuthorized
         },
         {
+          path: 'licenses/summary',
+          name: 'License Summary',
+          component: () => import('@/views/app/TempLicenseSummary.vue'),
+          // beforeEnter: isAuthorized
+        },
+        {
           path: 'certificates',
           name: 'Certificate of Product Registration',
           component: () => import('@/views/app/certificates/Certificates.vue'),
@@ -174,12 +180,7 @@ var router = new Router({
           component: () => import('@/views/app/payment/CreditCardPayment.vue'),
           // beforeEnter: isAuthorized
         },
-        {
-          path: 'payments/summary',
-          name: 'Payment Summary',
-          component: () => import('@/views/app/payment/PaymentSummary.vue'),
-          // beforeEnter: isAuthorized
-        },
+
         {
           path: 'profile',
           name: 'Profile',
@@ -188,7 +189,7 @@ var router = new Router({
         },
         {
           path: 'password',
-          name: 'Password',
+          name: 'Change Password',
           beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/passwordSettings/ChangePassword.vue')
         },

@@ -3,6 +3,7 @@
     <v-layout row wrap v-if="invalid">
       <v-flex xs12>Invalid Request: 404 status code.</v-flex>
     </v-layout>
+    <payment-summary v-else-if="paymentDialog" @close="confirmDialog=false"></payment-summary>
     <form-layout
       v-show="!ecpayDialog"
       v-else
@@ -87,7 +88,6 @@
       <app-history slot="apphistory" :form="form"></app-history>
       <payment slot="paymentdetails" :form="form"></payment>
     </application-overview>
-    <!-- <payment-summary v-show="paymentDialog" @close="confirmDialog=false"></payment-summary> -->
   </div>
 </template>
 
@@ -291,21 +291,25 @@ export default {
           formData.append("lto", files[i].file, files[i].file["name"]);
         }
       }
-      this.$store.dispatch("UPLOAD_LICENSES", formData);
-      this.form.uploaded_files = this.$store.state.licenses.uploaded;
-
-      this.paymentDialog = true;
-      this.confirmDialog = false;
-      this.$router.push("/app/payments/summary");
-      console.log("#########submit: " + JSON.stringify(this.form));
-      this.$store.dispatch("SAVE_LICENSES", this.form).then(result => {
-        console.log("result to save licenses: " + result);
-      });
-      this.$notify({
-        message: "You have successfully applied a new license",
-        color: "success",
-        icon: "check_circle"
-      });
+      this.$store
+        .dispatch("UPLOAD_LICENSES", formData)
+        .then(files => {
+          this.form.uploaded_files = files;
+          return this.$store.dispatch("SAVE_LICENSES", this.form);
+        })
+        .then(result => {
+          this.$notify({
+            message: "You have successfully applied a new license",
+            color: "success",
+            icon: "check_circle"
+          });
+          this.confirmDialog = false;
+          this.showAppOverview = false;
+          this.paymentDialog = true;
+        })
+        .catch(err => {
+          console.log("error in uploading files: " + err);
+        });
     }
   }
 };

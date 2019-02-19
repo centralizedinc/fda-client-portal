@@ -38,7 +38,7 @@ var actions = {
     // },
     GET_UNAPPROVED_LICENSES(context) {
         return new Promise((resolve, reject) => {
-            new LicenseAPI(context.rootState.user_session.token).getUnapprovedLicense((license, err) => {
+            new LicenseAPI(context.rootState.user_session.token).getUnapprovedLicense((err, license) => {
                 if (!err) {
                     console.log('getUnapprovedLicense: ' + JSON.stringify(license));
                     resolve(license)

@@ -99,6 +99,26 @@
 
           <v-divider></v-divider>
         </template>
+
+        <template v-else-if="user.status === 1">
+          <v-list-tile
+            @click="goTo('/app/licenses/summary')"
+            class="ma-1"
+            :style="activeRoute('License Summary')"
+          >
+            <v-list-tile-action>
+              <v-tooltip top>
+                <v-btn slot="activator" icon>
+                  <v-icon color="fdaBlueGreen">fas fa-list-alt</v-icon>
+                </v-btn>License Application Preview
+              </v-tooltip>
+            </v-list-tile-action>
+            <v-list-tile-content>
+              <v-list-tile-title class="body-1 font-weight-light">License Summary</v-list-tile-title>
+            </v-list-tile-content>
+          </v-list-tile>
+        </template>
+
         <v-list-tile
           @click="goTo('/app/profile')"
           class="ma-1"
@@ -245,7 +265,11 @@
       <!-- </transition> -->
       <v-dialog v-model="show_logout" persistent max-width="300" transition="dialog-transition">
         <v-card>
-          <v-toolbar dark color="fdaGreen">
+          <v-toolbar
+            dark
+            color="fdaGreen"
+            style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+          >
             <span class="title font-weight-thin">Logout</span>
           </v-toolbar>
           <v-card-text>
@@ -254,8 +278,14 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn outline color="secondary" dark @click.native="show_logout = false">No</v-btn>
-            <v-btn color="fdaGreen" @click="confirmLogout()">Yes</v-btn>
+            <v-btn
+              class="font-weight-light"
+              outline
+              color="primary"
+              dark
+              @click.native="show_logout = false"
+            >No</v-btn>
+            <v-btn class="font-weight-light" color="success" @click="confirmLogout()">Yes</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -305,7 +335,7 @@ export default {
     goTo(router) {
       this.$router.push(router);
     },
-    showLogout(){
+    showLogout() {
       this.show_logout = true;
     },
     confirmLogout() {

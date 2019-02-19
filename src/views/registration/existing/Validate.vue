@@ -1,11 +1,10 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="show" persistent>
+    <v-dialog v-model="show" persistent width="900">
       <v-form v-model="valid">
         <v-card>
-          <user-account v-show="!showUserAccount"></user-account>
           <v-card-title style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
-            <span class="headline font-weight-thin white--text">Validate User</span>
+            <span class="headline font-weight-thin white--text">Validate Existing User</span>
             <v-spacer></v-spacer>
             <v-btn flat icon color="black" @click="$emit('close')">
               <v-icon>close</v-icon>
@@ -49,6 +48,7 @@
                         required
                         :rules="genericRules"
                         label="Name of Establishment"
+                        @keypress.enter="e1 = 3"
                         v-model="form.estab_details.establishment_name"
                       ></v-text-field>
                     </v-flex>
@@ -59,6 +59,7 @@
                         :counter="12"
                         :rules="genericRules"
                         label="TIN"
+                        @keypress.enter="e1 = 3"
                         :mask="tin"
                         v-model="form.estab_details.tin"
                         id="id"
@@ -94,6 +95,7 @@
                         :rules="nameRules"
                         label="Last Name"
                         v-model="form.auth_officer.lastname"
+                        @keypress.enter="proceed"
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs4>
@@ -104,6 +106,7 @@
                         v-model="form.auth_officer.firstname"
                         label="First Name"
                         id="id"
+                        @keypress.enter="proceed"
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs4>
@@ -114,6 +117,7 @@
                         label="Middle Name"
                         v-model="form.auth_officer.middlename"
                         id="id"
+                        @keypress.enter="proceed"
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs5>
@@ -125,6 +129,7 @@
                         hide-no-data
                         hide-selected
                         label="Designation"
+                        @keypress.enter="proceed"
                       ></v-autocomplete>
                     </v-flex>
                     <v-flex xs3>
@@ -137,6 +142,7 @@
                         :mask="tin"
                         label="TIN"
                         id="id"
+                        @keypress.enter="proceed"
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs4>
