@@ -10,7 +10,8 @@ const state = {
     LicenseAPI: null,
     licenses: [],
     form: null,
-    uploaded: null
+    uploaded: null,
+    existingLicense: null
 }
 
 const mutations = {
@@ -25,6 +26,9 @@ const mutations = {
     },
     UPLOADED_DATA(state, form) {
         state.uploaded = form
+    },
+    VERIFIED_LICENSES(state, license){
+        state.existingLicense = license
     }
 }
 
@@ -99,6 +103,21 @@ var actions = {
                     resolve(uploadedData)
                 } else {
                     console.log(JSON.stringify(err))
+                    reject(err)
+                }
+            })
+        })
+    },
+    VERIFY_LICENSES(context, license){
+        return new Promise((resolve, reject) => {
+            console.log("verify licenses entering action: " + JSON.stringify(license))
+            new LicenseAPI(context.rootState.user_session.token).verifyExistingLicenses(license, (verifiedLicense, err) => {
+                if (!err) {
+                    console.log("verify licenses call back: " + JSON.stringify(verifiedLicense))
+                    context.commit('VERIFIED_LICENSES', verifiedLicense)
+                    resolve(verifiedLicense)
+                } else {
+                    console.log("verify licenses error: "+JSON.stringify(err))
                     reject(err)
                 }
             })

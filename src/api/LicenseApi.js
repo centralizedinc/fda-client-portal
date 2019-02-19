@@ -16,11 +16,11 @@ export default class LicenseAPI {
             if (result.data.success) {
                 cb(result.data.model)
             } else {
-                cb(null, result.data.errors)
+                cb(result.data.errors)
             }
         }).catch(err => {
             console.log('##########error: ' + JSON.stringify(err))
-            cb(null, err)
+            cb(err)
         })
     }
 
@@ -40,7 +40,7 @@ export default class LicenseAPI {
             cb(result.data.model)
         }).catch(err => {
             console.log('##########error save uploadLicenses: ' + JSON.stringify(err))
-            cb(null, err)
+            cb(err)
         })
     }
 
@@ -51,7 +51,7 @@ export default class LicenseAPI {
             cb(result.data.model)
         }).catch(err => {
             console.log('##########error save saveLicenses: ' + JSON.stringify(err))
-            cb(null, err)
+            cb(err)
         })
     }
 
@@ -62,7 +62,17 @@ export default class LicenseAPI {
             cb(result.data.model)
         }).catch(err => {
             console.log('##########error save modifyLicenses: ' + JSON.stringify(err))
-            cb(null, err)
+            cb(err)
+        })
+    }
+
+
+    verifyExistingLicenses(licenses, cb) {
+        console.log("api existing licenses: " +JSON.stringify(licenses))
+        axios.post('lto-api/verify/existing/license', licenses).then((result) => {
+            cb(result.data.model)
+        }).catch(err =>{
+            cb(err)
         })
     }
 }

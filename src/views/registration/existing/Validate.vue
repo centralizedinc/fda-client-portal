@@ -52,7 +52,7 @@
                         v-model="form.estab_details.establishment_name"
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs4>
+                    <!-- <v-flex xs4>
                       <v-text-field
                         required
                         name="name"
@@ -63,7 +63,7 @@
                         v-model="form.estab_details.tin"
                         id="id"
                       ></v-text-field>
-                    </v-flex>
+                    </v-flex> -->
                     <v-flex xs12>
                       <v-text-field
                         required
@@ -117,7 +117,7 @@
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs5>
-                      <v-autocomplete
+                      <!-- <v-autocomplete
                         color="green darken-1"
                         :rules="genericRules"
                         v-model="form.auth_officer.designation"
@@ -125,7 +125,15 @@
                         hide-no-data
                         hide-selected
                         label="Designation"
-                      ></v-autocomplete>
+                      ></v-autocomplete> -->
+                      <v-text-field
+                        required
+                        :rules="genericRules"
+                        name="name"
+                        v-model="form.auth_officer.designation"
+                        label="Designation"
+                        id="id"
+                      ></v-text-field>
                     </v-flex>
                     <v-flex xs3>
                       <v-text-field
@@ -222,16 +230,16 @@ export default {
         estab_details: {
           establishment_name: "",
           establishment_owner: "",
-          tin: ""
+          // tin: ""
         },
         auth_officer: {
           lastname: "",
           firstname: "",
           middlename: "",
+          fullname: "",
           designation: "",
           email: "",
-          tin: "",
-          birthday: ""
+          // tin: ""
         }
       },
       account: {
@@ -272,12 +280,30 @@ export default {
       }
     },
     submitExisting() {
-      this.$notify({
-        message: "A confirmation email has been sent at",
-        color: "warning",
-        icon: "check_circle"
-      });
-      this.$router.push("/login");
+      this.form.auth_officer.fullname = this.form.auth_officer.lastname+", "+this.form.auth_officer.firstname+" "+this.form.auth_officer.middlename
+      console.log("user fullname: " + JSON.stringify(this.form.auth_officer.fullname))
+      console.log("Submit existing: " + JSON.stringify(this.form))
+      this.$store.dispatch("VERIFY_LICENSES", this.form).then(result =>{
+        console.log("submit existing state: " + JSON.stringify(this.$store.state.licenses.existingLicenses))
+        console.log("submit existing cb: " + JSON.stringify(result))
+        if(result != null){
+          this.$notify({
+            message: "A confirmation email has been sent at",
+            color: "warning",
+            icon: "check_circle"
+          });
+          this.$router.push("/login");
+        }else{
+          this.$notify({
+            message: "License not found",
+            color: "error",
+            icon: "check_circle"
+          });
+          this.$router.push("/");
+        }
+      })
+
+      
     }
   }
 };
