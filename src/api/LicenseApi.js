@@ -75,6 +75,21 @@ export default class LicenseAPI {
             cb(err)
         })
     }
+
+    applicationStatusLicenses(cb) {
+        // axios.get('lto-api/case/'+licenses).then((result)=>{    
+        //     cb(result.data.model)
+        // }).catch(err =>{
+        //     cb(err)
+        // })
+        console.log("applicationStatusLicenses")
+        axios.get('lto-api/case/unassigned').then((result)=>{    
+            cb(result.data.model)
+        }).catch(err =>{
+            cb(err)
+        })
+    }
+    
 }
 
 // module.exports = LicenseAPI

@@ -10,7 +10,7 @@ export default class ProductAPI {
         // axios.defaults.headers.common['access_token'] = token;
     }
     productType(cb) {
-        axios.get('core/products')
+        axios.get('core/products/')
         .then(result => {
             if (result.data.success) {
               cb(result.data.model)
