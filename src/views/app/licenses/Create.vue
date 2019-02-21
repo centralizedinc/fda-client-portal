@@ -36,7 +36,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-two slot="content-step-2" :form="form"></step-two>
+      <step-two slot="content-step-2" :form="form" @prodline_select="load_productline"></step-two>
       <template slot="header-step-3">Office Address
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -251,6 +251,9 @@ export default {
     },
     load_primaries(product_id) {
       this.$store.dispatch("GET_PRIMARY_ACTIVITY", product_id);
+    },
+    load_productline() {
+      this.$store.dispatch("GET_PROD_LINE");
     },
     load_references(primary_id) {
       this.$store

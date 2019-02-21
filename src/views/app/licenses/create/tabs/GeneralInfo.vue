@@ -75,6 +75,10 @@ export default {
   }),
   computed: {
     product_items() {
+      console.log(
+        "created product type $$$$$$$$$$$$$$$$$$$$$$$$$: " +
+          JSON.stringify(this.$store.state.products.productType)
+      );
       return this.$store.state.products.productType;
     },
     primary_items() {

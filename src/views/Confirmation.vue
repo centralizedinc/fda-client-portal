@@ -4,14 +4,14 @@
       <span class="display-2 font-weight-bold">Congratulations!</span>
     </v-flex>
     <v-flex xs12 pa-4>
-      <span class="headline font-weight-thin">Your account
+      <span class="headline font-weight-thin">
+        Your account
         <b>({{account_name}})</b> is already confirmed. Please wait while we process your application.
       </span>
     </v-flex>
     <v-flex xs12 pa-4>
-      <span
-        class="headline font-weight-thin"
-      >Account Approval will take 1-2 working days. Expect an email in
+      <span class="headline font-weight-thin">
+        Account Approval will take 1-2 working days. Expect an email in
         <b>{{email}}</b> notifying you of the activation status.
       </span>
     </v-flex>

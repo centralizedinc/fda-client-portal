@@ -122,7 +122,8 @@
           <v-autocomplete
             color="green darken-1"
             v-model="item.prod_line"
-            :items="product_lines"
+            :items="products"
+            @change="load_product_lines"
             hide-no-data
             hide-selected
             :rules="[rules.required]"
@@ -169,29 +170,6 @@ export default {
   data: () => ({
     tin: "###-###-###-###",
     products: [],
-    product_lines: [
-      "Creams, emulsions, lotions, gels and oils for skin (hands, face, feet, etc.)",
-      "Face masks (with the exception of chemical peeling products)",
-      "Tinted bases (liquids, pastes, powders)",
-      "Make-up powders, after-bath powder, hygienic powders, etc.",
-      "Toilet soaps, deodorant soaps, etc",
-      "Perfumes, toilet waters and eau de Cologne",
-      "Bath or shower preparations (salts, foams, oils. gels, etc.)",
-      "Depilatories",
-      "Deodorants and anti-perspirants",
-      "Hair care products",
-      "Shaving product (creams, foams, lotions, etc.)",
-      "Products for making-up and removing make-up from the face and the eyes",
-      "Products intended for application to the lips",
-      "Products for care of the teeth and the mouth",
-      "Products for nail care and make-up",
-      "Products for external intimate hygiene",
-      "Sunbathing products",
-      "Products for tanning without sun",
-      "Skin whitening products",
-      "Anti-wrinkle products",
-      "Others (Specify in Remarks)"
-    ],
     rules: {
       required: value => !!value || "This field is required",
       email: value => {
@@ -200,7 +178,35 @@ export default {
       }
     }
   }),
+  created() {
+    var productLine = this.$store.state.products.prod_line;
+    var line = [];
+
+    productLine.forEach(element => {
+      this.products.push(element.name);
+    });
+    console.log("created############: " + JSON.stringify(this.products));
+  },
+  computed: {
+    prod_lines() {
+      // var productLine = this.$store.state.products.prod_line;
+      // var line = [];
+
+      // productLine.forEach(element => {
+      //   line.push(element);
+      // });
+      // console.log("prod_line: " + JSON.stringify(line));
+      var line = this.$store.state.products.prod_line;
+      console.log("asdasdasdasdas: " + JSON.stringify(line));
+
+      return line;
+    }
+  },
   methods: {
+    load_product_lines() {
+      this.form.estab_details.products.prod_line = "";
+      this.$emit("prodline_select", this.form.estab_details.products.prod_line);
+    },
     addItem() {
       this.form.estab_details.products.push({
         prod_line: "",
