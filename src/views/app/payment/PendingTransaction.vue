@@ -21,7 +21,7 @@
         <v-flex xs4 ml-3>
           <span class="body-2">Due Date</span>
         </v-flex>
-        <v-flex xs6 mr-5 ml-2>MM DD, YYYY HH:MM:SS AM/PM</v-flex>
+        <v-flex xs6 mr-5 ml-2>MM DD, YYYY HH:MM:SS AM/PM  {{expiration }}</v-flex>
       </v-layout>
       <v-flex xs12>
         <v-divider></v-divider>
@@ -50,8 +50,31 @@ export default {
   },
   data() {
     return {
-      paymentDialog: false
+      paymentDialog: false,
+      expiration: null
     };
+  },
+  created(){
+
+  },
+  watch:{
+
+    form(){
+      console.log("pending transaction form: " + JSON.stringify(this.form));
+      var bill = {
+        appType: this.form.appType,
+        productType: this.form.productType,
+        primaryActivity: this.form.primaryActivity,
+        declaredCapital: this.form.declaredCapital
+      }
+      // this.$store.dispatch("GET_UNAPPROVED_LICENSES").then((result) => {
+      //   console.log("expiration date: "+JSON.stringify(result))
+      //   // this.expiration = result.model.expiry_date;
+      // }).catch((err) => {
+        
+      // });
+    }
+    
   },
   methods: {
     pay() {
