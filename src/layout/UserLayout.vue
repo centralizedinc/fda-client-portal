@@ -67,7 +67,7 @@
               <v-list-tile-title class="body-1 font-weight-light">Certificates</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile
+          <!-- <v-list-tile
             @click="goTo('/app/notification')"
             class="ma-1"
             :style="activeRoute('Notifications')"
@@ -82,8 +82,7 @@
             <v-list-tile-content>
               <v-list-tile-title class="body-1 font-weight-light">Product Notification</v-list-tile-title>
             </v-list-tile-content>
-          </v-list-tile>
-
+          </v-list-tile>-->
           <v-list-tile @click="goTo('/app/payments')" class="ma-1" :style="activeRoute('Payments')">
             <v-list-tile-action>
               <v-tooltip top>

@@ -43,7 +43,7 @@
               <v-stepper-content step="2">
                 <v-container grid-list-xs text-xs-justified>
                   <v-layout row wrap>
-                    <v-flex xs8>
+                    <v-flex xs12>
                       <v-text-field
                         required
                         :rules="genericRules"
@@ -174,12 +174,14 @@
 
               <v-stepper-content step="4">
                 <v-container grid-list-xs text-xs-center>
-                  <v-layout row wrap>
-                    <user-account
-                      slot="acctInfo"
-                      :account="account"
-                      @keypress.enter="submitExisting"
-                    ></user-account>
+                  <v-layout align-center column>
+                    <v-flex xs8>
+                      <user-account
+                        slot="acctInfo"
+                        :account="account"
+                        @keypress.enter="submitExisting"
+                      ></user-account>
+                    </v-flex>
                   </v-layout>
                 </v-container>
                 <v-divider></v-divider>

@@ -1,7 +1,11 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12 md3 pa-2>
-      <v-toolbar dark color="primary">
+      <v-toolbar
+        dark
+        color="primary"
+        style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+      >
         <span class="subheading font-weight-light">Steps 1</span>
         <v-spacer></v-spacer>
         <v-btn flat icon>
@@ -28,7 +32,11 @@
     <v-flex xs12 md6 pa-2>
       <!-- Step 1 -->
       <v-card>
-        <v-toolbar dark color="primary">
+        <v-toolbar
+          dark
+          color="primary"
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+        >
           <span class="subheading font-weight-normal">{{steps_headers[step_curr-1]}}</span>
         </v-toolbar>
         <v-progress-linear

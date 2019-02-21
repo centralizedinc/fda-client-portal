@@ -178,6 +178,9 @@
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.region"
           :items="regions"
+          item-text="name"
+          item-value="_id"
+          @change="getProvinces"
           hide-no-data
           hide-selected
           label="Region"
@@ -189,8 +192,11 @@
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.province"
           :items="provinces"
+          @change="getCities"
           hide-no-data
           hide-selected
+          item-text="name"
+          item-value="_id"
           label="Province"
         ></v-autocomplete>
       </v-flex>
@@ -242,6 +248,9 @@ export default {
       required: value => !!value || "This field is required"
     }
   }),
+  created() {
+    this.init();
+  },
   watch: {
     form: {
       handler(val) {
@@ -251,6 +260,26 @@ export default {
     },
     menu2(val) {
       val && this.$nextTick(() => (this.$refs.picker2.activePicker = "YEAR"));
+    }
+  },
+  methods: {
+    init() {
+      this.$store.dispatch("GET_REGION").then(result => {
+        this.regions = this.$store.state.places.regions;
+      });
+    },
+    getProvinces() {
+      (this.provinces = []),
+        this.$store
+          .dispatch("GET_PROVINCE")
+          .then(result => {
+            this.provinces = this.$store.state.places.provinces;
+            return this.$store.dispatch("GET_REGION");
+          })
+          .then(result => {
+            // GET region data
+            this.regions = this.$store.state.places.regions;
+          });
     }
   }
 };

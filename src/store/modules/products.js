@@ -1,4 +1,3 @@
-
 import ProductApi from '../../api/ProductApi';
 
 const state = {
@@ -6,48 +5,53 @@ const state = {
     primaryActivity: [],
     secondaryActivity: [],
     additional: [],
-    declared: []
+    declared: [],
+    prod_line: []
 }
 
 const mutations = {
-    SET_PRODUCT_TYPE(state, licenses){
+    SET_PRODUCT_TYPE(state, licenses) {
         state.productType = licenses;
     },
-    SET_PRIMARY_ACTIVITY(state, productType){
+    SET_PRIMARY_ACTIVITY(state, productType) {
         state.primaryActivity = productType;
     },
-    SET_SECONDARY_ACTIVITY(state, primaryActivity){
+    SET_SECONDARY_ACTIVITY(state, primaryActivity) {
         state.secondaryActivity = primaryActivity;
     },
-    SET_ADDITIONAL(state, primaryActivity){
+    SET_ADDITIONAL(state, primaryActivity) {
         state.additional = primaryActivity;
     },
-    SET_DECLARED(state, primaryActivity){
+    SET_DECLARED(state, primaryActivity) {
         state.declared = primaryActivity;
     },
+    SET_PROD_LINE(state, productType) {
+
+        state.prod_line = productType;
+    }
 }
 
 var actions = {
     GET_PRODUCT_TYPE(context) {
         return new Promise((resolve, reject) => {
             new ProductApi(context.rootState.user_session.token).productType((productType, err) => {
-                if(!err){
+                if (!err) {
                     context.commit('SET_PRODUCT_TYPE', productType)
                     resolve()
-                }else{
+                } else {
                     reject(err)
                 }
             })
         })
-        
+
     },
     GET_PRIMARY_ACTIVITY(context, product) {
         return new Promise((resolve, reject) => {
             new ProductApi(context.rootState.user_session.token).primary(product, (productType, err) => {
-                if(!err){
+                if (!err) {
                     context.commit('SET_PRIMARY_ACTIVITY', productType)
                     resolve()
-                }else{
+                } else {
                     reject(err)
                 }
             })
@@ -56,10 +60,10 @@ var actions = {
     GET_SECONDARY_ACTIVITY(context, primaryActivity) {
         return new Promise((resolve, reject) => {
             new ProductApi(context.rootState.user_session.token).secondary(primaryActivity, (primaryActivity, err) => {
-                if(!err){
+                if (!err) {
                     context.commit('SET_SECONDARY_ACTIVITY', primaryActivity)
                     resolve();
-                }else{
+                } else {
                     reject();
                 }
             })
@@ -68,10 +72,10 @@ var actions = {
     GET_ADDITIONAL(context, primaryActivity) {
         return new Promise((resolve, reject) => {
             new ProductApi(context.rootState.user_session.token).additional(primaryActivity, (primaryActivity, err) => {
-                if(!err){
+                if (!err) {
                     context.commit('SET_ADDITIONAL', primaryActivity)
                     resolve();
-                }else{
+                } else {
                     reject()
                 }
             })
@@ -80,16 +84,29 @@ var actions = {
     GET_DECLARED(context, primaryActivity) {
         return new Promise((resolve, reject) => {
             new ProductApi(context.rootState.user_session.token).declared(primaryActivity, (primaryActivity, err) => {
-                if(!err){
+                if (!err) {
                     context.commit('SET_DECLARED', primaryActivity)
                     resolve()
-                }else{
+                } else {
                     reject()
                 }
             })
         })
     },
-    
+    GET_PROD_LINE(context) {
+        return new Promise((resolve, reject) => {
+            new ProductApi(context.rootState.user_session.token).prodline((productType, err) => {
+                if (!err) {
+
+                    context.commit('SET_PROD_LINE', productType)
+                    resolve(productType)
+                } else {
+                    reject(err)
+                }
+            })
+        })
+    }
+
 }
 
 export default {
