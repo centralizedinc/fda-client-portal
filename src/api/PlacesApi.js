@@ -23,8 +23,8 @@ export default class RegionType {
     }
     //PROVINCE
 
-    getProvince(cb) {
-        axios.get('core/provinces').then((result) => {
+    getProvince(region_id, cb) {
+        axios.get('core/provinces/' + region_id).then((result) => {
                 console.log("###API:PROVINCE###")
                 if (result.data.success) {
                     cb(result.data.errors, result.data.model)
@@ -38,8 +38,8 @@ export default class RegionType {
     }
     //CITY
 
-    getCity(cb) {
-        axios.get('core/city').then((result) => {
+    getCity(province_id, cb) {
+        axios.get('core/city' + province_id).then((result) => {
                 console.log("###API:CITY###")
                 if (result.data.success) {
                     cb(result.data.errors, result.data.model)

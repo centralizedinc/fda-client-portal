@@ -193,10 +193,10 @@
           v-model="form.auth_officer.mail_add.province"
           :items="provinces"
           @change="getCities"
-          hide-no-data
-          hide-selected
           item-text="name"
           item-value="_id"
+          hide-no-data
+          hide-selected
           label="Province"
         ></v-autocomplete>
       </v-flex>
@@ -206,6 +206,8 @@
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.city"
           :items="cities"
+          item-text="name"
+          item-value="_id"
           hide-no-data
           hide-selected
           label="City / Town"
@@ -217,6 +219,8 @@
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.zipcode"
           :items="zipcodes"
+          item-text="name"
+          item-value="_id"
           hide-no-data
           hide-selected
           label="Zip Code"
@@ -269,17 +273,28 @@ export default {
       });
     },
     getProvinces() {
-      (this.provinces = []),
-        this.$store
-          .dispatch("GET_PROVINCE")
-          .then(result => {
-            this.provinces = this.$store.state.places.provinces;
-            return this.$store.dispatch("GET_REGION");
-          })
-          .then(result => {
-            // GET region data
-            this.regions = this.$store.state.places.regions;
-          });
+      this.$store
+        .dispatch("GET_PROVINCE", this.form.auth_officer.mail_add.region)
+        .then(result => {
+          this.provinces = this.$store.state.places.provinces;
+          return this.$store.dispatch("GET_REGION");
+        })
+        .then(result => {
+          // GET region data
+          this.regions = this.$store.state.places.regions;
+        });
+    },
+    getCities() {
+      this.$store
+        .dispatch("GET_CITY", this.form.auth_officer.mail_add.city)
+        .then(result => {
+          this.cities = this.$store.state.places.city;
+          return this.$store.dispatch("GET_PROVINCE");
+        })
+        .then(result => {
+          // GET CITIES data
+          this.provinces = this.$store.state.places.provinces;
+        });
     }
   }
 };

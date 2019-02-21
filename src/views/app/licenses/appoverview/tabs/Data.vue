@@ -84,7 +84,7 @@
         <v-flex
           xs12
           md8
-        >{{form.auth_officer.mail_add.address + " " + form.auth_officer.mail_add.region + " " + form.auth_officer.mail_add.province + " " + form.auth_officer.mail_add.city + " " + form.auth_officer.mail_add.zipcode}}</v-flex>
+        >{{form.auth_officer.mail_add.address + " " + this.form.auth_officer.mail_add.region + " " + form.auth_officer.mail_add.province + " " + form.auth_officer.mail_add.city + " " + form.auth_officer.mail_add.zipcode}}</v-flex>
       </v-layout>
     </v-container>
     <!-- Qualified Personnel -->

@@ -26,7 +26,7 @@ var actions = {
     // REGION
     GET_REGION(context) {
         return new Promise((resolve, reject) => {
-            new RegionType(context.rootState.user_session.token).getRegion((err, data) => {
+            new PlacesApi(context.rootState.user_session.token).getRegion((err, data) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -37,9 +37,9 @@ var actions = {
         })
     },
     //PROVINCE
-    GET_PROVINCE(context) {
+    GET_PROVINCE(context, regionId) {
         return new Promise((resolve, reject) => {
-            new RegionType(context.rootState.user_session.token).getProvince((err, data) => {
+            new PlacesApi(context.rootState.user_session.token).getProvince(regionId, (err, data) => {
                 if (err) {
                     reject(err)
                 } else {
@@ -50,9 +50,9 @@ var actions = {
         })
     },
     //CITY
-    GET_CITY(context) {
+    GET_CITY(context, provinceId) {
         return new Promise((resolve, reject) => {
-            new RegionType(context.rootState.user_session.token).getCity((err, data) => {
+            new PlacesApi(context.rootState.user_session.token).getCity(provinceId, (err, data) => {
                 if (err) {
                     reject(err)
                 } else {

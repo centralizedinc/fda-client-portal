@@ -123,6 +123,8 @@
             color="green darken-1"
             v-model="item.prod_line"
             :items="products"
+            item-text="name"
+            item-value="_id"
             @change="load_product_lines"
             hide-no-data
             hide-selected
@@ -196,10 +198,10 @@ export default {
       //   line.push(element);
       // });
       // console.log("prod_line: " + JSON.stringify(line));
-      var line = this.$store.state.products.prod_line;
-      console.log("asdasdasdasdas: " + JSON.stringify(line));
+      // var line = this.$store.state.products.prod_line;
+      // console.log("asdasdasdasdas: " + JSON.stringify(line));
 
-      return line;
+      return this.$store.state.products.prod_line;
     }
   },
   methods: {
