@@ -8,14 +8,17 @@
           </v-btn>Apply New License
         </v-tooltip>-->
         <undertaking-dialog :show="dialog" @proceed="launchAppForm"></undertaking-dialog>
-        <v-data-table :headers="headers" :items="licenses" class="elevation-1">
+        <v-data-table :headers="headers" :items="cases" class="elevation-1">
           <template slot="items" slot-scope="props">
             <td>{{ props.item.case_no }}</td>
-            <td>{{ props.item.licenses_no }}</td>
+            <td>{{ props.item.case_type }}</td>
             <td>{{ getAppType(props.item.application_type) }}</td>
+            <td>{{ props.item.client_name }}</td>
+            <td>{{ app_status[props.item.status] }}</td>
             <td>{{ getTask(props.item.current_task) ? getTask(props.item.current_task).name : '' }}</td>
+            <td>{{ props.item.current_assigned_user }}</td>
             <td>{{ formatDate (props.item.date_created) }}</td>
-            <td>{{ formatDate (props.item.date_variation) }}</td>
+            <td>{{ props.item.remarks }}</td>
             <td>
               <v-layout row wrap>
                 <v-flex xs4>
@@ -84,82 +87,59 @@ export default {
       form: {},
       headers: [
         { text: "Case No", value: "case_no" },
-        { text: "License No", value: "case_no" },
+        { text: "Application", value: "case_type" },
         { text: "Type", value: "application_type" },
-        { text: "Task", value: "current_task" },
-        { text: "Application Date", value: "date_created" },
-        { text: "Variation Date", value: "date_variation" },
+        { text: "Created By", value: "client_name" },
+        { text: "Status", value: "status" },
+        { text: "Current Task", value: "current_task" },
+        { text: "Current User", value: "current_assigned_user" },
+        { text: "Date Created", value: "date_created" },
+        { text: "Remarks", value: "remarks" },
         { text: "Actions", value: "" }
       ],
-      licenses: [],
-      tasks: []
+      cases: [],
+      tasks: [],
+      app_status: ["On Process", "Approved", "Compliance", "Denied", "Expired"]
     };
   },
   created() {
-    console.log("WELCOME!!!!!!!!!!!!!");
     this.init();
   },
   methods: {
     init() {
-      
-      this.$store.dispatch("GET_LICENSES");
-      var licenseData = this.$store.state.licenses.licenses;
-      // this.licenses = this.$store.state.licenses.licenses;
-      licenseData.forEach(element => {
-        // var app_type = null;
-        // if(element.application_type === "I"){
-        //   app_type = "Initial"
-        // } else if(element.application_type === "V"){
-        //   app_type = "Variation"
-        // } else if(element.application_type === "R"){
-        //   app_type = "Renewal"
-        // }
-        // var data = {
-        //   case_no: element.case_no,
-        //   licenses_no: element.auto_id,
-        //   application_type: app_type,
-        //   current_task: element.current_task,
-        //   date_created: element.date_created,
-        //   date_variation: element.date_variation
-        // }
-        // this.licensesData.push(data);
-        this.licenses.push(element);
-      });
-      // this.$store.dispatch("GET_TASKS").then(result =>{
-      //   this.tasks = this.$store.state.tasks.tasks;
-      // console.log("tasks data: " + JSON.stringify(this.tasks))
-      // })
-      
-      console.log("####################License data: " + JSON.stringify(this.licenses))
+      this.cases = this.$store.state.case.cases;
+      this.$store
+        .dispatch("GET_CASES")
+        .then(result => {
+          this.cases = result;
+        })
+        .catch(err => {});
     },
     viewForm(item) {
-      console.log("$$$$$$$$$$$$$$$$$ view data: " + JSON.stringify(item));
       this.loadForm(item);
-      // this.$store.commit("SET_FORM", item)
-      this.$router.push("/app/licenses/view");
     },
     renewForm(item) {
-      item.application_type = 2
-      console.log("renew data: " + JSON.stringify(item.application_type));
-      this.loadForm(item);
-      // this.$store.commit("SET_FORM", item)
+      this.loadForm(item, 2);
     },
     variationForm(item) {
-      item.application_type = 1;
-      console.log("variation data: " + JSON.stringify(item.application_type));
-      this.loadForm(item);
-      this.dialog = true;
-
-      // this.$store.commit("SET_FORM", item)
+      this.loadForm(item, 1);
     },
-    loadForm(form) {
-      // console.log("loadform data case number: " + case_no);
-      // var index = this.licenses.findIndex(x => {
-      //   return x.case_no === case_no;
-      // })
-
-      // this.$store.commit("SET_FORM", this.licenses[index])
-      this.$store.commit("SET_FORM", form);
+    loadForm(_case, application_type) {
+      this.$store
+        .dispatch("GET_LICENSE_BY_ID", {
+          app_id: _case.application_id,
+          application_type: application_type
+        })
+        .then(result => {
+          if (application_type === 1) {
+            this.dialog = true;
+          } else {
+            this.$router.push("/app/licenses/view");
+          }
+        })
+        .catch(err => {
+          console.log("###loadForm err :", err);
+        });
     },
     launchAppForm() {
       this.$router.push("/app/licenses/apply");

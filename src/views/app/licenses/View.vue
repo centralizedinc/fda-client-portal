@@ -300,9 +300,9 @@
           </v-flex>
         </v-layout>
       </v-card-text>
-      <!-- <v-card-actions>
-        <v-btn block color="success" >submit</v-btn>
-      </v-card-actions>-->
+      <v-card-actions v-if="$store.state.licenses.isRenew">
+        <v-btn block color="success" @click="renew">RENEW</v-btn>
+      </v-card-actions>
     </v-card>
   </v-layout>
 </template>
@@ -319,7 +319,6 @@ const tabscomponents = Object.assign(
 
 export default {
   components: tabscomponents,
-  props: ["form"],
   data() {
     return {
       paymentDialog: false,
@@ -371,7 +370,8 @@ export default {
   methods: {
     pay() {
       this.paymentDialog = true;
-    }
+    },
+    renew() {}
   }
 };
 </script>
