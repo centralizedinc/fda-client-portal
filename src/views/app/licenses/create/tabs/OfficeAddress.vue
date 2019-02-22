@@ -15,6 +15,8 @@
         color="green darken-1"
         v-model="form.addresses.office.region"
         :items="regions"
+        item-text="name"
+        @change="getProvinces"
         hide-no-data
         hide-selected
         label="Region"
@@ -26,6 +28,8 @@
         color="green darken-1"
         v-model="form.addresses.office.province"
         :items="provinces"
+        @change="getCities"
+        item-text="name"
         hide-no-data
         hide-selected
         label="Province"
@@ -37,6 +41,7 @@
         color="green darken-1"
         v-model="form.addresses.office.city"
         :items="cities"
+        item-text="name"
         hide-no-data
         hide-selected
         label="City / Town"
@@ -109,6 +114,8 @@
               color="green darken-1"
               v-model="warehouse.region"
               :items="regions"
+              item-text="name"
+              @change="getProvinces"
               hide-no-data
               hide-selected
               label="Region"
@@ -120,6 +127,8 @@
               color="green darken-1"
               v-model="warehouse.province"
               :items="provinces"
+              item-text="name"
+              @change="getCities"
               hide-no-data
               hide-selected
               label="Province"
@@ -131,6 +140,7 @@
               color="green darken-1"
               v-model="warehouse.city"
               :items="cities"
+              item-text="name"
               hide-no-data
               hide-selected
               label="City / Town"
@@ -225,6 +235,9 @@
           color="green darken-1"
           v-model="form.addresses.plant.region"
           :items="regions"
+          item-text="name"
+          item-value="_id"
+          @change="getProvinces"
           hide-no-data
           hide-selected
           label="Region"
@@ -236,6 +249,9 @@
           color="green darken-1"
           v-model="form.addresses.plant.province"
           :items="provinces"
+          item-text="name"
+          item-value="_id"
+          @change="getCities"
           hide-no-data
           hide-selected
           label="Province"
@@ -247,6 +263,8 @@
           color="green darken-1"
           v-model="form.addresses.plant.city"
           :items="cities"
+          item-text="name"
+          item-value="_id"
           hide-no-data
           hide-selected
           label="City / Town"
@@ -313,7 +331,39 @@ export default {
       required: value => !!value || "This field is required"
     }
   }),
+  created() {
+    this.init();
+  },
   methods: {
+    init() {
+      this.$store.dispatch("GET_REGION").then(result => {
+        this.regions = this.$store.state.places.regions;
+      });
+    },
+    getProvinces() {
+      this.$store
+        .dispatch("GET_PROVINCE", this.form.addresses.office.region)
+        .then(result => {
+          this.provinces = this.$store.state.places.provinces;
+          return this.$store.dispatch("GET_REGION");
+        })
+        .then(result => {
+          // GET region data
+          this.regions = this.$store.state.places.regions;
+        });
+    },
+    getCities() {
+      this.$store
+        .dispatch("GET_CITY", this.form.addresses.office.city)
+        .then(result => {
+          this.cities = this.$store.state.places.city;
+          return this.$store.dispatch("GET_PROVINCE");
+        })
+        .then(result => {
+          // GET CITIES data
+          this.provinces = this.$store.state.places.provinces;
+        });
+    },
     add() {
       this.form.addresses.warehouse.push(this.warehouse);
       this.addedWarehouse.push(this.warehouse);

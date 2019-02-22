@@ -178,6 +178,9 @@
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.region"
           :items="regions"
+          item-text="name"
+          item-value="_id"
+          @change="getProvinces"
           hide-no-data
           hide-selected
           label="Region"
@@ -189,6 +192,9 @@
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.province"
           :items="provinces"
+          @change="getCities"
+          item-text="name"
+          item-value="_id"
           hide-no-data
           hide-selected
           label="Province"
@@ -200,6 +206,8 @@
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.city"
           :items="cities"
+          item-text="name"
+          item-value="_id"
           hide-no-data
           hide-selected
           label="City / Town"
@@ -211,6 +219,8 @@
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.zipcode"
           :items="zipcodes"
+          item-text="name"
+          item-value="_id"
           hide-no-data
           hide-selected
           label="Zip Code"
@@ -242,6 +252,9 @@ export default {
       required: value => !!value || "This field is required"
     }
   }),
+  created() {
+    this.init();
+  },
   watch: {
     form: {
       handler(val) {
@@ -251,6 +264,37 @@ export default {
     },
     menu2(val) {
       val && this.$nextTick(() => (this.$refs.picker2.activePicker = "YEAR"));
+    }
+  },
+  methods: {
+    init() {
+      this.$store.dispatch("GET_REGION").then(result => {
+        this.regions = this.$store.state.places.regions;
+      });
+    },
+    getProvinces() {
+      this.$store
+        .dispatch("GET_PROVINCE", this.form.auth_officer.mail_add.region)
+        .then(result => {
+          this.provinces = this.$store.state.places.provinces;
+          return this.$store.dispatch("GET_REGION");
+        })
+        .then(result => {
+          // GET region data
+          this.regions = this.$store.state.places.regions;
+        });
+    },
+    getCities() {
+      this.$store
+        .dispatch("GET_CITY", this.form.auth_officer.mail_add.city)
+        .then(result => {
+          this.cities = this.$store.state.places.city;
+          return this.$store.dispatch("GET_PROVINCE");
+        })
+        .then(result => {
+          // GET CITIES data
+          this.provinces = this.$store.state.places.provinces;
+        });
     }
   }
 };

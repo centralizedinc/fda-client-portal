@@ -147,7 +147,24 @@ var actions = {
                 }
             })
         })
-    }
+    },
+    EXPIRY_LICENSES(context) {
+        return new Promise((resolve, reject) => {
+            console.log("expiry licenses entering action: ")
+            new LicenseAPI(context.rootState.user_session.token).applicationStatusLicenses((payable, err) => {
+                if (!err) {
+                    console.log("verify licenses call back: " + JSON.stringify(payable))
+                    // context.commit('VERIFIED_LICENSES', verifiedLicense)
+
+                    resolve(payable)
+                } else {
+                    console.log("verify licenses error: " + JSON.stringify(err))
+                    reject(err)
+                }
+            })
+        })
+    },
+
 }
 
 export default {

@@ -43,6 +43,10 @@ export default class PaymentAPI {
         })
     }
 
+    feesDetails(details, cb){
+        
+    }
+
     savePayment(fullDetails, cb){
         console.log("save payments details: " + JSON.stringify(fullDetails))
         axios.post('payments/',{
@@ -56,6 +60,7 @@ export default class PaymentAPI {
              cb(null, err)
          })
     }
+
 
 
 }

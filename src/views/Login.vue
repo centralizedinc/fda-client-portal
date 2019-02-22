@@ -40,12 +40,12 @@
             <v-spacer></v-spacer>
             <v-btn
               outline
-              color="secondary"
+              color="primary"
               class="caption font-weight-light"
               @click="signup()"
             >Sign-up</v-btn>
             <v-btn
-              color="primary"
+              color="success"
               :loading="loading"
               type="submit"
               class="caption font-weight-light"
