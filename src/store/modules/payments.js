@@ -68,6 +68,20 @@ var actions = {
                 console.log("actions save licenses error: " + JSON.stringify(err))
             }
         })
+    },
+    BILLS_PAYMENT(context, fullDetails) {
+        console.log("bill payment store actions" + JSON.stringify(fullDetails))
+        return new Promise((resolve, reject) => {
+        new PaymentAPI(context.rootState.user_session.token).feesDetails(fullDetails, (details, err) => {
+            if (!err) {
+                console.log('actions save licenses: ' + JSON.stringify(details))
+                resolve(details)
+            } else {
+                console.log("actions save licenses error: " + JSON.stringify(err))
+                reject(err)
+            }
+        })
+    })
     }
 
 }

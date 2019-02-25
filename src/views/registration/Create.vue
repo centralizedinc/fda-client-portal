@@ -237,6 +237,7 @@ export default {
         });
     },
     load_primaries(product_id) {
+      console.log('product_id :', product_id);
       this.$store.dispatch("GET_PRIMARY_ACTIVITY", product_id);
     },
     load_references(primary_id) {
@@ -285,6 +286,7 @@ export default {
           });
         })
         .then(result => {
+          console.log("RESULT CREATE NEW ##################: " + JSON.stringify(result))
           this.$notify({
             message: "You have successfully applied a new license",
             color: "success",

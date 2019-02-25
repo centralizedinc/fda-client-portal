@@ -73,6 +73,9 @@ export default {
         "Please declare your capital. If none, select Not Applicable"
     }
   }),
+  created(){
+    console.log('this.product_items :', JSON.stringify(this.product_items));
+  },
   computed: {
     product_items() {
       console.log(
@@ -93,6 +96,7 @@ export default {
   },
   methods: {
     load_primary_items() {
+      console.log('this.form.general_info.product_type :', JSON.stringify(this.form));
       this.form.general_info.primary_activity = "";
       this.$emit("product_select", this.form.general_info.product_type);
     },
