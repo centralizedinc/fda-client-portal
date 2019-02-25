@@ -44,7 +44,18 @@ export default class PaymentAPI {
     }
 
     feesDetails(details, cb){
-        
+        console.log("feesDetails entering api: " + JSON.stringify(details))
+        axios.post('payments/rates/compute', {
+            productType: details.productType,
+            primaryActivity: details.primaryActivity,
+            declaredCapital: details.declaredCapital,
+            appType: details.appType
+        }).then((result) =>{
+            console.log("feesDetails data return api: " + JSON.stringify(result.data.model))
+            cb(result.data.model)
+        }).catch(err =>{
+            cb(null, err)
+        })
     }
 
     savePayment(fullDetails, cb){
