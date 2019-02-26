@@ -72,7 +72,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-six slot="content-step-6" :form="form"></step-six>
+      <step-six slot="content-step-6" :form="form" @upload="uploadFile" style="width: 100%"></step-six>
     </form-layout>
     <confirm-to-review-app
       :show="confirmDialog"
@@ -313,6 +313,26 @@ export default {
         .catch(err => {
           console.log("error in uploading files: " + err);
         });
+    },
+
+    uploadFile(upload){
+      this.formData = upload;
+    },
+    apply(){
+      this.$store.dispatch('SAVE_LICENSES', {license:this.form, upload: this.formData})
+      .then(result=>{
+        if(result.success){
+          this.$notify({message:'Sucess! CASE#: ' + result.model.case_details.case_no, color:'primary'})
+          this.$store.commit('SET_LICENSE', result.model)
+          this.$router.push('/app/payments');
+        }else{
+           this.$notifyError(result.errors)
+        }
+      })
+      .catch(err=>{
+        console.log('ERROR: '+ err)
+        this.$notifyError(err)        
+      })
     }
   }
 };
