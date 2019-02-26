@@ -165,6 +165,10 @@ var actions = {
         })
     },
 
+    APPLY_LICENSE(context, lic_data){
+        return new LicenseAPI(context.rootState.user_session.token).applyLicense(lic_data)
+    }
+
 }
 
 export default {

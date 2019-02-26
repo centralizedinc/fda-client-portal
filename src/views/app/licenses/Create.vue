@@ -77,7 +77,7 @@
     <confirm-to-review-app
       :show="confirmDialog"
       @close="confirmDialog=false"
-      @submit="submit"
+      @submit="apply"
       @overview="dialog = false ; showAppOverview = true"
     ></confirm-to-review-app>
     <application-overview :form="form" :show="showAppOverview" @close="close">
@@ -319,12 +319,14 @@ export default {
       this.formData = upload;
     },
     apply(){
-      this.$store.dispatch('SAVE_LICENSES', {license:this.form, upload: this.formData})
+      this.$store.dispatch('APPLY_LICENSE', {license:this.form, upload: this.formData})
       .then(result=>{
         if(result.success){
           this.$notify({message:'Sucess! CASE#: ' + result.model.case_details.case_no, color:'primary'})
-          this.$store.commit('SET_LICENSE', result.model)
-          this.$router.push('/app/payments');
+          this.$store.commit('SET_FORM', result.model)
+          this.confirmDialog = false;
+          this.showAppOverview = false;
+          this.paymentDialog = true;
         }else{
            this.$notifyError(result.errors)
         }
