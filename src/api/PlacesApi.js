@@ -37,7 +37,6 @@ export default class RegionType {
             })
     }
     //CITY
-
     getCity(province_id, cb) {
         axios.get('core/city' + province_id).then((result) => {
                 console.log("###API:CITY###")
@@ -50,5 +49,30 @@ export default class RegionType {
             .catch(err => {
                 cb(err)
             })
+    }
+
+    
+    /**
+     * @description promised based method for retrieving regions
+     * @returns {Promise}
+     */
+     getRegions(){
+         return axios.get('core/regions')
+     }
+
+     /**
+     * @description promised based method for retrieving provinces
+     * @returns {Promise}
+     */
+    getProvinces(){
+        return axios.get('core/provinces')
+    }
+
+    /**
+     * @description promised based method for retrieving cities
+     * @returns {Promise}
+     */
+    getCities(){
+        return axios.get('core/city')
     }
 }
