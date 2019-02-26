@@ -78,8 +78,8 @@ export default {
   },
   watch:{
     form(){
-      if(!isEmpty(this.form.general_info.primary_activity)){
-        console.log("watch of primary activity"+JSON.stringify(this.form.general_info.primary_activity))
+      if(this.form.general_info.primary_activity===null){
+        console.log("watch of primary activity "+JSON.stringify(this.form.general_info.primary_activity))
         this.declared_items();
       }
     }
@@ -101,6 +101,7 @@ export default {
       return this.$store.state.products.secondaryActivity;
     },
     declared_items() {
+      console.log("this is declared capital: " + JSON.stringify(this.form.general_info.primary_activity.declared_capital))
       return this.form.general_info.primary_activity.declared_capital;
     }
   },

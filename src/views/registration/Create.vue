@@ -92,7 +92,7 @@
       <uploaded-files slot="uploadedfiles" :form="form"></uploaded-files>
       <output-docs slot="outputdocs" :form="form"></output-docs>
       <app-history slot="apphistory" :form="form"></app-history>
-      <payment slot="paymentdetails" :form="form"></payment>
+      <payment slot="paymentdetails" :form="form" :charges="charges"></payment>
     </application-overview>
   </div>
 </template>
@@ -113,11 +113,11 @@ export default {
       action: "",
       created_by: "",
       date_created: "",
-      application_type: "",
+      application_type: "0",
       general_info: {
-        product_type: "",
-        primary_activity: "",
-        declared_capital: ""
+        product_type: "5c106cb7b19f7a29c4096ad0",
+        primary_activity: "5c106ad2b19f7a29c4096ac6",
+        declared_capital: "5c106397b19f7a29c4096aba"
       },
       estab_details: {
         establishment_name: "",
@@ -204,7 +204,8 @@ export default {
       username: "",
       password: "",
       name: {}
-    }
+    },
+    charges:{}
   }),
   created() {
     this.init();
@@ -258,9 +259,28 @@ export default {
           console.log("loading references: " + err);
         });
     },
+    load_fees(){
+      if(
+        this.form.general_info.product_type !== null &&
+        this.form.general_info.primary_activity !== null &&
+        // this.form.general_info.declared_capital !== null &&
+        this.form.application_type !== null){
+          var details = {
+            productType: this.form.general_info.product_type,
+            primaryActivity: this.form.general_info.primary_activity,
+            declaredCapital: "5c106397b19f7a29c4096aba",
+            appType: this.form.application_type
+          }
+          console.log("load fees new license: " + JSON.stringify(details))
+          this.$store.dispatch("GET_FEES", details).then(result =>{
+            this.charges = result;
+            console.log("charges data payment details: " + JSON.stringify(this.charges))
+          })
+        }
+    },
     close() {
       this.showAppOverview = false;
-      this.confirmDialog = true;
+      this.confirmDialog = true;      
     },
     prev() {
       this.e1--;
@@ -270,6 +290,8 @@ export default {
     },
     changePage(val) {
       this.e1 = val;
+      if(this.e1 === 7)
+        this.load_fees()        
     },
     submit() {
       console.log("##### form: " + JSON.stringify(this.form));

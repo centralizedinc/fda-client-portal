@@ -55,16 +55,17 @@ export function generateOrderOfPayment(form, rates) {
     doc.text('Payment Details', 105, 220, null, null, 'center')
     doc.setFontStyle("normal");
     doc.text('Application Fee:', 10, 227, null, null, 'left');
-    doc.text(('Php ' + rates.fee), 105, 227, null, null, 'right');
+    doc.text(('Php ' + fees_form.fee), 105, 227, null, null, 'right');
     doc.text('# of years applied:', 10, 234, null, null, 'left');
-    doc.text('1', 105, 234, null, null, 'left');
+    doc.text((fees_form.yearsApplied), 105, 234, null, null, 'left');
     doc.text('Surcharge:', 10, 241, null, null, 'left');
-    doc.text('Php 0.00', 105, 241, null, null, 'left');
+    doc.text(('Php ' + fees_form.sucharge), 105, 241, null, null, 'left');
     doc.text('Legal Research Fund (LRF):', 10, 248, null, null, 'left');
-    doc.text(('Php ' + rates.lrf), 105, 248, null, null, 'right');
+    doc.text(('Php ' + fees_form.lrf), 105, 248, null, null, 'right');
     doc.setTextColor('red');
     doc.setFontStyle("bold");
     doc.text('Total Payment Due:', 10, 255, null, null, 'left');
+    doc.text(('Php ' + fees_form.total), 10, 255, null, null, 'right');
 
     doc.setTextColor('black');
     doc.text('Payment Instructions', 20, 265, null, null, 'left');

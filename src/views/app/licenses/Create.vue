@@ -3,7 +3,7 @@
     <v-layout row wrap v-if="invalid">
       <v-flex xs12>Invalid Request: 404 status code.</v-flex>
     </v-layout>
-    <payment-summary v-else-if="paymentDialog" @close="confirmDialog=false"></payment-summary>
+    <payment-summary v-else-if="paymentDialog" @close="confirmDialog=false" :form="form" :charges="charges"></payment-summary>
     <form-layout
       v-show="!ecpayDialog"
       v-else
@@ -86,7 +86,7 @@
       <uploaded-files slot="uploadedfiles" :form="form"></uploaded-files>
       <output-docs slot="outputdocs" :form="form"></output-docs>
       <app-history slot="apphistory" :form="form"></app-history>
-      <payment slot="paymentdetails" :form="form"></payment>
+      <payment slot="paymentdetails" :form="form" :charges="charges"></payment>
     </application-overview>
   </div>
 </template>
@@ -119,6 +119,7 @@ export default {
     paymentDialog: false,
     showAppOverview: false,
     invalid: false,
+    charges: {},
     form: {
       current_task: "",
       user: "",
@@ -275,6 +276,25 @@ export default {
           console.log("loading references: " + err);
         });
     },
+    load_fees(){
+      if(
+        this.form.general_info.product_type !== null &&
+        this.form.general_info.primary_activity !== null &&
+        // this.form.general_info.declared_capital !== null &&
+        this.form.application_type !== null){
+          var details = {
+            productType: this.form.general_info.product_type,
+            primaryActivity: this.form.general_info.primary_activity,
+            declaredCapital: "5c106397b19f7a29c4096aba",
+            appType: this.form.application_type
+          }
+          console.log("load fees new license: " + JSON.stringify(details))
+          this.$store.dispatch("GET_FEES", details).then(result =>{
+            this.charges = result;
+            console.log("charges data payment details: " + JSON.stringify(this.charges))
+          })
+        }
+    },
     close() {
       this.showAppOverview = false;
       this.confirmDialog = true;
@@ -292,6 +312,8 @@ export default {
       this.e1 = val;
       this.editedForm = this.form;
       console.log("form updated: " + JSON.stringify(this.editedForm));
+      if(this.e1 === 6)
+        this.load_fees()   
     },
     submit() {
       var files = this.form.uploaded_files;

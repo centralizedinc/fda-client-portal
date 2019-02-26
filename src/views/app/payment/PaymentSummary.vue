@@ -34,10 +34,10 @@
 
               <v-flex xs5>
                 <v-flex xs12>
-                  <label class="subheading">Php {{rates.fee}}</label>
+                  <label class="subheading">Php {{fees_form.fee}}</label>
                 </v-flex>
                 <v-flex xs12>
-                  <label class="subheading">1</label>
+                  <label class="subheading">{{fees_form.yearsApplied}}</label>
                 </v-flex>
                 <v-flex xs12>
                   <label class="subheading">
@@ -45,10 +45,10 @@
                   </label>
                 </v-flex>
                 <v-flex xs12>
-                  <label class="subheading">Php {{rates.lrf}}</label>
+                  <label class="subheading">Php {{fees_form.lrf}}</label>
                 </v-flex>
                 <v-flex xs12>
-                  <label class="subheading">Php 5,050.00</label>
+                  <label class="subheading">{{fees_form.total}}</label>
                 </v-flex>
               </v-flex>
             </v-layout>
@@ -202,7 +202,7 @@ export default {
         lrf: 50
       },
       app_form: {},
-      case_form: {},
+      fees_form: {},
       cashierPayment: false,
       ecPayDialog: false,
       showCreditCard: false,
@@ -213,38 +213,11 @@ export default {
   created() {
     this.init();
   },
-  watch:{
-    form(){
-      if(
-        isEmpty(this.form.general_info.product_type) &&
-        isEmpty(this.form.general_info.primary_activity) &&
-        isEmpty(this.form.general_info.declared_capital) &&
-        isEmpty(this.form.application_type)){
-          var details = {
-            productType: this.form.general_info.product_type,
-            primaryActivity: this.form.general_info.primary_activity,
-            declaredCapital: this.form.general_info.declared_capital,
-            appType: this.form.application_type
-          }
-          this.$store.dispatch("GET_FEES", details).then(result =>{
-            this.charges = result;
-            console.log("charges data payment details: " + JSON.stringify(this.charges))
-          })
-        }
-    }
-  },
   methods: {
     init() {
       this.app_form = this.form ? this.form : this.$store.state.licenses.form;
       console.log("Welcome to payment summary");
-      this.$store.dispatch("GET_CASES").then(result =>{
-        result.forEach(cases => {
-          if(cases.case_no === this.app_form.case){
-            this.case_form = cases
-            console.log("case_form payment summary: " + JSON.stringify(this.case_form));
-          }
-        });
-      })
+      this.fees_form = this.$store.state.payments.fee
     },
     cancel() {
       this.showCreditCard = false;
@@ -268,7 +241,7 @@ export default {
     },
     ecPay() {
       this.ecPayDialog = true;
-      OrderOfPaymentGenerator.generateOrderOfPayment(this.app_form, this.rates);
+      OrderOfPaymentGenerator.generateOrderOfPayment(this.app_form, this.fees_form);
     }
   }
 };
