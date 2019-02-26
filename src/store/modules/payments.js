@@ -59,6 +59,20 @@ var actions = {
             })
         })
     },
+    GET_FEES(context, fees) {
+        return new Promise((resolve, reject) => {
+            console.log("entering mutation GET_FEES: " + JSON.stringify(fees))
+            new PaymentAPI(context.rootState.user_session.token).feesDetails(fees, (fee, err) => {
+                if (!err) {
+                    console.log("returning mutation GET_FEES: " + JSON.stringify(fee))
+                    resolve(fee)
+                } else {
+                    console.log(JSON.stringify(err))
+                    reject(err)
+                }
+            })
+        })
+    },
     SAVE_PAYMENT(context, fullDetails) {
         console.log("save payment store actions" + JSON.stringify(fullDetails))
         new PaymentAPI(context.rootState.user_session.token).savePayment(fullDetails, (details, err) => {

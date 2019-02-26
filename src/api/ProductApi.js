@@ -31,6 +31,7 @@ export default class ProductAPI {
       })
       .catch(err => {
         console.log(JSON.stringify(err));
+        cb(null, err)
       });
   }
 
@@ -43,6 +44,7 @@ export default class ProductAPI {
       })
       .catch(err => {
         console.log(JSON.stringify(err));
+        cb(null, err)
       });
   }
 
@@ -55,6 +57,7 @@ export default class ProductAPI {
       })
       .catch(err => {
         console.log(JSON.stringify(err));
+        cb(null, err)
       });
   }
 
@@ -67,6 +70,7 @@ export default class ProductAPI {
       })
       .catch(err => {
         console.log(JSON.stringify(err));
+        cb(null, err)
       });
   }
   prodline(cb) {
