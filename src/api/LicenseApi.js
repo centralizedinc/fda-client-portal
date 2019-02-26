@@ -11,15 +11,18 @@ export default class LicenseAPI {
 
     getLicenses(cb) {
         axios.get('lto-api/').then((result) => {
-            console.log('get licenses: ' + JSON.stringify(result));
-
-            if (result.data.success) {
-                cb(result.data.model)
-            } else {
-                cb(result.data.errors)
-            }
+            cb(result.data.errors, result.data.model)
         }).catch(err => {
-            console.log('##########error: ' + JSON.stringify(err))
+            console.log('######getLicenses error :', err)
+            cb(err)
+        })
+    }
+
+    getLicenseByID(id, cb) {
+        axios.get('lto-api/' + id).then((result) => {
+            cb(result.data.errors, result.data.model)
+        }).catch(err => {
+            console.log('######getLicenseByID error :', err)
             cb(err)
         })
     }
@@ -68,10 +71,10 @@ export default class LicenseAPI {
 
 
     verifyExistingLicenses(licenses, cb) {
-        console.log("api existing licenses: " +JSON.stringify(licenses))
+        console.log("api existing licenses: " + JSON.stringify(licenses))
         axios.post('lto-api/verify/existing/license', licenses).then((result) => {
             cb(result.data.model)
-        }).catch(err =>{
+        }).catch(err => {
             cb(err)
         })
     }

@@ -1,17 +1,14 @@
 // import setAuthToken from '@/axios-config.js'
 // var jwt = require('jsonwebtoken')
-import store from '../index'
 import LicenseAPI from '../../api/LicenseApi';
-import {
-    resolve
-} from 'url';
 
 const state = {
     LicenseAPI: null,
     licenses: [],
     form: null,
     uploaded: null,
-    existingLicense: null
+    existingLicense: null,
+    isRenew: false
 }
 
 const mutations = {
@@ -19,7 +16,11 @@ const mutations = {
         state.licenses = null;
         state.licenses = licenses;
     },
-    SET_FORM(state, form) {
+    SET_FORM(state, {
+        form,
+        isRenew
+    }) {
+        state.isRenew = isRenew ? isRenew : false;
         state.form = null;
         state.form = form;
         console.log("set form store mutation: " + JSON.stringify(state.form))
@@ -27,7 +28,7 @@ const mutations = {
     UPLOADED_DATA(state, form) {
         state.uploaded = form
     },
-    VERIFIED_LICENSES(state, license){
+    VERIFIED_LICENSES(state, license) {
         state.existingLicense = license
     }
 }
@@ -55,7 +56,7 @@ var actions = {
     },
     GET_LICENSES(context) {
         return new Promise((resolve, reject) => {
-            new LicenseAPI(context.rootState.user_session.token).getLicenses((licenses, err) => {
+            new LicenseAPI(context.rootState.user_session.token).getLicenses((err, licenses) => {
                 if (!err) {
                     console.log('license: ' + JSON.stringify(licenses));
 
@@ -108,7 +109,7 @@ var actions = {
             })
         })
     },
-    VERIFY_LICENSES(context, license){
+    VERIFY_LICENSES(context, license) {
         return new Promise((resolve, reject) => {
             console.log("verify licenses entering action: " + JSON.stringify(license))
             new LicenseAPI(context.rootState.user_session.token).verifyExistingLicenses(license, (verifiedLicense, err) => {
@@ -117,13 +118,37 @@ var actions = {
                     context.commit('VERIFIED_LICENSES', verifiedLicense)
                     resolve(verifiedLicense)
                 } else {
-                    console.log("verify licenses error: "+JSON.stringify(err))
+                    console.log("verify licenses error: " + JSON.stringify(err))
                     reject(err)
                 }
             })
         })
     },
-    EXPIRY_LICENSES(context){
+    GET_LICENSE_BY_ID(context, {
+        app_id,
+        application_type
+    }) {
+        return new Promise((resolve, reject) => {
+            new LicenseAPI(context.rootState.user_session.token).getLicenseByID(app_id, (err, license) => {
+                if (!err) {
+                    var isRenew = false;
+                    if (application_type) {
+                        license.application_type = application_type;
+                        isRenew = application_type === 2;
+                    }
+                    context.commit('SET_FORM', {
+                        form: license,
+                        isRenew: isRenew
+                    });
+                    resolve(license)
+                } else {
+                    console.log('#####err GET_LICENSE_BY_ID :', err);
+                    reject(err)
+                }
+            })
+        })
+    },
+    EXPIRY_LICENSES(context) {
         return new Promise((resolve, reject) => {
             console.log("expiry licenses entering action: ")
             new LicenseAPI(context.rootState.user_session.token).applicationStatusLicenses((payable, err) => {
@@ -133,7 +158,7 @@ var actions = {
 
                     resolve(payable)
                 } else {
-                    console.log("verify licenses error: "+JSON.stringify(err))
+                    console.log("verify licenses error: " + JSON.stringify(err))
                     reject(err)
                 }
             })

@@ -6,6 +6,7 @@ const state = {
     secondaryActivity: [],
     additional: [],
     declared: [],
+    declaredCapital: [],
     prod_line: []
 }
 
@@ -24,6 +25,9 @@ const mutations = {
     },
     SET_DECLARED(state, primaryActivity) {
         state.declared = primaryActivity;
+    },
+    SET_ALL_DECLARED(state, declaredCapital) {
+        state.declaredCapital = declaredCapital;
     },
     SET_PROD_LINE(state, productType) {
 
@@ -86,6 +90,18 @@ var actions = {
             new ProductApi(context.rootState.user_session.token).declared(primaryActivity, (primaryActivity, err) => {
                 if (!err) {
                     context.commit('SET_DECLARED', primaryActivity)
+                    resolve()
+                } else {
+                    reject()
+                }
+            })
+        })
+    },
+    GET_ALL_DECLARED(context) {
+        return new Promise((resolve, reject) => {
+            new ProductApi(context.rootState.user_session.token).getDeclared((declaredCapital, err) => {
+                if (!err) {
+                    context.commit('SET_ALL_DECLARED', declaredCapital)
                     resolve()
                 } else {
                     reject()

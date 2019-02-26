@@ -202,6 +202,7 @@ export default {
         lrf: 50
       },
       app_form: {},
+      case_form: {},
       cashierPayment: false,
       ecPayDialog: false,
       showCreditCard: false,
@@ -212,10 +213,38 @@ export default {
   created() {
     this.init();
   },
+  watch:{
+    form(){
+      if(
+        isEmpty(this.form.general_info.product_type) &&
+        isEmpty(this.form.general_info.primary_activity) &&
+        isEmpty(this.form.general_info.declared_capital) &&
+        isEmpty(this.form.application_type)){
+          var details = {
+            productType: this.form.general_info.product_type,
+            primaryActivity: this.form.general_info.primary_activity,
+            declaredCapital: this.form.general_info.declared_capital,
+            appType: this.form.application_type
+          }
+          this.$store.dispatch("GET_FEES", details).then(result =>{
+            this.charges = result;
+            console.log("charges data payment details: " + JSON.stringify(this.charges))
+          })
+        }
+    }
+  },
   methods: {
     init() {
       this.app_form = this.form ? this.form : this.$store.state.licenses.form;
       console.log("Welcome to payment summary");
+      this.$store.dispatch("GET_CASES").then(result =>{
+        result.forEach(cases => {
+          if(cases.case_no === this.app_form.case){
+            this.case_form = cases
+            console.log("case_form payment summary: " + JSON.stringify(this.case_form));
+          }
+        });
+      })
     },
     cancel() {
       this.showCreditCard = false;

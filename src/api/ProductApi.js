@@ -31,6 +31,7 @@ export default class ProductAPI {
       })
       .catch(err => {
         console.log(JSON.stringify(err));
+        cb(null, err)
       });
   }
 
@@ -43,6 +44,7 @@ export default class ProductAPI {
       })
       .catch(err => {
         console.log(JSON.stringify(err));
+        cb(null, err)
       });
   }
 
@@ -55,6 +57,7 @@ export default class ProductAPI {
       })
       .catch(err => {
         console.log(JSON.stringify(err));
+        cb(null, err)
       });
   }
 
@@ -67,6 +70,19 @@ export default class ProductAPI {
       })
       .catch(err => {
         console.log(JSON.stringify(err));
+        cb(null, err)
+      });
+  }
+  getDeclared(cb) {
+    axios.get("core/declared")
+      .then(result => {
+        if (result.data.success) {
+          cb(result.data.model)
+        }
+      })
+      .catch(err => {
+        console.log(JSON.stringify(err));
+        cb(null, err)
       });
   }
   prodline(cb) {

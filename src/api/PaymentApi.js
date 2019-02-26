@@ -44,15 +44,16 @@ export default class PaymentAPI {
     }
 
     feesDetails(details, cb){
+        console.log("feesDetails entering api: " + JSON.stringify(details))
         axios.post('payments/rates/compute', {
-            appType: details.appType,
             productType: details.productType,
             primaryActivity: details.primaryActivity,
-            declaredCapital: details.declaredCapital
-          }).then((result) => {
-           cb(result.data.model)
-        }).catch(err => {
-            console.log('##########error save expirationDate: ' + JSON.stringify(err))
+            declaredCapital: details.declaredCapital,
+            appType: details.appType
+        }).then((result) =>{
+            console.log("feesDetails data return api: " + JSON.stringify(result.data.model))
+            cb(result.data.model)
+        }).catch(err =>{
             cb(null, err)
         })
     }

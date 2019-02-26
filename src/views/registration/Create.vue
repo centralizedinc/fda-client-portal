@@ -209,6 +209,11 @@ export default {
   created() {
     this.init();
   },
+  watch:{
+    form(){
+      console.log("details from payment details form data: " + JSON.stringify(this.form))
+    }
+  },
   methods: {
     init() {
       this.$store

@@ -256,14 +256,21 @@ export default {
       this.$store.dispatch("GET_PROD_LINE");
     },
     load_references(primary_id) {
+      console.log("despatch declared capital0")
       this.$store
         .dispatch("GET_SECONDARY_ACTIVITY", primary_id)
         .then(result => {
+          console.log("despatch declared capital1")
           return this.$store.dispatch("GET_ADDITIONAL", primary_id);
         })
         .then(result => {
-          return this.$store.dispatch("GET_DECLARED", primary_id);
+          console.log("despatch declared capital2")
+          return this.$store.dispatch("GET_ALL_DECLARED");
         })
+        // .then(result => {
+        //   console.log("despatch declared capital2")
+        //   return this.$store.dispatch("GET_DECLARED", primary_id);
+        // })
         .catch(err => {
           console.log("loading references: " + err);
         });
@@ -310,15 +317,15 @@ export default {
           this.showAppOverview = false;
           this.paymentDialog = true;
 
-          var details = {
-            apptype: this.form.application_type,
-            productType: this.form.general_info.product_type,
-            primaryActivity: this.form.general_info.primary_activity,
-            declaredCapital: this.form.general_info.declared_capital,
-            date_expiry: this.form.date_expiry
+          // var details = {
+          //   apptype: this.form.application_type,
+          //   productType: this.form.general_info.product_type,
+          //   primaryActivity: this.form.general_info.primary_activity,
+          //   declaredCapital: this.form.general_info.declared_capital,
+          //   date_expiry: this.form.date_expiry
 
-          }
-          return this.$store.dispatch("BILLS_PAYMENT", )
+          // }
+          // return this.$store.dispatch("BILLS_PAYMENT", )
         })
         .catch(err => {
           console.log("error in uploading files: " + err);
