@@ -83,6 +83,48 @@ export default {
           validate = this.isEmpty(email) || !re.test(email);
           return validate;
         },
+        getRegionName(id){          
+          for(var i=0; i<this.$store.state.places.regions.length; i++){
+            var region = this.$store.state.places.regions[i]
+            if(region._id === id){
+              return region.name
+            }
+          }
+        },
+        getProvinceName(id){          
+          for(var i=0; i<this.$store.state.places.provinces.length; i++){
+            var province = this.$store.state.places.provinces[i]
+            if(province._id === id){
+              return province.name
+            }
+          }
+        },
+        getCityName(id){          
+          for(var i=0; i<this.$store.state.places.city.length; i++){
+            var city = this.$store.state.places.city[i]
+            if(city._id === id){
+              return city.name
+            }
+          }
+        },
+        findProvinces(region){
+          var provinces = [];
+          this.$store.state.places.provinces.forEach(province=>{
+            if(province.region === region){
+              provinces.push(province)
+            }
+          })
+          return provinces;
+        },
+        findCities(province){
+          var cities = [];
+          this.$store.state.places.city.forEach(city=>{
+            if(city.province === province){
+              cities.push(city)
+            }
+          })
+          return cities;
+        },
         logout() {
           this.$store.dispatch("LOGOUT");
           this.$router.push("/login");

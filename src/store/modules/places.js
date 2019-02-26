@@ -23,6 +23,50 @@ const mutations = {
 }
 
 var actions = {
+
+    GET_PLACES_REFERENCE(context){
+        const placesAPI =  new PlacesApi(context.rootState.user_session.token);
+        var locations = {};
+        return new Promise((resolve, reject)=>{
+
+            placesAPI.getRegions()
+            .then(regions=>{
+                if(regions.data.success){
+                    locations.regions = regions.data.model;
+                    context.commit('SET_REGION', regions.data.model)
+                    return placesAPI.getProvinces()
+                }else{
+                    resolve(null)
+                }
+            })
+            .then(provinces=>{
+                if(provinces.data.success){
+                    locations.provinces = provinces.data.model;
+                    context.commit('SET_PROVINCE', provinces.data.model)
+                    return placesAPI.getCities()
+                }else{
+                    resolve(null)
+                }
+            })
+            .then(cities=>{
+                if(cities.data.success){
+                    locations.cities = cities.data.model
+                    context.commit('SET_CITY', cities.data.model)
+                    resolve(locations)
+                }else{
+                    resolve(null)
+                }
+            })
+            .catch(err=>{
+                reject(err)
+            })
+
+        })
+        
+        
+
+    },
+
     // REGION
     GET_REGION(context) {
         return new Promise((resolve, reject) => {

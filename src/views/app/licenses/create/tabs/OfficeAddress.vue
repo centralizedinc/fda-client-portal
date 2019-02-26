@@ -1,54 +1,55 @@
 <template>
   <v-layout row wrap>
     <v-flex xs12>
-      <v-text-field
+      <v-textarea
         color="green darken-1"
         label="Address"
         :rules="[rules.required]"
         v-model="form.addresses.office.address"
         hint="Unit Number, Floor, Building, Lot, Block, Phase, Street"
         class="input-group--focused"
-      ></v-text-field>
+      ></v-textarea>
     </v-flex>
-    <v-flex xs12>
+    <v-flex xs12 md3 pa-2>
       <v-autocomplete
         color="green darken-1"
         v-model="form.addresses.office.region"
         :items="regions"
         item-text="name"
-        @change="getProvinces"
+        item-value="_id"
         hide-no-data
         hide-selected
         label="Region"
         :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
-    <v-flex xs12>
+    <v-flex xs12 md3 pa-2>
       <v-autocomplete
         color="green darken-1"
         v-model="form.addresses.office.province"
-        :items="provinces"
-        @change="getCities"
+        :items="filtered_provinces"
         item-text="name"
+        item-value="_id"
         hide-no-data
         hide-selected
         label="Province"
         :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
-    <v-flex xs12>
+    <v-flex xs12 md3 pa-2>
       <v-autocomplete
         color="green darken-1"
         v-model="form.addresses.office.city"
-        :items="cities"
+        :items="filtered_cities"
         item-text="name"
+        item-value="_id"
         hide-no-data
         hide-selected
         label="City / Town"
         :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
-    <v-flex xs12>
+    <v-flex xs12 md3 pa-2>
       <v-autocomplete
         color="green darken-1"
         v-model="form.addresses.office.zipcode"
@@ -58,6 +59,15 @@
         label="Zip Code"
         :rules="[rules.required]"
       ></v-autocomplete>
+    </v-flex>
+    <v-flex xs12 pa-5>
+      <address-map 
+        :city="form.addresses.office.city"
+        :province="form.addresses.office.province"
+        :region="form.addresses.office.region"
+        :edit="true" @pin="setOfficeLocation">
+      </address-map>
+
     </v-flex>
     <v-flex xs12>
       <!-- Warehouse list -->
@@ -158,6 +168,14 @@
               :rules="[rules.required]"
             ></v-autocomplete>
           </v-flex>
+          <v-flex xs12 pa-5>
+              <address-map 
+                :city="warehouse.city"
+                :province="warehouse.province"
+                :region="warehouse.region"
+                :edit="true">
+              </address-map>
+          </v-flex>
         </template>
       </warehouse-list>
       <v-layout row wrap>
@@ -221,48 +239,46 @@
     </v-sheet>
     <v-layout row wrap>
       <v-flex xs12>
-        <v-text-field
+        <v-textarea
           color="green darken-1"
           label="Address"
           v-model="form.addresses.plant.address"
           :rules="[rules.required]"
           hint="Unit Number, Floor, Building, Lot, Block, Phase, Street"
           class="input-group--focused"
-        ></v-text-field>
+        ></v-textarea>
       </v-flex>
-      <v-flex xs12>
+      <v-flex xs12  md3 pa-2>
         <v-autocomplete
           color="green darken-1"
           v-model="form.addresses.plant.region"
           :items="regions"
           item-text="name"
           item-value="_id"
-          @change="getProvinces"
           hide-no-data
           hide-selected
           label="Region"
           :rules="[rules.required]"
         ></v-autocomplete>
       </v-flex>
-      <v-flex xs12>
+      <v-flex xs12  md3 pa-2>
         <v-autocomplete
           color="green darken-1"
           v-model="form.addresses.plant.province"
-          :items="provinces"
+          :items="filtered_plant_provinces"
           item-text="name"
           item-value="_id"
-          @change="getCities"
           hide-no-data
           hide-selected
           label="Province"
           :rules="[rules.required]"
         ></v-autocomplete>
       </v-flex>
-      <v-flex xs12>
+      <v-flex xs12  md3 pa-2>
         <v-autocomplete
           color="green darken-1"
           v-model="form.addresses.plant.city"
-          :items="cities"
+          :items="filtered_plant_cities"
           item-text="name"
           item-value="_id"
           hide-no-data
@@ -271,7 +287,7 @@
           :rules="[rules.required]"
         ></v-autocomplete>
       </v-flex>
-      <v-flex xs12>
+      <v-flex xs12  md3 pa-2>
         <v-autocomplete
           color="green darken-1"
           v-model="form.addresses.plant.zipcode"
@@ -282,6 +298,14 @@
           :rules="[rules.required]"
         ></v-autocomplete>
       </v-flex>
+      <v-flex xs12 pa-5>
+        <address-map 
+        :city="form.addresses.plant.city"
+        :province="form.addresses.plant.province"
+        :region="form.addresses.plant.region"
+        :edit="true" @pin="setPlantLocation">
+      </address-map>
+      </v-flex>
     </v-layout>
   </v-layout>
 </template>
@@ -289,7 +313,8 @@
 <script>
 export default {
   components: {
-    WarehouseList: () => import("./AddToListDialog.vue")
+    WarehouseList: () => import("./AddToListDialog.vue"),
+    AddressMap: () => import("@/components/AddressMap")
   },
   props: ["form"],
   data: () => ({
@@ -336,9 +361,17 @@ export default {
   },
   methods: {
     init() {
-      this.$store.dispatch("GET_REGION").then(result => {
-        this.regions = this.$store.state.places.regions;
-      });
+      // this.$store.dispatch("GET_REGION").then(result => {
+      //   this.regions = this.$store.state.places.regions;
+      // });
+      this.$store.dispatch('GET_PLACES_REFERENCE')
+      .then(locations=>{
+        if(locations){
+          this.regions=locations.regions;
+          this.provinces = locations.provinces
+          this.cities = locations.provinces
+        }
+      })
     },
     getProvinces() {
       this.$store
@@ -387,6 +420,32 @@ export default {
     editItem(item) {
       this.warehouse = Object.assign({}, item);
       this.addToListDialog = true;
+    },
+    setOfficeLocation(loc){
+      console.log('setting office location... ' + JSON.stringify(loc))
+      this.form.addresses.office.location = loc;
+    },
+    setPlantLocation(loc){
+      console.log('setting plant location... ' + JSON.stringify(loc))
+      this.form.addresses.plant.location = loc;
+    }
+  },
+  computed:{
+    filtered_provinces(){
+      // this.form.addresses.office.province = null;
+      return this.findProvinces(this.form.addresses.office.region)
+    },
+     filtered_cities(){
+      //  this.form.addresses.office.city = null;
+      return this.findCities(this.form.addresses.office.province)
+    },
+    filtered_plant_provinces(){
+      // this.form.addresses.plant.province = null;
+      return this.findProvinces(this.form.addresses.plant.region)
+    },
+     filtered_plant_cities(){
+      //  this.form.addresses.plant.city = null;
+      return this.findCities(this.form.addresses.plant.province)
     }
   }
 };

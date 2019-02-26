@@ -10,6 +10,7 @@ import notify from "@/plugins/notify";
 // import print from "@/plugins/print";
 import print from 'fda-pdf-printer-plugin'
 import mixins from "@/plugins/mixins"
+import * as VueGoogleMaps from 'vue2-google-maps'
 
 import './plugins/vuetify'
 import './registerServiceWorker'
@@ -23,11 +24,17 @@ import '../node_modules/nprogress/nprogress.css'
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
-Vue.use(vtooltip)
 
+Vue.use(vtooltip)
 Vue.use(notify, store)
 Vue.use(print)
 Vue.use(mixins)
+Vue.use(VueGoogleMaps, {
+  load:{
+    key:'AIzaSyB-cPzUnnkk0E_4pYYYiPk0zo9q4tvqqrs',
+    libraries: 'places'
+  }
+})
 
 NProgress.configure({
   showSpinner: false,
