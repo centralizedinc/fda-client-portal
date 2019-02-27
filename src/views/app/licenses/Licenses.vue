@@ -7,7 +7,7 @@
             <v-icon medium color="fdaSilver">create</v-icon>
           </v-btn>Apply New License
         </v-tooltip>-->
-        <undertaking-dialog :show="dialog" @proceed="launchAppForm"></undertaking-dialog>
+        <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="dialog = false"></undertaking-dialog>
         <v-data-table :headers="headers" :items="cases" class="elevation-1">
           <template slot="items" slot-scope="props">
             <td>{{ props.item.case_no }}</td>
@@ -76,18 +76,32 @@
     <v-dialog v-model="printDialog" persistent max-width="300px" transition="dialog-transition">
       <v-card>
         <v-toolbar
-          color="primary"
+          color="fdaGreen"
           style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
         >
           <span class="font-weight-light headline">Confirm Printing</span>
-        </v-toolbar>
-        <v-card-title
-          class="title font-weight-light text-xs-center"
-        >Are you sure you want to print this application?</v-card-title>
-        <v-card-actions>
-          <v-btn color="error" class="font-weight-light" @click="printDialog = false">Cancel</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="success" class="font-weight-light" @click="printLicense">Continue</v-btn>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="black" @click="printDialog = false">
+              <v-icon small>close</v-icon>
+            </v-btn>Close
+          </v-tooltip>
+        </v-toolbar>
+        <v-card-text class="font-weight-light">Please take note that:
+          <ol>
+            <li>
+              This printed License is
+              <b>UNOFFICIAL</b> and for reference purposes only
+            </li>
+            <li>This is not your Official Electronic License</li>
+            <li>This license cannot be Display in Public View</li>
+          </ol>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="success" class="font-weight-light" flat @click="printLicense">Ok</v-btn>
+          <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -114,6 +128,7 @@ export default {
       dialogView: false,
       initial: false,
       renewal: false,
+      selected_case: {},
 
       // variation: false,
       form: {},
@@ -177,21 +192,32 @@ export default {
       this.$router.push("/app/licenses/apply");
     },
     confirmPrinting(item) {
+      this.selected_case = item;
       this.printDialog = true;
     },
-    printLicense(_case) {
-      this.$print(this.form, "LIC");
-      // this.$store
-      //   .dispatch("GET_LICENSE_BY_ID", {
-      //     app_id: _case.application_id
-      //   })
-      //   .then(result => {
-      //     console.log("######Printing License");
-      //     this.$print(this.form, "LIC");
-      //   })
-      //   .catch(err => {
-      //     console.log("###printLicense err :", err);
-      //   });
+    printLicense() {
+      // this.$print(this.form, "LIC");
+      this.$store
+        .dispatch("GET_LICENSE_BY_ID", {
+          app_id: this.selected_case.application_id
+        })
+        .then(result => {
+          var app = result;
+          console.log(
+            "######Printing License :",
+            app.general_info.primary_activity
+          );
+          app.general_info.primary_activity = this.getPrimary(
+            app.general_info.primary_activity
+          );
+          app.application_type = this.getAppType(app.application_type);
+          app.license_expiry = this.formatDate(app.license_expiry);
+          this.$print(app, "LIC");
+          this.printDialog = false;
+        })
+        .catch(err => {
+          console.log("###printLicense err :", err);
+        });
     }
   }
 };

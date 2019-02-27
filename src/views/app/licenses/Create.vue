@@ -27,12 +27,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-one
-        slot="content-step-1"
-        :form="form"
-        @product_select="load_primaries"
-        @primary_select="load_references"
-      ></step-one>
+      <step-one slot="content-step-1" :form="form"></step-one>
       <template slot="header-step-2">Establishment Information
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -41,7 +36,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-two slot="content-step-2" :form="form" @prodline_select="load_productline"></step-two>
+      <step-two slot="content-step-2" :form="form"></step-two>
       <template slot="header-step-3">Office Address
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -135,7 +130,8 @@ export default {
       general_info: {
         product_type: "",
         primary_activity: "",
-        declared_capital: ""
+        declared_capital: "",
+        addtl_activity: ""
       },
       estab_details: {
         establishment_name: "",
@@ -231,7 +227,7 @@ export default {
   methods: {
     init() {
       this.$store
-        .dispatch("GET_PRODUCT_TYPE")
+        .dispatch("GET_PRODUCT_REFERENCE")
         .then(result => {
           if (
             this.$store.state.licenses.form &&
@@ -291,7 +287,7 @@ export default {
         var details = {
           productType: this.form.general_info.product_type,
           primaryActivity: this.form.general_info.primary_activity,
-          declaredCapital: "5c106397b19f7a29c4096aba",
+          declaredCapital: this.form.general_info.declared_capital,
           appType: this.form.application_type
         };
         console.log("load fees new license: " + JSON.stringify(details));

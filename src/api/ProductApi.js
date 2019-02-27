@@ -99,5 +99,43 @@ export default class ProductAPI {
       });
   }
 
+  /**
+   * @description promised based method for retrieving product type
+   * @returns {Promise}
+   */
+  getProductType() {
+    return axios.get('core/products')
+  }
 
+  /**
+   * @description promised based method for retrieving primary
+   * @returns {Promise}
+   */
+  getPrimary() {
+    return axios.get("core/primary")
+  }
+
+  /**
+   * @description promised based method for retrieving additional
+   * @returns {Promise}
+   */
+  getAdditional() {
+    return axios.get("core/additional")
+  }
+
+  /**
+   * @description promised based method for retrieving declared capital
+   * @returns {Promise}
+   */
+  getDeclaredCapital() {
+    return axios.get("core/declared")
+  }
+
+  /**
+   * @description promised based method for retrieving product line
+   * @returns {Promise}
+   */
+  getProductLine() {
+    return axios.get("core/productLine")
+  }
 }

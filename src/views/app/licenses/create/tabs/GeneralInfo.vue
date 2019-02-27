@@ -7,11 +7,11 @@
         :rules="[rules.required]"
         hide-no-data
         hide-selected
-        @change="load_primary_items"
         item-text="name"
         color="green darken-1"
         item-value="_id"
         label="Product Type"
+        v-if="product_items.length > 0"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
@@ -23,17 +23,17 @@
         hide-selected
         label="Primary Activity"
         type="text"
-        @change="load_items"
         item-text="name"
         item-value="_id"
         :rules="[rules.required]"
+        v-if="primary_items.length > 0"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
       <v-autocomplete
         v-model="form.general_info.addtl_activity"
         :rules="[rules.required]"
-        :items="secondary_items"
+        :items="additional_items"
         hide-no-data
         color="green darken-1"
         hide-selected
@@ -41,7 +41,7 @@
         type="text"
         item-text="name"
         item-value="_id"
-        v-if="form.general_info.primary_activity&&form.general_info.primary_activity!==''&&secondary_items.length!==0"
+        v-if="additional_items.length > 0"
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
@@ -57,7 +57,7 @@
         type="text"
         item-text="name"
         item-value="_id"
-        v-if="form.general_info.primary_activity&&form.general_info.primary_activity!==''&& declared_items!==null"
+        v-if="declared_items.length > 0"
       ></v-autocomplete>
     </v-flex>
   </v-layout>
@@ -73,49 +73,69 @@ export default {
         "Please declare your capital. If none, select Not Applicable"
     }
   }),
-  created(){
-    console.log('this.product_items :', JSON.stringify(this.product_items));
-  },
-  watch:{
-    form(){
-      if(this.form.general_info.primary_activity===null){
-        console.log("watch of primary activity "+JSON.stringify(this.form.general_info.primary_activity))
-        this.declared_items();
-      }
+  watch: {
+    "form.general_info.product_type": function(val) {
+      this.form.general_info.primary_activity = "";
+    },
+    "form.general_info.primary_activity": function(val) {
+      this.form.general_info.addtl_activity = "";
+      this.form.general_info.declared_capital = "";
     }
   },
   computed: {
     product_items() {
-      console.log(
-        "created product type $$$$$$$$$$$$$$$$$$$$$$$$$: " +
-          JSON.stringify(this.$store.state.products.productType)
-      );
-      console.log("data from form: " + JSON.stringify(this.form))
       return this.$store.state.products.productType;
     },
     primary_items() {
-      console.log("primary activity data: " + JSON.stringify(this.$store.state.products.primaryActivity))
-      return this.$store.state.products.primaryActivity;
+      var products_primary = this.isEmpty(this.form.general_info.product_type)
+        ? []
+        : this.$store.state.products.productType.find(
+            x => x._id === this.form.general_info.product_type
+          ).primary_activity;
+      return this.getItems(
+        products_primary,
+        this.$store.state.products.primaryActivity
+      );
     },
-    secondary_items() {
-      return this.$store.state.products.secondaryActivity;
+    additional_items() {
+      var primary_additional = this.isEmpty(
+        this.form.general_info.primary_activity
+      )
+        ? []
+        : this.$store.state.products.primaryActivity.find(
+            x => x._id === this.form.general_info.primary_activity
+          ).additional_activities;
+      return this.getItems(
+        primary_additional,
+        this.$store.state.products.additional
+      );
     },
     declared_items() {
-      console.log("this is declared capital: " + JSON.stringify(this.form.general_info.primary_activity.declared_capital))
-      return this.form.general_info.primary_activity.declared_capital;
+      var primary_declared = this.isEmpty(
+        this.form.general_info.primary_activity
+      )
+        ? []
+        : this.$store.state.products.primaryActivity.find(
+            x => x._id === this.form.general_info.primary_activity
+          ).declared_capital;
+      return this.getItems(
+        primary_declared,
+        this.$store.state.products.declared
+      );
     }
   },
   methods: {
-    load_primary_items() {
-      console.log('this.form.general_info.product_type :', JSON.stringify(this.form));
-      this.form.general_info.primary_activity = "";
-      this.$emit("product_select", this.form.general_info.product_type);
-    },
-    load_items() {
-      this.form.general_info.addtl_activity = "";
-      this.form.general_info.declared_capital = "";
-      this.$emit("primary_select", this.form.general_info.primary_activity);
-      console.log("load items general info:  " + JSON.stringify(this.$store.state.products.declared))
+    getItems(arr1, arr2) {
+      var items = [];
+      for (let a = 0; a < arr1.length; a++) {
+        for (let b = 0; b < arr2.length; b++) {
+          if (arr1[a] === arr2[b]._id.toString()) {
+            items.push(arr2[b]);
+            break;
+          }
+        }
+      }
+      return items;
     }
   }
 };

@@ -4,13 +4,8 @@ export default {
     Vue.mixin({
       methods: {
         getAppType(type) {
-          if (type === 0) {
-            return "Initial";
-          } else if (type === 2) {
-            return "Renewal";
-          } else if (type === 1) {
-            return "Variation";
-          }
+          var app_type = ["Initial", "Variation", "Renewal"];
+          return app_type[type];
         },
         getTask(task_id) {
           if (this.$store.state.tasks.tasks) {
@@ -48,17 +43,12 @@ export default {
           if (!date) {
             return "";
           }
-          var format = {
+          var dt = new Date(date).toLocaleString("en-US", type ? type : {
             hour12: true,
             year: "numeric",
             month: "long",
             day: "2-digit"
-          };
-          if (!type) {
-            format.hour = "2-digit";
-            format.minute = "2-digit";
-          }
-          var dt = new Date(date).toLocaleString("en-US", format);
+          });
           return dt;
         },
         formatDt(dt) {
@@ -94,43 +84,43 @@ export default {
           validate = this.isEmpty(email) || !re.test(email);
           return validate;
         },
-        getRegionName(id){          
-          for(var i=0; i<this.$store.state.places.regions.length; i++){
+        getRegionName(id) {
+          for (var i = 0; i < this.$store.state.places.regions.length; i++) {
             var region = this.$store.state.places.regions[i]
-            if(region._id === id){
+            if (region._id === id) {
               return region.name
             }
           }
         },
-        getProvinceName(id){          
-          for(var i=0; i<this.$store.state.places.provinces.length; i++){
+        getProvinceName(id) {
+          for (var i = 0; i < this.$store.state.places.provinces.length; i++) {
             var province = this.$store.state.places.provinces[i]
-            if(province._id === id){
+            if (province._id === id) {
               return province.name
             }
           }
         },
-        getCityName(id){          
-          for(var i=0; i<this.$store.state.places.city.length; i++){
+        getCityName(id) {
+          for (var i = 0; i < this.$store.state.places.city.length; i++) {
             var city = this.$store.state.places.city[i]
-            if(city._id === id){
+            if (city._id === id) {
               return city.name
             }
           }
         },
-        findProvinces(region){
+        findProvinces(region) {
           var provinces = [];
-          this.$store.state.places.provinces.forEach(province=>{
-            if(province.region === region){
+          this.$store.state.places.provinces.forEach(province => {
+            if (province.region === region) {
               provinces.push(province)
             }
           })
           return provinces;
         },
-        findCities(province){
+        findCities(province) {
           var cities = [];
-          this.$store.state.places.city.forEach(city=>{
-            if(city.province === province){
+          this.$store.state.places.city.forEach(city => {
+            if (city.province === province) {
               cities.push(city)
             }
           })
