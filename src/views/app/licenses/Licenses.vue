@@ -20,8 +20,8 @@
             <td>{{ formatDate (props.item.date_created) }}</td>
             <td>{{ props.item.remarks }}</td>
             <td>
-              <v-layout row wrap>
-                <v-flex xs4>
+              <v-layout row>
+                <v-flex xs2>
                   <v-tooltip top>
                     <v-btn
                       slot="activator"
@@ -30,11 +30,11 @@
                       color="primary"
                       @click="renewForm(props.item)"
                     >
-                      <v-icon small>refresh</v-icon>
+                      <v-icon>refresh</v-icon>
                     </v-btn>Renewal
                   </v-tooltip>
                 </v-flex>
-                <v-flex xs4>
+                <v-flex xs2>
                   <v-tooltip top>
                     <v-btn
                       slot="activator"
@@ -43,15 +43,28 @@
                       color="primary"
                       @click="variationForm(props.item)"
                     >
-                      <v-icon small>edit</v-icon>
+                      <v-icon>edit</v-icon>
                     </v-btn>Variation
                   </v-tooltip>
                 </v-flex>
-                <v-flex xs4>
+                <v-flex xs2>
                   <v-tooltip top>
                     <v-btn slot="activator" flat icon color="primary" @click="viewForm(props.item)">
-                      <v-icon small>search</v-icon>
+                      <v-icon>search</v-icon>
                     </v-btn>View Application
+                  </v-tooltip>
+                </v-flex>
+                <v-flex xs2>
+                  <v-tooltip top>
+                    <v-btn
+                      slot="activator"
+                      flat
+                      icon
+                      color="primary"
+                      @click="confirmPrinting(props.item)"
+                    >
+                      <v-icon>print</v-icon>
+                    </v-btn>Print License
                   </v-tooltip>
                 </v-flex>
               </v-layout>
@@ -60,7 +73,24 @@
         </v-data-table>
       </v-card>
     </v-flex>
-
+    <v-dialog v-model="printDialog" persistent max-width="300px" transition="dialog-transition">
+      <v-card>
+        <v-toolbar
+          color="primary"
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+        >
+          <span class="font-weight-light headline">Confirm Printing</span>
+        </v-toolbar>
+        <v-card-title
+          class="title font-weight-light text-xs-center"
+        >Are you sure you want to print this application?</v-card-title>
+        <v-card-actions>
+          <v-btn color="error" class="font-weight-light" @click="printDialog = false">Cancel</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="success" class="font-weight-light" @click="printLicense">Continue</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-layout column class="fab-container">
       <v-tooltip top>
         <v-btn slot="activator" fab color="fdaMed" @click="dialog=true">
@@ -80,9 +110,11 @@ export default {
   data() {
     return {
       dialog: false,
+      printDialog: false,
       dialogView: false,
       initial: false,
       renewal: false,
+
       // variation: false,
       form: {},
       headers: [
@@ -143,6 +175,23 @@ export default {
     },
     launchAppForm() {
       this.$router.push("/app/licenses/apply");
+    },
+    confirmPrinting(item) {
+      this.printDialog = true;
+    },
+    printLicense(_case) {
+      this.$print(this.form, "LIC");
+      // this.$store
+      //   .dispatch("GET_LICENSE_BY_ID", {
+      //     app_id: _case.application_id
+      //   })
+      //   .then(result => {
+      //     console.log("######Printing License");
+      //     this.$print(this.form, "LIC");
+      //   })
+      //   .catch(err => {
+      //     console.log("###printLicense err :", err);
+      //   });
     }
   }
 };

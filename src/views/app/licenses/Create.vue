@@ -3,7 +3,12 @@
     <v-layout row wrap v-if="invalid">
       <v-flex xs12>Invalid Request: 404 status code.</v-flex>
     </v-layout>
-    <payment-summary v-else-if="paymentDialog" @close="confirmDialog=false" :form="form" :charges="charges"></payment-summary>
+    <payment-summary
+      v-else-if="paymentDialog"
+      @close="confirmDialog=false"
+      :form="form"
+      :charges="charges"
+    ></payment-summary>
     <form-layout
       v-show="!ecpayDialog"
       v-else
@@ -257,15 +262,15 @@ export default {
       this.$store.dispatch("GET_PROD_LINE");
     },
     load_references(primary_id) {
-      console.log("despatch declared capital0")
+      console.log("despatch declared capital0");
       this.$store
         .dispatch("GET_SECONDARY_ACTIVITY", primary_id)
         .then(result => {
-          console.log("despatch declared capital1")
+          console.log("despatch declared capital1");
           return this.$store.dispatch("GET_ADDITIONAL", primary_id);
         })
         .then(result => {
-          console.log("despatch declared capital2")
+          console.log("despatch declared capital2");
           return this.$store.dispatch("GET_ALL_DECLARED");
         })
         // .then(result => {
@@ -276,24 +281,27 @@ export default {
           console.log("loading references: " + err);
         });
     },
-    load_fees(){
-      if(
+    load_fees() {
+      if (
         this.form.general_info.product_type !== null &&
         this.form.general_info.primary_activity !== null &&
         // this.form.general_info.declared_capital !== null &&
-        this.form.application_type !== null){
-          var details = {
-            productType: this.form.general_info.product_type,
-            primaryActivity: this.form.general_info.primary_activity,
-            declaredCapital: "5c106397b19f7a29c4096aba",
-            appType: this.form.application_type
-          }
-          console.log("load fees new license: " + JSON.stringify(details))
-          this.$store.dispatch("GET_FEES", details).then(result =>{
-            this.charges = result;
-            console.log("charges data payment details: " + JSON.stringify(this.charges))
-          })
-        }
+        this.form.application_type !== null
+      ) {
+        var details = {
+          productType: this.form.general_info.product_type,
+          primaryActivity: this.form.general_info.primary_activity,
+          declaredCapital: "5c106397b19f7a29c4096aba",
+          appType: this.form.application_type
+        };
+        console.log("load fees new license: " + JSON.stringify(details));
+        this.$store.dispatch("GET_FEES", details).then(result => {
+          this.charges = result;
+          console.log(
+            "charges data payment details: " + JSON.stringify(this.charges)
+          );
+        });
+      }
     },
     close() {
       this.showAppOverview = false;
@@ -312,8 +320,7 @@ export default {
       this.e1 = val;
       this.editedForm = this.form;
       console.log("form updated: " + JSON.stringify(this.editedForm));
-      if(this.e1 === 6)
-        this.load_fees()   
+      if (this.e1 === 6) this.load_fees();
     },
     submit() {
       var files = this.form.uploaded_files;
@@ -354,26 +361,35 @@ export default {
         });
     },
 
-    uploadFile(upload){
+    uploadFile(upload) {
       this.formData = upload;
     },
-    apply(){
-      this.$store.dispatch('APPLY_LICENSE', {license:this.form, upload: this.formData})
-      .then(result=>{
-        if(result.success){
-          this.$notify({message:'Sucess! CASE#: ' + result.model.case_details.case_no, color:'primary'})
-          this.$store.commit('SET_FORM', result.model)
-          this.confirmDialog = false;
-          this.showAppOverview = false;
-          this.paymentDialog = true;
-        }else{
-           this.$notifyError(result.errors)
-        }
-      })
-      .catch(err=>{
-        console.log('ERROR: '+ err)
-        this.$notifyError(err)        
-      })
+    apply() {
+      this.$store
+        .dispatch("APPLY_LICENSE", {
+          license: this.form,
+          upload: this.formData
+        })
+        .then(result => {
+          if (result.success) {
+            this.$notify({
+              message:
+                "Successfully applied a new License with Case No.: " +
+                result.model.case_details.case_no,
+              color: "primary"
+            });
+            this.$store.commit("SET_FORM", result.model);
+            this.confirmDialog = false;
+            this.showAppOverview = false;
+            this.paymentDialog = true;
+          } else {
+            this.$notifyError(result.errors);
+          }
+        })
+        .catch(err => {
+          console.log("ERROR: " + err);
+          this.$notifyError(err);
+        });
     }
   }
 };
