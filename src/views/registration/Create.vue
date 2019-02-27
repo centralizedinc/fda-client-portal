@@ -67,7 +67,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-six slot="content-step-6" :form="form"></step-six>
+      <step-six slot="content-step-6" :form="form" @upload="uploadFile" style="width: 100%"></step-six>
       <template slot="header-step-7">Account Info
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -204,6 +204,7 @@ export default {
       password: "",
       name: {}
     },
+    formData:{},
     charges:{}
   }),
   created() {
@@ -269,6 +270,9 @@ export default {
       this.e1 = val;
       if(this.e1 === 7)
         this.load_fees()        
+    },
+    uploadFile(upload){
+      this.formData = upload;
     },
     submit() {
       console.log("##### form: " + JSON.stringify(this.form));
