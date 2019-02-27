@@ -15,7 +15,7 @@
                 :rules="[rules.required, rules.card_validity]">
                 <v-fade-transition slot="append">
                   <v-progress-circular v-if="loading" size="24" color="info" indeterminate></v-progress-circular>
-                  <img v-else :src="card_logo" alt>
+                  <img v-else :src="test_logo" alt>
                 </v-fade-transition>
               </v-text-field>
             </v-flex>
@@ -127,10 +127,12 @@
 </template>
 
 <script>
+import images from './cards.js'
 export default {
   props: ["form"],
   data() {
     return {
+      test_logo: "",
       card_logo: "",
       loading: false,
       date: new Date().toISOString().substr(0, 7),
@@ -151,11 +153,11 @@ export default {
           zip: ""
         },
         payment_details: {
-          amount: 5000,
-          currency: "php",
-          description: "test description",
-          statement_descriptor: "test statement",
-          capture: true
+          // amount: 5000,
+          // currency: "Php",
+          // description: "test description",
+          // statement_descriptor: "",
+          // capture: true
         },
         transaction_details: {
           application_type: "",
@@ -180,8 +182,10 @@ export default {
       this.dateFormatted = this.formatDate(this.date);
     },
     "full_details.card_details.number": function(val) {
+      console.log("validate credit card number")
       this.loading = true;
-      this.card_logo = "";
+      this.card_logo = null;
+      this.test_logo = null;
       this.$store.state.payments.credit_card = "";
       if (val !== "") {
         this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result => {
@@ -191,11 +195,17 @@ export default {
               "####### credit card details: " +
                 JSON.stringify(creditCard.isValid)
             );
+            this.test_logo = images[creditCard.card.type];
+            console.log("test logo: " + JSON.stringify(creditCard.card.type))
             this.loading = false;
             this.card_logo =
-              "https://fda-portal-user.herokuapp.com/assets/img/cc-icons/" +
-              creditCard.card.type +
-              ".png";
+            // "@/assets/cc-icons/" + creditCard.card.type + ".png";
+            "https://github.com/centralizedinc/fda-client-portal.git/assets/cc-icons/" +
+            creditCard.card.type +
+            ".png";
+              // "https://fda-portal-user.herokuapp.com/assets/img/cc-icons/" +
+              // creditCard.card.type +
+              // ".png";
             this.gaps = creditCard.card.gaps;
             this.cvc_max = creditCard.card.code.size;
             this.code_name = creditCard.card.code.name;
@@ -225,9 +235,12 @@ export default {
     }
   },
   created() {
-    this.full_details.transaction_details.application_type =
-      form.application_type;
+    console.log("creadit card payment form data: " + JSON.stringify(this.form))
+    console.log("creadit card payment charges data: " + JSON.stringify(this.$store.state.payments.fee))
+    this.full_details.transaction_details.application_type = form.application_type;
     this.full_details.transaction_details.case_no = form.case_no;
+    this.full_details.payment_details = this.$store.state.payments.fee;
+
   },
   methods: {
     formatDate(date) {

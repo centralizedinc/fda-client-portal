@@ -16,7 +16,7 @@
     "jspdf-autotable": "^3.0.4",
     "material-design-icons-iconfont": "^3.0.3",
     "nprogress": "^0.2.0",
-    "pdfmake": "^0.1.51",
+    "pdfmake": "^0.1.53",
     "register-service-worker": "^1.5.2",
     "roboto-fontface": "*",
     "v-tooltip": "^2.0.0-rc.33",

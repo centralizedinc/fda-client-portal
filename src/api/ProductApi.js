@@ -73,6 +73,18 @@ export default class ProductAPI {
         cb(null, err)
       });
   }
+  getDeclared(cb) {
+    axios.get("core/declared")
+      .then(result => {
+        if (result.data.success) {
+          cb(result.data.model)
+        }
+      })
+      .catch(err => {
+        console.log(JSON.stringify(err));
+        cb(null, err)
+      });
+  }
   prodline(cb) {
     axios.get('core/productLine')
       .then(result => {

@@ -4,7 +4,8 @@ import PaymentAPI from '../../api/PaymentApi';
 const state = {
     credit_card: null,
     cvv: null,
-    expiry: null
+    expiry: null,
+    fee: null
 }
 
 const mutations = {
@@ -16,6 +17,9 @@ const mutations = {
     },
     EXPIRY(state, form) {
         state.expiry = form
+    },
+    FEES(state, charges) {
+        state.fee = charges
     }
 }
 
@@ -65,6 +69,7 @@ var actions = {
             new PaymentAPI(context.rootState.user_session.token).feesDetails(fees, (fee, err) => {
                 if (!err) {
                     console.log("returning mutation GET_FEES: " + JSON.stringify(fee))
+                    context.commit('FEES', fee)
                     resolve(fee)
                 } else {
                     console.log(JSON.stringify(err))
@@ -82,6 +87,20 @@ var actions = {
                 console.log("actions save licenses error: " + JSON.stringify(err))
             }
         })
+    },
+    BILLS_PAYMENT(context, fullDetails) {
+        console.log("bill payment store actions" + JSON.stringify(fullDetails))
+        return new Promise((resolve, reject) => {
+        new PaymentAPI(context.rootState.user_session.token).feesDetails(fullDetails, (details, err) => {
+            if (!err) {
+                console.log('actions save licenses: ' + JSON.stringify(details))
+                resolve(details)
+            } else {
+                console.log("actions save licenses error: " + JSON.stringify(err))
+                reject(err)
+            }
+        })
+    })
     }
 
 }

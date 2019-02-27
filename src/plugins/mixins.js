@@ -33,6 +33,17 @@ export default {
             return ''
           }
         },
+        getPrimary(primary_id) {
+          if (this.$store.state.products.primaryActivity) {
+            var primary = null;
+            primary = this.$store.state.products.primaryActivity.find(x => {
+              return x._id === primary_id
+            })
+            return primary ? primary.name : ''
+          } else {
+            return ''
+          }
+        },
         formatDate: (date, type) => {
           if (!date) {
             return "";
