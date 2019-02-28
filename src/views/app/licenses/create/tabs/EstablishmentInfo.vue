@@ -122,10 +122,9 @@
           <v-autocomplete
             color="green darken-1"
             v-model="item.prod_line"
-            :items="products"
+            :items="prod_lines"
             item-text="name"
             item-value="_id"
-            @change="load_product_lines"
             hide-no-data
             hide-selected
             :rules="[rules.required]"
@@ -191,24 +190,14 @@ export default {
   },
   computed: {
     prod_lines() {
-      // var productLine = this.$store.state.products.prod_line;
-      // var line = [];
-
-      // productLine.forEach(element => {
-      //   line.push(element);
-      // });
-      // console.log("prod_line: " + JSON.stringify(line));
-      // var line = this.$store.state.products.prod_line;
-      // console.log("asdasdasdasdas: " + JSON.stringify(line));
-
-      return this.$store.state.products.prod_line;
+      var items = [];
+      this.$store.state.products.prod_line.forEach(item => {
+        if(item.product_type === this.form.general_info.product_type) items.push(item);
+      })
+      return items;
     }
   },
   methods: {
-    load_product_lines() {
-      this.form.estab_details.products.prod_line = "";
-      this.$emit("prodline_select", this.form.estab_details.products.prod_line);
-    },
     addItem() {
       this.form.estab_details.products.push({
         prod_line: "",

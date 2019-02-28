@@ -10,7 +10,7 @@
           <v-spacer></v-spacer>
           <v-tooltip top>
             <v-btn slot="activator" flat icon color="black" @click="$emit('close')">
-              <v-icon>fas fa-times</v-icon>
+              <v-icon>close</v-icon>
             </v-btn>Close
           </v-tooltip>
         </v-toolbar>

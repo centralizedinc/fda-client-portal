@@ -22,8 +22,6 @@
       <step-one
         slot="content-step-1"
         :form="form"
-        @product_select="load_primaries"
-        @primary_select="load_references"
       ></step-one>
       <template slot="header-step-2">Establishment Information
         <v-spacer></v-spacer>
@@ -69,7 +67,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-six slot="content-step-6" :form="form"></step-six>
+      <step-six slot="content-step-6" :form="form" @upload="uploadFile" style="width: 100%"></step-six>
       <template slot="header-step-7">Account Info
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -115,9 +113,10 @@ export default {
       date_created: "",
       application_type: "0",
       general_info: {
-        product_type: "5c106cb7b19f7a29c4096ad0",
-        primary_activity: "5c106ad2b19f7a29c4096ac6",
-        declared_capital: "5c106397b19f7a29c4096aba"
+        product_type: "",
+        primary_activity: "",
+        declared_capital: "",
+        addtl_activity: ""
       },
       estab_details: {
         establishment_name: "",
@@ -205,20 +204,16 @@ export default {
       password: "",
       name: {}
     },
+    formData:{},
     charges:{}
   }),
   created() {
     this.init();
   },
-  watch:{
-    form(){
-      console.log("details from payment details form data: " + JSON.stringify(this.form))
-    }
-  },
   methods: {
     init() {
       this.$store
-        .dispatch("GET_PRODUCT_TYPE")
+        .dispatch("GET_PRODUCT_REFERENCE")
         .then(result => {
           if (
             this.$store.state.licenses.form &&
@@ -240,23 +235,6 @@ export default {
         })
         .catch(err => {
           console.log("loading products error: " + err);
-        });
-    },
-    load_primaries(product_id) {
-      console.log('product_id :', product_id);
-      this.$store.dispatch("GET_PRIMARY_ACTIVITY", product_id);
-    },
-    load_references(primary_id) {
-      this.$store
-        .dispatch("GET_SECONDARY_ACTIVITY", primary_id)
-        .then(result => {
-          return this.$store.dispatch("GET_ADDITIONAL", primary_id);
-        })
-        .then(result => {
-          return this.$store.dispatch("GET_DECLARED", primary_id);
-        })
-        .catch(err => {
-          console.log("loading references: " + err);
         });
     },
     load_fees(){
@@ -292,6 +270,9 @@ export default {
       this.e1 = val;
       if(this.e1 === 7)
         this.load_fees()        
+    },
+    uploadFile(upload){
+      this.formData = upload;
     },
     submit() {
       console.log("##### form: " + JSON.stringify(this.form));

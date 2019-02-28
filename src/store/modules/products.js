@@ -11,31 +11,86 @@ const state = {
 }
 
 const mutations = {
-    SET_PRODUCT_TYPE(state, licenses) {
-        state.productType = licenses;
+    SET_PRODUCT_TYPE(state, productType) {
+        state.productType = productType;
     },
-    SET_PRIMARY_ACTIVITY(state, productType) {
-        state.primaryActivity = productType;
+    SET_PRIMARY_ACTIVITY(state, primaryActivity) {
+        state.primaryActivity = primaryActivity;
     },
-    SET_SECONDARY_ACTIVITY(state, primaryActivity) {
-        state.secondaryActivity = primaryActivity;
+    SET_SECONDARY_ACTIVITY(state, secondaryActivity) {
+        state.secondaryActivity = secondaryActivity;
     },
-    SET_ADDITIONAL(state, primaryActivity) {
-        state.additional = primaryActivity;
+    SET_ADDITIONAL(state, additional) {
+        state.additional = additional;
     },
-    SET_DECLARED(state, primaryActivity) {
-        state.declared = primaryActivity;
+    SET_DECLARED(state, declared) {
+        state.declared = declared;
     },
     SET_ALL_DECLARED(state, declaredCapital) {
         state.declaredCapital = declaredCapital;
     },
-    SET_PROD_LINE(state, productType) {
-
-        state.prod_line = productType;
+    SET_PROD_LINE(state, prod_line) {
+        state.prod_line = prod_line;
     }
 }
 
 var actions = {
+    GET_PRODUCT_REFERENCE(context) {
+        const ProductAPI = new ProductApi(context.rootState.user_session.token);
+        var products = {};
+        return new Promise((resolve, reject) => {
+            ProductAPI.getProductType()
+                .then((result) => {
+                    if (result.data.success) {
+                        products.product_type = result.data.model;
+                        context.commit("SET_PRODUCT_TYPE", result.data.model);
+                        return ProductAPI.getPrimary()
+                    } else {
+                        reject(result.data.errors);
+                    }
+                })
+                .then((result) => {
+                    if (result.data.success) {
+                        products.primary = result.data.model;
+                        context.commit("SET_PRIMARY_ACTIVITY", result.data.model);
+                        return ProductAPI.getAdditional()
+                    } else {
+                        reject(result.data.errors);
+                    }
+                })
+                .then((result) => {
+                    if (result.data.success) {
+                        products.additional = result.data.model;
+                        context.commit("SET_ADDITIONAL", result.data.model);
+                        return ProductAPI.getDeclaredCapital()
+                    } else {
+                        reject(result.data.errors);
+                    }
+                })
+                .then((result) => {
+                    if (result.data.success) {
+                        products.declared = result.data.model;
+                        context.commit("SET_DECLARED", result.data.model);
+                        return ProductAPI.getProductLine()
+                    } else {
+                        reject(result.data.errors);
+                    }
+                })
+                .then((result) => {
+                    if (result.data.success) {
+                        products.prod_line = result.data.model;
+                        context.commit("SET_PROD_LINE", result.data.model);
+                        resolve(products)
+                    } else {
+                        reject(result.data.errors);
+                    }
+                })
+                .catch((err) => {
+                    console.log('err in getting products references :', err);
+                    reject(err);
+                });
+        })
+    },
     GET_PRODUCT_TYPE(context) {
         return new Promise((resolve, reject) => {
             new ProductApi(context.rootState.user_session.token).productType((productType, err) => {

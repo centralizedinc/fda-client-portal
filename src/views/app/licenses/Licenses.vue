@@ -7,7 +7,7 @@
             <v-icon medium color="fdaSilver">create</v-icon>
           </v-btn>Apply New License
         </v-tooltip>-->
-        <undertaking-dialog :show="dialog" @proceed="launchAppForm"></undertaking-dialog>
+        <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="dialog = false"></undertaking-dialog>
         <v-data-table :headers="headers" :items="cases" class="elevation-1">
           <template slot="items" slot-scope="props">
             <td>{{ props.item.case_no }}</td>
@@ -20,8 +20,8 @@
             <td>{{ formatDate (props.item.date_created) }}</td>
             <td>{{ props.item.remarks }}</td>
             <td>
-              <v-layout row wrap>
-                <v-flex xs4>
+              <v-layout row>
+                <v-flex xs2>
                   <v-tooltip top>
                     <v-btn
                       slot="activator"
@@ -30,11 +30,11 @@
                       color="primary"
                       @click="renewForm(props.item)"
                     >
-                      <v-icon small>refresh</v-icon>
+                      <v-icon>refresh</v-icon>
                     </v-btn>Renewal
                   </v-tooltip>
                 </v-flex>
-                <v-flex xs4>
+                <v-flex xs2>
                   <v-tooltip top>
                     <v-btn
                       slot="activator"
@@ -43,15 +43,28 @@
                       color="primary"
                       @click="variationForm(props.item)"
                     >
-                      <v-icon small>edit</v-icon>
+                      <v-icon>edit</v-icon>
                     </v-btn>Variation
                   </v-tooltip>
                 </v-flex>
-                <v-flex xs4>
+                <v-flex xs2>
                   <v-tooltip top>
                     <v-btn slot="activator" flat icon color="primary" @click="viewForm(props.item)">
-                      <v-icon small>search</v-icon>
+                      <v-icon>search</v-icon>
                     </v-btn>View Application
+                  </v-tooltip>
+                </v-flex>
+                <v-flex xs2 v-if="props.item.status === 1">
+                  <v-tooltip top>
+                    <v-btn
+                      slot="activator"
+                      flat
+                      icon
+                      color="primary"
+                      @click="confirmPrinting(props.item)"
+                    >
+                      <v-icon>print</v-icon>
+                    </v-btn>Print License
                   </v-tooltip>
                 </v-flex>
               </v-layout>
@@ -60,7 +73,45 @@
         </v-data-table>
       </v-card>
     </v-flex>
-
+    <v-dialog v-model="printDialog" persistent max-width="300px" transition="dialog-transition">
+      <v-card>
+        <v-toolbar
+          color="fdaGreen"
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+        >
+          <span class="font-weight-light headline">Confirm Printing</span>
+          <v-spacer></v-spacer>
+          <v-tooltip top>
+            <v-btn
+              slot="activator"
+              flat
+              icon
+              color="black"
+              :disabled="disableButton"
+              @click="printDialog = false"
+            >
+              <v-icon small>close</v-icon>
+            </v-btn>Close
+          </v-tooltip>
+        </v-toolbar>
+        <v-card-text class="subheading font-weight-light">Please take note that:
+          <ol>
+            <li>
+              This printed License is
+              <b>UNOFFICIAL</b> and for reference purposes only
+            </li>
+            <li>This is not your Official Electronic License</li>
+            <li>This license cannot be Display in Public View</li>
+          </ol>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="success" class="font-weight-light" flat @click="printLicense">Ok</v-btn>
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-layout column class="fab-container">
       <v-tooltip top>
         <v-btn slot="activator" fab color="fdaMed" @click="dialog=true">
@@ -80,9 +131,12 @@ export default {
   data() {
     return {
       dialog: false,
+      printDialog: false,
       dialogView: false,
       initial: false,
       renewal: false,
+      selected_case: {},
+
       // variation: false,
       form: {},
       headers: [
@@ -143,6 +197,34 @@ export default {
     },
     launchAppForm() {
       this.$router.push("/app/licenses/apply");
+    },
+    confirmPrinting(item) {
+      this.selected_case = item;
+      this.printDialog = true;
+    },
+    printLicense() {
+      // this.$print(this.form, "LIC");
+      this.$store
+        .dispatch("GET_LICENSE_BY_ID", {
+          app_id: this.selected_case.application_id
+        })
+        .then(result => {
+          var app = result;
+          console.log(
+            "######Printing License :",
+            app.general_info.primary_activity
+          );
+          app.general_info.primary_activity = this.getPrimary(
+            app.general_info.primary_activity
+          );
+          app.application_type = this.getAppType(app.application_type);
+          app.license_expiry = this.formatDate(app.license_expiry);
+          this.$print(app, "LIC");
+          this.printDialog = false;
+        })
+        .catch(err => {
+          console.log("###printLicense err :", err);
+        });
     }
   }
 };
