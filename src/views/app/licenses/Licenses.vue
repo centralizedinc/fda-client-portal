@@ -54,7 +54,7 @@
                     </v-btn>View Application
                   </v-tooltip>
                 </v-flex>
-                <v-flex xs2>
+                <v-flex xs2 v-if="props.item.status === 1">
                   <v-tooltip top>
                     <v-btn
                       slot="activator"
@@ -82,12 +82,19 @@
           <span class="font-weight-light headline">Confirm Printing</span>
           <v-spacer></v-spacer>
           <v-tooltip top>
-            <v-btn slot="activator" flat icon color="black" @click="printDialog = false">
+            <v-btn
+              slot="activator"
+              flat
+              icon
+              color="black"
+              :disabled="disableButton"
+              @click="printDialog = false"
+            >
               <v-icon small>close</v-icon>
             </v-btn>Close
           </v-tooltip>
         </v-toolbar>
-        <v-card-text class="font-weight-light">Please take note that:
+        <v-card-text class="subheading font-weight-light">Please take note that:
           <ol>
             <li>
               This printed License is
