@@ -46,7 +46,8 @@
     <v-flex xs12>
       <v-text-field
         color="green darken-1"
-        label="TIN Number"
+        label="TIN"
+        hint="Tax Identification Number"
         :rules="[rules.required]"
         :mask="tin"
         v-model="form.auth_officer.tin"

@@ -21,7 +21,7 @@
     <v-flex ml-5>
       <v-text-field
         color="green darken-1"
-        label="TIN Number"
+        label="TIN"
         :mask="tin"
         :rules="[rules.required]"
         hint="Establishment's registered Tax Identification Number"

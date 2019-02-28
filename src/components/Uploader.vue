@@ -36,7 +36,11 @@
           <v-layout row wrap>
             <v-flex v-for="item in uploadedFiles" :key="item.name" xs3 d-flex>
               <v-card>
-                <v-toolbar dark color="primary">
+                <v-toolbar
+                  dark
+                  color="fdaGreen"
+                  style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+                >
                   {{prettify(item.name)}}
                   <!-- <v-spacer></v-spacer>
                     <v-btn dark flat icon>
