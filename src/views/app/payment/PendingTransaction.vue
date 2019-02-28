@@ -97,7 +97,7 @@
             productType: this.form.general_info.product_type,
             primaryActivity: this.form.general_info.primary_activity,
             declaredCapital: "5c106397b19f7a29c4096aba",
-            appType: "0"
+            appType: this.form.application_type
           }
           this.$store
             .dispatch("GET_CASES")

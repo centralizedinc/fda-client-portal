@@ -246,7 +246,7 @@ export default {
           var details = {
             productType: this.form.general_info.product_type,
             primaryActivity: this.form.general_info.primary_activity,
-            declaredCapital: "5c106397b19f7a29c4096aba",
+            declaredCapital: this.form.general_info.declared_capital,
             appType: this.form.application_type
           }
           console.log("load fees new license: " + JSON.stringify(details))

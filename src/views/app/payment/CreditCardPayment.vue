@@ -264,6 +264,90 @@ export default {
       return false;
     },
     submit() {
+      var form = {
+        "current_task": "",
+    "user": "",
+    "created_by": "5c6bbbb590a2b609204b1fec",
+    "uploaded_files": [
+        {
+            "location": "https://fda-portal.s3.us-west-2.amazonaws.com/upload/l20192802000198/1551313621054",
+            "contentType": "application/pdf",
+            "key": "upload/l20192802000198/1551313621054",
+            "mimetype": "application/pdf",
+            "originalname": "Screen Shot 2019-02-01 at 8.57.32 AM.pdf",
+            "_id": {
+                "$oid": "5c772ad6de7872001725d258"
+            },
+            "date": {
+                "$date": "2019-02-27T06:44:01.948Z"
+            }
+        }
+    ],
+    "date_modified": {
+        "$date": "2019-02-28T00:27:02.093Z"
+    },
+    "date_created": null,
+    "qualified": [],
+    "auth_officer": {
+        "mail_add": {
+            "zipcode": "",
+            "city": "",
+            "province": "",
+            "region": "",
+            "address": ""
+        },
+        "id_expiry": "",
+        "id_no": "",
+        "id_type": "",
+        "birthday": "",
+        "tin": "",
+        "email": "test@email.com",
+        "designation": "",
+        "middlename": "",
+        "firstname": "",
+        "lastname": "opiopiopipo"
+    },
+    "addresses": {
+        "office": {
+            "location": {
+                "lng": 120.3209373,
+                "lat": 16.6158906
+            },
+            "zipcode": "",
+            "city": "",
+            "province": "5c6387a6654fc728fc927504",
+            "region": "5c627cfe5a7e9c21c44071bf",
+            "address": ""
+        },
+        "warehouse": [],
+        "plant": {
+            "zipcode": "",
+            "city": "",
+            "province": "",
+            "region": "",
+            "address": ""
+        }
+    },
+    "estab_details": {
+        "mobile": "",
+        "fax": "",
+        "landline": "",
+        "email": "",
+        "tin": "090909090909",
+        "establishment_owner": "kljlkj",
+        "establishment_name": "lkl;kl;"
+    },
+    "general_info": {
+        "declared_capital": "5c106397b19f7a29c4096aba",
+        "primary_activity": "5c106ad2b19f7a29c4096ac6",
+        "product_type": "5c106cb7b19f7a29c4096ad0"
+    },
+    "application_type": 0,
+    "status": 0,
+    "case_no": "l20192802000198",
+    "modified_by": "5c6bbbb590a2b609204b1fec"
+      }
+      this.$print(form, "PAY");
       console.log("submit: " + JSON.stringify(this.full_details));
       if (
         !this.isEmptyStrings([

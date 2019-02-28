@@ -186,6 +186,9 @@ export default {
     form: {
       type: Object
     },
+    charges: {
+      type: Object
+    },
     allow_paylater: {
       type: Boolean,
       default: true
@@ -217,7 +220,7 @@ export default {
     init() {
       this.app_form = this.form ? this.form : this.$store.state.licenses.form;
       console.log("Welcome to payment summary");
-      this.fees_form = this.$store.state.payments.fee
+      this.fees_form = this.charges ? this.charges : this.$store.state.payments.fee
     },
     cancel() {
       this.showCreditCard = false;
@@ -240,7 +243,10 @@ export default {
       // this.$router.push("/app/payments/paylater");
     },
     ecPay() {
-      this.ecPayDialog = true;
+      // this.ecPayDialog = true;
+      this.$print(this.app_form, "PAY");
+console.log("application form data: " + JSON.stringify(this.app_form))
+console.log("fees form data: " + JSON.stringify(this.fees_form))
       OrderOfPaymentGenerator.generateOrderOfPayment(this.app_form, this.fees_form);
     }
   }
