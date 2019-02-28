@@ -48,6 +48,7 @@
         color="green darken-1"
         label="TIN Number"
         :rules="[rules.required]"
+        :mask="tin"
         v-model="form.auth_officer.tin"
       ></v-text-field>
     </v-flex>
@@ -248,6 +249,7 @@ export default {
     provinces: [],
     cities: [],
     zipcodes: [],
+    tin: "###-###-###-###",
     rules: {
       required: value => !!value || "This field is required"
     }

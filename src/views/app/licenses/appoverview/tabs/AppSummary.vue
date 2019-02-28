@@ -9,7 +9,7 @@
     <v-flex xs12 md4 class="subheading">Product Type</v-flex>
     <v-flex xs12 md8>{{getProduct(form.general_info.product_type)}}</v-flex>
     <v-flex xs12 md4 class="subheading">Primary Activity</v-flex>
-    <v-flex xs12 md8>{{form.general_info.primary_activity}}</v-flex>
+    <v-flex xs12 md8>{{getPrimary(form.general_info.primary_activity)}}</v-flex>
     <v-flex xs12 md4 class="subheading">Current Task</v-flex>
     <v-flex xs12 md8>{{form.current_task}}</v-flex>
     <v-flex xs12 md4 class="subheading">Current User</v-flex>

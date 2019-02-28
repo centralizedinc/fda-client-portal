@@ -1,79 +1,73 @@
 <template>
-<v-layout row wrap>
-    <v-flex xs12 v-show="!isSuccess && !isFailed"> 
-    <v-card>
-        <v-card-title primary-title>
-            Upload files
-        </v-card-title>
-           
-    <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
-        <!-- <h1>Upload images</h1> -->
-        <div class="dropbox">
-          <input ref="image" type="file" multiple :name="uploadFieldName" :disabled="isSaving" 
-          @change="onFileChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
-            accept="image/*, application/pdf" class="input-file">
-            <p v-if="isInitial">
-              Drag your file(s) here to begin<br> or click to browse
+  <v-layout row wrap>
+    <v-flex xs12 v-show="!isSuccess && !isFailed">
+      <v-card>
+        <v-card-title primary-title class="headline">Upload files</v-card-title>
+
+        <form enctype="multipart/form-data" novalidate v-if="isInitial || isSaving">
+          <!-- <h1>Upload images</h1> -->
+          <div class="dropbox">
+            <input
+              ref="image"
+              type="file"
+              multiple
+              :name="uploadFieldName"
+              :disabled="isSaving"
+              @change="onFileChange($event.target.name, $event.target.files); fileCount = $event.target.files.length"
+              accept="image/*, application/pdf"
+              class="input-file"
+            >
+            <p v-if="isInitial">Drag your file(s) here to begin
+              <br>or click to browse
             </p>
-            <p v-if="isSaving">
-              Uploading {{ fileCount }} files...
-            </p>
-        </div>
-      </form>
-       </v-card>  
+            <p v-if="isSaving">Uploading {{ fileCount }} files...</p>
+          </div>
+        </form>
+      </v-card>
     </v-flex>
-    <v-flex  v-show="isSuccess" xs12>
+    <v-flex v-show="isSuccess" xs12>
       <!--SUCCESS-->
-    <v-card>
-        <v-toolbar>
-            Preview
-            <v-spacer></v-spacer>
-            <v-btn color="primary" @click="reset" >RESET</v-btn>
+      <v-card>
+        <v-toolbar>Preview
+          <v-spacer></v-spacer>
+          <v-btn color="success" @click="reset">RESET</v-btn>
         </v-toolbar>
         <v-container grid-list-sm fluid>
           <v-layout row wrap>
-            <v-flex v-for="item in uploadedFiles" :key="item.name"
-              xs3
-              d-flex
-            >
-              <v-card >
+            <v-flex v-for="item in uploadedFiles" :key="item.name" xs3 d-flex>
+              <v-card>
                 <v-toolbar dark color="primary">
-                    {{prettify(item.name)}}
-                    <!-- <v-spacer></v-spacer>
+                  {{prettify(item.name)}}
+                  <!-- <v-spacer></v-spacer>
                     <v-btn dark flat icon>
                         <v-icon>close</v-icon>
-                    </v-btn> -->
+                  </v-btn>-->
                 </v-toolbar>
                 <v-card-text>
-                    <v-img v-if="item.type !== 'application/pdf'"
-                  :src="item.url"
-                  class="grey lighten-2"
-                  max-height="400"
-                  max-width="200" 
-                  contain                 
-                >
-                  <v-layout
-                    slot="placeholder"
-                    fill-height
-                    align-center
-                    justify-center
-                    ma-0
+                  <v-img
+                    v-if="item.type !== 'application/pdf'"
+                    :src="item.url"
+                    class="grey lighten-2"
+                    max-height="400"
+                    max-width="200"
+                    contain
                   >
-                    <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
-                  </v-layout>
-                </v-img >
-                <v-img v-else src="https://www.acts.co.za/shop/wp-content/uploads/2017/11/filetype_pdf-278.png">
-                </v-img>
-                
+                    <v-layout slot="placeholder" fill-height align-center justify-center ma-0>
+                      <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+                    </v-layout>
+                  </v-img>
+                  <v-img
+                    v-else
+                    src="https://www.acts.co.za/shop/wp-content/uploads/2017/11/filetype_pdf-278.png"
+                  ></v-img>
                 </v-card-text>
-                
               </v-card>
             </v-flex>
           </v-layout>
         </v-container>
-    </v-card>
-       </v-flex>
-</v-layout>
+      </v-card>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>
@@ -120,26 +114,29 @@ export default {
 
       // append the files to FormData
       Array.from(Array(fileList.length).keys()).map(x => {
-        if(fileList[x].type === 'application/pdf' 
-            || fileList[x].type === 'image/jpeg'
-            || fileList[x].type === 'image/png'){
-                formData.append(fieldName, fileList[x], fileList[x].name);
-                console.log('fileList[x]: ' + fileList[x].type)
-                const file = fileList[x];
-                this.uploadedFiles.push({
-                url: URL.createObjectURL(file),
-                name: fileList[x].name,
-                type:fileList[x].type
-                });
-
-        }else{
-            this.$notify({message: 'Invalid File! ' + fileList[x].name , color: 'error'})
+        if (
+          fileList[x].type === "application/pdf" ||
+          fileList[x].type === "image/jpeg" ||
+          fileList[x].type === "image/png"
+        ) {
+          formData.append(fieldName, fileList[x], fileList[x].name);
+          console.log("fileList[x]: " + fileList[x].type);
+          const file = fileList[x];
+          this.uploadedFiles.push({
+            url: URL.createObjectURL(file),
+            name: fileList[x].name,
+            type: fileList[x].type
+          });
+        } else {
+          this.$notify({
+            message: "Invalid File! " + fileList[x].name,
+            color: "error"
+          });
         }
-        
       });
 
       this.currentStatus = STATUS_SUCCESS;
-      this.$emit('upload', formData)
+      this.$emit("upload", formData);
     },
     prettify(name) {
       if (name.length > 15) {
