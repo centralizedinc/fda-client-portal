@@ -61,6 +61,7 @@
       };
     },
     created() {
+      console.log("state user data: " + JSON.stringify(this.$store.state.case.cases))
       this.date = new Date(new Date().setTime(new Date().getTime() + 30 * 24 * 60 * 60 * 1000))
       console.log("date of expiration: " + this.date)
     },

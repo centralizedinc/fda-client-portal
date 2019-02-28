@@ -93,6 +93,7 @@
                 label="Tax Identification Number"
                 :rules="[rules.required]"
                 v-model="qualified.tin"
+                :mask="tin"
               ></v-text-field>
             </v-flex>
 
@@ -202,6 +203,7 @@ export default {
     addToListDialog: false,
     menu: null,
     menu2: null,
+    tin: "###-###-###-###",
     designation: [
       "Company Pharmacist",
       "Pharmacy Assistant",

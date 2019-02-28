@@ -73,7 +73,7 @@
         </v-data-table>
       </v-card>
     </v-flex>
-    <v-dialog v-model="printDialog" persistent max-width="300px" transition="dialog-transition">
+    <v-dialog v-model="printDialog" persistent max-width="500px" transition="dialog-transition">
       <v-card>
         <v-toolbar
           color="fdaGreen"
@@ -82,14 +82,7 @@
           <span class="font-weight-light headline">Confirm Printing</span>
           <v-spacer></v-spacer>
           <v-tooltip top>
-            <v-btn
-              slot="activator"
-              flat
-              icon
-              color="black"
-              :disabled="disableButton"
-              @click="printDialog = false"
-            >
+            <v-btn slot="activator" flat icon color="black" @click="printDialog = false">
               <v-icon small>close</v-icon>
             </v-btn>Close
           </v-tooltip>
@@ -98,10 +91,10 @@
           <ol>
             <li>
               This printed License is
-              <b>UNOFFICIAL</b> and for reference purposes only
+              <b class="subheading">UNOFFICIAL</b> and for reference purposes only
             </li>
             <li>This is not your Official Electronic License</li>
-            <li>This license cannot be Display in Public View</li>
+            <li>This License cannot be Displayed in Public View</li>
           </ol>
         </v-card-text>
         <v-divider></v-divider>
