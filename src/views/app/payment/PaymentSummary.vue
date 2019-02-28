@@ -225,7 +225,7 @@ export default {
     },
     generatePDF() {
       this.cashierPayment = true;
-      OrderOfPaymentGenerator.generateOrderOfPayment(this.app_form, this.rates);
+      OrderOfPaymentGenerator.generateOrderOfPayment(this.app_form, this.fees_form);
     },
     creditCard() {
       this.cashierPayment = false;
