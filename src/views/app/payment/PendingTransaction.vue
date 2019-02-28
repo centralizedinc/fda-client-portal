@@ -61,6 +61,7 @@
       };
     },
     created() {
+      console.log("state user data: " + JSON.stringify(this.$store.state.case.cases))
       this.date = new Date(new Date().setTime(new Date().getTime() + 30 * 24 * 60 * 60 * 1000))
       console.log("date of expiration: " + this.date)
     },
@@ -96,8 +97,8 @@
           var details = {
             productType: this.form.general_info.product_type,
             primaryActivity: this.form.general_info.primary_activity,
-            declaredCapital: "5c106397b19f7a29c4096aba",
-            appType: "0"
+            declaredCapital: this.form.general_info.declared_capital,
+            appType: this.form.application_type
           }
           this.$store
             .dispatch("GET_CASES")

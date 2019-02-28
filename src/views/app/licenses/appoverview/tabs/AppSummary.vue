@@ -19,7 +19,7 @@
     <v-flex xs12 md4 class="subheading">Created by</v-flex>
     <v-flex xs12 md8>{{form.created_by}}</v-flex>
     <v-flex xs12 md4 class="subheading">Created Date</v-flex>
-    <v-flex xs12 md8>{{form.date_created}}</v-flex>
+    <v-flex xs12 md8>{{formatDate(form.date_created)}}</v-flex>
   </v-layout>
 </template>
 
