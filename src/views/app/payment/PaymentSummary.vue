@@ -244,7 +244,11 @@ export default {
     },
     ecPay() {
       // this.ecPayDialog = true;
-      this.$print(this.app_form, "PAY");
+      var full_details = {
+        formDetails: this.app_form,
+        paymentDetails: this.fees_form
+      }
+      this.$print(full_details, "PAY");
 console.log("application form data: " + JSON.stringify(this.app_form))
 console.log("fees form data: " + JSON.stringify(this.fees_form))
       OrderOfPaymentGenerator.generateOrderOfPayment(this.app_form, this.fees_form);
