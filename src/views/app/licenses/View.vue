@@ -16,7 +16,7 @@
               </v-item>
             </v-item-group>
           </v-flex>
-
+          
           <v-flex xs10>
             <v-window v-model="window" class="elevation-5 mt-3" style="border-radius: 8px" vertical>
               <v-window-item v-for="n in title.length" :key="n">
@@ -300,9 +300,6 @@
           </v-flex>
         </v-layout>
       </v-card-text>
-      <v-card-actions v-if="$store.state.licenses.isRenew">
-        <v-btn block color="success" @click="renew">RENEW</v-btn>
-      </v-card-actions>
     </v-card>
   </v-layout>
 </template>
@@ -318,6 +315,7 @@ const tabscomponents = Object.assign(
 );
 
 export default {
+  props: ["form"],
   components: tabscomponents,
   data() {
     return {
@@ -359,19 +357,8 @@ export default {
         "Output Documents",
         "History",
         "Payment"
-      ],
-      form: null
+      ]
     };
-  },
-  created() {
-    this.form = this.$store.state.licenses.form;
-    console.log("VIEW ########################: " + JSON.stringify(this.form));
-  },
-  methods: {
-    pay() {
-      this.paymentDialog = true;
-    },
-    renew() {}
   }
 };
 </script>
