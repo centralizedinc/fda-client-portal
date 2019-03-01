@@ -104,15 +104,18 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-      <!-- buttons for existing license -->
       <v-divider inset class="mt-4"></v-divider>
       <v-container grid-list-md text-xs-center>
         <v-layout row wrap justify-center>
+
+          <undertaking-dialog :show="showDialog" @proceed="launchAppForm" @close="showDialog = false"></undertaking-dialog>
+
+          <!-- buttons for existing license -->
           <v-flex xs6 md6 pa-2>
             <v-card
               class="cardButton"
               color="fdaGold"
-              @click="validationDialog=true"
+              @click="redirect(1)"
               hover
               ripple
               style="background: linear-gradient(180deg, #E9EDCF, #B5C25A)"
@@ -146,7 +149,7 @@
               color="fdaTan"
               hover
               ripple
-              @click="$router.push('/registration/new')"
+              @click="redirect(0)"
             >
               <v-card-text>
                 <v-spacer></v-spacer>
@@ -176,10 +179,13 @@
 <script>
 export default {
   components: {
+    UndertakingDialog: () => import("../components/UndertakingDialog"),
     ExistingUser: () => import("./registration/existing/Validate.vue")
   },
   props: ["account"],
   data: () => ({
+    showDialog: false,
+    selected_index: -1,
     validationDialog: false,
     value: true,
     credentials: {},
@@ -267,6 +273,18 @@ export default {
             color: "error"
           });
         });
+    },
+    redirect(index) {
+      this.selected_index = index;
+      this.showDialog = true;
+    },
+    launchAppForm() {
+      this.showDialog = false;
+      if (this.selected_index === 0) {
+        this.$router.push("/registration/new");
+      } else if (this.selected_index === 1) {
+        this.validationDialog = true;
+      }
     }
   }
 };

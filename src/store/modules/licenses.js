@@ -1,10 +1,12 @@
 // import setAuthToken from '@/axios-config.js'
 // var jwt = require('jsonwebtoken')
 import LicenseAPI from '../../api/LicenseApi';
+import CaseAPI from '../../api/CaseAPI';
 
 const state = {
     LicenseAPI: null,
     licenses: [],
+    details: {},
     form: null,
     uploaded: null,
     existingLicense: null,
@@ -15,6 +17,9 @@ const mutations = {
     SET_LICENSES(state, licenses) {
         state.licenses = null;
         state.licenses = licenses;
+    },
+    SET_DETAILS(state, details) {
+        state.details = details;
     },
     SET_FORM(state, {
         form,
@@ -34,13 +39,6 @@ const mutations = {
 }
 
 var actions = {
-    // GET_UNASSIGNED(context) {
-    //     if(context.rootState.user_session.token){
-    //         return new Promise((resolve, reject) => {
-
-    //         })
-    //     }
-    // },
     GET_UNAPPROVED_LICENSES(context) {
         return new Promise((resolve, reject) => {
             new LicenseAPI(context.rootState.user_session.token).getUnapprovedLicense((err, license) => {
@@ -73,9 +71,7 @@ var actions = {
         return new Promise((resolve, reject) => {
             new LicenseAPI(context.rootState.user_session.token).saveLicenses(license, (licenses, err) => {
                 if (!err) {
-                    console.log('actions save licenses store: ' + JSON.stringify(licenses))
-                    context.commit('SET_FORM', licenses)
-                    resolve()
+                    resolve(licenses)
                 } else {
                     console.log("actions save licenses error: " + JSON.stringify(err))
                     reject()
@@ -124,25 +120,26 @@ var actions = {
             })
         })
     },
-    GET_LICENSE_BY_ID(context, {
-        app_id,
-        application_type
-    }) {
+    GET_LICENSE_BY_ID(context, app_id) {
         return new Promise((resolve, reject) => {
             new LicenseAPI(context.rootState.user_session.token).getLicenseByID(app_id, (err, license) => {
                 if (!err) {
-                    var isRenew = false;
-                    if (application_type) {
-                        license.application_type = application_type;
-                        isRenew = application_type === 2;
-                    }
-                    context.commit('SET_FORM', {
-                        form: license,
-                        isRenew: isRenew
-                    });
                     resolve(license)
                 } else {
                     console.log('#####err GET_LICENSE_BY_ID :', err);
+                    reject(err)
+                }
+            })
+        })
+    },
+    RETRIEVE_LICENSE_BY_ID(context, app) {
+        return new Promise((resolve, reject) => {
+            new LicenseAPI(context.rootState.user_session.token).getLicenseByID(app.app_id, (err, license) => {
+                if (!err) {
+
+                    resolve(license)
+                } else {
+                    console.log('#####err RETRIEVE_LICENSE_BY_ID :', err);
                     reject(err)
                 }
             })
@@ -164,11 +161,37 @@ var actions = {
             })
         })
     },
-
-    APPLY_LICENSE(context, lic_data){
+    APPLY_LICENSE(context, lic_data) {
         return new LicenseAPI(context.rootState.user_session.token).applyLicense(lic_data)
+    },
+    GET_ACTIVE_AND_CASES(context) {
+        var token = context.rootState.user_session.token;
+        if (token) {
+            return new Promise((resolve, reject) => {
+                var details = {};
+                new LicenseAPI(token).getActiveLicense()
+                    .then((result) => {
+                        if (result.data.success) {
+                            details = result.data.model;
+                            return new CaseAPI(token).getLicenseCases()
+                        } else {
+                            reject(result.data.errors)
+                        }
+                    }).then((result) => {
+                        if (result.data.success) {
+                            details.cases = result.data.model;
+                            context.commit('SET_DETAILS', details);
+                            resolve(details);
+                        } else {
+                            reject(result.data.errors)
+                        }
+                    }).catch((err) => {
+                        console.log('err :', err);
+                        reject(err)
+                    });
+            })
+        }
     }
-
 }
 
 export default {

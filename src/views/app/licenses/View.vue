@@ -21,8 +21,7 @@
                 v-model="window"
                 class="elevation-5 mt-3"
                 style="border-radius: 8px"
-                vertical
-              >
+                vertical>
                 <v-window-item v-for="n in title.length" :key="n">
                   <v-layout align-start justify-start row fill-height>
                     <v-flex>
@@ -108,6 +107,7 @@ const tabscomponents = Object.assign(
 );
 
 export default {
+  props: ["form"],
   components: tabscomponents,
   data() {
     return {
@@ -149,19 +149,8 @@ export default {
         "Output Documents",
         "History",
         "Payment"
-      ],
-      form: null
+      ]
     };
-  },
-  created() {
-    this.form = this.$store.state.licenses.form;
-    console.log("VIEW ########################: " + JSON.stringify(this.form));
-  },
-  methods: {
-    pay() {
-      this.paymentDialog = true;
-    },
-    renew() {}
   }
 };
 </script>

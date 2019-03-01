@@ -3,6 +3,14 @@ export default {
   install(Vue) {
     Vue.mixin({
       methods: {
+        getAppStatus(status) {
+          var apps = ["On Process", "Approved", "Compliance", "Denied", "Expired"];
+          return apps[status];
+        },
+        getAppStatusColor(status) {
+          var app_status_color = ["blue", "green", "deep-orange", "red", "red"];
+          return app_status_color[status]
+        },
         getAppType(type) {
           var app_type = ["Initial", "Variation", "Renewal"];
           return app_type[type];
