@@ -35,6 +35,9 @@
         :rules="[rules.required]"
         :items="additional_items"
         hide-no-data
+        multiple
+        chips
+        clearable
         color="green darken-1"
         hide-selected
         label="Additional Activity"

@@ -47,6 +47,17 @@ export default {
             return ''
           }
         },
+        getUsername(user_id){
+          if(this.$store.state.user_session){
+            var user = null;
+            user = this.$store.state.user_session.find(x => {
+              return x._id === user_id
+            })
+            return user ? user.name : ''
+          }else{
+            return ''
+          }
+        },
         formatDate: (date, type) => {
           if (!date) {
             return "";

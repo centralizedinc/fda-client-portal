@@ -21,7 +21,7 @@
     <v-flex ml-5>
       <v-text-field
         color="green darken-1"
-        label="TIN Number"
+        label="TIN"
         :mask="tin"
         :rules="[rules.required]"
         hint="Establishment's registered Tax Identification Number"
@@ -131,7 +131,7 @@
             label="Product Line"
           ></v-autocomplete>
         </v-flex>
-        <v-flex ml-2 :key="index">
+        <v-flex xs5 ml-2 :key="index">
           <v-text-field
             color="green darken-1"
             :rules="[rules.required]"
@@ -139,7 +139,7 @@
             v-model="item.remarks"
           ></v-text-field>
         </v-flex>
-        <v-flex xs1 mt-3 :key="index">
+        <v-flex xs1 mt-3 :key="index" v-if="index > 0">
           <v-btn flat small icon @click="removeItem(index)">
             <v-icon color="error">fas fa-trash-alt fa-lg</v-icon>
           </v-btn>
@@ -192,8 +192,9 @@ export default {
     prod_lines() {
       var items = [];
       this.$store.state.products.prod_line.forEach(item => {
-        if(item.product_type === this.form.general_info.product_type) items.push(item);
-      })
+        if (item.product_type === this.form.general_info.product_type)
+          items.push(item);
+      });
       return items;
     }
   },

@@ -49,7 +49,7 @@ export default class PaymentAPI {
             productType: details.productType,
             primaryActivity: details.primaryActivity,
             declaredCapital: details.declaredCapital,
-            appType: "0"
+            appType: details.appType
         }).then((result) => {
             console.log("feesDetails data return api: " + JSON.stringify(result.data.model))
             cb(result.data.model)
