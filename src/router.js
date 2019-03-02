@@ -125,12 +125,12 @@ var router = new Router({
           component: () => import('@/views/app/licenses/Create.vue'),
           // beforeEnter: isAuthorized
         },
-        {
-          path: 'licenses/view',
-          name: 'View License Application',
-          component: () => import('@/views/app/licenses/View.vue'),
-          // beforeEnter: isAuthorized
-        },
+        // {
+        //   path: 'licenses/view',
+        //   name: 'View License Application',
+        //   component: () => import('@/views/app/licenses/View.vue'),
+        //   // beforeEnter: isAuthorized
+        // },
         {
           path: 'licenses/summary',
           name: 'License Summary',
@@ -164,7 +164,7 @@ var router = new Router({
         {
           path: 'payments',
           name: 'Payments',
-          component: () => import('@/views/app/payment/Payment.vue'),
+          component: () => import('@/views/app/payment/CreditCardPayment.vue'),
           // beforeEnter: isAuthorized
         },
         {

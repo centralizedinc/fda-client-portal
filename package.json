@@ -10,7 +10,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.2.0",
     "axios": "^0.18.0",
-    "fda-pdf-printer-plugin": "^1.0.11",
+    "fda-pdf-printer-plugin": "^1.0.12",
     "js-cookie": "^2.2.0",
     "jspdf": "^1.5.3",
     "jspdf-autotable": "^3.0.4",
@@ -24,7 +24,7 @@
     "vue-recaptcha": "^1.1.1",
     "vue-router": "^3.0.1",
     "vue2-google-maps": "^0.10.6",
-    "vuetify": "^1.4.2",
+    "vuetify": "^1.5.4",
     "vuex": "^3.1.0",
     "vuex-persistedstate": "^2.5.4"
   },

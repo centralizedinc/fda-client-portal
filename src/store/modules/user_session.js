@@ -88,6 +88,7 @@ var actions = {
       UserAPI.login(credentials, (res, err) => {
         if (!err) {
           if (res.isConfirmed) context.commit('LOGIN', res);
+          context.dispatch('GET_PRODUCT_REFERENCE')
           resolve(res)
         } else {
           console.log(JSON.stringify(err));

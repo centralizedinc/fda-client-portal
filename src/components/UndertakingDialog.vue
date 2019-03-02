@@ -8,11 +8,18 @@
       transition="dialog-transition"
     >
       <v-card>
-        <v-card-title
-          primary-title
-          class="headline"
+        <v-toolbar
+          color="fdaGreen"
           style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
-        >Declaration and Undertaking</v-card-title>
+        >
+          <span class="font-weight-light headline">Declaration and Undertaking</span>
+          <v-spacer></v-spacer>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="black" @click="$emit('close')">
+              <v-icon>close</v-icon>
+            </v-btn>Close
+          </v-tooltip>
+        </v-toolbar>
         <v-divider></v-divider>
         <v-card-text>
           <p>{{parA}}</p>

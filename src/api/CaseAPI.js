@@ -9,13 +9,8 @@ export default class CaseAPI {
         axios.defaults.headers.common['access_token'] = token;
     }
 
-    getLicenseCases(cb) {
-        axios.get('lto-api/case').then((result) => {
-            cb(result.data.errors, result.data.model)
-        }).catch(err => {
-            console.log('######getLicenseCases error :', err)
-            cb(err)
-        })
+    getLicenseCases() {
+        return axios.get('lto-api/case');
     }
 
     getCertificateCases(cb) {
