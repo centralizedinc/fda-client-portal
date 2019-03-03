@@ -48,6 +48,17 @@ export default {
             return ''
           }
         },
+        getDeclared(declared_id) {
+          if (this.$store.state.products.declared) {
+            var declared = null;
+            declared = this.$store.state.products.declared.find(x => {
+              return x._id === declared_id
+            })
+            return declared ? declared.name : ''
+          } else {
+            return ''
+          }
+        },
         getUsername(user_id) {
           if (this.$store.state.user_session) {
             var user = null;

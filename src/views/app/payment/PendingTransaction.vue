@@ -17,12 +17,12 @@
         </v-flex>
         <v-flex xs4 mr-5>
           <!-- <v-chip class="font-weight-bold" label color="fdaYellow" text-color="black">PENDING</v-chip> -->
-          <v-chip class="font-weight-bold" label color="fdaYellow" text-color="black">{{case_holder.current_task_name}}</v-chip>
+          <v-chip class="font-weight-bold" label color="fdaYellow" text-color="black">{{case_holder.current_task}}</v-chip>
         </v-flex>
         <v-flex xs4 ml-3>
           <span class="body-2">Due Date</span>
         </v-flex>
-        <v-flex xs6 mr-5 ml-2>MM DD, YYYY HH:MM:SS AM/PM {{case_holder.expiry_date}}</v-flex>
+        <v-flex xs6 mr-5 ml-2>MM DD, YYYY HH:MM:SS AM/PM</v-flex>
       </v-layout>
       <v-flex xs12>
         <v-divider></v-divider>
@@ -115,6 +115,7 @@
                   console.log("case holder data: " + JSON.stringify(this.case_holder.current_task_name))
                 }
               })
+              // return this.$store.dispatch("GET_FEES", details)
             })
           console.log("load fees new license: " + JSON.stringify(details))
           this.$store.dispatch("GET_FEES", details).then(result => {
@@ -125,9 +126,9 @@
           console.log("error no data found")
         }
       },
-      case_holder(){
-        console.log("case holder watch: " + JSON.stringify(this.case_holder))
-      }
+      // case_holder(){
+      //   console.log("case holder watch: " + JSON.stringify(this.case_holder))
+      // }
       // "form.case_no": function(val) {
       //   console.log("element data labas: " + JSON.stringify(this.cases))
       //   this.cases.forEach(element => {
