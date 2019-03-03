@@ -31,6 +31,10 @@ export default class LicenseAPI {
         })
     }
 
+    getLicenseTasks(){
+        return axios.get('lto-api/task')
+    }
+
     getUnapprovedLicense(cb) {
         axios.get('lto-api/unapproved/').then((result) => {
             console.log('getUnapprovedLicense: ' + JSON.stringify(result));

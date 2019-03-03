@@ -9,50 +9,65 @@
     </v-layout>
 
     <v-flex xs12 v-else>
-      <v-card flat>
+      <v-card>
         <v-card-title primary-title class="font-weight-light headline">Payment Summary</v-card-title>
         <v-container grid-list-xl>
-          <v-card flat>
-            <v-layout align-center justify-center row fill-height>
+          <v-layout row wrap align-center justify-center fill-height>
+            <!-- <v-flex xs6> -->
               <v-flex xs6>
-                <v-flex xs12>
-                  <label class="subheading">Application Fee:</label>
-                </v-flex>
-                <v-flex xs12>
-                  <label class="subheading"># of year/s applied:</label>
-                </v-flex>
-                <v-flex xs12>
-                  <label class="subheading">Surcharge:</label>
-                </v-flex>
-                <v-flex xs12>
-                  <label class="subheading">Legal Research Fund (LRF):</label>
-                </v-flex>
-                <v-flex xs12>
-                  <label class="subheading" color="error">Total Payment Due:</label>
-                </v-flex>
+                <label class="subheading">Application Fee:</label>
               </v-flex>
+              <v-flex xs6>
+                <label class="subheading">Php {{fees_form.fee}}</label>
+              </v-flex>
+              <v-flex xs6>
+                <label class="subheading"># of year/s applied:</label>
+              </v-flex>
+              <v-flex xs6>
+                <label class="subheading">{{fees_form.yearsApplied}}</label>
+              </v-flex>
+              <v-flex xs6>
+                <label class="subheading">Surcharge:</label>
+              </v-flex>
+              <v-flex xs6>
+                <label class="subheading">
+                  <v-icon medium color="error">close</v-icon>
+                </label>
+              </v-flex>
+              <v-flex xs6>
+                <label class="subheading">Legal Research Fund (LRF):</label>
+              </v-flex>
+              <v-flex xs6>
+                <label class="subheading">Php {{fees_form.lrf}}</label>
+              </v-flex>
+              <v-flex xs6>
+                <label class="subheading" color="error">Total Payment Due:</label>
+              </v-flex>
+              <v-flex xs6>
+                <label class="subheading">{{fees_form.total}}</label>
+              </v-flex>
+            <!-- </v-flex> -->
 
-              <v-flex xs5>
-                <v-flex xs12>
-                  <label class="subheading">Php {{fees_form.fee}}</label>
-                </v-flex>
-                <v-flex xs12>
-                  <label class="subheading">{{fees_form.yearsApplied}}</label>
-                </v-flex>
-                <v-flex xs12>
-                  <label class="subheading">
-                    <v-icon medium color="error">close</v-icon>
-                  </label>
-                </v-flex>
-                <v-flex xs12>
-                  <label class="subheading">Php {{fees_form.lrf}}</label>
-                </v-flex>
-                <v-flex xs12>
-                  <label class="subheading">{{fees_form.total}}</label>
-                </v-flex>
+            <!-- <v-flex xs5>
+              <v-flex xs12>
+                <label class="subheading">Php {{fees_form.fee}}</label>
               </v-flex>
-            </v-layout>
-          </v-card>
+              <v-flex xs12>
+                <label class="subheading">{{fees_form.yearsApplied}}</label>
+              </v-flex>
+              <v-flex xs12>
+                <label class="subheading">
+                  <v-icon medium color="error">close</v-icon>
+                </label>
+              </v-flex>
+              <v-flex xs12>
+                <label class="subheading">Php {{fees_form.lrf}}</label>
+              </v-flex>
+              <v-flex xs12>
+                <label class="subheading">{{fees_form.total}}</label>
+              </v-flex>
+            </v-flex> -->
+          </v-layout>
         </v-container>
         <v-divider></v-divider>
         <v-card-actions>
@@ -82,99 +97,97 @@
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
-
-      <v-dialog
-        v-model="cashierPayment"
-        scrollable
-        persistent
-        transition="dialog-transition"
-        max-width="500"
-      >
-        <v-card>
-          <v-toolbar
-            color="fdaGreen"
-            style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
-          >
-            <span class="font-weight-light headline">FDA Cashier/Bank</span>
-
-            <v-spacer></v-spacer>
-            <v-tooltip top>
-              <v-btn slot="activator" flat icon color="black" @click="cashierPayment =false">
-                <i class="fas fa-times-circle"></i>
-              </v-btn>Close
-            </v-tooltip>
-          </v-toolbar>
-
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-flex xs12>
-              <p class="body-2">Order of Payment has been downloaded.</p>
-              <p>General Guidelines:</p>
-              <ol>
-                <li>Print the system generated Order of Payment</li>
-                <li>Proceed to any Landbank of the Philippines branch or nearest FDA Action Center and present the Order of Payment</li>
-                <li>*Upload the receipt/confirmation in the Application Summary*</li>
-              </ol>
-              <div></div>
-              <p
-                class="caption mt-2"
-                style="color: grey; font-family:courier"
-              >Note: The payment of fee is not a guarantee that the application will be granted. The processing of the application will still be subject to the evaluation of the concerned FDA personnel and its compliance with the pertinent laws, rules and regulations</p>
-            </v-flex>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-btn flat block color="error" @click="finalStep =false">close</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
-
-      <v-dialog
-        v-model="ecPayDialog"
-        scrollable
-        persistent
-        transition="dialog-transition"
-        max-width="500"
-      >
-        <v-card>
-          <v-toolbar
-            color="fdaGreen"
-            style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
-          >
-            <span class="font-weight-light headline">ECPay</span>
-
-            <v-spacer></v-spacer>
-            <v-tooltip top>
-              <v-btn slot="activator" flat icon color="black" @click="ecPayDialog =false">
-                <i class="fas fa-times-circle"></i>
-              </v-btn>Close
-            </v-tooltip>
-          </v-toolbar>
-
-          <v-divider></v-divider>
-          <v-card-text>
-            <v-flex xs12>
-              <p class="body-2">Your Reference Number has been downloaded.</p>
-              <p>General Guidelines:</p>
-              <ol>
-                <li>Print the system generated Reference Number</li>
-                <li>Reference number can only be used once. If you made a short payment by mistake, do not try to correct it by making another bills payment with the same reference number.</li>
-                <li>Amount is inclusive of convenience fee/ If you are paying for multiple reference numbers, pay separaely for each reference number. Only one (1) transaction per reference number.</li>
-              </ol>
-              <div></div>
-              <p
-                class="caption mt-2"
-                style="color: grey; font-family:courier"
-              >Note: The payment of fee is not a guarantee that the application will be granted. The processing of the application will still be subject to the evaluation of the concerned FDA personnel and its compliance with the pertinent laws, rules and regulations</p>
-            </v-flex>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-btn flat block color="error" @click="ecPayDialog =false">close</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
     </v-flex>
+
+    <v-dialog
+      v-model="cashierPayment"
+      scrollable
+      persistent
+      transition="dialog-transition"
+      max-width="500">
+      <v-card>
+        <v-toolbar
+          color="fdaGreen"
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+        >
+          <span class="font-weight-light headline">FDA Cashier/Bank</span>
+
+          <v-spacer></v-spacer>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="black" @click="cashierPayment =false">
+              <i class="fas fa-times-circle"></i>
+            </v-btn>Close
+          </v-tooltip>
+        </v-toolbar>
+
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-flex xs12>
+            <p class="body-2">Order of Payment has been downloaded.</p>
+            <p>General Guidelines:</p>
+            <ol>
+              <li>Print the system generated Order of Payment</li>
+              <li>Proceed to any Landbank of the Philippines branch or nearest FDA Action Center and present the Order of Payment</li>
+              <li>*Upload the receipt/confirmation in the Application Summary*</li>
+            </ol>
+            <div></div>
+            <p
+              class="caption mt-2"
+              style="color: grey; font-family:courier"
+            >Note: The payment of fee is not a guarantee that the application will be granted. The processing of the application will still be subject to the evaluation of the concerned FDA personnel and its compliance with the pertinent laws, rules and regulations</p>
+          </v-flex>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn flat block color="error" @click="finalStep =false">close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog
+      v-model="ecPayDialog"
+      scrollable
+      persistent
+      transition="dialog-transition"
+      max-width="500">
+      <v-card>
+        <v-toolbar
+          color="fdaGreen"
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+        >
+          <span class="font-weight-light headline">ECPay</span>
+
+          <v-spacer></v-spacer>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="black" @click="ecPayDialog =false">
+              <i class="fas fa-times-circle"></i>
+            </v-btn>Close
+          </v-tooltip>
+        </v-toolbar>
+
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-flex xs12>
+            <p class="body-2">Your Reference Number has been downloaded.</p>
+            <p>General Guidelines:</p>
+            <ol>
+              <li>Print the system generated Reference Number</li>
+              <li>Reference number can only be used once. If you made a short payment by mistake, do not try to correct it by making another bills payment with the same reference number.</li>
+              <li>Amount is inclusive of convenience fee/ If you are paying for multiple reference numbers, pay separaely for each reference number. Only one (1) transaction per reference number.</li>
+            </ol>
+            <div></div>
+            <p
+              class="caption mt-2"
+              style="color: grey; font-family:courier"
+            >Note: The payment of fee is not a guarantee that the application will be granted. The processing of the application will still be subject to the evaluation of the concerned FDA personnel and its compliance with the pertinent laws, rules and regulations</p>
+          </v-flex>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn flat block color="error" @click="ecPayDialog =false">close</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 

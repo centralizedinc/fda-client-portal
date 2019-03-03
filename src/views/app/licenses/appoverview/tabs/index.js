@@ -1,4 +1,5 @@
 module.exports = {
+    ApplicationOverview: () => import('@/components/ApplicationOverview.vue'),
     AppHistory: () => import('./AppHistory.vue'),
     AppSummary: () => import('./AppSummary.vue'),
     AppData: () => import('./Data.vue'),

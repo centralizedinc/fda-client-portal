@@ -1,6 +1,6 @@
 <template >
   <div>
-    <license-preview :license="form" v-if="showForm"></license-preview>
+    <license-preview :form="form" v-if="showForm" @back="showForm=false"></license-preview>
     <v-layout row wrap v-else>
       <!-- ACTIVE LICENSE -->
       <v-flex xs12 pa-2>
@@ -10,18 +10,72 @@
               License No. {{details.license_details.license_no}}
             </span>
             <v-spacer></v-spacer>
-            <v-hover>
-              <v-btn color="success" v-if="hover" transition="slide-x-reverse-transition">text</v-btn>
-              <v-btn
-                color="blue darken-2"
-                dark
-                :slot-scope="{ hover }"
-                fab
-              >
-                <v-icon>account_circle</v-icon>
-                <v-icon>close</v-icon>
-              </v-btn>
-            </v-hover>
+            <v-speed-dial
+              v-model="fab"
+              direction="left"
+              open-on-hover
+              transition="slide-x-reverse-transition">
+              <template v-slot:activator>
+                <v-tooltip top>
+                  <v-btn
+                    slot="activator"
+                    v-model="fab"
+                    color="blue darken-2"
+                    dark
+                    flat
+                    fab>
+                    <v-icon>{{ fab ? "close" : "menu"}}</v-icon>
+                  </v-btn>Close
+                </v-tooltip>
+              </template>
+              <v-tooltip top>
+                <v-btn
+                  slot="activator"
+                  fab
+                  dark
+                  flat
+                  color="blue"
+                  @click="viewForm"
+                >
+                  <v-icon>search</v-icon>
+                </v-btn>View More Details
+              </v-tooltip>
+              <v-tooltip top>
+                <v-btn
+                  slot="activator"
+                  fab
+                  dark
+                  flat
+                  @click="variateForm"
+                  color="green"
+                >
+                  <v-icon>edit</v-icon>
+                </v-btn>Variation
+              </v-tooltip>
+              <v-tooltip top>
+                <v-btn
+                  slot="activator"
+                  fab
+                  dark
+                  flat
+                  @click="renewForm"
+                  color="indigo">
+                  <v-icon>autorenew</v-icon>
+                </v-btn>Renewal
+              </v-tooltip>
+              <v-tooltip top>
+                <v-btn
+                  slot="activator"
+                  fab
+                  dark
+                  flat
+                  color="red"
+                  @click="confirmPrinting"
+                >
+                  <v-icon>print</v-icon>
+                </v-btn>Print
+              </v-tooltip>
+            </v-speed-dial>
           </v-card-title>
           <v-divider></v-divider>
           <v-card-text>
@@ -66,11 +120,11 @@
           <v-divider></v-divider>
           <v-data-table :headers="headers" :items="details.cases" class="elevation-1">
             <template slot="items" slot-scope="props">
-              <tr @click="loadForm(props.item)" class="data-row">
+              <tr @click="loadForm(props.item.application_id)" class="data-row">
                 <td>{{ props.item.case_no }}</td>
                 <td>{{ getAppType(props.item.application_type) }}</td>
                 <td :class="`${getAppStatusColor(props.item.status)}--text`">{{ getAppStatus(props.item.status) }}</td>
-                <td>{{ getTask(props.item.current_task) ? getTask(props.item.current_task).name : '' }}</td>
+                <td>{{ getTask(props.item.current_task).name }}</td>
                 <td>{{ props.item.current_assigned_user }}</td>
                 <td>{{ formatDate (props.item.date_created) }}</td>
                 <td>{{ props.item.remarks }}</td>
@@ -147,7 +201,6 @@ export default {
       printDialog: false,
       dialogView: false,
       initial: false,
-      renewal: false,
       selected_case: {},
       details: {},
       form: {},
@@ -168,6 +221,7 @@ export default {
   },
   watch: {
     showForm(val) {
+      this.fab = false;
       this.dialog = false;
       this.printDialog = false;
     }
@@ -180,45 +234,49 @@ export default {
         .then(result => {
           console.log("JSON.stringify(result) :", JSON.stringify(result));
           this.details = result;
+          return this.$store.dispatch("GET_TASKS");
+        })
+        .then(result => {
+          console.log('result :', result);
         })
         .catch(err => {
           console.log("err :", err);
         });
     },
+    viewForm() {
+      this.form = this.details.license_details;
+      this.showForm = true;
+    },
     renewForm() {
-      this.loadForm(2);
+      this.$store.commit("SET_RENEWAL", this.details.license_details);
+      this.$router.push("/app/licenses/renew");
     },
-    variationForm() {
-      this.loadForm(1);
+    variateForm() {
+      console.log("test");
+      this.$store.commit("SET_VARIATION", this.details.license_details);
+      this.$router.push("/app/licenses/variation");
     },
-    loadForm(app, index) {
-      if (app) {
-        this.$store
-          .dispatch("RETRIEVE_LICENSE_BY_ID", {
-            app_id: app.application_id,
-            application_type: index
-          })
-          .then(result => {
-            if (index) {
-              this.selected_index = index;
-              this.dialog = true;
-            } else {
-              this.form = result;
-              this.showForm = true;
-            }
-          })
-          .catch(err => {
-            console.log("###loadForm err :", err);
-          });
-      } else {
-        this.showForm = true;
-      }
+    loadForm(application_id) {
+      console.log("application_id :", application_id);
+      this.$store
+        .dispatch("RETRIEVE_LICENSE_BY_ID", application_id)
+        .then(result => {
+          this.form = result;
+          this.showForm = true;
+        })
+        .catch(err => {
+          console.log("###loadForm err :", err);
+        });
     },
     launchAppForm() {
       this.$router.push("/app/licenses/apply");
     },
-    confirmPrinting(item) {
-      this.selected_case = item;
+    confirmPrinting() {
+      this.selected_case = this.details.case_details;
+      console.log(
+        "JSON.stringify(this.selected_case) :",
+        JSON.stringify(this.selected_case)
+      );
       this.printDialog = true;
     },
     printLicense() {

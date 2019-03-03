@@ -5,11 +5,11 @@
         <v-layout align-start justify-start row fill-height>
           <v-flex xs3 mr-5 mt-3 pt-3 pr-5>
             <v-item-group v-model="window" class="shrink mr-5" mandatory tag="v-flex">
-              <v-item v-for="n in title.length" :key="n">
+              <v-item v-for="n in title" :key="n">
                 <div class="mr-5 pr-5" left slot-scope="{ active, toggle }">
                   <v-btn class="text-align: left" ripple flat @click="toggle">
                     <v-icon>mdi-record</v-icon>
-                    {{title[n]}}
+                    {{n}}
                   </v-btn>
                 </div>
               </v-item>
@@ -22,7 +22,7 @@
                 class="elevation-5 mt-3"
                 style="border-radius: 8px"
                 vertical>
-                <v-window-item v-for="n in title.length" :key="n">
+                <v-window-item v-for="n in title" :key="n">
                   <v-layout align-start justify-start row fill-height>
                     <v-flex>
                       <v-card flat>
@@ -32,7 +32,7 @@
                               <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
                             </v-avatar>
 
-                            <strong class="title text-transform: uppercase">{{ title[n] }}</strong>
+                            <strong class="title text-transform: uppercase">{{ n }}</strong>
                             <v-spacer></v-spacer>
                             <v-btn icon>
                               <v-icon>mdi-account</v-icon>
@@ -90,6 +90,9 @@
           </v-layout>
         </v-layout>
       </v-card-text>
+      <v-card-actions>
+        <v-btn color="info" @click="$emit('back')" block>back</v-btn>
+      </v-card-actions>
     </v-card>
   </v-layout>
 </template>
@@ -111,38 +114,8 @@ export default {
   components: tabscomponents,
   data() {
     return {
-      paymentDialog: false,
-      length: 3,
       window: 0,
-      headers: [
-        {
-          text: "Name",
-          value: "",
-          sortable: false
-        },
-        {
-          text: "Designation",
-          value: "",
-          sortable: false
-        },
-        {
-          text: "Birthdate",
-          value: "",
-          sortable: false
-        },
-        {
-          text: "TIN",
-          value: "",
-          sortable: false
-        },
-        {
-          text: "Government ID",
-          value: "",
-          sortable: false
-        }
-      ],
       title: [
-        "",
         "Summary",
         "Application Data",
         "Uploaded Files",

@@ -17,10 +17,11 @@ export default {
         },
         getTask(task_id) {
           if (this.$store.state.tasks.tasks) {
+            console.log('task_id :', task_id + " ::: " + JSON.stringify(this.$store.state.tasks.tasks));
             var task = this.$store.state.tasks.tasks.find(x => {
-              return x._id === task_id;
+              return x._id.toString() === task_id;
             });
-            return task;
+            return task ? task : {};
           } else {
             return null;
           }
@@ -47,14 +48,14 @@ export default {
             return ''
           }
         },
-        getUsername(user_id){
-          if(this.$store.state.user_session){
+        getUsername(user_id) {
+          if (this.$store.state.user_session) {
             var user = null;
             user = this.$store.state.user_session.find(x => {
               return x._id === user_id
             })
             return user ? user.name : ''
-          }else{
+          } else {
             return ''
           }
         },

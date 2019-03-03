@@ -132,6 +132,18 @@ var router = new Router({
         //   // beforeEnter: isAuthorized
         // },
         {
+          path: 'licenses/renew',
+          name: 'Renewal License Application',
+          component: () => import('@/views/app/licenses/Renew.vue'),
+          // beforeEnter: isAuthorized
+        },
+        {
+          path: 'licenses/variation',
+          name: 'Variate License Application',
+          component: () => import('@/views/app/licenses/Variation.vue'),
+          // beforeEnter: isAuthorized
+        },
+        {
           path: 'licenses/summary',
           name: 'License Summary',
           component: () => import('@/views/app/TempLicenseSummary.vue'),

@@ -212,7 +212,8 @@ export default {
           file_name: "",
           file: null
         }
-      ]
+      ],
+      formData: null
     }
   }),
   created() {

@@ -6,6 +6,8 @@ import CaseAPI from '../../api/CaseAPI';
 const state = {
     LicenseAPI: null,
     licenses: [],
+    renewal_license: {},
+    variation_license: {},
     details: {},
     form: null,
     uploaded: null,
@@ -20,6 +22,12 @@ const mutations = {
     },
     SET_DETAILS(state, details) {
         state.details = details;
+    },
+    SET_RENEWAL(state, details){
+        state.renewal_license = details;
+    },
+    SET_VARIATION(state, details){
+        state.variation_license = details;
     },
     SET_FORM(state, {
         form,
@@ -132,11 +140,10 @@ var actions = {
             })
         })
     },
-    RETRIEVE_LICENSE_BY_ID(context, app) {
+    RETRIEVE_LICENSE_BY_ID(context, app_id) {
         return new Promise((resolve, reject) => {
-            new LicenseAPI(context.rootState.user_session.token).getLicenseByID(app.app_id, (err, license) => {
+            new LicenseAPI(context.rootState.user_session.token).getLicenseByID(app_id, (err, license) => {
                 if (!err) {
-
                     resolve(license)
                 } else {
                     console.log('#####err RETRIEVE_LICENSE_BY_ID :', err);
