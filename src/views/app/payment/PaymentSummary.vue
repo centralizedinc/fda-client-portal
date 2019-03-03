@@ -248,6 +248,14 @@ export default {
         formDetails: this.app_form,
         paymentDetails: this.fees_form
       }
+      full_details.formDetails.general_info.product_type = this.getProduct(full_details.formDetails.general_info.product_type) 
+      full_details.formDetails.general_info.primary_activity = this.getPrimary(full_details.formDetails.general_info.primary_activity)
+      full_details.formDetails.general_info.declared_capital = this.getDeclared(full_details.formDetails.general_info.declared_capital)
+      full_details.formDetails.addresses.region = this.getRegionName(full_details.formDetails.addresses.region)
+      full_details.formDetails.addresses.province = this.getProvinceName(full_details.formDetails.addresses.province)
+      full_details.formDetails.addresses.city = this.getCityName(full_details.formDetails.addresses.city)
+      full_details.formDetails.application_type = this.getAppType(full_details.formDetails.application_type)
+      console.log("fulldetails data: " + JSON.stringify(full_details))
       this.$print(full_details, "PAY");
 console.log("application form data: " + JSON.stringify(this.app_form))
 console.log("fees form data: " + JSON.stringify(this.fees_form))
