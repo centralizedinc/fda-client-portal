@@ -9,18 +9,18 @@ export default class CaseAPI {
         axios.defaults.headers.common['access_token'] = token;
     }
 
-    // getLicenseCases() {
-    //     return axios.get('lto-api/case');
-    // }
-
-    getLicenseCases(cb){
-        axios.get('lto-api/case').then((result) => {
-            cb(result.data.errors, result.data.model)
-        }).catch(err => {
-            console.log('######getLicenses error :', err)
-            cb(err)
-        })
+    getLicenseCases() {
+        return axios.get('lto-api/case');
     }
+
+    // getLicenseCases(cb){
+    //     axios.get('lto-api/case').then((result) => {
+    //         cb(result.data.errors, result.data.model)
+    //     }).catch(err => {
+    //         console.log('######getLicenses error :', err)
+    //         cb(err)
+    //     })
+    // }
 
     getCertificateCases(cb) {
         cb();
