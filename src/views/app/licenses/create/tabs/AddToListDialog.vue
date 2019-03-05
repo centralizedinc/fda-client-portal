@@ -29,7 +29,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn ripple raised block color="success" @click="$emit('add')">Add</v-btn>
+          <v-btn ripple raised block color="success" @click="$emit('submit')">Submit</v-btn>
           <!-- <v-btn ripple raised block color="success" @click="$emit('save')">Save</v-btn> -->
         </v-card-actions>
       </v-card>

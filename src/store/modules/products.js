@@ -80,6 +80,7 @@ var actions = {
                     if (result.data.success) {
                         products.prod_line = result.data.model;
                         context.commit("SET_PROD_LINE", result.data.model);
+                        console.log('products :', products);
                         resolve(products)
                     } else {
                         reject(result.data.errors);

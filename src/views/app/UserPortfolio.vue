@@ -1,10 +1,55 @@
 <template>
   <v-layout row wrap>
-    <v-flex xs12>
+    <!-- Active License -->
+    <v-flex xs12 mb-2>
+      <div class="headline">Active License</div>
+    </v-flex>
+    <v-card
+      color="fdaTan"
+      class="dCard"
+      style="background: linear-gradient(180deg, #CAD0A0 0%, #E0E4C8 100%); ; box-shadow:0 6px 20px 0 rgba(145, 180, 150, 1)"
+    >
+      <v-card-title>
+        <v-avatar class="mr-3" color="grey">
+          <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
+        </v-avatar>
+        <span class="headline font-weight-bold">License No.: {{details.license_details.license_no}}</span>
+        <v-spacer></v-spacer>
+      </v-card-title>
+      <v-divider></v-divider>
+      <v-card-text>
+        <v-container grid-list-xl>
+          <v-layout row wrap class="subheading">
+            <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Case No:</v-flex>
+            <v-flex xs12 md6 lg3 xl2>{{details.case_details.case_no}}</v-flex>
+            <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Status:</v-flex>
+            <v-flex
+              xs12
+              md6
+              lg3
+              xl2
+              style="text-transform: uppercase"
+              :class="`${getAppStatusColor(details.case_details.status)}--text font-weight-bold` "
+            >{{getAppStatus(details.case_details.status)}}</v-flex>
+            <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">License Expiry:</v-flex>
+            <v-flex
+              xs12
+              md6
+              lg3
+              xl2
+            >{{details.license_details.license_expiry ? formatDate(details.license_details.license_expiry) : "-"}}</v-flex>
+            <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Primary:</v-flex>
+            <v-flex xs12 md6 lg3 xl2>{{getPrimary(details.case_details.primary_activity)}}</v-flex>
+          </v-layout>
+        </v-container>
+      </v-card-text>
+    </v-card>
+
+    <!-- Cards -->
+    <v-flex xs12 mt-5>
       <div class="headline">Overview</div>
     </v-flex>
-
-    <v-flex xs12 md6 lg3 pa-2>
+    <!-- <v-flex xs12 md6 lg3 pa-2>
       <v-card>
         <v-tooltip top>
           <v-btn
@@ -31,8 +76,8 @@
           color="primary"
         ></dashboard-card>
       </v-card>
-    </v-flex>
-    <v-flex xs12 md6 lg3 pa-2>
+    </v-flex>-->
+    <v-flex xs12 md6 lg4 pa-2>
       <v-card>
         <v-tooltip top>
           <v-btn
@@ -59,7 +104,7 @@
         ></dashboard-card>
       </v-card>
     </v-flex>
-    <v-flex xs12 md6 lg3 pa-2>
+    <v-flex xs12 md6 lg4 pa-2>
       <v-card>
         <v-tooltip top>
           <v-btn
@@ -79,14 +124,14 @@
         <dashboard-card
           class="dcard"
           icon="fas fa-file-invoice"
-          title="Notification"
+          title="Product Notification"
           description="Count"
           details="2"
           color="fdaOrange"
         ></dashboard-card>
       </v-card>
     </v-flex>
-    <v-flex xs12 md6 lg3 pa-2>
+    <v-flex xs12 md6 lg4 pa-2>
       <v-card>
         <v-tooltip top>
           <v-btn
@@ -113,6 +158,7 @@
         ></dashboard-card>
       </v-card>
     </v-flex>
+
     <v-flex xs12 mt-5>
       <div class="headline">Reference</div>
     </v-flex>
@@ -237,6 +283,7 @@ import DashboardCard from "@/components/DashboardCards";
 export default {
   components: { DashboardCard },
   data: () => ({
+    details: {},
     date2: new Date().toISOString().substr(0, 10),
     items: [
       { header: "Today" },
@@ -273,6 +320,9 @@ export default {
     ],
     task: null
   }),
+  created() {
+    this.init();
+  },
   computed: {
     completedTasks() {
       return this.tasks.filter(task => task.done).length;
@@ -285,6 +335,22 @@ export default {
     }
   },
   methods: {
+    init() {
+      this.details = this.$store.state.licenses.details;
+      this.$store
+        .dispatch("GET_ACTIVE_AND_CASES")
+        .then(result => {
+          console.log("JSON.stringify(result) :", JSON.stringify(result));
+          this.details = result;
+          return this.$store.dispatch("GET_TASKS");
+        })
+        .then(result => {
+          console.log("result :", result);
+        })
+        .catch(err => {
+          console.log("err :", err);
+        });
+    },
     functionEvents(date) {
       const [, , day] = date.split("-");
       if ([12, 17, 28].includes(parseInt(day, 10))) return true;

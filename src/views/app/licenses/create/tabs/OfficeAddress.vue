@@ -61,13 +61,13 @@
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12 pa-5>
-      <address-map 
+      <address-map
         :city="form.addresses.office.city"
         :province="form.addresses.office.province"
         :region="form.addresses.office.region"
-        :edit="true" @pin="setOfficeLocation">
-      </address-map>
-
+        :edit="true"
+        @pin="setOfficeLocation"
+      ></address-map>
     </v-flex>
     <v-flex xs12>
       <!-- Warehouse list -->
@@ -93,7 +93,7 @@
             slot="activator"
             large
             block
-            @click="addToListDialog=true"
+            @click="addItem"
             style="box-shadow: none !important"
           >
             <v-icon color="success">fas fa-plus fa-3x</v-icon>
@@ -103,7 +103,7 @@
 
       <warehouse-list
         :show="addToListDialog"
-        @add="add"
+        @submit="submit"
         @cancel="addToListDialog=false"
         title="Warehouse Address"
       >
@@ -169,18 +169,18 @@
             ></v-autocomplete>
           </v-flex>
           <v-flex xs12 pa-5>
-              <address-map 
-                :city="warehouse.city"
-                :province="warehouse.province"
-                :region="warehouse.region"
-                :edit="true">
-              </address-map>
+            <address-map
+              :city="warehouse.city"
+              :province="warehouse.province"
+              :region="warehouse.region"
+              :edit="true"
+            ></address-map>
           </v-flex>
         </template>
       </warehouse-list>
       <v-layout row wrap>
         <v-flex xs12>
-          <v-data-table :headers="headers" :items="addedWarehouse" class="elevation-1">
+          <v-data-table :headers="headers" :items="form.addresses.warehouse" class="elevation-1">
             <template slot="items" slot-scope="props">
               <td>{{props.item.address}}</td>
               <td>{{props.item.city}}</td>
@@ -195,7 +195,7 @@
                         flat
                         icon
                         color="primary"
-                        @click="editItem(props.item)"
+                        @click="editItem(props.item, props.index)"
                       >
                         <v-icon color="success" small>edit</v-icon>
                       </v-btn>Edit item
@@ -208,7 +208,7 @@
                         flat
                         icon
                         color="primary"
-                        @click="deleteItem(props.item)"
+                        @click="deleteItem(props.index)"
                       >
                         <v-icon color="error" small>fas fa-trash-alt</v-icon>
                       </v-btn>Delete item
@@ -248,7 +248,7 @@
           class="input-group--focused"
         ></v-textarea>
       </v-flex>
-      <v-flex xs12  md3 pa-2>
+      <v-flex xs12 md3 pa-2>
         <v-autocomplete
           color="green darken-1"
           v-model="form.addresses.plant.region"
@@ -261,7 +261,7 @@
           :rules="[rules.required]"
         ></v-autocomplete>
       </v-flex>
-      <v-flex xs12  md3 pa-2>
+      <v-flex xs12 md3 pa-2>
         <v-autocomplete
           color="green darken-1"
           v-model="form.addresses.plant.province"
@@ -274,7 +274,7 @@
           :rules="[rules.required]"
         ></v-autocomplete>
       </v-flex>
-      <v-flex xs12  md3 pa-2>
+      <v-flex xs12 md3 pa-2>
         <v-autocomplete
           color="green darken-1"
           v-model="form.addresses.plant.city"
@@ -287,7 +287,7 @@
           :rules="[rules.required]"
         ></v-autocomplete>
       </v-flex>
-      <v-flex xs12  md3 pa-2>
+      <v-flex xs12 md3 pa-2>
         <v-autocomplete
           color="green darken-1"
           v-model="form.addresses.plant.zipcode"
@@ -299,12 +299,13 @@
         ></v-autocomplete>
       </v-flex>
       <v-flex xs12 pa-5>
-        <address-map 
-        :city="form.addresses.plant.city"
-        :province="form.addresses.plant.province"
-        :region="form.addresses.plant.region"
-        :edit="true" @pin="setPlantLocation">
-      </address-map>
+        <address-map
+          :city="form.addresses.plant.city"
+          :province="form.addresses.plant.province"
+          :region="form.addresses.plant.region"
+          :edit="true"
+          @pin="setPlantLocation"
+        ></address-map>
       </v-flex>
     </v-layout>
   </v-layout>
@@ -318,6 +319,8 @@ export default {
   },
   props: ["form"],
   data: () => ({
+    mode: 0,
+    selected_index: -1,
     addToListDialog: false,
     headers: [
       {
@@ -359,19 +362,23 @@ export default {
   created() {
     this.init();
   },
+  watch: {
+    addToListDialog(val) {
+      if (!val) this.warehouse = {};
+    }
+  },
   methods: {
     init() {
       // this.$store.dispatch("GET_REGION").then(result => {
       //   this.regions = this.$store.state.places.regions;
       // });
-      this.$store.dispatch('GET_PLACES_REFERENCE')
-      .then(locations=>{
-        if(locations){
-          this.regions=locations.regions;
-          this.provinces = locations.provinces
-          this.cities = locations.provinces
+      this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
+        if (locations) {
+          this.regions = locations.regions;
+          this.provinces = locations.provinces;
+          this.cities = locations.provinces;
         }
-      })
+      });
     },
     getProvinces() {
       this.$store
@@ -397,12 +404,25 @@ export default {
           this.provinces = this.$store.state.places.provinces;
         });
     },
-    add() {
-      this.form.addresses.warehouse.push(this.warehouse);
-      this.addedWarehouse.push(this.warehouse);
+    setOfficeLocation(loc) {
+      console.log("setting office location... " + JSON.stringify(loc));
+      this.form.addresses.office.location = loc;
+    },
+    setPlantLocation(loc) {
+      console.log("setting plant location... " + JSON.stringify(loc));
+      this.form.addresses.plant.location = loc;
+    },
+    submit() {
+      if (this.mode === 0) {
+        console.log("index :", this.warehouse);
+        this.form.addresses.warehouse.push(this.warehouse);
+      } else if (this.mode === 1) {
+        this.form.addresses.warehouse[this.selected_index] = this.warehouse;
+      }
       this.clearForm();
     },
     clearForm() {
+      this.selected_index = -1;
       this.warehouse = {
         address: "",
         region: "",
@@ -415,37 +435,44 @@ export default {
     },
     deleteItem(item) {
       confirm("Are you sure you want to delete this item?") &&
-        this.addedWarehouse.splice(item, 1);
+        this.form.addresses.warehouse.splice(item, 1);
     },
-    editItem(item) {
-      this.warehouse = Object.assign({}, item);
+    editItem(item, index) {
+      this.mode = 1;
+      this.selected_index = index;
+      this.warehouse = item;
       this.addToListDialog = true;
     },
-    setOfficeLocation(loc){
-      console.log('setting office location... ' + JSON.stringify(loc))
-      this.form.addresses.office.location = loc;
-    },
-    setPlantLocation(loc){
-      console.log('setting plant location... ' + JSON.stringify(loc))
-      this.form.addresses.plant.location = loc;
+    addItem() {
+      this.mode = 0;
+      this.warehouse = {
+        address: "",
+        region: "",
+        province: "",
+        city: "",
+        zipcode: "",
+        location: ""
+      };
+      console.log("index :", this.warehouse);
+      this.addToListDialog = true;
     }
   },
-  computed:{
-    filtered_provinces(){
+  computed: {
+    filtered_provinces() {
       // this.form.addresses.office.province = null;
-      return this.findProvinces(this.form.addresses.office.region)
+      return this.findProvinces(this.form.addresses.office.region);
     },
-     filtered_cities(){
+    filtered_cities() {
       //  this.form.addresses.office.city = null;
-      return this.findCities(this.form.addresses.office.province)
+      return this.findCities(this.form.addresses.office.province);
     },
-    filtered_plant_provinces(){
+    filtered_plant_provinces() {
       // this.form.addresses.plant.province = null;
-      return this.findProvinces(this.form.addresses.plant.region)
+      return this.findProvinces(this.form.addresses.plant.region);
     },
-     filtered_plant_cities(){
+    filtered_plant_cities() {
       //  this.form.addresses.plant.city = null;
-      return this.findCities(this.form.addresses.plant.province)
+      return this.findCities(this.form.addresses.plant.province);
     }
   }
 };

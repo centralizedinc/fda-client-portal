@@ -8,7 +8,7 @@ export default {
           return apps[status];
         },
         getAppStatusColor(status) {
-          var app_status_color = ["blue", "green", "deep-orange", "red", "red"];
+          var app_status_color = ["fdaOrange", "fdaGreen", "fdaBlueGreen", "red", "red"];
           return app_status_color[status]
         },
         getAppType(type) {
