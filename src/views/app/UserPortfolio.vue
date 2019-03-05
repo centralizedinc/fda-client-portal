@@ -6,14 +6,16 @@
     </v-flex>
     <v-card
       color="fdaTan"
-      class="dCard"
-      style="background: linear-gradient(180deg, #CAD0A0 0%, #E0E4C8 100%); ; box-shadow:0 6px 20px 0 rgba(145, 180, 150, 1)"
+      class="elevation-5"
+      style="background: linear-gradient(180deg, #CAD0A0 50%, #C3D0A0 100%); ; box-shadow:0 6px 20px 0 rgba(79, 0, 44, 71)"
     >
       <v-card-title>
         <v-avatar class="mr-3" color="grey">
           <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
         </v-avatar>
-        <span class="headline font-weight-bold">License No.: {{details.license_details.license_no}}</span>
+        <span
+          class="headline font-weight-medium"
+        >License No.: {{details.license_details.license_no}}</span>
         <v-spacer></v-spacer>
       </v-card-title>
       <v-divider></v-divider>
@@ -162,119 +164,75 @@
     <v-flex xs12 mt-5>
       <div class="headline">Reference</div>
     </v-flex>
-    <!-- Calendar -->
-    <v-layout row wrap>
-      <v-flex xs6 md6 ml-2 class="my-3">
-        <v-card class="dcard" width="calc(100% - 10px)">
-          <v-date-picker
-            width="calc(100% - 10px)"
-            v-model="calendar"
-            :event-color="date => date[9] % 2 ? 'red' : 'yellow'"
-            :events="functionEvents"
-          ></v-date-picker>
-        </v-card>
-      </v-flex>
-      <!-- USer Activity -->
-      <v-flex mt-3 ml-2>
-        <v-card width="calc(100% - 10px)" class="dcard" height="410">
-          <v-toolbar
-            width="calc(100% - 10px)"
-            style="background: linear-gradient(45deg, #e0c71c 0%, #e9d758 100%);"
-          >
-            <v-toolbar-title>User Activity</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>more_vert</v-icon>
-            </v-btn>
-          </v-toolbar>
 
-          <v-list two-line width>
-            <template v-for="(item, index) in items">
-              <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
-              <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
-              <v-list-tile v-else avatar :key="index">
-                <v-list-tile-avatar>
-                  <img :src="item.avatar">
-                </v-list-tile-avatar>
-                <v-list-tile-content>
-                  <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                  <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-            </template>
-          </v-list>
-          <v-divider></v-divider>
-          <v-card-actions>
-            <v-btn flat block color="success">view more</v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
-      <!-- Reminders -->
-      <v-flex mt-3 ml-2>
-        <v-card class="dcard" width="calc(100% - 10px)">
-          <v-text-field
-            v-model="task"
-            label="Reminder / To do's"
-            box
-            color="green"
-            @keydown.enter="create"
-          >
-            <v-fade-transition slot="append">
-              <v-icon v-if="task" @click="create">add_circle</v-icon>
-            </v-fade-transition>
-          </v-text-field>
+    <!-- User Activity -->
+    <v-flex xs7 mt-3 ml-2>
+      <v-card width="calc(100% - 10px)" class="dcard" height="410">
+        <v-toolbar
+          width="calc(100% - 10px)"
+          style="background: linear-gradient(45deg, #e0c71c 0%, #e9d758 100%);"
+        >
+          <v-toolbar-title>User Activity</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon>
+            <v-icon>more_vert</v-icon>
+          </v-btn>
+        </v-toolbar>
 
-          <h2 class="display-2 fdaOrange--text pl-3">Tasks:&nbsp;
-            <v-fade-transition leave-absolute>
-              <span :key="`tasks-${tasks.length}`">{{ tasks.length }}</span>
-            </v-fade-transition>
-          </h2>
+        <v-list two-line width>
+          <template v-for="(item, index) in items">
+            <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
+            <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
+            <v-list-tile v-else avatar :key="index">
+              <v-list-tile-avatar>
+                <img :src="item.avatar">
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </template>
+        </v-list>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn flat block color="success">view more</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-flex>
 
-          <v-divider class="mt-3"></v-divider>
+    <!-- For Compliance -->
+    <v-flex mt-3 ml-2>
+      <v-card class="dcard" height="410">
+        <v-toolbar style="background: linear-gradient(45deg, #006400 0%, #0F901A 100%);">
+          <v-toolbar-title>For Compliance</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-btn icon>
+            <v-icon>more_vert</v-icon>
+          </v-btn>
+        </v-toolbar>
 
-          <v-layout my-1 align-center>
-            <strong class="mx-3 info--text text--darken-3">Remaining: {{ remainingTasks }}</strong>
-
-            <v-divider vertical></v-divider>
-
-            <strong class="mx-3 black--text">Completed: {{ completedTasks }}</strong>
-
-            <v-spacer></v-spacer>
-
-            <v-progress-circular :value="progress" class="mr-2"></v-progress-circular>
-          </v-layout>
-
-          <v-divider class="mb-3"></v-divider>
-
-          <v-card v-if="tasks.length > 0">
-            <v-slide-y-transition class="py-0" group tag="v-list">
-              <template v-for="(task, i) in tasks">
-                <v-divider v-if="i !== 0" :key="`${i}-divider`"></v-divider>
-
-                <v-list-tile :key="`${i}-${task.text}`">
-                  <v-list-tile-action>
-                    <v-checkbox v-model="task.done" color="info darken-3">
-                      <div
-                        slot="label"
-                        :class="task.done && 'grey--text' || 'text--primary'"
-                        class="ml-3"
-                        v-text="task.text"
-                      ></div>
-                    </v-checkbox>
-                  </v-list-tile-action>
-
-                  <v-spacer></v-spacer>
-
-                  <v-scroll-x-transition>
-                    <v-icon v-if="task.done" color="success">check</v-icon>
-                  </v-scroll-x-transition>
-                </v-list-tile>
-              </template>
-            </v-slide-y-transition>
-          </v-card>
-        </v-card>
-      </v-flex>
-    </v-layout>
+        <v-list two-line width>
+          <template v-for="(item, index) in items">
+            <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
+            <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
+            <v-list-tile v-else avatar :key="index">
+              <v-list-tile-avatar>
+                <img :src="item.avatar">
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+              </v-list-tile-content>
+            </v-list-tile>
+          </template>
+        </v-list>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn flat block color="success">view more</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-flex>
   </v-layout>
 </template>
 

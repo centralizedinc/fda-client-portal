@@ -39,11 +39,11 @@ export default {
   computed: {
     style() {
       if (this.color === "fdaBlueGreen") {
-        return "background:linear-gradient(3600deg, #297373 0%, #5FA391 100%); box-shadow: 0 6px 20px 0 rgba(244, 143, 177, 0.5); ";
+        return "background:linear-gradient(360deg, #297373 0%, #5FA391 100%); box-shadow: 0 6px 20px rgba(101, 198, 187, 1); ";
       } else if (this.color === "fdaOrange") {
-        return "background: linear-gradient(360deg, #F1961D 0%, #F58555  100%); box-shadow: 0 6px 20px 0 rgba(255, 111, 0, 0.3) ";
+        return "background: linear-gradient(360deg, #F1961D 0%, #F58555  100%); box-shadow: 0 6px 20px 0 rgba(228, 120, 51, 1) ";
       } else if (this.color === "fdaGold") {
-        return "background: linear-gradient(360deg, 	#95A523 0%, #B5C25A  100%); box-shadow: 0 6px 20px 0 rgba(77, 182, 172, 0.5)";
+        return "background: linear-gradient(360deg, #95A523 0%, #B5C25A  100%); box-shadow: 0 6px 20px 0 rgba(200, 247, 197, 1)";
       } else {
         return "background:linear-gradient(360deg, #0F901A 0%, #97C76E 100%); box-shadow:0 6px 20px 0 rgba(38, 198, 218, 0.5)";
       }

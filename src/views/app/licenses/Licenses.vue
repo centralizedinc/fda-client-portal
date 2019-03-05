@@ -7,7 +7,7 @@
         <v-card
           color="fdaTan"
           class="elevation-5"
-          style="background: linear-gradient(180deg, #CAD0A0 0%, #E0E4C8 100%); ; box-shadow:0 6px 20px 0 rgba(79, 0, 44, 71)"
+          style="background: linear-gradient(180deg, #CAD0A0 50%, #C3D0A0 100%); ; box-shadow:0 6px 20px 0 rgba(79, 0, 44, 71)"
         >
           <v-card-title>
             <v-avatar class="mr-3" color="grey">
@@ -25,7 +25,7 @@
             >
               <template v-slot:activator>
                 <v-tooltip top>
-                  <v-btn slot="activator" v-model="fab" color="fdaGray" dark flat fab>
+                  <v-btn slot="activator" v-model="fab" color="fdaGreen" dark flat fab>
                     <v-icon>{{ fab ? "close" : "menu"}}</v-icon>
                   </v-btn>Close
                 </v-tooltip>
@@ -46,7 +46,7 @@
                 </v-btn>Renewal
               </v-tooltip>
               <v-tooltip top>
-                <v-btn slot="activator" fab dark color="fdaGreen" @click="confirmPrinting">
+                <v-btn slot="activator" fab dark color="fdaYellow" @click="confirmPrinting">
                   <v-icon>print</v-icon>
                 </v-btn>Print
               </v-tooltip>
@@ -176,7 +176,7 @@ export default {
       headers: [
         { text: "Case No", value: "case_no" },
         { text: "Type", value: "application_type" },
-        { text: "Status", value: "status" },
+        { text: "Status", value: "status", sortable: true },
         { text: "Current Task", value: "current_task" },
         { text: "Current User", value: "current_assigned_user" },
         { text: "Date Created", value: "date_created" },

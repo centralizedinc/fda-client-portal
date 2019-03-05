@@ -21,7 +21,8 @@
                 v-model="window"
                 class="elevation-5 mt-3"
                 style="border-radius: 8px"
-                vertical>
+                vertical
+              >
                 <v-window-item v-for="n in title" :key="n">
                   <v-layout align-start justify-start row fill-height>
                     <v-flex>
@@ -91,7 +92,7 @@
         </v-layout>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="info" @click="$emit('back')" block>back</v-btn>
+        <v-btn color="success" @click="$emit('back')" block>back</v-btn>
       </v-card-actions>
     </v-card>
   </v-layout>
