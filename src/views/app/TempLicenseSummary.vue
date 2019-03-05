@@ -255,6 +255,26 @@ export default {
         .catch(err => {
           console.log("loading user status error: " + err);
         });
+
+
+
+
+      this.details = this.$store.state.licenses.details;
+      this.$store
+        .dispatch("GET_ACTIVE_AND_CASES")
+        .then(result => {
+          console.log("JSON.stringify(result) GET_ACTIVE_AND_CASES :", JSON.stringify(result));
+          this.details = result;
+          return this.$store.dispatch("GET_TASKS");
+        })
+        .then(result => {
+          console.log("result GET_TASKS :", JSON.stringify(result));
+        })
+        .catch(err => {
+          console.log("err :", err);
+        });
+
+
     }
   }
 };

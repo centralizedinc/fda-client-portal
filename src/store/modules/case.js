@@ -30,6 +30,17 @@ var actions = {
                 reject(err)
             });
         })
+    },
+    SAVE_COMPLY(context, comply){
+        return new Promise((resolve, reject) => {
+            new CaseAPI(context.rootState.user_session.token).submitCompliance(comply, (err, result) =>{
+                if(!err){
+                    resolve()
+                }else{
+                    reject()
+                }
+            })
+        })
     }
 }
 
