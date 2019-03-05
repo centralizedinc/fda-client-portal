@@ -5,11 +5,11 @@
         <v-layout align-start justify-start row fill-height>
           <v-flex xs3 mr-5 mt-3 pt-3 pr-5>
             <v-item-group v-model="window" class="shrink mr-5" mandatory tag="v-flex">
-              <v-item v-for="n in title.length" :key="n">
+              <v-item v-for="n in title" :key="n">
                 <div class="mr-5 pr-5" left slot-scope="{ active, toggle }">
                   <v-btn class="text-align: left" ripple flat @click="toggle">
                     <v-icon>mdi-record</v-icon>
-                    {{title[n]}}
+                    {{n}}
                   </v-btn>
                 </div>
               </v-item>
@@ -23,7 +23,7 @@
                 style="border-radius: 8px"
                 vertical
               >
-                <v-window-item v-for="n in title.length" :key="n">
+                <v-window-item v-for="n in title" :key="n">
                   <v-layout align-start justify-start row fill-height>
                     <v-flex>
                       <v-card flat>
@@ -33,7 +33,7 @@
                               <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
                             </v-avatar>
 
-                            <strong class="title text-transform: uppercase">{{ title[n] }}</strong>
+                            <strong class="title text-transform: uppercase">{{ n }}</strong>
                             <v-spacer></v-spacer>
                             <v-btn icon>
                               <v-icon>mdi-account</v-icon>
@@ -80,6 +80,38 @@
                           <v-card flat v-show="window===5">
                             <!-- Display if PENDING or PAID TRANSACTION -->
                             <pending-trans :form="form" :allow_paylater="false"></pending-trans>
+                          </v-card>
+
+                          <!-- COmpliance -->
+                          <v-card flat v-show="window===6">
+                            <v-flex mt-3 ml-2>
+                              <v-list two-line width>
+                                <template v-for="(item, index) in items">
+                                  <v-subheader
+                                    v-if="item.header"
+                                    :key="item.header"
+                                  >{{ item.header }}</v-subheader>
+                                  <v-divider
+                                    v-else-if="item.divider"
+                                    :inset="item.inset"
+                                    :key="index"
+                                  ></v-divider>
+                                  <v-list-tile v-else avatar :key="index">
+                                    <v-list-tile-avatar>
+                                      <img :src="item.avatar">
+                                    </v-list-tile-avatar>
+                                    <v-list-tile-content>
+                                      <v-list-tile-title v-html="item.title"></v-list-tile-title>
+                                      <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                                    </v-list-tile-content>
+                                  </v-list-tile>
+                                </template>
+                              </v-list>
+                              <v-divider></v-divider>
+                              <v-card-actions>
+                                <v-btn flat block color="success">view more</v-btn>
+                              </v-card-actions>
+                            </v-flex>
                           </v-card>
                         </v-card-text>
                       </v-card>
@@ -202,7 +234,6 @@ export default {
         }
       ]
     },
-    length: 3,
     window: 0,
     headers: [
       {
@@ -232,13 +263,36 @@ export default {
       }
     ],
     title: [
-      "",
       "Summary",
       "Application Data",
       "Uploaded Files",
       "Output Documents",
       "History",
-      "Payment"
+      "Payment",
+      "Compliance"
+    ],
+    items: [
+      { header: "Today" },
+      {
+        avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
+        title: "Authorized Officer",
+        subtitle:
+          "<span class='text--primary'>Chz Quiocho</span> &mdash; Applied Certificate for Food"
+      },
+      { divider: true, inset: true },
+      {
+        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
+        title: "Cashier ",
+        subtitle:
+          "<span class='text--primary'>Godfrey Rivera</span> &mdash; accepted License Application "
+      },
+      { divider: true, inset: true },
+      {
+        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
+        title: "Authorized Officer",
+        subtitle:
+          "<span class='text--primary'>Chz Quiocho</span> &mdash; Renewed License 0001111"
+      }
     ]
   }),
   created() {
