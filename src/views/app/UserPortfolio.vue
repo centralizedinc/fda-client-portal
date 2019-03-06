@@ -303,18 +303,14 @@ export default {
       this.$store
         .dispatch("GET_ACTIVE_AND_CASES")
         .then(result => {
-          console.log("JSON.stringify(result) :", JSON.stringify(result));          
+          console.log("JSON.stringify(result) :" + JSON.stringify(result));          
           this.details = result;
-<<<<<<< HEAD
           console.log("details user portfolio: " + JSON.stringify(this.details))
           for(var x = result.case_details.activities.length;x>=0;x--){
             console.log("for user portfolio: " + JSON.stringify(result.case_details.activities[x]))
           }
           this.activities = result.case_details.activities
           console.log("activities user portfolio: " + JSON.stringify(this.activities))
-=======
-          this.activities = result.case_details.activities;
->>>>>>> 0c0144c3e23d680e081a4862954f755abc902408
           return this.$store.dispatch("GET_TASKS");
         })
         .then(result => {
