@@ -6,17 +6,17 @@
         <div class="headline font-weight-thin" style="text-transform: uppercase">Active License</div>
       </v-flex>
       <v-flex xs12>
-        <v-card color="#DCEFDE">
+        <v-card color="fdaSilver" class="elevation-15">
           <v-card-title
-            style="background:linear-gradient(360deg, #0F901A 0%, #97C76E 100%); box-shadow:0 6px 20px 0 rgba(38, 198, 218, 0.5)"
+            style="background: linear-gradient(360deg, #104B2A 0%, #b5c25a 100%)
+ box-shadow:0 6px 20px 0 rgba(38, 198, 218, 0.5)"
           >
             <v-avatar class="mr-3" color="grey">
               <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
             </v-avatar>
             <span class="headline">License No.: {{details.license_details.license_no}}</span>
-            <v-spacer></v-spacer>
           </v-card-title>
-          <v-divider></v-divider>
+          <v-divider inset></v-divider>
           <v-card-text>
             <v-container grid-list-xl>
               <v-layout row wrap class="subheading">
@@ -78,7 +78,7 @@
           ></dashboard-card>
         </v-card>
       </v-flex>-->
-      <v-flex xs12 md6 lg4 pa-2>
+      <v-flex xs12 md4 lg4 pa-2>
         <v-card>
           <v-tooltip top>
             <v-btn
@@ -105,7 +105,7 @@
           ></dashboard-card>
         </v-card>
       </v-flex>
-      <v-flex xs12 md6 lg4 pa-2>
+      <v-flex xs12 md4 lg4 pa-2>
         <v-card>
           <v-tooltip top>
             <v-btn
@@ -132,7 +132,7 @@
           ></dashboard-card>
         </v-card>
       </v-flex>
-      <v-flex xs12 md6 lg4 pa-2>
+      <v-flex xs12 md4 lg4 pa-2>
         <v-card>
           <v-tooltip top>
             <v-btn
@@ -166,7 +166,7 @@
 
     <!-- REFERENCE -->
     <!-- User Activity -->
-    <v-flex xs7 mt-3 ml-2>
+    <v-flex xs12 md6 pa-2>
       <v-card class="dcard" height="410">
         <v-toolbar
           width="calc(100% - 10px)"
@@ -199,14 +199,11 @@
             <v-divider inset></v-divider>
           </template>
         </v-list>
-        <!-- <v-card-actions>
-          <v-btn flat block color="success">view more</v-btn>
-        </v-card-actions>-->
       </v-card>
     </v-flex>
 
     <!-- For Compliance -->
-    <v-flex mt-3 ml-2>
+    <v-flex xs12 md6 pa-2>
       <v-card class="dcard" height="410">
         <v-toolbar style="background: linear-gradient(45deg, #939D51 0%, #CAD0A0 100%);">
           <v-toolbar-title>For Compliance</v-toolbar-title>
