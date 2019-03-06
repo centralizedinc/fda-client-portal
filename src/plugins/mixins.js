@@ -21,6 +21,7 @@ export default {
             var task = this.$store.state.tasks.tasks.find(x => {
               return x._id.toString() === task_id;
             });
+            console.log("returned task: " + JSON.stringify(task))
             return task ? task : {};
           } else {
             return null;

@@ -180,16 +180,19 @@
         </v-toolbar>
 
         <v-list two-line width>
-          <template v-for="(item, index) in items">
-            <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
-            <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
-            <v-list-tile v-else avatar :key="index">
+          <template v-for="(item, index) in activities">
+            <!-- <v-subheader v-if="item.header" :key="item.header"></v-subheader> -->
+            <!-- <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider> -->
+            <v-list-tile :key="index">
               <v-list-tile-avatar>
-                <img :src="item.avatar">
+                <img :src="items.avatar">
               </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                <!-- <v-list-tile-title v-html="item.title"></v-list-tile-title> -->
+                <v-list-tile-title>{{formatDt(item.date_completed)}} </v-list-tile-title>
+                <v-list-tile-sub-title>{{getTask(item.task_id).name}}  {{item.assigned_user}} {{getAppType(details.license_details.application_type)}} {{details.license_details.case_no}}</v-list-tile-sub-title>
+                <!-- + {{getAppType(details.license_details.application_type)}} + {{details.license_details.case_no}} -->
+                <!-- <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title> -->
               </v-list-tile-content>
             </v-list-tile>
           </template>
@@ -266,6 +269,7 @@ export default {
           "<span class='text--primary'>Chz Quiocho</span> &mdash; Renewed License 0001111"
       }
     ],
+    activities: null,
     tasks: [
       {
         done: false,
@@ -300,10 +304,11 @@ export default {
         .then(result => {
           console.log("JSON.stringify(result) :", JSON.stringify(result));
           this.details = result;
+          this.activities = result.case_details.activities
           return this.$store.dispatch("GET_TASKS");
         })
         .then(result => {
-          console.log("result :", result);
+          console.log("result :" + JSON.stringify(result));
         })
         .catch(err => {
           console.log("err :", err);
