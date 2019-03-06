@@ -97,30 +97,22 @@
           var details = {
             productType: this.form.general_info.product_type,
             primaryActivity: this.form.general_info.primary_activity,
-            declaredCapital: "5c106397b19f7a29c4096aba",
+            declaredCapital: this.form.general_info.declared_capital,
             appType: this.form.application_type
           }
           this.$store
             .dispatch("GET_CASES")
             .then(result => {
               this.cases = result;
-              console.log("all case data: " + JSON.stringify(this.cases))
-              console.log("this cases data: " + JSON.stringify(this.cases))
               this.cases.forEach(element => {
-                console.log("element data load fees: " + JSON.stringify(element.case_no))
-                console.log("form data load fees: " + JSON.stringify(this.form.case_no))
                 if (element.case_no === this.form.case_no) {
-                  console.log("element this: " + JSON.stringify(element))
                   this.case_holder = element
-                  console.log("case holder data: " + JSON.stringify(this.case_holder.current_task_name))
                 }
               })
               // return this.$store.dispatch("GET_FEES", details)
             })
-          console.log("load fees new license: " + JSON.stringify(details))
           this.$store.dispatch("GET_FEES", details).then(result => {
             this.charges = result;
-            console.log("charges data payment details: " + JSON.stringify(this.charges))
           })
         } else {
           console.log("error no data found")

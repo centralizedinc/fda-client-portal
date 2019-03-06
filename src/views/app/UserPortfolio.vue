@@ -2,45 +2,49 @@
   <v-layout row wrap align-start>
     <template v-if="user.status === 2">
       <!-- Active License -->
-      <v-flex xs12 mb-2 >
+      <v-flex xs12 mb-2>
         <div class="headline font-weight-thin" style="text-transform: uppercase">Active License</div>
       </v-flex>
-      <v-card color="#DCEFDE">
-        <v-card-title style="background:linear-gradient(360deg, #0F901A 0%, #97C76E 100%); box-shadow:0 6px 20px 0 rgba(38, 198, 218, 0.5)">
-          <v-avatar class="mr-3" color="grey">
-            <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
-          </v-avatar>
-          <span class="headline"> License No.: {{details.license_details.license_no}}</span>
-          <v-spacer></v-spacer>
-        </v-card-title>
-        <v-divider></v-divider>
-        <v-card-text>
-          <v-container grid-list-xl>
-            <v-layout row wrap class="subheading">
-              <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Case No:</v-flex>
-              <v-flex xs12 md6 lg3 xl2>{{details.case_details.case_no}}</v-flex>
-              <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Status:</v-flex>
-              <v-flex
-                xs12
-                md6
-                lg3
-                xl2
-                style="text-transform: uppercase"
-                :class="`${getAppStatusColor(details.case_details.status)}--text font-weight-bold` "
-              >{{getAppStatus(details.case_details.status)}}</v-flex>
-              <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">License Expiry:</v-flex>
-              <v-flex
-                xs12
-                md6
-                lg3
-                xl2
-              >{{details.license_details.license_expiry ? formatDate(details.license_details.license_expiry) : "-"}}</v-flex>
-              <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Primary:</v-flex>
-              <v-flex xs12 md6 lg3 xl2>{{getPrimary(details.case_details.primary_activity)}}</v-flex>
-            </v-layout>
-          </v-container>
-        </v-card-text>
-      </v-card>
+      <v-flex xs12>
+        <v-card color="#DCEFDE">
+          <v-card-title
+            style="background:linear-gradient(360deg, #0F901A 0%, #97C76E 100%); box-shadow:0 6px 20px 0 rgba(38, 198, 218, 0.5)"
+          >
+            <v-avatar class="mr-3" color="grey">
+              <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
+            </v-avatar>
+            <span class="headline">License No.: {{details.license_details.license_no}}</span>
+            <v-spacer></v-spacer>
+          </v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-container grid-list-xl>
+              <v-layout row wrap class="subheading">
+                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Case No:</v-flex>
+                <v-flex xs12 md6 lg3 xl2>{{details.case_details.case_no}}</v-flex>
+                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Status:</v-flex>
+                <v-flex
+                  xs12
+                  md6
+                  lg3
+                  xl2
+                  style="text-transform: uppercase"
+                  :class="`${getAppStatusColor(details.case_details.status)}--text font-weight-bold` "
+                >{{getAppStatus(details.case_details.status)}}</v-flex>
+                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">License Expiry:</v-flex>
+                <v-flex
+                  xs12
+                  md6
+                  lg3
+                  xl2
+                >{{details.license_details.license_expiry ? formatDate(details.license_details.license_expiry) : "-"}}</v-flex>
+                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Primary:</v-flex>
+                <v-flex xs12 md6 lg3 xl2>{{getPrimary(details.case_details.primary_activity)}}</v-flex>
+              </v-layout>
+            </v-container>
+          </v-card-text>
+        </v-card>
+      </v-flex>
 
       <!-- Cards -->
       <v-flex xs12 mt-5>
@@ -163,7 +167,7 @@
     <!-- REFERENCE -->
     <!-- User Activity -->
     <v-flex xs7 mt-3 ml-2>
-      <v-card width="calc(100% - 10px)" class="dcard" height="410">
+      <v-card class="dcard" height="410">
         <v-toolbar
           width="calc(100% - 10px)"
           style="background: linear-gradient(45deg, #e0c71c 0%, #e9d758 100%);"
@@ -175,25 +179,29 @@
           </v-btn>
         </v-toolbar>
 
-        <v-list two-line width>
-          <template v-for="(item, index) in items">
-            <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
-            <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
-            <v-list-tile v-else avatar :key="index">
+        <v-list class="scrollList" three-line width>
+          <template v-for="(item, index) in activities">
+            <!-- <v-subheader v-if="item.header" :key="item.header"></v-subheader> -->
+            <!-- <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider> -->
+            <v-list-tile :key="index">
               <v-list-tile-avatar>
-                <img :src="item.avatar">
+                <img :src="items.avatar">
               </v-list-tile-avatar>
               <v-list-tile-content>
-                <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                <!-- <v-list-tile-title v-html="item.title"></v-list-tile-title> -->
+                <v-list-tile-title class="font-weight-bold">{{getTask(item.task_id).name}}</v-list-tile-title>
+                <v-list-tile-sub-title>{{item.assigned_user}} {{item.status}} {{getAppType(details.license_details.application_type)}} application with</v-list-tile-sub-title>
+                <v-list-tile-sub-title>Case No.: {{details.license_details.case_no}} on {{formatDate(item.date_completed)}}</v-list-tile-sub-title>
+                <!-- + {{getAppType(details.license_details.application_type)}} + {{details.license_details.case_no}} -->
+                <!-- <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title> -->
               </v-list-tile-content>
             </v-list-tile>
+            <v-divider inset></v-divider>
           </template>
         </v-list>
-        <v-divider></v-divider>
-        <v-card-actions>
+        <!-- <v-card-actions>
           <v-btn flat block color="success">view more</v-btn>
-        </v-card-actions>
+        </v-card-actions>-->
       </v-card>
     </v-flex>
 
@@ -208,7 +216,7 @@
           </v-btn>
         </v-toolbar>
 
-        <v-list two-line width>
+        <v-list class="scrollList" two-line width>
           <template v-for="(item, index) in items">
             <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
             <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
@@ -224,9 +232,9 @@
           </template>
         </v-list>
         <v-divider></v-divider>
-        <v-card-actions>
+        <!-- <v-card-actions>
           <v-btn flat block color="success">view more</v-btn>
-        </v-card-actions>
+        </v-card-actions>-->
       </v-card>
     </v-flex>
   </v-layout>
@@ -263,6 +271,7 @@ export default {
           "<span class='text--primary'>Chz Quiocho</span> &mdash; Renewed License 0001111"
       }
     ],
+    activities: null,
     tasks: [
       {
         done: false,
@@ -298,10 +307,11 @@ export default {
         .then(result => {
           console.log("JSON.stringify(result) :", JSON.stringify(result));
           this.details = result;
+          this.activities = result.case_details.activities;
           return this.$store.dispatch("GET_TASKS");
         })
         .then(result => {
-          console.log("result :", result);
+          console.log("result :" + JSON.stringify(result));
         })
         .catch(err => {
           console.log("err :", err);
@@ -327,6 +337,11 @@ export default {
 
 
 <style>
+.scrollList {
+  height: 300px;
+  overflow-y: auto;
+}
+
 .dcard {
   -webkit-box-reflect: below 6px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent), to(rgba(250, 250, 250, 0.1)));
 }
@@ -335,7 +350,3 @@ export default {
 }
 </style>
 
-// .primary {
-//   background: linear-gradient(45deg, #e0c71c 0%, #e9d758 100%);
-//   /* border-color: #104b2a !important; */
-// }

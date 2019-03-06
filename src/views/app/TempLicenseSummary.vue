@@ -293,7 +293,8 @@ export default {
         subtitle:
           "<span class='text--primary'>Chz Quiocho</span> &mdash; Renewed License 0001111"
       }
-    ]
+    ],
+    details: null
   }),
   created() {
     this.init();
