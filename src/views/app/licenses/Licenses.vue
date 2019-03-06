@@ -4,12 +4,8 @@
     <v-layout row wrap v-else>
       <!-- ACTIVE LICENSE -->
       <v-flex xs12 pa-2>
-        <v-card
-          color="fdaTan"
-          class="elevation-5"
-          style="background: linear-gradient(180deg, #CAD0A0 50%, #C3D0A0 100%); ; box-shadow:0 6px 20px 0 rgba(79, 0, 44, 71)"
-        >
-          <v-card-title>
+        <v-card color="#DCEFDE">
+          <v-card-title style="background:linear-gradient(360deg, #0F901A 0%, #97C76E 100%); box-shadow:0 6px 20px 0 rgba(38, 198, 218, 0.5)">
             <v-avatar class="mr-3" color="grey">
               <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
             </v-avatar>
