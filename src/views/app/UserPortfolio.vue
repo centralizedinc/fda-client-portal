@@ -190,7 +190,7 @@
               <v-list-tile-content>
                 <!-- <v-list-tile-title v-html="item.title"></v-list-tile-title> -->
                 <v-list-tile-title>{{formatDt(item.date_completed)}} </v-list-tile-title>
-                <v-list-tile-sub-title>{{getTask(item.task_id).name}}  {{item.assigned_user}} {{getAppType(details.license_details.application_type)}} {{details.license_details.case_no}}</v-list-tile-sub-title>
+                <v-list-tile-sub-title>{{getTask(item.task_id).name}}  {{getActStatus(item.status)}} {{getCaseType(details.case_details.case_type)}} {{getAdminName(item.assigned_user).username}} {{getAppType(details.license_details.application_type)}} {{details.license_details.case_no}}</v-list-tile-sub-title>
                 <!-- + {{getAppType(details.license_details.application_type)}} + {{details.license_details.case_no}} -->
                 <!-- <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title> -->
               </v-list-tile-content>
@@ -302,13 +302,21 @@ export default {
       this.$store
         .dispatch("GET_ACTIVE_AND_CASES")
         .then(result => {
-          console.log("JSON.stringify(result) :", JSON.stringify(result));
+          console.log("JSON.stringify(result) :", JSON.stringify(result));          
           this.details = result;
+          console.log("details user portfolio: " + JSON.stringify(this.details))
+          for(var x = result.case_details.activities.length;x>=0;x--){
+            console.log("for user portfolio: " + JSON.stringify(result.case_details.activities[x]))
+          }
           this.activities = result.case_details.activities
+          console.log("activities user portfolio: " + JSON.stringify(this.activities))
           return this.$store.dispatch("GET_TASKS");
         })
         .then(result => {
           console.log("result :" + JSON.stringify(result));
+          return this.$store.dispatch("GET_ADMIN");
+        }).then(result =>{
+          console.log("result of get admin: " + JSON.stringify(result))
         })
         .catch(err => {
           console.log("err :", err);

@@ -3,6 +3,7 @@
 
 import RegistrationAPI from "@/api/RegistrationAPI";
 import UserAPI from "@/api/UserAPI";
+import ProductAPI from "../../api/ProductApi";
 
 const state = {
   isAuthenticated: false,
@@ -10,6 +11,7 @@ const state = {
   user: {},
   task: {},
   registration_details: {},
+  admin_user: null
 };
 
 const mutations = {
@@ -30,6 +32,9 @@ const mutations = {
   },
   REGISTER: (state, payload) => {
     state.registration_details = payload;
+  },
+  ADMIN : (state, payload) =>{
+    state.admin_user = payload    
   }
 };
 
@@ -162,6 +167,20 @@ var actions = {
       })
     })
 
+  },
+
+  GET_ADMIN(context){
+    return new Promise((resolve, reject) => {
+      console.log("get admin action")
+      new UserAPI(context.rootState.user_session.token).getAdmin((err, admin) => {
+        if(!err) {
+          context.commit('ADMIN', admin)
+          resolve(admin)
+        } else {
+          reject(err)
+        }
+      })
+    })
   }
 };
 
