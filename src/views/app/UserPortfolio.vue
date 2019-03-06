@@ -190,13 +190,13 @@
               <v-list-tile-content>
                 <!-- <v-list-tile-title v-html="item.title"></v-list-tile-title> -->
                 <v-list-tile-title class="font-weight-bold">{{getTask(item.task_id).name}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{item.assigned_user}} {{item.status}} {{getAppType(details.license_details.application_type)}} application with</v-list-tile-sub-title>
+                <v-list-tile-sub-title>{{item.assigned_user}} {{item.status}} {{getAppType(details.license_details.application_type)}} application of {{details.case_details.case_type}} with</v-list-tile-sub-title>
                 <v-list-tile-sub-title>Case No.: {{details.license_details.case_no}} on {{formatDate(item.date_completed)}}</v-list-tile-sub-title>
                 <!-- + {{getAppType(details.license_details.application_type)}} + {{details.license_details.case_no}} -->
                 <!-- <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title> -->
               </v-list-tile-content>
             </v-list-tile>
-            <v-divider inset></v-divider>
+            <v-divider></v-divider>
           </template>
         </v-list>
       </v-card>
@@ -213,7 +213,7 @@
           </v-btn>
         </v-toolbar>
 
-        <v-list class="scrollList" two-line width>
+        <v-list class="scrollList" three-line width>
           <template v-for="(item, index) in items">
             <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
             <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
@@ -221,19 +221,41 @@
               <v-list-tile-avatar>
                 <img :src="item.avatar">
               </v-list-tile-avatar>
-              <v-list-tile-content>
+              <v-list-tile-content @click="comply" hover>
                 <v-list-tile-title v-html="item.title"></v-list-tile-title>
                 <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+
+                <v-btn flat color="success" block @click="comply">View</v-btn>
               </v-list-tile-content>
             </v-list-tile>
           </template>
         </v-list>
         <v-divider></v-divider>
-        <!-- <v-card-actions>
-          <v-btn flat block color="success">view more</v-btn>
-        </v-card-actions>-->
       </v-card>
     </v-flex>
+    <v-dialog
+      v-model="complyDialog"
+      scrollable
+      persistent
+      :overlay="false"
+      max-width="500px"
+      transition="dialog-transition"
+    >
+      <v-card>
+        <v-spacer></v-spacer>
+        <v-card-title
+          class="headline font-weight-thin"
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%); text-transform: uppercase"
+        >Compliance
+          <v-spacer></v-spacer>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="black" @click="complyDialog=false">
+              <i class="fas fa-times-circle"></i>
+            </v-btn>Close
+          </v-tooltip>
+        </v-card-title>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 
@@ -243,30 +265,18 @@ export default {
   components: { DashboardCard },
   data: () => ({
     details: {},
+    complyDialog: false,
     user: {},
     date2: new Date().toISOString().substr(0, 10),
     items: [
       { header: "Today" },
       {
         avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-        title: "Authorized Officer",
+        title: "Inspection",
         subtitle:
-          "<span class='text--primary'>Chz Quiocho</span> &mdash; Applied Certificate for Food"
+          "<span class='text--primary'>Godfrey Rivera remarks:</span> Upload business documents"
       },
-      { divider: true, inset: true },
-      {
-        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-        title: "Cashier ",
-        subtitle:
-          "<span class='text--primary'>Godfrey Rivera</span> &mdash; accepted License Application "
-      },
-      { divider: true, inset: true },
-      {
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
-        title: "Authorized Officer",
-        subtitle:
-          "<span class='text--primary'>Chz Quiocho</span> &mdash; Renewed License 0001111"
-      }
+      { divider: true }
     ],
     activities: null,
     tasks: [
@@ -327,6 +337,9 @@ export default {
       });
 
       this.task = null;
+    },
+    comply() {
+      this.complyDialog = true;
     }
   }
 };
