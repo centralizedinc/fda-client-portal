@@ -4,18 +4,15 @@
     <v-layout row wrap v-else>
       <!-- ACTIVE LICENSE -->
       <v-flex xs12 pa-2>
-        <v-card
-          color="fdaTan"
-          class="elevation-5"
-          style="background: linear-gradient(180deg, #CAD0A0 50%, #C3D0A0 100%); ; box-shadow:0 6px 20px 0 rgba(79, 0, 44, 71)"
-        >
-          <v-card-title>
+        <v-card color="fdaSilver" class="elevation-15">
+          <v-card-title
+            style="background: linear-gradient(360deg, #104B2A 0%, #b5c25a 100%)
+ box-shadow:0 6px 20px 0 rgba(38, 198, 218, 0.5)"
+          >
             <v-avatar class="mr-3" color="grey">
               <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
             </v-avatar>
-            <span
-              class="headline font-weight-medium"
-            >License No.: {{details.license_details.license_no}}</span>
+            <span class="headline">License No.: {{details.license_details.license_no}}</span>
             <v-spacer></v-spacer>
             <v-speed-dial
               v-model="fab"
