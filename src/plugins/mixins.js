@@ -16,7 +16,7 @@ export default {
           return app_type[type];
         },
         getActStatus(status){
-          var act_status = ["Approved", "Recommend", "Denied"]
+          var act_status = ["Approved", "Recommend for Compliance", "Denied"]
           return act_status[status]
         },
         getCaseType(type){
