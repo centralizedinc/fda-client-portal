@@ -190,10 +190,11 @@
               <v-list-tile-content>
                 <!-- <v-list-tile-title v-html="item.title"></v-list-tile-title> -->
                 <v-list-tile-title class="font-weight-bold">{{getTask(item.task_id).name}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{item.assigned_user}} {{item.status}} {{getAppType(details.license_details.application_type)}} application of {{details.case_details.case_type}} with</v-list-tile-sub-title>
+                <v-list-tile-sub-title>{{getAdminName(item.assigned_user).first_name}} {{getActStatus(item.status)}} {{getAppType(details.license_details.application_type)}} application of {{getCaseType(details.case_details.case_type)}} with</v-list-tile-sub-title>
                 <v-list-tile-sub-title>Case No.: {{details.license_details.case_no}} on {{formatDate(item.date_completed)}}</v-list-tile-sub-title>
                 <!-- + {{getAppType(details.license_details.application_type)}} + {{details.license_details.case_no}} -->
                 <!-- <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title> -->
+                <!-- <v-list-tile-sub-title>{{getTask(item.task_id).name}}  {{getActStatus(item.status)}} {{getCaseType(details.case_details.case_type)}} {{getAdminName(item.assigned_user).username}} {{getAppType(details.license_details.application_type)}} {{details.license_details.case_no}}</v-list-tile-sub-title> -->
               </v-list-tile-content>
             </v-list-tile>
             <v-divider></v-divider>
@@ -221,12 +222,15 @@
               <v-list-tile-avatar>
                 <img :src="item.avatar">
               </v-list-tile-avatar>
-              <v-list-tile-content @click="comply" hover>
+              <v-list-tile-content @click="comply">
                 <v-list-tile-title v-html="item.title"></v-list-tile-title>
                 <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
-
-                <v-btn flat color="success" block @click="comply">View</v-btn>
               </v-list-tile-content>
+              <v-tooltip top>
+                <v-btn slot="activator" small flat icon color="primary" @click="comply">
+                  <v-icon>fas fa-external-link-alt</v-icon>
+                </v-btn>Open
+              </v-tooltip>
             </v-list-tile>
           </template>
         </v-list>
@@ -254,6 +258,27 @@
             </v-btn>Close
           </v-tooltip>
         </v-card-title>
+        <v-card-text>
+          <v-flex xs12>
+            <v-text-field box multi-line label="assigned_user Remarks" disabled></v-text-field>
+          </v-flex>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <uploader @upload="upload"></uploader>
+            </v-flex>
+            <v-flex xs12 mt-3>
+              <v-text-field box multi-line label="User Remarks"></v-text-field>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn block color="success">Submit</v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-layout>
@@ -261,8 +286,14 @@
 
 <script>
 import DashboardCard from "@/components/DashboardCards";
+import Uploader from "@/components/Uploader.vue";
+
 export default {
-  components: { DashboardCard },
+  components: {
+    DashboardCard,
+    Uploader
+  },
+
   data: () => ({
     details: {},
     complyDialog: false,
@@ -312,13 +343,29 @@ export default {
       this.$store
         .dispatch("GET_ACTIVE_AND_CASES")
         .then(result => {
-          console.log("JSON.stringify(result) :", JSON.stringify(result));
+          console.log("JSON.stringify(result) :" + JSON.stringify(result));
           this.details = result;
+          console.log(
+            "details user portfolio: " + JSON.stringify(this.details)
+          );
+          for (var x = result.case_details.activities.length; x >= 0; x--) {
+            console.log(
+              "for user portfolio: " +
+                JSON.stringify(result.case_details.activities[x])
+            );
+          }
           this.activities = result.case_details.activities;
+          console.log(
+            "activities user portfolio: " + JSON.stringify(this.activities)
+          );
           return this.$store.dispatch("GET_TASKS");
         })
         .then(result => {
           console.log("result :" + JSON.stringify(result));
+          return this.$store.dispatch("GET_ADMIN");
+        })
+        .then(result => {
+          console.log("result of get admin: " + JSON.stringify(result));
         })
         .catch(err => {
           console.log("err :", err);
@@ -340,6 +387,9 @@ export default {
     },
     comply() {
       this.complyDialog = true;
+    },
+    upload(formData) {
+      this.$emit("upload", formData);
     }
   }
 };

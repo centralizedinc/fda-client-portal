@@ -143,4 +143,15 @@ export default class UserAPI {
       })
   }
 
+  getAdmin(cb){
+    console.log("get admin api")
+    axios.get('secured/accounts/admin').then((result) => {
+      console.log("get admin: " + JSON.stringify(result.data.model))
+      cb(result.data.errors, result.data.model)
+  }).catch(err => {
+      console.log('######getLicenses error :', err)
+      cb(err)
+  })
+  }
+
 }

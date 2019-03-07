@@ -15,6 +15,14 @@ export default {
           var app_type = ["Initial", "Variation", "Renewal"];
           return app_type[type];
         },
+        getActStatus(status){
+          var act_status = ["Approved", "Recommend", "Denied"]
+          return act_status[status]
+        },
+        getCaseType(type){
+          var case_type = ["License", "Certificate", "Registerd User"]
+          return case_type[type]
+        },
         getTask(task_id) {
           if (this.$store.state.tasks.tasks) {
             console.log('task_id :', task_id + " ::: " + JSON.stringify(this.$store.state.tasks.tasks));
@@ -69,6 +77,18 @@ export default {
             return user ? user.name : ''
           } else {
             return ''
+          }
+        },
+        getAdminName(admin_id){
+          if (this.$store.state.user_session.admin_user) {
+            console.log('admin_id :', admin_id + " ::: " + JSON.stringify(this.$store.state.user_session.admin_user));
+            var admin = this.$store.state.user_session.admin_user.find(x => {
+              return x._id.toString() === admin_id;
+            });
+            console.log("returned task: " + JSON.stringify(admin))
+            return admin ? admin : {};
+          } else {
+            return null;
           }
         },
         formatDate: (date, type) => {
