@@ -4,74 +4,46 @@
     <v-layout row wrap v-else>
       <!-- ACTIVE LICENSE -->
       <v-flex xs12 pa-2>
-        <v-card>
-          <v-card-title>
-            <span class="headline font-weight-medium">
-              License No. {{details.license_details.license_no}}
-            </span>
+        <v-card color="fdaSilver" class="elevation-15">
+          <v-card-title
+            style="background: linear-gradient(360deg, #104B2A 0%, #b5c25a 100%)
+ box-shadow:0 6px 20px 0 rgba(38, 198, 218, 0.5)"
+          >
+            <v-avatar class="mr-3" color="grey">
+              <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
+            </v-avatar>
+            <span class="headline">License No.: {{details.license_details.license_no}}</span>
             <v-spacer></v-spacer>
             <v-speed-dial
               v-model="fab"
               direction="left"
               open-on-hover
-              transition="slide-x-reverse-transition">
+              transition="slide-x-reverse-transition"
+            >
               <template v-slot:activator>
                 <v-tooltip top>
-                  <v-btn
-                    slot="activator"
-                    v-model="fab"
-                    color="blue darken-2"
-                    dark
-                    flat
-                    fab>
+                  <v-btn slot="activator" v-model="fab" color="fdaGreen" dark flat fab>
                     <v-icon>{{ fab ? "close" : "menu"}}</v-icon>
                   </v-btn>Close
                 </v-tooltip>
               </template>
               <v-tooltip top>
-                <v-btn
-                  slot="activator"
-                  fab
-                  dark
-                  flat
-                  color="blue"
-                  @click="viewForm"
-                >
+                <v-btn slot="activator" fab dark color="fdaBlueGreen" @click="viewForm">
                   <v-icon>search</v-icon>
-                </v-btn>View More Details
+                </v-btn>View Full License
               </v-tooltip>
               <v-tooltip top>
-                <v-btn
-                  slot="activator"
-                  fab
-                  dark
-                  flat
-                  @click="variateForm"
-                  color="green"
-                >
+                <v-btn slot="activator" fab dark @click="variateForm" color="fdaOrange">
                   <v-icon>edit</v-icon>
                 </v-btn>Variation
               </v-tooltip>
               <v-tooltip top>
-                <v-btn
-                  slot="activator"
-                  fab
-                  dark
-                  flat
-                  @click="renewForm"
-                  color="indigo">
+                <v-btn slot="activator" fab dark @click="renewForm" color="fdaMed">
                   <v-icon>autorenew</v-icon>
                 </v-btn>Renewal
               </v-tooltip>
               <v-tooltip top>
-                <v-btn
-                  slot="activator"
-                  fab
-                  dark
-                  flat
-                  color="red"
-                  @click="confirmPrinting"
-                >
+                <v-btn slot="activator" fab dark color="fdaYellow" @click="confirmPrinting">
                   <v-icon>print</v-icon>
                 </v-btn>Print
               </v-tooltip>
@@ -81,30 +53,26 @@
           <v-card-text>
             <v-container grid-list-xl>
               <v-layout row wrap class="subheading">
-                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">
-                  Case No:
-                </v-flex>
-                <v-flex xs12 md6 lg3 xl2>
-                  {{details.case_details.case_no}}
-                </v-flex>
-                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">
-                  Status:
-                </v-flex>
-                <v-flex xs12 md6 lg3 xl2 :class="`${getAppStatusColor(details.case_details.status)}--text`">
-                  {{getAppStatus(details.case_details.status)}}
-                </v-flex>
-                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">
-                  License Expiry:
-                </v-flex>
-                <v-flex xs12 md6 lg3 xl2>
-                  {{details.license_details.license_expiry ? formatDate(details.license_details.license_expiry) : "-"}}
-                </v-flex>
-                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">
-                  Primary:
-                </v-flex>
-                <v-flex xs12 md6 lg3 xl2>
-                  {{getPrimary(details.case_details.primary_activity)}}
-                </v-flex>
+                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Case No:</v-flex>
+                <v-flex xs12 md6 lg3 xl2>{{details.case_details.case_no}}</v-flex>
+                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Status:</v-flex>
+                <v-flex
+                  xs12
+                  md6
+                  lg3
+                  xl2
+                  style="text-transform: uppercase"
+                  :class="`${getAppStatusColor(details.case_details.status)}--text font-weight-bold` "
+                >{{getAppStatus(details.case_details.status)}}</v-flex>
+                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">License Expiry:</v-flex>
+                <v-flex
+                  xs12
+                  md6
+                  lg3
+                  xl2
+                >{{details.license_details.license_expiry ? formatDate(details.license_details.license_expiry) : "-"}}</v-flex>
+                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Primary:</v-flex>
+                <v-flex xs12 md6 lg3 xl2>{{getPrimary(details.case_details.primary_activity)}}</v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
@@ -114,16 +82,20 @@
       <!-- HISTORY CASES -->
       <v-flex xs12 pa-2>
         <v-card>
-          <v-card-title class="headline font-weight-medium">
-            History
-          </v-card-title>
+          <v-card-title
+            text-md-center
+            class="headline font-weight-thin"
+            style="text-transform: uppercase"
+          >Application History</v-card-title>
           <v-divider></v-divider>
           <v-data-table :headers="headers" :items="details.cases" class="elevation-1">
             <template slot="items" slot-scope="props">
               <tr @click="loadForm(props.item.application_id)" class="data-row">
                 <td>{{ props.item.case_no }}</td>
                 <td>{{ getAppType(props.item.application_type) }}</td>
-                <td :class="`${getAppStatusColor(props.item.status)}--text`">{{ getAppStatus(props.item.status) }}</td>
+                <td
+                  :class="`${getAppStatusColor(props.item.status)}--text`"
+                >{{ getAppStatus(props.item.status) }}</td>
                 <td>{{ getTask(props.item.current_task).name }}</td>
                 <td>{{ props.item.current_assigned_user }}</td>
                 <td>{{ formatDate (props.item.date_created) }}</td>
@@ -137,7 +109,7 @@
       <!-- NEW LICENSE -->
       <v-layout column class="fab-container">
         <v-tooltip top>
-          <v-btn slot="activator" fab color="fdaMed" @click="newLicense()">
+          <v-btn slot="activator" fab color="fdaLight" @click="newLicense">
             <v-icon large color="fdaSilver">add</v-icon>
           </v-btn>Apply New
         </v-tooltip>
@@ -154,13 +126,7 @@
             <span class="font-weight-light headline">Confirm Printing</span>
             <v-spacer></v-spacer>
             <v-tooltip top>
-              <v-btn
-                slot="activator"
-                flat
-                icon
-                color="black"
-                @click="printDialog = false"
-              >
+              <v-btn slot="activator" flat icon color="black" @click="printDialog = false">
                 <v-icon small>close</v-icon>
               </v-btn>Close
             </v-tooltip>
@@ -211,7 +177,7 @@ export default {
       headers: [
         { text: "Case No", value: "case_no" },
         { text: "Type", value: "application_type" },
-        { text: "Status", value: "status" },
+        { text: "Status", value: "status", sortable: true },
         { text: "Current Task", value: "current_task" },
         { text: "Current User", value: "current_assigned_user" },
         { text: "Date Created", value: "date_created" },

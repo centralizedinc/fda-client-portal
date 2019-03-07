@@ -13,15 +13,6 @@ export default class CaseAPI {
         return axios.get('lto-api/case');
     }
 
-    // getLicenseCases(cb){
-    //     axios.get('lto-api/case').then((result) => {
-    //         cb(result.data.errors, result.data.model)
-    //     }).catch(err => {
-    //         console.log('######getLicenses error :', err)
-    //         cb(err)
-    //     })
-    // }
-
     getCertificateCases(cb) {
         cb();
         // axios.get('lto-api/case').then((result) => {
@@ -30,5 +21,13 @@ export default class CaseAPI {
         //     console.log('######getLicenseCases error :',err)
         //     cb(err)
         // })
+    }
+
+    submitCompliance(comply, cb){
+        axios.post.apply('lto-api/case/comply', comply).then((result) => {
+            cb(result.data.model)
+        }).catch((err) => {
+            cb(null, err)
+        });
     }
 }

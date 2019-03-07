@@ -8,12 +8,20 @@ export default {
           return apps[status];
         },
         getAppStatusColor(status) {
-          var app_status_color = ["blue", "green", "deep-orange", "red", "red"];
+          var app_status_color = ["fdaOrange", "fdaGreen", "fdaBlueGreen", "red", "red"];
           return app_status_color[status]
         },
         getAppType(type) {
           var app_type = ["Initial", "Variation", "Renewal"];
           return app_type[type];
+        },
+        getActStatus(status){
+          var act_status = ["Approved", "Recommend", "Denied"]
+          return act_status[status]
+        },
+        getCaseType(type){
+          var case_type = ["License", "Certificate", "Registerd User"]
+          return case_type[type]
         },
         getTask(task_id) {
           if (this.$store.state.tasks.tasks) {
@@ -21,6 +29,7 @@ export default {
             var task = this.$store.state.tasks.tasks.find(x => {
               return x._id.toString() === task_id;
             });
+            console.log("returned task: " + JSON.stringify(task))
             return task ? task : {};
           } else {
             return null;
@@ -68,6 +77,18 @@ export default {
             return user ? user.name : ''
           } else {
             return ''
+          }
+        },
+        getAdminName(admin_id){
+          if (this.$store.state.user_session.admin_user) {
+            console.log('admin_id :', admin_id + " ::: " + JSON.stringify(this.$store.state.user_session.admin_user));
+            var admin = this.$store.state.user_session.admin_user.find(x => {
+              return x._id.toString() === admin_id;
+            });
+            console.log("returned task: " + JSON.stringify(admin))
+            return admin ? admin : {};
+          } else {
+            return null;
           }
         },
         formatDate: (date, type) => {

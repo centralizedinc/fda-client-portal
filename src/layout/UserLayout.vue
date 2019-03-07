@@ -25,20 +25,21 @@
         </v-list>
       </v-toolbar>
       <v-list>
-        <template v-if="user.status === 2">
-          <v-list-tile @click="goTo('/app')" class="ma-1" :style="activeRoute('Dashboard')">
-            <v-list-tile-action>
-              <v-tooltip top>
-                <v-btn slot="activator" icon>
-                  <v-icon color="fdaBlueGreen">dashboard</v-icon>
-                </v-btn>Dashboard
-              </v-tooltip>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title class="body-1 font-weight-light">Dashboard</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
+        <!-- Dashboard for status 1 and 2 -->
+        <v-list-tile @click="goTo('/app')" class="ma-1" :style="activeRoute('Dashboard')">
+          <v-list-tile-action>
+            <v-tooltip top>
+              <v-btn slot="activator" icon>
+                <v-icon color="fdaBlueGreen">dashboard</v-icon>
+              </v-btn>Dashboard
+            </v-tooltip>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="body-1 font-weight-light">Dashboard</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
 
+        <template v-if="user.status === 2">
           <v-list-tile @click="goTo('/app/licenses')" class="ma-1" :style="activeRoute('Licenses')">
             <v-list-tile-action>
               <v-tooltip top>
@@ -118,11 +119,7 @@
           </v-list-tile>
         </template>
 
-        <v-list-tile
-          @click="goTo('/app/profile')"
-          class="ma-1"
-          :style="activeRoute('Notifications')"
-        >
+        <v-list-tile @click="goTo('/app/profile')" class="ma-1" :style="activeRoute('Profile')">
           <v-list-tile-action>
             <v-tooltip top>
               <v-btn slot="activator" icon>
@@ -137,7 +134,7 @@
         <v-list-tile
           @click="goTo('/app/password')"
           class="ma-1"
-          :style="activeRoute('Notifications')"
+          :style="activeRoute('Change Password')"
         >
           <v-list-tile-action>
             <v-tooltip top>

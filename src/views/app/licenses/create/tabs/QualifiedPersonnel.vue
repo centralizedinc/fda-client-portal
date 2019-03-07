@@ -8,7 +8,7 @@
           slot="activator"
           large
           block
-          @click="addToListDialog=true"
+          @click="addItem()"
           style="box-shadow: none !important"
         >
           <v-icon color="success">fas fa-plus fa-3x</v-icon>
@@ -18,7 +18,7 @@
 
     <qualified-personnel-list
       :show="addToListDialog"
-      @add="add"
+      @submit="submit"
       @cancel="addToListDialog=false"
       title="Qualified Personnel"
     >
@@ -160,7 +160,7 @@
 
     <v-layout row wrap>
       <v-flex xs12>
-        <v-data-table :headers="headers" :items="addedPersonnel" class="elevation-1">
+        <v-data-table :headers="headers" :items="form.qualified_personnel" class="elevation-1">
           <template slot="items" slot-scope="props">
             <td>{{props.item.firstname + " " + props.item.lastname}}</td>
             <td>{{props.item.designation}}</td>
@@ -172,14 +172,26 @@
               <v-layout row wrap>
                 <v-flex xs3>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary" @click="editItem(props.item)">
+                    <v-btn
+                      slot="activator"
+                      flat
+                      icon
+                      color="primary"
+                      @click="editItem(props.item, props.index)"
+                    >
                       <v-icon color="success" small>edit</v-icon>
                     </v-btn>Edit item
                   </v-tooltip>
                 </v-flex>
                 <v-flex xs3>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary" @click="deleteItem(item)">
+                    <v-btn
+                      slot="activator"
+                      flat
+                      icon
+                      color="primary"
+                      @click="deleteItem(props.index)"
+                    >
                       <v-icon color="error" small>fas fa-trash-alt</v-icon>
                     </v-btn>Delete item
                   </v-tooltip>
@@ -200,6 +212,7 @@ export default {
   },
   props: ["form"],
   data: () => ({
+    mode: 0,
     addToListDialog: false,
     menu: null,
     menu2: null,
@@ -219,7 +232,8 @@ export default {
       "Philippine Passport",
       "Bureau of Immigration (Alien Registration)"
     ],
-    qualified: [],
+    selected_index: -1,
+    qualified: {},
     headers: [
       {
         text: "Name",
@@ -270,15 +284,24 @@ export default {
   watch: {
     menu(val) {
       val && this.$nextTick(() => (this.$refs.picker.activePicker = "YEAR"));
+    },
+    addToListDialog(val) {
+      if (!val) this.qualified = {};
     }
   },
   methods: {
-    add() {
-      this.form.qualified_personnel.push(this.qualified);
-      this.addedPersonnel.push(this.qualified);
+    submit() {
+      if (this.mode === 0) {
+        //CREATE
+        this.form.qualified_personnel.push(this.qualified);
+      } else if (this.mode === 1) {
+        //EDIT
+        this.form.qualified_personnel[this.selected_index] = this.qualified;
+      }
       this.clearForm();
     },
     clearForm() {
+      this.selected_index = -1;
       this.qualified = {
         lastname: "",
         firstname: "",
@@ -294,10 +317,17 @@ export default {
     },
     deleteItem(item) {
       confirm("Are you sure you want to delete this item?") &&
-        this.addedPersonnel.splice(item, 1);
+        this.form.qualified_personnel.splice(item, 1);
     },
-    editItem(item) {
-      this.qualified = Object.assign({}, item);
+    editItem(item, index) {
+      this.mode = 1;
+      this.selected_index = index;
+      this.qualified = item;
+      this.addToListDialog = true;
+    },
+    addItem() {
+      this.mode = 0;
+      this.qualified = {};
       this.addToListDialog = true;
     }
   }
