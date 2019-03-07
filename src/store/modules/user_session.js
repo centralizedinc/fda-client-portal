@@ -102,6 +102,7 @@ var actions = {
    * @description remove user session and breadcrumbs history stored in cache
    */
   LOGOUT: (context) => {
+    context.commit("CLEAR_DATA")
     context.commit('LOGOUT')
     context.commit('PICKUP_BREADCRUMBS')
   },

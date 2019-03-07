@@ -78,9 +78,9 @@
       :show="confirmDialog"
       @close="confirmDialog=false"
       @submit="apply"
-      @overview="dialog = false ; showAppOverview = true"
+      @overview="confirmDialog = false ; showAppOverview = true"
     ></confirm-to-review-app>
-    <application-overview :form="form" :show="showAppOverview" @close="close">
+    <application-overview :show="showAppOverview" @close="close">
       <app-summary slot="appsummary" :form="form"></app-summary>
       <app-data slot="appdata" :form="form"></app-data>
       <uploaded-files slot="uploadedfiles" :form="form"></uploaded-files>

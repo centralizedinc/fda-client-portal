@@ -20,6 +20,12 @@ const mutations = {
     },
     FEES(state, charges) {
         state.fee = charges
+    },
+    CLEAR_DATA(state) {
+        state.credit_card = null
+        state.cvv = null
+        state.expiry = null
+        state.fee = null
     }
 }
 

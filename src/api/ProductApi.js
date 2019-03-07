@@ -7,7 +7,7 @@ export default class ProductAPI {
   constructor(token) {
     this.token = token;
     axios.defaults.headers.common['Content-Type'] = 'application/json'
-    // axios.defaults.headers.common['access_token'] = token;
+    axios.defaults.headers.common['access_token'] = token;
   }
   productType(cb) {
     axios.get('core/products')

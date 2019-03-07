@@ -8,7 +8,7 @@ const mutations = {
     SET_CASES(state, cases) {
         state.cases = cases;
     },
-    CLEAR_CASES(state) {
+    CLEAR_DATA(state) {
         state.cases = [];
     }
 }
