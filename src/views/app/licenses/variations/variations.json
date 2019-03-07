@@ -1,0 +1,63 @@
+[{
+    "title": "Minor variations referred heroto shall include the following:",
+    "items": [{
+        "description": "Inclusion of product (finished or raw material) and/or product line",
+        "code": "MN1",
+        "fields": [
+            "estab_details.products"
+        ]
+    }, {
+        "description": "Inclusion of sources (including toll manufacturer/repacker, trader)",
+        "code": "MN2",
+        "disabled": true
+    }, {
+        "description": "Inclusion of activity e.g. from Manufacturer to Toll Manufacturer/Repacker/Importer/Exporter or Trader to Trader/Importer/ Exporter (raw materials and bulk products)",
+        "code": "MN3",
+        "disabled": true
+    }, {
+        "description": "Change in business name/address of the source",
+        "code": "MN4",
+        "fields": [
+            "estab_details.establishment_name",
+            "addresses.office.address"
+        ]
+    }, {
+        "description": "Change of key personnel for Quality Assurance, Quality Control, Production Manager, Authorized Person and Pharmacist",
+        "code": "MN5",
+        "fields": [
+            "auth_officer.last_name",
+            "auth_officer.first_name",
+            "auth_officer.middle_name",
+            "auth_officer.email"
+        ]
+    }, {
+        "description": "Deletion of product, source and/or activity",
+        "code": "MN6",
+        "disabled": true
+    }]
+}, {
+    "title": "Major variations, as enumerated below, shall require re-issuance of License as these are reflected in the License form itself:",
+    "items": [{
+        "description": "Change of business name",
+        "code": "MJ1",
+        "fields": [
+            "estab_details.establishment_name"
+        ]
+    }, {
+        "description": "Change of ownership",
+        "code": "MJ2",
+        "fields": [
+            "estab_details.establishment_owner"
+        ]
+    }, {
+        "description": "Transfer of location of the establishment",
+        "code": "MJ3",
+        "fields": [
+            "addresses.office.address"
+        ]
+    }, {
+        "description": "Re-classification of the establishment (e.g. from Distributor/Importer to Distributor/Wholesaler), except for those which were reclassified into another class of establishment (e.g. from Distributor/Importer/ Wholesaler to Trader/",
+        "code": "MJ4",
+        "disabled": true
+    }]
+}]

@@ -178,6 +178,21 @@ export default {
           })
           return cities;
         },
+        getProdLine(id) {
+          if (this.$store.state.products.prod_line) {
+            var prod_line = {}
+            prod_line = this.$store.state.products.prod_line.find(x => {
+              return x._id.toString() === id;
+            })
+            return prod_line ? prod_line : {}
+          }
+        },
+        deepCopy(obj) {
+          return JSON.parse(JSON.stringify(obj));
+        },
+        replaceAll(str, search, replacement){
+          return str.split(search).join(replacement);
+        },
         logout() {
           this.$store.dispatch("LOGOUT");
           this.$router.push("/login");

@@ -2,12 +2,15 @@ import TaskApi from '../../api/TaskApi';
 import LicenseAPI from '../../api/LicenseApi';
 
 const state = {
-    tasks: {}
+    tasks: []
 }
 
 const mutations = {
     SET_TASKS(state, task) {
         state.tasks = task;
+    },
+    CLEAR_DATA(state) {
+        state.tasks = []
     }
 }
 

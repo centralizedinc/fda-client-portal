@@ -197,7 +197,7 @@
                 <!-- <v-list-tile-sub-title>{{getTask(item.task_id).name}}  {{getActStatus(item.status)}} {{getCaseType(details.case_details.case_type)}} {{getAdminName(item.assigned_user).username}} {{getAppType(details.license_details.application_type)}} {{details.license_details.case_no}}</v-list-tile-sub-title> -->
               </v-list-tile-content>
             </v-list-tile>
-            <v-divider inset></v-divider>
+            <v-divider></v-divider>
           </template>
         </v-list>
       </v-card>
@@ -214,7 +214,7 @@
           </v-btn>
         </v-toolbar>
 
-        <v-list class="scrollList" two-line width>
+        <v-list class="scrollList" three-line width>
           <template v-for="(item, index) in items">
             <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
             <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
@@ -222,52 +222,92 @@
               <v-list-tile-avatar>
                 <img :src="item.avatar">
               </v-list-tile-avatar>
-              <v-list-tile-content>
+              <v-list-tile-content @click="comply">
                 <v-list-tile-title v-html="item.title"></v-list-tile-title>
                 <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
               </v-list-tile-content>
+              <v-tooltip top>
+                <v-btn slot="activator" small flat icon color="primary" @click="comply">
+                  <v-icon>fas fa-external-link-alt</v-icon>
+                </v-btn>Open
+              </v-tooltip>
             </v-list-tile>
           </template>
         </v-list>
         <v-divider></v-divider>
-        <!-- <v-card-actions>
-          <v-btn flat block color="success">view more</v-btn>
-        </v-card-actions>-->
       </v-card>
     </v-flex>
+    <v-dialog
+      v-model="complyDialog"
+      scrollable
+      persistent
+      :overlay="false"
+      max-width="500px"
+      transition="dialog-transition"
+    >
+      <v-card>
+        <v-spacer></v-spacer>
+        <v-card-title
+          class="headline font-weight-thin"
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%); text-transform: uppercase"
+        >Compliance
+          <v-spacer></v-spacer>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="black" @click="complyDialog=false">
+              <i class="fas fa-times-circle"></i>
+            </v-btn>Close
+          </v-tooltip>
+        </v-card-title>
+        <v-card-text>
+          <v-flex xs12>
+            <v-text-field box multi-line label="assigned_user Remarks" disabled></v-text-field>
+          </v-flex>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <uploader @upload="upload"></uploader>
+            </v-flex>
+            <v-flex xs12 mt-3>
+              <v-text-field box multi-line label="User Remarks"></v-text-field>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn block color="success">Submit</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-layout>
 </template>
 
 <script>
 import DashboardCard from "@/components/DashboardCards";
+import Uploader from "@/components/Uploader.vue";
+
 export default {
-  components: { DashboardCard },
+  components: {
+    DashboardCard,
+    Uploader
+  },
+
   data: () => ({
     details: {},
+    complyDialog: false,
     user: {},
     date2: new Date().toISOString().substr(0, 10),
     items: [
       { header: "Today" },
       {
         avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-        title: "Authorized Officer",
+        title: "Inspection",
         subtitle:
-          "<span class='text--primary'>Chz Quiocho</span> &mdash; Applied Certificate for Food"
+          "<span class='text--primary'>Godfrey Rivera remarks:</span> Upload business documents"
       },
-      { divider: true, inset: true },
-      {
-        avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-        title: "Cashier ",
-        subtitle:
-          "<span class='text--primary'>Godfrey Rivera</span> &mdash; accepted License Application "
-      },
-      { divider: true, inset: true },
-      {
-        avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
-        title: "Authorized Officer",
-        subtitle:
-          "<span class='text--primary'>Chz Quiocho</span> &mdash; Renewed License 0001111"
-      }
+      { divider: true }
     ],
     activities: [],
     tasks: [
@@ -280,7 +320,8 @@ export default {
         text: "Check and log validity of Certificates"
       }
     ],
-    task: null
+    task: null,
+    calendar: null
   }),
   created() {
     this.init();
@@ -303,7 +344,7 @@ export default {
       this.$store
         .dispatch("GET_ACTIVE_AND_CASES")
         .then(result => {
-          console.log("JSON.stringify(result) :" + JSON.stringify(result));          
+          console.log("JSON.stringify(result) :" + JSON.stringify(result));
           this.details = result;
           console.log("details user portfolio: " + JSON.stringify(this.details.cases))
           this.details.cases.forEach(casesData => {
@@ -339,8 +380,9 @@ export default {
         .then(result => {
           console.log("result :" + JSON.stringify(result));
           return this.$store.dispatch("GET_ADMIN");
-        }).then(result =>{
-          console.log("result of get admin: " + JSON.stringify(result))
+        })
+        .then(result => {
+          console.log("result of get admin: " + JSON.stringify(result));
         })
         .catch(err => {
           console.log("err :", err);
@@ -359,6 +401,12 @@ export default {
       });
 
       this.task = null;
+    },
+    comply() {
+      this.complyDialog = true;
+    },
+    upload(formData) {
+      this.$emit("upload", formData);
     }
   }
 };
