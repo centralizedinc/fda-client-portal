@@ -125,12 +125,12 @@ var router = new Router({
           component: () => import('@/views/app/licenses/Create.vue'),
           // beforeEnter: isAuthorized
         },
-        // {
-        //   path: 'licenses/view',
-        //   name: 'View License Application',
-        //   component: () => import('@/views/app/licenses/View.vue'),
-        //   // beforeEnter: isAuthorized
-        // },
+        {
+          path: 'licenses/view',
+          name: 'View License Application',
+          component: () => import('@/views/app/licenses/View.vue'),
+          // beforeEnter: isAuthorized
+        },
         {
           path: 'licenses/renew',
           name: 'Renewal License Application',

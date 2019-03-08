@@ -5,6 +5,7 @@ import CaseAPI from '../../api/CaseAPI';
 
 const state = {
     licenses: [],
+    view_license: {},
     renewal_license: {},
     variation_license: {},
     details: {},
@@ -44,6 +45,9 @@ const mutations = {
         state.form = null
         state.uploaded = null
         state.existingLicense = null
+    },
+    SET_VIEW_LICENSE(state, license) {
+        state.view_license = license;
     }
 }
 
@@ -66,7 +70,6 @@ var actions = {
             new LicenseAPI(context.rootState.user_session.token).getLicenses((err, licenses) => {
                 if (!err) {
                     console.log('license: ' + JSON.stringify(licenses));
-
                     context.commit('SET_LICENSES', licenses)
                     resolve()
                 } else {
@@ -130,28 +133,7 @@ var actions = {
         })
     },
     GET_LICENSE_BY_ID(context, app_id) {
-        return new Promise((resolve, reject) => {
-            new LicenseAPI(context.rootState.user_session.token).getLicenseByID(app_id, (err, license) => {
-                if (!err) {
-                    resolve(license)
-                } else {
-                    console.log('#####err GET_LICENSE_BY_ID :', err);
-                    reject(err)
-                }
-            })
-        })
-    },
-    RETRIEVE_LICENSE_BY_ID(context, app_id) {
-        return new Promise((resolve, reject) => {
-            new LicenseAPI(context.rootState.user_session.token).getLicenseByID(app_id, (err, license) => {
-                if (!err) {
-                    resolve(license)
-                } else {
-                    console.log('#####err RETRIEVE_LICENSE_BY_ID :', err);
-                    reject(err)
-                }
-            })
-        })
+        return new LicenseAPI(context.rootState.user_session.token).getLicenseByID(app_id)
     },
     EXPIRY_LICENSES(context) {
         return new Promise((resolve, reject) => {
@@ -209,6 +191,18 @@ var actions = {
                     reject(result.data.err)
                 });
         })
+    },
+    GET_ACTIVE_LICENSE(context) {
+        var token = context.rootState.user_session.token;
+        if (token) {
+            return new Promise((resolve, reject) => {
+                new LicenseAPI(token).getActiveLicense().then((result) => {
+                    resolve(result.data)
+                }).catch((err) => {
+                    reject(err)
+                });
+            })
+        }
     }
 }
 

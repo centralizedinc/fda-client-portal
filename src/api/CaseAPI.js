@@ -30,4 +30,8 @@ export default class CaseAPI {
             cb(null, err)
         });
     }
+
+    getActivities() {
+        return axios.get('lto-api/case/activities');
+    }
 }
