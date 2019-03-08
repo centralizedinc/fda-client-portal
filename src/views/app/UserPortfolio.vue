@@ -190,8 +190,8 @@
               <v-list-tile-content>
                 <!-- <v-list-tile-title v-html="item.title"></v-list-tile-title> -->
                 <v-list-tile-title class="font-weight-bold">{{getTask(item.task_id).name}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{getAdminName(item.assigned_user).first_name}} {{getActStatus(item.status)}} {{getAppType(details.license_details.application_type)}} application of {{getCaseType(details.case_details.case_type)}} with</v-list-tile-sub-title>
-                <v-list-tile-sub-title>Case No.: {{details.license_details.case_no}} on {{formatDate(item.date_completed)}}</v-list-tile-sub-title>
+                <v-list-tile-sub-title>{{getAdminName(item.assigned_user).first_name}} {{getActStatus(item.status)}} {{getAppType(details.case_details.application_type)}} application of {{getCaseType(details.case_details.case_type)}} with</v-list-tile-sub-title>
+                <v-list-tile-sub-title>Case No.: {{details.case_details.case_no}} on {{formatDate(item.date_completed)}}</v-list-tile-sub-title>
                 <!-- + {{getAppType(details.license_details.application_type)}} + {{details.license_details.case_no}} -->
                 <!-- <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title> -->
                 <!-- <v-list-tile-sub-title>{{getTask(item.task_id).name}}  {{getActStatus(item.status)}} {{getCaseType(details.case_details.case_type)}} {{getAdminName(item.assigned_user).username}} {{getAppType(details.license_details.application_type)}} {{details.license_details.case_no}}</v-list-tile-sub-title> -->
@@ -354,6 +354,7 @@ export default {
                 JSON.stringify(result.case_details.activities[x])
             );
           }
+
           this.activities = result.case_details.activities;
           console.log(
             "activities user portfolio: " + JSON.stringify(this.activities)

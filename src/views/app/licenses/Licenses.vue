@@ -88,7 +88,13 @@
             style="text-transform: uppercase"
           >Application History</v-card-title>
           <v-divider></v-divider>
-          <v-data-table :headers="headers" :items="details.cases" class="elevation-1">
+          <v-data-table
+            :pagination.sync="pagination"
+            :headers="headers"
+            hide-actions
+            :items="details.cases"
+            class="elevation-1"
+          >
             <template slot="items" slot-scope="props">
               <tr @click="loadForm(props.item.application_id)" class="data-row">
                 <td>{{ props.item.case_no }}</td>
@@ -103,6 +109,9 @@
               </tr>
             </template>
           </v-data-table>
+          <div class="text-xs-center pt-2">
+            <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+          </div>
         </v-card>
       </v-flex>
 
@@ -168,6 +177,7 @@ export default {
       dialogView: false,
       initial: false,
       selected_case: {},
+      pagination: {},
       details: {},
       form: {},
       headers: [
@@ -190,6 +200,18 @@ export default {
       this.fab = false;
       this.dialog = false;
       this.printDialog = false;
+    }
+  },
+  computed: {
+    pages() {
+      if (
+        this.pagination.rowsPerPage == null ||
+        this.pagination.totalItems == null
+      )
+        return 0;
+      return Math.ceil(
+        this.pagination.totalItems / this.pagination.rowsPerPage
+      );
     }
   },
   methods: {

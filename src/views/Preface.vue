@@ -107,8 +107,11 @@
       <v-divider inset class="mt-4"></v-divider>
       <v-container grid-list-md text-xs-center>
         <v-layout row wrap justify-center>
-
-          <undertaking-dialog :show="showDialog" @proceed="launchAppForm" @close="showDialog = false"></undertaking-dialog>
+          <undertaking-dialog
+            :show="showDialog"
+            @proceed="launchAppForm"
+            @close="showDialog = false"
+          ></undertaking-dialog>
 
           <!-- buttons for existing license -->
           <v-flex xs6 md6 pa-2>
