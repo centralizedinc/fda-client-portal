@@ -34,18 +34,25 @@
                         </product-line>
                         <v-divider></v-divider>
                     </v-flex>
-                    <v-flex xs12 v-if="checkVariation(['MN4', 'MN5', 'MJ1', 'MJ2', 'MJ3'])" mt-2 mb-4>
-                        <change-form 
-                            :variations="selected_variations"
-                            :existingForm="existingForm" 
-                            :updatedForm="updatedForm">
-                        </change-form>
+                    <v-flex xs12 v-if="checkVariation(['MN5'])">
+                      <qualified-personnel 
+                          :existingForm="existingForm" 
+                          :updatedForm="updatedForm">
+                      </qualified-personnel>
+                      <v-divider></v-divider>
+                    </v-flex>
+                    <v-flex xs12 mt-2 mb-4>
+                      <change-form 
+                        :variations="selected_variations"
+                        :existingForm="existingForm" 
+                        :updatedForm="updatedForm">
+                      </change-form>
                     </v-flex>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="error" @click="page=1">Back</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn color="success" @click="confirmDialog=true">Submit Changes</v-btn>
+                  <v-btn color="error" @click="page=1">Back</v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn color="success" @click="confirmDialog=true">Submit Changes</v-btn>
                 </v-card-actions>
             </v-card>
         </v-layout>

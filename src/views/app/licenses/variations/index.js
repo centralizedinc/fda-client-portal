@@ -19,6 +19,8 @@ export default {
         import ("../create/tabs/ConfirmDialog.vue"),
     PaymentSummary: () =>
         import ("../../payment/PaymentSummary.vue"),
+    QualifiedPersonnel: () =>
+        import ('./tabs/QualifiedPersonnel.vue'),
     AppData,
     AppHistory,
     ApplicationOverview,

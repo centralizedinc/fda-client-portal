@@ -9,8 +9,8 @@
             <v-text-field
                 label="Last Name"
                 box :rules="[rules.required]"
-                v-model="updatedForm.auth_officer.lastname"
-            ></v-text-field>
+                v-model="updatedForm.auth_officer.lastname">
+            </v-text-field>
         </v-flex>
         <v-divider></v-divider>
 
@@ -106,62 +106,60 @@
         <v-flex xs12>
             <span class="body-1">Old Value</span>: <span class="body-2">{{existingForm.auth_officer.id_type}}</span>
             <v-autocomplete
-            color="green darken-1"
-            :rules="[rules.required]"
-            v-model="updatedForm.auth_officer.id_type"
-            :items="id_type" box
-            hide-no-data
-            hide-selected
-            label="ID Type"
-            ></v-autocomplete>
+                color="green darken-1"
+                :rules="[rules.required]"
+                v-model="updatedForm.auth_officer.id_type"
+                :items="id_type" box
+                hide-no-data
+                hide-selected
+                label="ID Type">
+            </v-autocomplete>
         </v-flex>
         <v-divider></v-divider>
 
         <v-flex xs12>
             <span class="body-1">Old Value</span>: <span class="body-2">{{existingForm.auth_officer.id_no}}</span>
             <v-text-field
-            color="green darken-1"
-            label="ID Number" box
-            :rules="[rules.required]"
-            v-model="updatedForm.auth_officer.id_no"
-            ></v-text-field>
+                color="green darken-1"
+                label="ID Number" box
+                :rules="[rules.required]"
+                v-model="updatedForm.auth_officer.id_no">
+            </v-text-field>
         </v-flex>
         <v-divider></v-divider>
 
-      <v-flex xs12>
-          <span class="body-1">Old Value</span>: <span class="body-2">{{existingForm.auth_officer.id_expiry}}</span>
-        <v-menu
-          ref="menu"
-          :close-on-content-click="false"
-          v-model="menu"
-          :nudge-right="40"
-          lazy
-          transition="scale-transition"
-          offset-y
-          full-width
-          min-width="290px"
-        >
-          <v-text-field
-            color="green darken-1"
-            slot="activator"
-            :rules="[rules.required]"
-            v-model="updatedForm.auth_officer.id_expiry"
-            label="Expiry" box
-            prepend-icon="event"
-            readonly
-          ></v-text-field>
-          <v-date-picker
-            color="green darken-1"
-            v-model="updatedForm.auth_officer.id_expiry"
-            no-title
-            scrollable
-          >
-            <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-            <v-btn flat color="primary" @click="$refs.menu.save(updatedForm.auth_officer.id_expiry)">OK</v-btn>
-          </v-date-picker>
-        </v-menu>
-      </v-flex>
+        <v-flex xs12>
+            <span class="body-1">Old Value</span>: <span class="body-2">{{existingForm.auth_officer.id_expiry}}</span>
+            <v-menu
+                ref="menu"
+                :close-on-content-click="false"
+                v-model="menu"
+                :nudge-right="40"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                min-width="290px">
+                <v-text-field
+                    color="green darken-1"
+                    slot="activator"
+                    :rules="[rules.required]"
+                    v-model="updatedForm.auth_officer.id_expiry"
+                    label="Expiry" box
+                    prepend-icon="event"
+                    readonly>
+                </v-text-field>
+                <v-date-picker
+                    color="green darken-1"
+                    v-model="updatedForm.auth_officer.id_expiry"
+                    no-title
+                    scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+                    <v-btn flat color="primary" @click="$refs.menu.save(updatedForm.auth_officer.id_expiry)">OK</v-btn>
+                </v-date-picker>
+            </v-menu>
+        </v-flex>
     </v-layout>
 </template>
 
