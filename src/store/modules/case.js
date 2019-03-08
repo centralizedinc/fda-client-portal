@@ -73,6 +73,11 @@ var actions = {
                     reject(err)
                 });
         })
+    },
+    GET_ACTIVITIES(context){
+        if(context.rootState.user_session.token){
+            return new CaseAPI(context.rootState.user_session.token).getActivities();
+        }
     }
 }
 

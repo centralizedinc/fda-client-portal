@@ -39,120 +39,120 @@
               :rules="[rules.required]"
               v-model="qualified.firstname"
             ></v-text-field>
-            <v-flex xs12>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field
+              color="green darken-1"
+              label="Middle Name"
+              :rules="[rules.required]"
+              v-model="qualified.middlename"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs12>
+            <v-autocomplete
+              color="green darken-1"
+              :rules="[rules.required]"
+              v-model="qualified.designation"
+              :items="designation"
+              hide-no-data
+              hide-selected
+              label="Designation"
+            ></v-autocomplete>
+          </v-flex>
+          <v-flex xs12>
+            <v-menu
+              ref="menu"
+              :close-on-content-click="false"
+              v-model="menu"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              min-width="290px"
+            >
               <v-text-field
                 color="green darken-1"
-                label="Middle Name"
-                :rules="[rules.required]"
-                v-model="qualified.middlename"
+                slot="activator"
+                v-model="qualified.birthday"
+                label="Birthday"
+                prepend-icon="event"
+                readonly
               ></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-autocomplete
-                color="green darken-1"
-                :rules="[rules.required]"
-                v-model="qualified.designation"
-                :items="designation"
-                hide-no-data
-                hide-selected
-                label="Designation"
-              ></v-autocomplete>
-            </v-flex>
-            <v-flex xs12>
-              <v-menu
-                ref="menu"
-                :close-on-content-click="false"
-                v-model="menu"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px"
-              >
-                <v-text-field
-                  color="green darken-1"
-                  slot="activator"
-                  v-model="qualified.birthday"
-                  label="Birthday"
-                  prepend-icon="event"
-                  readonly
-                ></v-text-field>
-                <v-date-picker
-                  ref="picker"
-                  v-model="qualified.birthday"
-                  :max="new Date().toISOString().substr(0, 10)"
-                  min="1950-01-01"
-                  @input="$refs.menu.save(qualified.birthday)"
-                ></v-date-picker>
-              </v-menu>
-            </v-flex>
-            <v-flex xs12>
-              <v-text-field
-                color="green darken-1"
-                label="Tax Identification Number"
-                :rules="[rules.required]"
-                v-model="qualified.tin"
-                :mask="tin"
-              ></v-text-field>
-            </v-flex>
+              <v-date-picker
+                ref="picker"
+                v-model="qualified.birthday"
+                :max="new Date().toISOString().substr(0, 10)"
+                min="1950-01-01"
+                @input="$refs.menu.save(qualified.birthday)"
+              ></v-date-picker>
+            </v-menu>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field
+              color="green darken-1"
+              label="Tax Identification Number"
+              :rules="[rules.required]"
+              v-model="qualified.tin"
+              :mask="tin"
+            ></v-text-field>
+          </v-flex>
 
-            <!-- Government Issued Identification -->
-            <v-flex xs12>
-              <v-card-title primary-title class="headline">Government Issued Identification</v-card-title>
-            </v-flex>
-            <v-flex xs12>
-              <v-autocomplete
-                color="green darken-1"
-                :rules="[rules.required]"
-                v-model="qualified.id_type"
-                :items="id_type"
-                hide-no-data
-                hide-selected
-                label="ID Type"
-              ></v-autocomplete>
-            </v-flex>
-            <v-flex xs12>
+          <!-- Government Issued Identification -->
+          <v-flex xs12>
+            <v-card-title primary-title class="headline">Government Issued Identification</v-card-title>
+          </v-flex>
+          <v-flex xs12>
+            <v-autocomplete
+              color="green darken-1"
+              :rules="[rules.required]"
+              v-model="qualified.id_type"
+              :items="id_type"
+              hide-no-data
+              hide-selected
+              label="ID Type"
+            ></v-autocomplete>
+          </v-flex>
+          <v-flex xs12>
+            <v-text-field
+              color="green darken-1"
+              label="ID Number"
+              :rules="[rules.required]"
+              v-model="qualified.id_no"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs12>
+            <v-menu
+              ref="menu2"
+              :close-on-content-click="false"
+              v-model="menu2"
+              :nudge-right="40"
+              lazy
+              transition="scale-transition"
+              offset-y
+              full-width
+              min-width="290px"
+            >
               <v-text-field
                 color="green darken-1"
-                label="ID Number"
+                slot="activator"
+                v-model="qualified.id_expiry"
                 :rules="[rules.required]"
-                v-model="qualified.id_no"
+                label="Expiry"
+                prepend-icon="event"
+                readonly
               ></v-text-field>
-            </v-flex>
-            <v-flex xs12>
-              <v-menu
-                ref="menu2"
-                :close-on-content-click="false"
-                v-model="menu2"
-                :nudge-right="40"
-                lazy
-                transition="scale-transition"
-                offset-y
-                full-width
-                min-width="290px"
+              <v-date-picker
+                no-title
+                scrollable
+                color="green darken-1"
+                v-model="qualified.id_expiry"
               >
-                <v-text-field
-                  color="green darken-1"
-                  slot="activator"
-                  v-model="qualified.id_expiry"
-                  :rules="[rules.required]"
-                  label="Expiry"
-                  prepend-icon="event"
-                  readonly
-                ></v-text-field>
-                <v-date-picker
-                  no-title
-                  scrollable
-                  color="green darken-1"
-                  v-model="qualified.id_expiry"
-                >
-                  <v-spacer></v-spacer>
-                  <v-btn flat color="primary" @click="menu2 = false">Cancel</v-btn>
-                  <v-btn flat color="primary" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
-                </v-date-picker>
-              </v-menu>
-            </v-flex>
+                <v-spacer></v-spacer>
+                <v-btn flat color="primary" @click="menu2 = false">Cancel</v-btn>
+                <v-btn flat color="primary" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
+              </v-date-picker>
+            </v-menu>
           </v-flex>
         </v-layout>
       </template>
@@ -160,7 +160,7 @@
 
     <v-layout row wrap>
       <v-flex xs12>
-        <v-data-table :headers="headers" :items="form.qualified_personnel" class="elevation-1">
+        <v-data-table :headers="headers" :items="form.qualified" class="elevation-1">
           <template slot="items" slot-scope="props">
             <td>{{props.item.firstname + " " + props.item.lastname}}</td>
             <td>{{props.item.designation}}</td>
@@ -293,10 +293,10 @@ export default {
     submit() {
       if (this.mode === 0) {
         //CREATE
-        this.form.qualified_personnel.push(this.qualified);
+        this.form.qualified.push(this.qualified);
       } else if (this.mode === 1) {
         //EDIT
-        this.form.qualified_personnel[this.selected_index] = this.qualified;
+        this.form.qualified[this.selected_index] = this.qualified;
       }
       this.clearForm();
     },
@@ -317,7 +317,7 @@ export default {
     },
     deleteItem(item) {
       confirm("Are you sure you want to delete this item?") &&
-        this.form.qualified_personnel.splice(item, 1);
+        this.form.qualified.splice(item, 1);
     },
     editItem(item, index) {
       this.mode = 1;

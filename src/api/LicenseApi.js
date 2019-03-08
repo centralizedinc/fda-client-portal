@@ -22,13 +22,8 @@ export default class LicenseAPI {
         return axios.get('lto-api/active')
     }
 
-    getLicenseByID(id, cb) {
-        axios.get('lto-api/' + id).then((result) => {
-            cb(result.data.errors, result.data.model)
-        }).catch(err => {
-            console.log('######getLicenseByID error :', err)
-            cb(err)
-        })
+    getLicenseByID(id) {
+        return axios.get('lto-api/' + id)
     }
 
     getLicenseTasks() {

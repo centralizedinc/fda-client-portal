@@ -5,157 +5,13 @@
       <v-flex xs12 mb-2>
         <div class="headline font-weight-thin" style="text-transform: uppercase">Active License</div>
       </v-flex>
-      <v-flex xs12>
-        <v-card color="fdaSilver" class="elevation-15">
-          <v-card-title
-            style="background: linear-gradient(360deg, #104B2A 0%, #b5c25a 100%); box-shadow:0 6px 20px 0 rgba(38, 198, 218, 0.5)"
-          >
-            <v-avatar class="mr-3" color="grey">
-              <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
-            </v-avatar>
-            <span class="headline">License No.: {{details.license_details.license_no}}</span>
-          </v-card-title>
-          <v-divider inset></v-divider>
-          <v-card-text>
-            <v-container grid-list-xl>
-              <v-layout row wrap class="subheading">
-                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Case No:</v-flex>
-                <v-flex xs12 md6 lg3 xl2>{{details.case_details.case_no}}</v-flex>
-                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Status:</v-flex>
-                <v-flex
-                  xs12
-                  md6
-                  lg3
-                  xl2
-                  style="text-transform: uppercase"
-                  :class="`${getAppStatusColor(details.case_details.status)}--text font-weight-bold` "
-                >{{getAppStatus(details.case_details.status)}}</v-flex>
-                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">License Expiry:</v-flex>
-                <v-flex
-                  xs12
-                  md6
-                  lg3
-                  xl2
-                >{{details.license_details.license_expiry ? formatDate(details.license_details.license_expiry) : "-"}}</v-flex>
-                <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Primary:</v-flex>
-                <v-flex xs12 md6 lg3 xl2>{{getPrimary(details.case_details.primary_activity)}}</v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-        </v-card>
-      </v-flex>
+      <active-license></active-license>
+
       <!-- Cards -->
       <v-flex xs12 mt-5>
         <div class="headline font-weight-thin" style="text-transform: uppercase">Overview</div>
       </v-flex>
-      <!-- <v-flex xs12 md6 lg3 pa-2>
-          <v-card>
-            <v-tooltip top>
-              <v-btn
-                slot="activator"
-                color="success"
-                dark
-                absolute
-                top
-                right
-                fab
-                small
-                @click="$router.push('/app/licenses')"
-              >
-                <v-icon small>call_made</v-icon>
-              </v-btn>Go to Licenses
-            </v-tooltip>
-            <dashboard-card
-              class="dcard"
-              icon="fas fa-file-contract"
-              title="Licenses"
-              description="Count"
-              details="1"
-              color="primary"
-            ></dashboard-card>
-          </v-card>
-      </v-flex>-->
-      <v-flex xs12 md4 lg4 pa-2>
-        <v-card>
-          <v-tooltip top>
-            <v-btn
-              slot="activator"
-              color="success"
-              dark
-              absolute
-              top
-              right
-              fab
-              small
-              @click="$router.push('/app/certificates')"
-            >
-              <v-icon>call_made</v-icon>
-            </v-btn>Go to Certificates
-          </v-tooltip>
-          <dashboard-card
-            class="dcard"
-            icon="fas fa-certificate"
-            title="Certificates"
-            description="Count"
-            details="9"
-            color="fdaGold"
-          ></dashboard-card>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 md4 lg4 pa-2>
-        <v-card>
-          <v-tooltip top>
-            <v-btn
-              slot="activator"
-              color="success"
-              dark
-              absolute
-              top
-              right
-              fab
-              small
-              @click="$router.push('/app/notification')"
-            >
-              <v-icon>call_made</v-icon>
-            </v-btn>Go to Product Notification
-          </v-tooltip>
-          <dashboard-card
-            class="dcard"
-            icon="fas fa-file-invoice"
-            title="Product Notification"
-            description="Count"
-            details="2"
-            color="fdaOrange"
-          ></dashboard-card>
-        </v-card>
-      </v-flex>
-      <v-flex xs12 md4 lg4 pa-2>
-        <v-card>
-          <v-tooltip top>
-            <v-btn
-              slot="activator"
-              color="success"
-              dark
-              absolute
-              top
-              right
-              fab
-              small
-              @click="$router.push('/app/payments')"
-            >
-              <v-icon>call_made</v-icon>
-            </v-btn>Go to Payments
-          </v-tooltip>
-          <dashboard-card
-            class="dcard"
-            icon="fas fa-credit-card fa-xs"
-            title="Payments"
-            description="Count"
-            details="0"
-            color="fdaBlueGreen"
-          ></dashboard-card>
-        </v-card>
-      </v-flex>
+      <dashboard-overview></dashboard-overview>
       <v-flex xs12 mt-5>
         <div class="headline font-weight-thin" style="text-transform: uppercase">Reference</div>
       </v-flex>
@@ -164,34 +20,7 @@
     <!-- REFERENCE -->
     <!-- User Activity -->
     <v-flex xs12 md6 pa-2>
-      <v-card class="dcard" height="410">
-        <v-toolbar
-          width="calc(100% - 10px)"
-          style="background: linear-gradient(45deg, #e0c71c 0%, #e9d758 100%);"
-        >
-          <v-toolbar-title>User Activity</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon>more_vert</v-icon>
-          </v-btn>
-        </v-toolbar>
-
-        <v-list class="scrollList" three-line width>
-          <template v-for="(item, index) in activities">
-            <v-list-tile :key="index">
-              <v-list-tile-avatar>
-                <img :src="items.avatar">
-              </v-list-tile-avatar>
-              <v-list-tile-content>
-                <v-list-tile-title class="font-weight-bold">{{getTask(item.task_id).name}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{getAdminName(item.assigned_user).username}} {{getActStatus(item.status)}} {{getAppType(item.application_type)}} application of {{getCaseType(item.case_type)}} with</v-list-tile-sub-title>
-                <v-list-tile-sub-title>Case No.: {{item.case_no}} on {{formatDate(item.date_completed)}}</v-list-tile-sub-title>
-              </v-list-tile-content>
-            </v-list-tile>
-            <v-divider :key="index">></v-divider>
-          </template>
-        </v-list>
-      </v-card>
+        <user-activity></user-activity>
     </v-flex>
 
     <!-- For Compliance -->
@@ -235,8 +64,8 @@
         <v-spacer></v-spacer>
         <v-card-title
           class="headline font-weight-thin"
-          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%); text-transform: uppercase"
-        >Compliance
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%); text-transform: uppercase">
+          Compliance
           <v-spacer></v-spacer>
           <v-tooltip top>
             <v-btn slot="activator" flat icon color="black" @click="complyDialog=false">
@@ -275,12 +104,12 @@
 </template>
 
 <script>
-import DashboardCard from "@/components/DashboardCards";
-import Uploader from "@/components/Uploader.vue";
 export default {
   components: {
-    DashboardCard,
-    Uploader
+    UserActivity: () => import("@/components/UserActivity.vue"),
+    DashboardOverview: () => import("@/components/DashboardOverview.vue"),
+    Uploader: () => import("@/components/Uploader.vue"),
+    ActiveLicense: () => import("@/components/ActiveLicense.vue")
   },
   data: () => ({
     details: {},
@@ -328,7 +157,7 @@ export default {
       return this.tasks.filter(task => task.done).length;
     },
     progress() {
-      return (this.completedTasks / this.tasks.length) * 100;
+      return this.completedTasks / this.tasks.length * 100;
     },
     remainingTasks() {
       return this.tasks.length - this.completedTasks;
@@ -374,7 +203,6 @@ export default {
           return this.$store.dispatch("GET_TASKS");
         })
         .then(result => {
-          console.log("result :" + JSON.stringify(result));
           return this.$store.dispatch("GET_ADMIN");
         })
         .then(result => {
@@ -468,5 +296,10 @@ export default {
 }
 .v-picker__title__btn:not(.v-picker__title__btn--active) {
   font-size: 50px;
+}
+
+.active-license-title {
+  background: linear-gradient(360deg, #104b2a 0%, #b5c25a 100%);
+  box-shadow: 0 6px 20px 0 rgba(38, 198, 218, 0.5);
 }
 </style>

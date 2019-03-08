@@ -96,7 +96,7 @@
     <v-container grid-list-md text-xs-left>
       <v-layout row wrap>
         <v-flex xs12>
-          <v-data-table :headers="headers" :items="form.qualified_personnel" class="elevation-1">
+          <v-data-table :headers="headers" :items="form.qualified" class="elevation-1">
             <template slot="items" slot-scope="props">
               <td>{{props.item.firstname + " " + props.item.lastname }}</td>
               <td>{{props.item.designation}}</td>

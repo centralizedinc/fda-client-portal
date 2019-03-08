@@ -92,7 +92,7 @@
         </v-layout>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="success" @click="$emit('back')" block>back</v-btn>
+        <v-btn color="success" @click="$router.go(-1)" block>back</v-btn>
       </v-card-actions>
     </v-card>
   </v-layout>
@@ -111,10 +111,11 @@ const tabscomponents = Object.assign(
 );
 
 export default {
-  props: ["form"],
+  // props: ["form"],
   components: tabscomponents,
   data() {
     return {
+      form: {},
       window: 0,
       title: [
         "Summary",
@@ -125,6 +126,9 @@ export default {
         "Payment"
       ]
     };
+  },
+  created() {
+    this.form = this.$store.state.licenses.view_license;
   }
 };
 </script>

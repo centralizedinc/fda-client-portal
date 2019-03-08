@@ -84,4 +84,8 @@ export default class CaseAPI {
 
 
     }
+
+    getActivities() {
+        return axios.get('lto-api/case/activities');
+    }
 }

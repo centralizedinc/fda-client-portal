@@ -185,7 +185,7 @@ export default {
         id_no: "",
         id_expiry: ""
       },
-      qualified_personnel: [],
+      qualified: [],
       uploaded_files: [
         {
           purpose: "Proof of Business Name Registration",
@@ -230,23 +230,7 @@ export default {
       this.$store
         .dispatch("GET_PRODUCT_REFERENCE")
         .then(result => {
-          if (
-            this.$store.state.licenses.form &&
-            this.$store.state.licenses.form._id &&
-            this.$store.state.licenses.form.application_type === 1
-          ) {
-            this.form = this.$store.state.licenses.form;
-            this.$store.state.licenses.form = "";
-          } else if (
-            this.$store.state.licenses.form &&
-            this.$store.state.licenses.form._id &&
-            this.$store.state.licenses.form.application_type === 2
-          ) {
-            this.form = this.$store.state.licenses.form;
-            this.$store.state.licenses.form = "";
-          } else {
-            this.form.application_type = 0;
-          }
+          this.form.application_type = 0;
         })
         .catch(err => {
           console.log("loading products error: " + err);
