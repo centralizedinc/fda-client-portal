@@ -10,11 +10,11 @@
         :existingForm="existingForm"
         :updatedForm="updatedForm">
       </ownership>
-      <authorized-personel 
+      <authorized-personnel 
         v-if="variationContains(['MN5'])"
         :existingForm="existingForm"
         :updatedForm="updatedForm">
-      </authorized-personel>
+      </authorized-personnel>
       <address 
         v-if="variationContains(['MN4', 'MJ3'])"
         :existingForm="existingForm"
@@ -27,7 +27,7 @@
 export default {
   components: {
     Address: () => import('./Address.vue'),
-    AuthorizedPersonel: () => import('./AuthorizedPersonel.vue'),
+    AuthorizedPersonnel: () => import('./AuthorizedPersonnel.vue'),
     BusinessName: () => import('./BusinessName.vue'),
     Ownership: () => import('./Ownership.vue')
   },

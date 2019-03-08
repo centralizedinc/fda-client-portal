@@ -13,9 +13,11 @@
                   v-model="search">
               </v-text-field>
           </v-card-title>
-          <v-btn fab right bottom small absolute icon color="success" @click="addItem">
-              <v-icon>add</v-icon>
-          </v-btn>
+          <v-tooltip bottom>
+            <v-btn slot="activator" fab right bottom small absolute icon color="success" @click="addItem">
+                <v-icon>add</v-icon>
+            </v-btn>Add New Product
+          </v-tooltip>
           <v-data-table
               :headers="headers"
               :items="updatedForm.estab_details.products"
@@ -51,7 +53,7 @@
         transition="dialog-transition">
         <v-card>
             <v-card-title class="headline">
-                New Product
+                {{ selected_index > -1 ? "Edit Product": "New Product"}}
             </v-card-title>
             <v-card-text>
                 <v-flex xs12>

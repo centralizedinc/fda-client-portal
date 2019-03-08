@@ -170,7 +170,7 @@ export default {
         id_no: "",
         id_expiry: ""
       },
-      qualified_personnel: [],
+      qualified: [],
       uploaded_files: [
         {
           purpose: "Proof of Business Name Registration",
