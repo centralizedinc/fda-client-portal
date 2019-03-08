@@ -197,7 +197,7 @@
                 <!-- <v-list-tile-sub-title>{{getTask(item.task_id).name}}  {{getActStatus(item.status)}} {{getCaseType(details.case_details.case_type)}} {{getAdminName(item.assigned_user).username}} {{getAppType(details.license_details.application_type)}} {{details.license_details.case_no}}</v-list-tile-sub-title> -->
               </v-list-tile-content>
             </v-list-tile>
-            <v-divider></v-divider>
+            <v-divider :key="index">></v-divider>
           </template>
         </v-list>
       </v-card>
