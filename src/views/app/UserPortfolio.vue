@@ -8,8 +8,7 @@
       <v-flex xs12>
         <v-card color="fdaSilver" class="elevation-15">
           <v-card-title
-            style="background: linear-gradient(360deg, #104B2A 0%, #b5c25a 100%)
- box-shadow:0 6px 20px 0 rgba(38, 198, 218, 0.5)"
+            style="background: linear-gradient(360deg, #104B2A 0%, #b5c25a 100%); box-shadow:0 6px 20px 0 rgba(38, 198, 218, 0.5)"
           >
             <v-avatar class="mr-3" color="grey">
               <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
@@ -45,38 +44,36 @@
           </v-card-text>
         </v-card>
       </v-flex>
-
       <!-- Cards -->
       <v-flex xs12 mt-5>
         <div class="headline font-weight-thin" style="text-transform: uppercase">Overview</div>
       </v-flex>
       <!-- <v-flex xs12 md6 lg3 pa-2>
-        <v-card>
-          <v-tooltip top>
-            <v-btn
-              slot="activator"
-              color="success"
-              dark
-              absolute
-              top
-              right
-              fab
-              small
-              @click="$router.push('/app/licenses')"
-            >
-              <v-icon small>call_made</v-icon>
-            </v-btn>Go to Licenses
-          </v-tooltip>
-
-          <dashboard-card
-            class="dcard"
-            icon="fas fa-file-contract"
-            title="Licenses"
-            description="Count"
-            details="1"
-            color="primary"
-          ></dashboard-card>
-        </v-card>
+          <v-card>
+            <v-tooltip top>
+              <v-btn
+                slot="activator"
+                color="success"
+                dark
+                absolute
+                top
+                right
+                fab
+                small
+                @click="$router.push('/app/licenses')"
+              >
+                <v-icon small>call_made</v-icon>
+              </v-btn>Go to Licenses
+            </v-tooltip>
+            <dashboard-card
+              class="dcard"
+              icon="fas fa-file-contract"
+              title="Licenses"
+              description="Count"
+              details="1"
+              color="primary"
+            ></dashboard-card>
+          </v-card>
       </v-flex>-->
       <v-flex xs12 md4 lg4 pa-2>
         <v-card>
@@ -181,20 +178,14 @@
 
         <v-list class="scrollList" three-line width>
           <template v-for="(item, index) in activities">
-            <!-- <v-subheader v-if="item.header" :key="item.header"></v-subheader> -->
-            <!-- <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider> -->
             <v-list-tile :key="index">
               <v-list-tile-avatar>
                 <img :src="items.avatar">
               </v-list-tile-avatar>
               <v-list-tile-content>
-                <!-- <v-list-tile-title v-html="item.title"></v-list-tile-title> -->
                 <v-list-tile-title class="font-weight-bold">{{getTask(item.task_id).name}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{getAdminName(item.assigned_user).username}} {{getActStatus(item.status)}} {{getAppType(item.application_type)}} application of {{getCaseType(details.case_details.case_type)}} with</v-list-tile-sub-title>
+                <v-list-tile-sub-title>{{getAdminName(item.assigned_user).username}} {{getActStatus(item.status)}} {{getAppType(item.application_type)}} application of {{getCaseType(item.case_type)}} with</v-list-tile-sub-title>
                 <v-list-tile-sub-title>Case No.: {{item.case_no}} on {{formatDate(item.date_completed)}}</v-list-tile-sub-title>
-                <!-- + {{getAppType(details.license_details.application_type)}} + {{details.license_details.case_no}} -->
-                <!-- <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title> -->
-                <!-- <v-list-tile-sub-title>{{getTask(item.task_id).name}}  {{getActStatus(item.status)}} {{getCaseType(details.case_details.case_type)}} {{getAdminName(item.assigned_user).username}} {{getAppType(details.license_details.application_type)}} {{details.license_details.case_no}}</v-list-tile-sub-title> -->
               </v-list-tile-content>
             </v-list-tile>
             <v-divider :key="index">></v-divider>
@@ -215,19 +206,16 @@
         </v-toolbar>
 
         <v-list class="scrollList" three-line width>
-          <template v-for="(item, index) in items">
-            <v-subheader v-if="item.header" :key="item.header">{{ item.header }}</v-subheader>
-            <v-divider v-else-if="item.divider" :inset="item.inset" :key="index"></v-divider>
-            <v-list-tile v-else avatar :key="index">
-              <v-list-tile-avatar>
-                <img :src="item.avatar">
-              </v-list-tile-avatar>
+          <template v-for="(item, index) in complyActivities">
+            <v-divider :key="index">></v-divider>
+            <v-list-tile avatar :key="index">
               <v-list-tile-content @click="comply">
-                <v-list-tile-title v-html="item.title"></v-list-tile-title>
-                <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title>
+                <v-list-tile-title class="font-weight-bold">{{getTask(item.task_id).name}}</v-list-tile-title>
+                <v-list-tile-sub-title>{{getAdminName(item.assigned_user).username}} {{getActStatus(item.status)}} {{getAppType(item.application_type)}} application of {{getCaseType(item.case_type)}} with</v-list-tile-sub-title>
+                <v-list-tile-sub-title>Case No.: {{item.case_no}} on {{formatDate(item.date_completed)}}</v-list-tile-sub-title>
               </v-list-tile-content>
               <v-tooltip top>
-                <v-btn slot="activator" small flat icon color="primary" @click="comply">
+                <v-btn slot="activator" small flat icon color="primary" @click="comply(item)">
                   <v-icon>fas fa-external-link-alt</v-icon>
                 </v-btn>Open
               </v-tooltip>
@@ -239,12 +227,10 @@
     </v-flex>
     <v-dialog
       v-model="complyDialog"
-      scrollable
       persistent
       :overlay="false"
       max-width="500px"
-      transition="dialog-transition"
-    >
+      transition="dialog-transition">
       <v-card>
         <v-spacer></v-spacer>
         <v-card-title
@@ -259,8 +245,12 @@
           </v-tooltip>
         </v-card-title>
         <v-card-text>
-          <v-flex xs12>
-            <v-text-field box multi-line label="assigned_user Remarks" disabled></v-text-field>
+        <v-flex xs12>
+            <v-card>
+              <v-flex xs12 pa-5>
+              <label>{{formatDate(complyData.date_completed)}} {{complyData.remarks}}</label>
+              </v-flex>
+            </v-card>
           </v-flex>
         </v-card-text>
         <v-divider></v-divider>
@@ -270,14 +260,14 @@
               <uploader @upload="upload"></uploader>
             </v-flex>
             <v-flex xs12 mt-3>
-              <v-text-field box multi-line label="User Remarks"></v-text-field>
+              <v-text-field box multi-line label="User Remarks" v-model="remarks"></v-text-field>
             </v-flex>
           </v-layout>
         </v-card-text>
 
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn block color="success">Submit</v-btn>
+          <v-btn block color="success" @click="submit">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -287,27 +277,34 @@
 <script>
 import DashboardCard from "@/components/DashboardCards";
 import Uploader from "@/components/Uploader.vue";
-
 export default {
   components: {
     DashboardCard,
     Uploader
   },
-
   data: () => ({
     details: {},
+    complyDetails: null,
+    complyActivities: [],
     complyDialog: false,
+    complyData: {},
+    remarks: null,
+    files: [],
     user: {},
     date2: new Date().toISOString().substr(0, 10),
     items: [
-      { header: "Today" },
+      {
+        header: "Today"
+      },
       {
         avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
         title: "Inspection",
         subtitle:
           "<span class='text--primary'>Godfrey Rivera remarks:</span> Upload business documents"
       },
-      { divider: true }
+      {
+        divider: true
+      }
     ],
     activities: [],
     tasks: [
@@ -346,35 +343,34 @@ export default {
         .then(result => {
           console.log("JSON.stringify(result) :" + JSON.stringify(result));
           this.details = result;
-          console.log("details user portfolio: " + JSON.stringify(this.details.cases))
+          console.log(
+            "details user portfolio: " + JSON.stringify(this.details.cases)
+          );
           this.details.cases.forEach(casesData => {
-            console.log("cases data foreach: " + JSON.stringify(casesData))
-            casesData.activities.forEach(act =>{
-              console.log("activities data from act: " + JSON.stringify(act))
-              if( act != null){
-                act.case_no = casesData.case_no,
-                act.application_type = casesData.application_type
-              //   var case_details = {
-              //   case_no: casesData.case_no,
-              //   application_type: casesData.application_type,
-              //   act: act
-              // }
-              this.activities.push(act)
+            console.log("cases data foreach: " + JSON.stringify(casesData));
+            casesData.activities.forEach(act => {
+              console.log("activities data from act: " + JSON.stringify(act));
+              if (act != null) {
+                (act.case_no = casesData.case_no),
+                  (act.application_type = casesData.application_type),
+                  (act.case_type = casesData.case_type);
+                this.activities.push(act);
               }
-              
-            })
+            });
           });
-          console.log("data pushit: " + JSON.stringify(this.activities))
+          console.log("data pushit: " + JSON.stringify(this.activities));
           // for(var x = result.case_details.activities.length;x>=0;x--){
           //   console.log("for user portfolio: " + JSON.stringify(result.case_details.activities[x]))
           // }
-
           // this.activities = result.case_details.activities
-
-          this.activities.sort(function(a, b){
-            var dateA=new Date(a.date_completed), dateB=new Date(b.date_completed)
-            return dateB - dateA});
-          console.log("activities user portfolio: " + JSON.stringify(this.activities))
+          this.activities.sort(function(a, b) {
+            var dateA = new Date(a.date_completed),
+              dateB = new Date(b.date_completed);
+            return dateB - dateA;
+          });
+          console.log(
+            "activities user portfolio: " + JSON.stringify(this.activities)
+          );
           return this.$store.dispatch("GET_TASKS");
         })
         .then(result => {
@@ -383,6 +379,31 @@ export default {
         })
         .then(result => {
           console.log("result of get admin: " + JSON.stringify(result));
+          return this.$store.dispatch("GET_COMPLY");
+        })
+        .then(result => {
+          console.log("get comply data: " + JSON.stringify(result));
+          this.complyDetails = result;
+          this.complyDetails.forEach(cases => {
+            cases.activities.forEach(act => {
+              if (act != null) {
+                 act.case_id = cases._id,
+                (act.case_no = cases.case_no),
+                  (act.application_type = cases.application_type),
+                  (act.case_type = cases.case_type);
+                this.complyActivities.push(act);
+              }
+            });
+          });
+          this.complyActivities.sort(function(a, b) {
+            var dateA = new Date(a.date_completed),
+              dateB = new Date(b.date_completed);
+            return dateB - dateA;
+          });
+          console.log(
+            "JSON.stringify(this.complyActivities) :",
+            JSON.stringify(this.complyActivities)
+          );
         })
         .catch(err => {
           console.log("err :", err);
@@ -399,14 +420,38 @@ export default {
         done: false,
         text: this.task
       });
-
       this.task = null;
     },
-    comply() {
+    comply(data) {
+      console.log("JSON.stringify(data) :", JSON.stringify(data));
+      this.complyData = data;
       this.complyDialog = true;
     },
     upload(formData) {
-      this.$emit("upload", formData);
+      // this.$emit("upload", formData);
+      console.log("upload data: " + formData);
+      this.files = formData;
+    },
+    submit() {
+      var filesData = this.files;
+      const formData = new FormData();
+      for (let i = 0; i < filesData.length; i++) {
+        if (filesData[i].file) {
+          formData.append("lto", filesData[i].file, filesData[i].file["name"]);
+        }
+      }
+      var complied = {
+        case_id: this.complyData.case_id,
+        case_no: this.complyData.case_no,
+        remarks: this.remarks,
+        form_data: this.files
+      };
+      console.log("JSON.stringify(complied) :", JSON.stringify(complied));
+      this.$store.dispatch("SAVE_COMPLY", complied).then((result) => {
+        console.log('#result :', result);
+      }).catch((err) => {
+        console.log('err :', err);
+      });;
     }
   }
 };
@@ -418,7 +463,6 @@ export default {
   height: 300px;
   overflow-y: auto;
 }
-
 .dcard {
   -webkit-box-reflect: below 6px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent), to(rgba(250, 250, 250, 0.1)));
 }

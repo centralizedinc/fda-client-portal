@@ -1,12 +1,16 @@
 import CaseAPI from '../../api/CaseAPI';
 
 const state = {
-    cases: []
+    cases: [],
+    complied: []
 }
 
 const mutations = {
     SET_CASES(state, cases) {
         state.cases = cases;
+    },
+    SET_COMPLY(state, cases) {
+        state.complied = cases;
     },
     CLEAR_DATA(state) {
         state.cases = [];
@@ -17,29 +21,57 @@ var actions = {
     GET_CASES(context) {
         return new Promise((resolve, reject) => {
             new CaseAPI(context.rootState.user_session.token).getLicenseCases()
-            .then((result) => {
-                if (result.data.success) {
-                    context.commit('SET_CASES', result.data.model);
-                    resolve(result.data.model)
-                } else {
-                    console.log('GET_CASES err :', result.data.errors)
-                    reject(result.data.errors)
-                }    
-            }).catch((err) => {
-                console.log('err :', err);
-                reject(err)
-            });
+                .then((result) => {
+                    if (result.data.success) {
+                        context.commit('SET_CASES', result.data.model);
+                        resolve(result.data.model)
+                    } else {
+                        console.log('GET_CASES err :', result.data.errors)
+                        reject(result.data.errors)
+                    }
+                }).catch((err) => {
+                    console.log('err :', err);
+                    reject(err)
+                });
         })
     },
-    SAVE_COMPLY(context, comply){
+    GET_COMPLY(context) {
         return new Promise((resolve, reject) => {
-            new CaseAPI(context.rootState.user_session.token).submitCompliance(comply, (err, result) =>{
-                if(!err){
-                    resolve()
-                }else{
-                    reject()
-                }
-            })
+            new CaseAPI(context.rootState.user_session.token).getComply()
+                .then((result) => {
+                    if (result.data.success) {
+                        context.commit('SET_COMPLY', result.data.model);
+                        resolve(result.data.model)
+                    } else {
+                        console.log('GET_COMPLY err :', result.data.errors)
+                        reject(result.data.errors)
+                    }
+                }).catch((err) => {
+                    console.log('err :', err);
+                    reject(err)
+                });
+        })
+    },
+    SAVE_COMPLY(context, comply) {
+        return new Promise((resolve, reject) => {
+            var CaseApi = new CaseAPI(context.rootState.user_session.token);
+            CaseApi.uploadFile(comply)
+                .then((result) => {
+                    var files = result.data.model
+                    console.log('files :', files);
+                    var compliance = {
+                        case_id: comply.case_id,
+                        remarks: comply.remarks,
+                        files: files
+                    }
+                    return CaseApi.submitCompliance(compliance)
+                }).then((result) => {
+                    console.log('result :', result);
+                    resolve(result.data)
+                })
+                .catch((err) => {
+                    reject(err)
+                });
         })
     }
 }

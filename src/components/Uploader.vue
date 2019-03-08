@@ -140,6 +140,7 @@ export default {
       });
 
       this.currentStatus = STATUS_SUCCESS;
+      console.log('formData :', formData);
       this.$emit("upload", formData);
     },
     prettify(name) {
