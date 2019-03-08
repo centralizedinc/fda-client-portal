@@ -4,15 +4,13 @@ import LicenseAPI from '../../api/LicenseApi';
 import CaseAPI from '../../api/CaseAPI';
 
 const state = {
-    LicenseAPI: null,
     licenses: [],
     renewal_license: {},
     variation_license: {},
     details: {},
     form: null,
     uploaded: null,
-    existingLicense: null,
-    isRenew: false
+    existingLicense: null
 }
 
 const mutations = {
@@ -23,26 +21,29 @@ const mutations = {
     SET_DETAILS(state, details) {
         state.details = details;
     },
-    SET_RENEWAL(state, details){
+    SET_RENEWAL(state, details) {
         state.renewal_license = details;
     },
-    SET_VARIATION(state, details){
+    SET_VARIATION(state, details) {
         state.variation_license = details;
     },
-    SET_FORM(state, {
-        form,
-        isRenew
-    }) {
-        state.isRenew = isRenew ? isRenew : false;
-        state.form = null;
+    SET_FORM(state, form) {
         state.form = form;
-        console.log("set form store mutation: " + JSON.stringify(state.form))
     },
     UPLOADED_DATA(state, form) {
         state.uploaded = form
     },
     VERIFIED_LICENSES(state, license) {
         state.existingLicense = license
+    },
+    CLEAR_DATA(state) {
+        state.licenses = []
+        state.renewal_license = {}
+        state.variation_license = {}
+        state.details = {}
+        state.form = null
+        state.uploaded = null
+        state.existingLicense = null
     }
 }
 
@@ -198,6 +199,16 @@ var actions = {
                     });
             })
         }
+    },
+    VARIATE_LICENSE(context, form) {
+        return new Promise((resolve, reject) => {
+            new LicenseAPI(context.rootState.user_session.token).variateLicense(form)
+                .then((result) => {
+                    resolve(result.data)
+                }).catch((err) => {
+                    reject(result.data.err)
+                });
+        })
     }
 }
 

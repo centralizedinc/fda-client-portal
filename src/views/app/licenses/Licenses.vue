@@ -118,7 +118,7 @@
       <!-- NEW LICENSE -->
       <v-layout column class="fab-container">
         <v-tooltip top>
-          <v-btn slot="activator" fab color="fdaLight" @click="dialog=true">
+          <v-btn slot="activator" fab color="fdaLight" @click="newLicense">
             <v-icon large color="fdaSilver">add</v-icon>
           </v-btn>Apply New
         </v-tooltip>
@@ -178,8 +178,12 @@ export default {
       initial: false,
       selected_case: {},
       pagination: {},
-      details: {},
+      details: {
+        license_details: {},
+        case_details: {}
+      },
       form: {},
+      mode: 0, // 0 - new, 1 - variation, 2 - renewal
       headers: [
         { text: "Case No", value: "case_no" },
         { text: "Type", value: "application_type" },
@@ -235,14 +239,19 @@ export default {
       this.form = this.details.license_details;
       this.showForm = true;
     },
+    newLicense() {
+      this.mode = 0;
+      this.dialog = true;
+    },
     renewForm() {
+      this.mode = 2;
       this.$store.commit("SET_RENEWAL", this.details.license_details);
-      this.$router.push("/app/licenses/renew");
+      this.dialog = true;
     },
     variateForm() {
-      console.log("test");
+      this.mode = 1;
       this.$store.commit("SET_VARIATION", this.details.license_details);
-      this.$router.push("/app/licenses/variation");
+      this.dialog = true;
     },
     loadForm(application_id) {
       console.log("application_id :", application_id);
@@ -257,7 +266,13 @@ export default {
         });
     },
     launchAppForm() {
-      this.$router.push("/app/licenses/apply");
+      if (this.mode === 0) {
+        this.$router.push("/app/licenses/apply");
+      } else if (this.mode === 1) {
+        this.$router.push("/app/licenses/variation");
+      } else if (this.mode === 2) {
+        this.$router.push("/app/licenses/renew");
+      }
     },
     confirmPrinting() {
       this.selected_case = this.details.case_details;

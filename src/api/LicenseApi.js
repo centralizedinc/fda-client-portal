@@ -31,7 +31,7 @@ export default class LicenseAPI {
         })
     }
 
-    getLicenseTasks(){
+    getLicenseTasks() {
         return axios.get('lto-api/task')
     }
 
@@ -143,6 +143,10 @@ export default class LicenseAPI {
         }).catch(err => {
             cb(err)
         })
+    }
+
+    variateLicense(form) {
+        return axios.post('lto-api/variation', form);
     }
 
 }

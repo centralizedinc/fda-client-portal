@@ -190,8 +190,8 @@
               <v-list-tile-content>
                 <!-- <v-list-tile-title v-html="item.title"></v-list-tile-title> -->
                 <v-list-tile-title class="font-weight-bold">{{getTask(item.task_id).name}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{getAdminName(item.assigned_user).first_name}} {{getActStatus(item.status)}} {{getAppType(details.case_details.application_type)}} application of {{getCaseType(details.case_details.case_type)}} with</v-list-tile-sub-title>
-                <v-list-tile-sub-title>Case No.: {{details.case_details.case_no}} on {{formatDate(item.date_completed)}}</v-list-tile-sub-title>
+                <v-list-tile-sub-title>{{getAdminName(item.assigned_user).username}} {{getActStatus(item.status)}} {{getAppType(item.application_type)}} application of {{getCaseType(item.case_type)}} with</v-list-tile-sub-title>
+                <v-list-tile-sub-title>Case No.: {{item.case_no}} on {{formatDate(item.date_completed)}}</v-list-tile-sub-title>
                 <!-- + {{getAppType(details.license_details.application_type)}} + {{details.license_details.case_no}} -->
                 <!-- <v-list-tile-sub-title v-html="item.subtitle"></v-list-tile-sub-title> -->
                 <!-- <v-list-tile-sub-title>{{getTask(item.task_id).name}}  {{getActStatus(item.status)}} {{getCaseType(details.case_details.case_type)}} {{getAdminName(item.assigned_user).username}} {{getAppType(details.license_details.application_type)}} {{details.license_details.case_no}}</v-list-tile-sub-title> -->
@@ -295,7 +295,7 @@ export default {
   },
 
   data: () => ({
-    details: {},
+    // details: {},
     complyDialog: false,
     user: {},
     date2: new Date().toISOString().substr(0, 10),
@@ -309,7 +309,7 @@ export default {
       },
       { divider: true }
     ],
-    activities: null,
+    activities: [],
     tasks: [
       {
         done: false,
@@ -320,7 +320,8 @@ export default {
         text: "Check and log validity of Certificates"
       }
     ],
-    task: null
+    task: null,
+    calendar: null
   }),
   created() {
     this.init();
@@ -346,16 +347,38 @@ export default {
           console.log("JSON.stringify(result) :" + JSON.stringify(result));
           this.details = result;
           console.log(
-            "details user portfolio: " + JSON.stringify(this.details)
+            "details user portfolio: " +
+              JSON.stringify(this.details.case_details)
           );
-          for (var x = result.case_details.activities.length; x >= 0; x--) {
-            console.log(
-              "for user portfolio: " +
-                JSON.stringify(result.case_details.activities[x])
-            );
-          }
+          this.details.cases.forEach(casesData => {
+            console.log("cases data foreach: " + JSON.stringify(casesData));
+            casesData.activities.forEach(act => {
+              console.log("activities data from act: " + JSON.stringify(act));
+              if (act != null) {
+                (act.case_no = casesData.case_no),
+                  (act.application_type = casesData.application_type);
+                act.case_type = case_details.case_type;
+                //   var case_details = {
+                //   case_no: casesData.case_no,
+                //   application_type: casesData.application_type,
+                //   act: act
+                // }
+                this.activities.push(act);
+              }
+            });
+          });
+          console.log("data pushit: " + JSON.stringify(this.activities));
+          // for(var x = result.case_details.activities.length;x>=0;x--){
+          //   console.log("for user portfolio: " + JSON.stringify(result.case_details.activities[x]))
+          // }
 
-          this.activities = result.case_details.activities;
+          // this.activities = result.case_details.activities
+
+          this.activities.sort(function(a, b) {
+            var dateA = new Date(a.date_completed),
+              dateB = new Date(b.date_completed);
+            return dateB - dateA;
+          });
           console.log(
             "activities user portfolio: " + JSON.stringify(this.activities)
           );
@@ -410,4 +433,3 @@ export default {
   font-size: 50px;
 }
 </style>
-
