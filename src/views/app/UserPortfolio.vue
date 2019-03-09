@@ -25,81 +25,8 @@
 
     <!-- For Compliance -->
     <v-flex xs12 md6 pa-2>
-      <v-card class="dcard" height="410">
-        <v-toolbar style="background: linear-gradient(45deg, #939D51 0%, #CAD0A0 100%);">
-          <v-toolbar-title>For Compliance</v-toolbar-title>
-          <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon>more_vert</v-icon>
-          </v-btn>
-        </v-toolbar>
-
-        <v-list class="scrollList" three-line width>
-          <template v-for="(item, index) in complyActivities">
-            <v-divider :key="index">></v-divider>
-            <v-list-tile avatar :key="index">
-              <v-list-tile-content @click="comply">
-                <v-list-tile-title class="font-weight-bold">{{getTask(item.task_id).name}}</v-list-tile-title>
-                <v-list-tile-sub-title>{{getAdminName(item.assigned_user).username}} {{getActStatus(item.status)}} {{getAppType(item.application_type)}} application of {{getCaseType(item.case_type)}} with</v-list-tile-sub-title>
-                <v-list-tile-sub-title>Case No.: {{item.case_no}} on {{formatDate(item.date_completed)}}</v-list-tile-sub-title>
-              </v-list-tile-content>
-              <v-tooltip top>
-                <v-btn slot="activator" small flat icon color="primary" @click="comply(item)">
-                  <v-icon>fas fa-external-link-alt</v-icon>
-                </v-btn>Open
-              </v-tooltip>
-            </v-list-tile>
-          </template>
-        </v-list>
-        <v-divider></v-divider>
-      </v-card>
+      <compliance></compliance>
     </v-flex>
-    <v-dialog
-      v-model="complyDialog"
-      persistent
-      :overlay="false"
-      max-width="500px"
-      transition="dialog-transition">
-      <v-card>
-        <v-spacer></v-spacer>
-        <v-card-title
-          class="headline font-weight-thin"
-          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%); text-transform: uppercase">
-          Compliance
-          <v-spacer></v-spacer>
-          <v-tooltip top>
-            <v-btn slot="activator" flat icon color="black" @click="complyDialog=false">
-              <i class="fas fa-times-circle"></i>
-            </v-btn>Close
-          </v-tooltip>
-        </v-card-title>
-        <v-card-text>
-        <v-flex xs12>
-            <v-card>
-              <v-flex xs12 pa-5>
-              <label>{{formatDate(complyData.date_completed)}} {{complyData.remarks}}</label>
-              </v-flex>
-            </v-card>
-          </v-flex>
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-text>
-          <v-layout row wrap>
-            <v-flex xs12>
-              <uploader @upload="upload"></uploader>
-            </v-flex>
-            <v-flex xs12 mt-3>
-              <v-text-field box multi-line label="User Remarks" v-model="remarks"></v-text-field>
-            </v-flex>
-          </v-layout>
-        </v-card-text>
-
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-btn block color="success" @click="submit">Submit</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-layout>
 </template>
 
@@ -108,7 +35,7 @@ export default {
   components: {
     UserActivity: () => import("@/components/UserActivity.vue"),
     DashboardOverview: () => import("@/components/DashboardOverview.vue"),
-    Uploader: () => import("@/components/Uploader.vue"),
+    Compliance: () => import("@/components/Compliance.vue"),
     ActiveLicense: () => import("@/components/ActiveLicense.vue")
   },
   data: () => ({
@@ -170,7 +97,6 @@ export default {
       this.$store
         .dispatch("GET_ACTIVE_AND_CASES")
         .then(result => {
-          console.log("JSON.stringify(result) :" + JSON.stringify(result));
           this.details = result;
           console.log(
             "details user portfolio: " + JSON.stringify(this.details.cases)
@@ -197,9 +123,6 @@ export default {
               dateB = new Date(b.date_completed);
             return dateB - dateA;
           });
-          console.log(
-            "activities user portfolio: " + JSON.stringify(this.activities)
-          );
           return this.$store.dispatch("GET_TASKS");
         })
         .then(result => {
@@ -207,31 +130,6 @@ export default {
         })
         .then(result => {
           console.log("result of get admin: " + JSON.stringify(result));
-          return this.$store.dispatch("GET_COMPLY");
-        })
-        .then(result => {
-          console.log("get comply data: " + JSON.stringify(result));
-          this.complyDetails = result;
-          this.complyDetails.forEach(cases => {
-            cases.activities.forEach(act => {
-              if (act != null) {
-                 act.case_id = cases._id,
-                (act.case_no = cases.case_no),
-                  (act.application_type = cases.application_type),
-                  (act.case_type = cases.case_type);
-                this.complyActivities.push(act);
-              }
-            });
-          });
-          this.complyActivities.sort(function(a, b) {
-            var dateA = new Date(a.date_completed),
-              dateB = new Date(b.date_completed);
-            return dateB - dateA;
-          });
-          console.log(
-            "JSON.stringify(this.complyActivities) :",
-            JSON.stringify(this.complyActivities)
-          );
         })
         .catch(err => {
           console.log("err :", err);
@@ -274,12 +172,14 @@ export default {
         remarks: this.remarks,
         form_data: this.files
       };
-      console.log("JSON.stringify(complied) :", JSON.stringify(complied));
-      this.$store.dispatch("SAVE_COMPLY", complied).then((result) => {
-        console.log('#result :', result);
-      }).catch((err) => {
-        console.log('err :', err);
-      });;
+      this.$store
+        .dispatch("SAVE_COMPLY", complied)
+        .then(result => {
+          console.log("#result :", result);
+        })
+        .catch(err => {
+          console.log("err :", err);
+        });
     }
   }
 };
@@ -287,19 +187,7 @@ export default {
 
 
 <style>
-.scrollList {
-  height: 300px;
-  overflow-y: auto;
-}
-.dcard {
-  -webkit-box-reflect: below 6px -webkit-gradient(linear, left top, left bottom, from(transparent), color-stop(70%, transparent), to(rgba(250, 250, 250, 0.1)));
-}
 .v-picker__title__btn:not(.v-picker__title__btn--active) {
   font-size: 50px;
-}
-
-.active-license-title {
-  background: linear-gradient(360deg, #104b2a 0%, #b5c25a 100%);
-  box-shadow: 0 6px 20px 0 rgba(38, 198, 218, 0.5);
 }
 </style>

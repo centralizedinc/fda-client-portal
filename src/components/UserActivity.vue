@@ -13,11 +13,11 @@
                         <v-list-tile-title class="font-weight-bold">{{getTask(item.task_id).name}}</v-list-tile-title>
                         <v-list-tile-sub-title>{{getActStatus(item.status)}} {{getAppType(item.application_type)}} application of {{getCaseType(item.case_type)}} with</v-list-tile-sub-title>
                         <v-list-tile-sub-title>
-                            Case No.: <v-tooltip bottom>
+                          Case No.: 
+                          <v-tooltip bottom>
                             <a slot="activator" @click="viewCase(item.application_id)">{{item.case_no}}</a>
                             View Details
-                        </v-tooltip> on {{formatDate(item.date_completed)}}
-
+                          </v-tooltip> on {{formatDate(item.date_completed)}}
                         </v-list-tile-sub-title>
                     </v-list-tile-content>
                 </v-list-tile>

@@ -39,15 +39,9 @@ var actions = {
         return new Promise((resolve, reject) => {
             new CaseAPI(context.rootState.user_session.token).getComply()
                 .then((result) => {
-                    if (result.data.success) {
-                        context.commit('SET_COMPLY', result.data.model);
-                        resolve(result.data.model)
-                    } else {
-                        console.log('GET_COMPLY err :', result.data.errors)
-                        reject(result.data.errors)
-                    }
+                    if (result.data.success) context.commit('SET_COMPLY', result.data.model);
+                    resolve(result.data)
                 }).catch((err) => {
-                    console.log('err :', err);
                     reject(err)
                 });
         })
@@ -74,8 +68,8 @@ var actions = {
                 });
         })
     },
-    GET_ACTIVITIES(context){
-        if(context.rootState.user_session.token){
+    GET_ACTIVITIES(context) {
+        if (context.rootState.user_session.token) {
             return new CaseAPI(context.rootState.user_session.token).getActivities();
         }
     }
