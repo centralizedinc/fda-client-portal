@@ -38,7 +38,7 @@ export default class CaseAPI {
      */
     submitCompliance(compliance) {
         console.log('compliance :', compliance);
-        axios.post("lto-api/case/compliance", compliance)
+        return axios.post("lto-api/case/compliance", compliance)
     }
 
     applyLicense(lic_data) {
