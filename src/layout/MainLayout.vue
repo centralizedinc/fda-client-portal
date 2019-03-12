@@ -6,7 +6,7 @@
       <router-view></router-view>
     </v-container>
     <v-footer dark style="background: linear-gradient(45deg, #b5c25a 0%, #104b2a 100%)">
-      <span class="caption">Copyright © 2019 FDA All rights reserved.</span>
+      <span class="caption">Copyright © 2019 FDA All rights reserved. v.{{app_version}}</span>
       <v-spacer></v-spacer>
       <span class="caption">Food And Drug Administration of the Philippines</span>
     </v-footer>
@@ -23,8 +23,12 @@ export default {
     };
   },
   created() {},
-  created() {},
-  methods: {}
+  methods: {},
+  computed:{
+    app_version(){
+      return process.env.VUE_APP_VERSION
+    }
+  }
 };
 </script>
 
