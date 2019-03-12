@@ -1,6 +1,6 @@
 {
   "name": "fda-client-portal",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -18,7 +18,7 @@
     "push": "git add . && git commit -m 'update'&& npm version patch && git push"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.2.0", 
+    "@fortawesome/fontawesome-free": "^5.2.0",
     "axios": "^0.18.0",
     "fda-pdf-printer-plugin": "^1.0.12",
     "js-cookie": "^2.2.0",
