@@ -1,4 +1,5 @@
-# fda-client-portal
+# fda-client-portal [![Build Status](https://travis-ci.org/centralizedinc/fda-client-portal.svg?branch=master)](https://travis-ci.org/centralizedinc/fda-client-portal)
+
 Application Portal for FDA Clients
 
 ## Project setup
