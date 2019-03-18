@@ -42,25 +42,23 @@
                 v-model="credentials.password"
                 color="primary"
               ></v-text-field>
-
-              <!-- <v-divider></v-divider> -->
             </v-card-text>
+            <v-divider></v-divider>
             <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn
+              <!-- <v-btn
                 outline
                 color="primary"
                 class="caption font-weight-light"
                 @click="signup()"
-              >Sign-up</v-btn>
+              >Sign-up</v-btn> -->
               <v-btn
+              block
                 color="success"
                 :loading="loading"
                 type="submit"
                 class="caption font-weight-light"
               >Login</v-btn>
             </v-card-actions>
-            <v-divider></v-divider>
             <v-btn
               flat
               block

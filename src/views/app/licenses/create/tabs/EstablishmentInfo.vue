@@ -73,6 +73,7 @@
           color="green darken-1"
           :rules="[rules.required]"
           label="2. Landline Number"
+          :mask="phone"
           v-model="form.estab_details.landline"
           :disabled="form.application_type===2"
           hint="Establishment's primary landline number"
@@ -84,6 +85,7 @@
           color="green darken-1"
           :rules="[rules.required]"
           label="3. Fax Number"
+          :mask="phone"
           v-model="form.estab_details.fax"
           :disabled="form.application_type===2"
         ></v-text-field>
@@ -93,6 +95,7 @@
           color="green darken-1"
           :rules="[rules.required]"
           label="4. Mobile Number"
+          :mask="mobile"
           v-model="form.estab_details.mobile"
           :disabled="form.application_type===2"
           hint="Establisment's or administrator's mobile number"
@@ -169,6 +172,8 @@
 export default {
   props: ["form"],
   data: () => ({
+    phone: "(##) #### - ####",
+    mobile: "(####) - ### - ####",
     tin: "###-###-###-###",
     products: [],
     rules: {

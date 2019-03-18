@@ -188,6 +188,7 @@
                   class="font-weight-light"
                   outline
                   name="phone"
+                  mask="phone"
                   label="Phone Number"
                   v-model="account.contact.phone"
                   id="phone"
@@ -198,6 +199,7 @@
                   class="font-weight-light"
                   outline
                   name="mobile"
+                  mask="mobile"
                   label="Mobile Number"
                   v-model="account.contact.mobile"
                   id="mobile"
@@ -244,7 +246,7 @@
                 <v-text-field
                   outline
                   name="name"
-                  label="Confirm Passowrd"
+                  label="Confirm Password"
                   :append-icon="visible_conf_pass ? 'visibility' : 'visibility_off'"
                   :append-icon-cb="() => (visible_conf_pass = !visible_conf_pass)"
                   :type="visible_conf_pass ? 'password' : 'text'"
@@ -291,6 +293,9 @@ export default {
   components: { VueRecaptcha },
   data() {
     return {
+      phone: "(##) #### - ####",
+      mobile: "(####) - ### - ####",
+      tin: "###-###-###-###",
       loading: false,
       account: {
         company: {
