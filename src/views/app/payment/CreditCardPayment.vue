@@ -70,6 +70,7 @@
         color="green darken-1"
         v-model="full_details.card_details.provinces"
         :items="getProvinces"
+        @change="getProvinces"
         item-text="name"
         item-value="_id"
         hide-no-data
@@ -292,12 +293,16 @@
           this.regions = locations.regions;
           this.provinces = locations.provinces;
           this.cities = locations.cities;
+          console.log("regions data: " + JSON.stringify(this.regions))
+          console.log("provinces data: " + JSON.stringify(this.provinces))
+          console.log("cities data: " + JSON.stringify(this.cities))
         }
       });
     },
     computed: {
       getProvinces() {
       // this.form.addresses.office.province = null;
+      console.log("get provinces computed: " + JSON.stringify(this.findProvinces(this.full_details.card_details.provinces)))
       return this.findProvinces(this.full_details.card_details.provinces);
     },
     getCities() {
@@ -437,46 +442,46 @@
           "case_no": "l20192802000198",
           "modified_by": "5c6bbbb590a2b609204b1fec"
         }
-        this.$print(this.form, "PAY");
-        console.log("submit: " + JSON.stringify(this.full_details));
-        if (!this.isEmptyStrings([
-            this.full_details.card_details.number,
-            this.full_details.card_details.exp_month,
-            this.full_details.card_details.exp_year,
-            this.full_details.card_details.cvc,
-            this.full_details.card_details.name,
-            this.full_details.card_details.email,
-            this.full_details.card_details.address_line1,
-            this.full_details.card_details.regions,
-            this.full_details.card_details.provinces,
-            this.full_details.card_details.cities,
-            this.full_details.card_details.zip
-          ]) && this.loading === false) {
-          var paymentFee = this.$store.state.payments.fee
-          console.log("payment fee data: " + JSON.stringify(paymentFee))
-          this.full_details.payment_details.amount = paymentFee.total
-          this.full_details.payment_details.description = paymentFee.description
-          this.full_details.transaction_details.application_type = this.form.application_type
-          this.full_details.transaction_details.case_no = this.form.case_no
-          this.full_details.transaction_details.order_payment.penalty = paymentFee.surcharge
-          console.log("creadit card payment charges data: " + JSON.stringify(paymentFee.total));
-          console.log("full details: " + JSON.stringify(this.full_details))
-          this.$store.dispatch("SAVE_PAYMENT", this.full_details).then(result => {
-              console.log("saved payment " + JSON.stringify(result));
-              // this.$router.push("/");
-            })
-            .catch(err => {
-              console.log('ERROR: ' + err)
-              this.$notifyError(err)
-            })
-          // this.$router.push("/app/payments/summary");
-        }else{
-          this.$notify({
-          message: "Please enter fields correctly",
-          color: "warning",
-          initialMargin: 100
-        });
-        }
+        // this.$print(this.form, "PAY");
+        // console.log("submit: " + JSON.stringify(this.full_details));
+        // if (!this.isEmptyStrings([
+        //     this.full_details.card_details.number,
+        //     this.full_details.card_details.exp_month,
+        //     this.full_details.card_details.exp_year,
+        //     this.full_details.card_details.cvc,
+        //     this.full_details.card_details.name,
+        //     this.full_details.card_details.email,
+        //     this.full_details.card_details.address_line1,
+        //     this.full_details.card_details.regions,
+        //     this.full_details.card_details.provinces,
+        //     this.full_details.card_details.cities,
+        //     this.full_details.card_details.zip
+        //   ]) && this.loading === false) {
+        //   var paymentFee = this.$store.state.payments.fee
+        //   console.log("payment fee data: " + JSON.stringify(paymentFee))
+        //   this.full_details.payment_details.amount = paymentFee.total
+        //   this.full_details.payment_details.description = paymentFee.description
+        //   this.full_details.transaction_details.application_type = this.form.application_type
+        //   this.full_details.transaction_details.case_no = this.form.case_no
+        //   this.full_details.transaction_details.order_payment.penalty = paymentFee.surcharge
+        //   console.log("creadit card payment charges data: " + JSON.stringify(paymentFee.total));
+        //   console.log("full details: " + JSON.stringify(this.full_details))
+        //   this.$store.dispatch("SAVE_PAYMENT", this.full_details).then(result => {
+        //       console.log("saved payment " + JSON.stringify(result));
+        //       // this.$router.push("/");
+        //     })
+        //     .catch(err => {
+        //       console.log('ERROR: ' + err)
+        //       this.$notifyError(err)
+        //     })
+        //   // this.$router.push("/app/payments/summary");
+        // }else{
+        //   this.$notify({
+        //   message: "Please enter fields correctly",
+        //   color: "warning",
+        //   initialMargin: 100
+        // });
+        // }
       }
     }
   };
