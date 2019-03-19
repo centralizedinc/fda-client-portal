@@ -14,25 +14,25 @@
               </v-text-field>
             </v-flex>
             <!-- <v-flex xs4>
-                <v-text-field
-                  label="*Expiration Month(MM)"
-                  mask="##"
-                  v-model="full_details.card_details.exp_month"
-                  :rules="[rules.required, rules.expiry_validity]"
-                ></v-text-field>
-              </v-flex>
-              <v-flex xs4>
-                <v-text-field
-                  label="*Expiration Year(YYYY)"
-                  mask="####"
-                  v-model="full_details.card_details.exp_year"
-                  :rules="[rules.required, rules.expiry_validity]"
-                ></v-text-field>
-              </v-flex>-->
+                  <v-text-field
+                    label="*Expiration Month(MM)"
+                    mask="##"
+                    v-model="full_details.card_details.exp_month"
+                    :rules="[rules.required, rules.expiry_validity]"
+                  ></v-text-field>
+                </v-flex>
+                <v-flex xs4>
+                  <v-text-field
+                    label="*Expiration Year(YYYY)"
+                    mask="####"
+                    v-model="full_details.card_details.exp_year"
+                    :rules="[rules.required, rules.expiry_validity]"
+                  ></v-text-field>
+                </v-flex>-->
             <!-- ---------------------------------- -->
             <v-flex xs8>
               <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-                <v-text-field slot="activator" v-model="dateFormatted" label="Date" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
+                <v-text-field slot="activator" v-model="dateFormatted" label="Date" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" color="primary"></v-text-field>
                 <v-date-picker v-model="date" no-title @input="menu1 = false" type="month" :min="new Date().toISOString().substr(0, 10)"></v-date-picker>
               </v-menu>
             </v-flex>
@@ -51,12 +51,92 @@
             <v-flex xs12>
               <v-text-field label="Address Line 2" v-model="full_details.card_details.address_line2"></v-text-field>
             </v-flex>
-            <v-flex xs12>
+            <!-- ----------------------------- -->
+            <v-flex xs12 md3 pa-2>
+      <v-autocomplete
+        color="green darken-1"
+        v-model="full_details.card_details.regions"
+        :items="regions"
+        item-text="name"
+        item-value="_id"
+        hide-no-data
+        hide-selected
+        label="Region"
+        :rules="[rules.required]"
+      ></v-autocomplete>
+    </v-flex>
+    <v-flex xs12 md3 pa-2>
+      <v-autocomplete
+        color="green darken-1"
+        v-model="full_details.card_details.provinces"
+        :items="getProvinces"
+        @change="getProvinces"
+        item-text="name"
+        item-value="_id"
+        hide-no-data
+        hide-selected
+        label="Province"
+        :rules="[rules.required]"
+      ></v-autocomplete>
+    </v-flex>
+    <v-flex xs12 md3 pa-2>
+      <v-autocomplete
+        color="green darken-1"
+        v-model="full_details.card_details.cities"
+        :items="getCities"
+        item-text="name"
+        item-value="_id"
+        hide-no-data
+        hide-selected
+        label="City / Town"
+        :rules="[rules.required]"
+      ></v-autocomplete>
+    </v-flex>
+            <!-- <v-flex xs12>
+            <v-autocomplete
+              color="green darken-1"
+              v-model="full_details.card_details.regions"
+              :items="regions"
+              item-text="name"
+              @change="getProvinces"
+              hide-no-data
+              hide-selected
+              label="Region"
+              :rules="[rules.required]"
+            ></v-autocomplete>
+          </v-flex>
+          <v-flex xs12>
+            <v-autocomplete
+              color="green darken-1"
+              v-model="full_details.card_details.provinces"
+              :items="provinces"
+              item-text="name"
+              @change="getCities"
+              hide-no-data
+              hide-selected
+              label="Province"
+              :rules="[rules.required]"
+            ></v-autocomplete>
+          </v-flex>
+          <v-flex xs12>
+            <v-autocomplete
+              color="green darken-1"
+              v-model="full_details.card_details.cities"
+              :items="cities"
+              item-text="name"
+              hide-no-data
+              hide-selected
+              label="City / Town"
+              :rules="[rules.required]"
+            ></v-autocomplete>
+          </v-flex> -->
+            <!-- ----------------------------- -->
+            <!-- <v-flex xs12>
               <v-text-field label="*Region/State" v-model="full_details.card_details.state" :rules="[rules.required]"></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field label="*City" v-model="full_details.card_details.address_city" :rules="[rules.required]"></v-text-field>
-            </v-flex>
+            </v-flex> -->
             <v-flex xs12>
               <v-text-field label="*Zip Code" v-model="full_details.card_details.zip" mask="#####" :rules="[rules.required]"></v-text-field>
             </v-flex>
@@ -84,6 +164,9 @@
         date: new Date().toISOString().substr(0, 7),
         menu1: false,
         expiry: "",
+        regions: [],
+        provinces: [],
+        cities: [],
         full_details: {
           card_details: {
             number: "",
@@ -94,8 +177,9 @@
             email: "",
             address_line1: "",
             address_line2: "",
-            address_city: "",
-            state: "",
+            region: "",
+            province: "",
+            city:"",
             zip: ""
           },
           payment_details: {
@@ -131,16 +215,22 @@
       date(val) {
         this.dateFormatted = this.formatDate(this.date);
       },
-      "full_details.card_details.email": function(val){
-
+      "full_details.card_details.email": function(val) {
         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         console.log("email verification: " + pattern.test(val))
+        if(pattern.test(val) === false){
+            this.$notify({
+          message: "Enter valid email",
+          color: "warning",
+          initialMargin: 100
+        });
+        }
         // return pattern.test(value) || "Invalid e-mail.";
-      //   this.$notify({
-      //   message: "creadit",
-      //   color: "warning",
-      //   initialMargin: 100
-      // });
+        //   this.$notify({
+        //   message: "creadit",
+        //   color: "warning",
+        //   initialMargin: 100
+        // });
       },
       "full_details.card_details.number": function(val) {
         console.log("validate credit card number");
@@ -157,12 +247,22 @@
               );
               this.card_logo = images[creditCard.card.type];
               console.log("test logo: " + JSON.stringify(creditCard.card.type));
+              this.$notify({
+          message: "You entered a " + creditCard.card.type + " credit card number",
+          color: "primary",
+          initialMargin: 100
+        });
               this.loading = false;
               this.gaps = creditCard.card.gaps;
               this.cvc_max = creditCard.card.code.size;
               this.code_name = creditCard.card.code.name;
             } else {
               this.loading = true;
+              this.$notify({
+          message: "Enter valid credit card number",
+          color: "warning",
+          initialMargin: 100
+        });
             }
           });
         }
@@ -188,8 +288,53 @@
     },
     created() {
       console.log("creadit card payment form data: " + JSON.stringify(this.form));
+      this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
+        if (locations) {
+          this.regions = locations.regions;
+          this.provinces = locations.provinces;
+          this.cities = locations.cities;
+          console.log("regions data: " + JSON.stringify(this.regions))
+          console.log("provinces data: " + JSON.stringify(this.provinces))
+          console.log("cities data: " + JSON.stringify(this.cities))
+        }
+      });
+    },
+    computed: {
+      getProvinces() {
+      // this.form.addresses.office.province = null;
+      console.log("get provinces computed: " + JSON.stringify(this.findProvinces(this.full_details.card_details.provinces)))
+      return this.findProvinces(this.full_details.card_details.provinces);
+    },
+    getCities() {
+      //  this.form.addresses.office.city = null;
+      return this.findCities(this.full_details.card_details.cities);
+    }
     },
     methods: {
+    //   getProvinces() {
+    //   this.$store
+    //     .dispatch("GET_PROVINCE", this.form.addresses.office.region)
+    //     .then(result => {
+    //       this.provinces = this.$store.state.places.provinces;
+    //       return this.$store.dispatch("GET_REGION");
+    //     })
+    //     .then(result => {
+    //       // GET region data
+    //       this.regions = this.$store.state.places.regions;
+    //     });
+    // },
+    // getCities() {
+    //   this.$store
+    //     .dispatch("GET_CITY", this.form.addresses.office.city)
+    //     .then(result => {
+    //       this.cities = this.$store.state.places.city;
+    //       return this.$store.dispatch("GET_PROVINCE");
+    //     })
+    //     .then(result => {
+    //       // GET CITIES data
+    //       this.provinces = this.$store.state.places.provinces;
+    //     });
+    // },
       formatDate(date) {
         if (!date) return null;
         const [year, month] = date.split("-");
@@ -215,88 +360,89 @@
         return false;
       },
       submit() {
-        // var form = {
-        //   "current_task": "",
-        //   "user": "",
-        //   "created_by": "5c6bbbb590a2b609204b1fec",
-        //   "uploaded_files": [{
-        //     "location": "https://fda-portal.s3.us-west-2.amazonaws.com/upload/l20192802000198/1551313621054",
-        //     "contentType": "application/pdf",
-        //     "key": "upload/l20192802000198/1551313621054",
-        //     "mimetype": "application/pdf",
-        //     "originalname": "Screen Shot 2019-02-01 at 8.57.32 AM.pdf",
-        //     "_id": {
-        //       "$oid": "5c772ad6de7872001725d258"
-        //     },
-        //     "date": {
-        //       "$date": "2019-02-27T06:44:01.948Z"
-        //     }
-        //   }],
-        //   "date_modified": {
-        //     "$date": "2019-02-28T00:27:02.093Z"
-        //   },
-        //   "date_created": null,
-        //   "qualified": [],
-        //   "auth_officer": {
-        //     "mail_add": {
-        //       "zipcode": "",
-        //       "city": "",
-        //       "province": "",
-        //       "region": "",
-        //       "address": ""
-        //     },
-        //     "id_expiry": "",
-        //     "id_no": "",
-        //     "id_type": "",
-        //     "birthday": "",
-        //     "tin": "",
-        //     "email": "test@email.com",
-        //     "designation": "",
-        //     "middlename": "",
-        //     "firstname": "",
-        //     "lastname": "opiopiopipo"
-        //   },
-        //   "addresses": {
-        //     "office": {
-        //       "location": {
-        //         "lng": 120.3209373,
-        //         "lat": 16.6158906
-        //       },
-        //       "zipcode": "",
-        //       "city": "",
-        //       "province": "5c6387a6654fc728fc927504",
-        //       "region": "5c627cfe5a7e9c21c44071bf",
-        //       "address": ""
-        //     },
-        //     "warehouse": [],
-        //     "plant": {
-        //       "zipcode": "",
-        //       "city": "",
-        //       "province": "",
-        //       "region": "",
-        //       "address": ""
-        //     }
-        //   },
-        //   "estab_details": {
-        //     "mobile": "",
-        //     "fax": "",
-        //     "landline": "",
-        //     "email": "",
-        //     "tin": "090909090909",
-        //     "establishment_owner": "kljlkj",
-        //     "establishment_name": "lkl;kl;"
-        //   },
-        //   "general_info": {
-        //     "declared_capital": "5c106397b19f7a29c4096aba",
-        //     "primary_activity": "5c106ad2b19f7a29c4096ac6",
-        //     "product_type": "5c106cb7b19f7a29c4096ad0"
-        //   },
-        //   "application_type": 0,
-        //   "status": 0,
-        //   "case_no": "l20192802000198",
-        //   "modified_by": "5c6bbbb590a2b609204b1fec"
-        // }
-        // this.$print(form, "PAY");
+        console.log("props form data: " + JSON.stringify(this.form))
+        var form = {
+          "current_task": "",
+          "user": "",
+          "created_by": "5c6bbbb590a2b609204b1fec",
+          "uploaded_files": [{
+            "location": "https://fda-portal.s3.us-west-2.amazonaws.com/upload/l20192802000198/1551313621054",
+            "contentType": "application/pdf",
+            "key": "upload/l20192802000198/1551313621054",
+            "mimetype": "application/pdf",
+            "originalname": "Screen Shot 2019-02-01 at 8.57.32 AM.pdf",
+            "_id": {
+              "$oid": "5c772ad6de7872001725d258"
+            },
+            "date": {
+              "$date": "2019-02-27T06:44:01.948Z"
+            }
+          }],
+          "date_modified": {
+            "$date": "2019-02-28T00:27:02.093Z"
+          },
+          "date_created": null,
+          "qualified": [],
+          "auth_officer": {
+            "mail_add": {
+              "zipcode": "",
+              "city": "",
+              "province": "",
+              "region": "",
+              "address": ""
+            },
+            "id_expiry": "",
+            "id_no": "",
+            "id_type": "",
+            "birthday": "",
+            "tin": "",
+            "email": "test@email.com",
+            "designation": "",
+            "middlename": "",
+            "firstname": "",
+            "lastname": "opiopiopipo"
+          },
+          "addresses": {
+            "office": {
+              "location": {
+                "lng": 120.3209373,
+                "lat": 16.6158906
+              },
+              "zipcode": "",
+              "city": "",
+              "province": "5c6387a6654fc728fc927504",
+              "region": "5c627cfe5a7e9c21c44071bf",
+              "address": ""
+            },
+            "warehouse": [],
+            "plant": {
+              "zipcode": "",
+              "city": "",
+              "province": "",
+              "region": "",
+              "address": ""
+            }
+          },
+          "estab_details": {
+            "mobile": "",
+            "fax": "",
+            "landline": "",
+            "email": "",
+            "tin": "090909090909",
+            "establishment_owner": "kljlkj",
+            "establishment_name": "lkl;kl;"
+          },
+          "general_info": {
+            "declared_capital": "5c106397b19f7a29c4096aba",
+            "primary_activity": "5c106ad2b19f7a29c4096ac6",
+            "product_type": "5c106cb7b19f7a29c4096ad0"
+          },
+          "application_type": 0,
+          "status": 0,
+          "case_no": "l20192802000198",
+          "modified_by": "5c6bbbb590a2b609204b1fec"
+        }
+        // this.$print(this.form, "PAY");
         // console.log("submit: " + JSON.stringify(this.full_details));
         // if (!this.isEmptyStrings([
         //     this.full_details.card_details.number,
@@ -306,17 +452,19 @@
         //     this.full_details.card_details.name,
         //     this.full_details.card_details.email,
         //     this.full_details.card_details.address_line1,
-        //     this.full_details.card_details.address_city,
-        //     this.full_details.card_details.state,
+        //     this.full_details.card_details.regions,
+        //     this.full_details.card_details.provinces,
+        //     this.full_details.card_details.cities,
         //     this.full_details.card_details.zip
-        //   ])) {
+        //   ]) && this.loading === false) {
         //   var paymentFee = this.$store.state.payments.fee
-        //   this.full_details.payment_details.amount = paymentFee.fee
+        //   console.log("payment fee data: " + JSON.stringify(paymentFee))
+        //   this.full_details.payment_details.amount = paymentFee.total
         //   this.full_details.payment_details.description = paymentFee.description
         //   this.full_details.transaction_details.application_type = this.form.application_type
         //   this.full_details.transaction_details.case_no = this.form.case_no
-        //   this.full_details.transaction_details.order_payment.penalty = 200
-        //   console.log("creadit card payment charges data: " + JSON.stringify(paymentFee.fee));
+        //   this.full_details.transaction_details.order_payment.penalty = paymentFee.surcharge
+        //   console.log("creadit card payment charges data: " + JSON.stringify(paymentFee.total));
         //   console.log("full details: " + JSON.stringify(this.full_details))
         //   this.$store.dispatch("SAVE_PAYMENT", this.full_details).then(result => {
         //       console.log("saved payment " + JSON.stringify(result));
@@ -327,6 +475,12 @@
         //       this.$notifyError(err)
         //     })
         //   // this.$router.push("/app/payments/summary");
+        // }else{
+        //   this.$notify({
+        //   message: "Please enter fields correctly",
+        //   color: "warning",
+        //   initialMargin: 100
+        // });
         // }
       }
     }
