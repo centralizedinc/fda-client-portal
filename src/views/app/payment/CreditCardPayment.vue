@@ -246,12 +246,22 @@
               );
               this.card_logo = images[creditCard.card.type];
               console.log("test logo: " + JSON.stringify(creditCard.card.type));
+              this.$notify({
+          message: "You entered a " + creditCard.card.type + " credit card number",
+          color: "primary",
+          initialMargin: 100
+        });
               this.loading = false;
               this.gaps = creditCard.card.gaps;
               this.cvc_max = creditCard.card.code.size;
               this.code_name = creditCard.card.code.name;
             } else {
               this.loading = true;
+              this.$notify({
+          message: "Enter valid credit card number",
+          color: "warning",
+          initialMargin: 100
+        });
             }
           });
         }
@@ -345,6 +355,7 @@
         return false;
       },
       submit() {
+        console.log("props form data: " + JSON.stringify(this.form))
         var form = {
           "current_task": "",
           "user": "",
@@ -426,7 +437,7 @@
           "case_no": "l20192802000198",
           "modified_by": "5c6bbbb590a2b609204b1fec"
         }
-        this.$print(form, "PAY");
+        this.$print(this.form, "PAY");
         console.log("submit: " + JSON.stringify(this.full_details));
         if (!this.isEmptyStrings([
             this.full_details.card_details.number,
@@ -440,14 +451,15 @@
             this.full_details.card_details.provinces,
             this.full_details.card_details.cities,
             this.full_details.card_details.zip
-          ])) {
+          ]) && this.loading === false) {
           var paymentFee = this.$store.state.payments.fee
-          this.full_details.payment_details.amount = paymentFee.fee
+          console.log("payment fee data: " + JSON.stringify(paymentFee))
+          this.full_details.payment_details.amount = paymentFee.total
           this.full_details.payment_details.description = paymentFee.description
           this.full_details.transaction_details.application_type = this.form.application_type
           this.full_details.transaction_details.case_no = this.form.case_no
-          this.full_details.transaction_details.order_payment.penalty = 200
-          console.log("creadit card payment charges data: " + JSON.stringify(paymentFee.fee));
+          this.full_details.transaction_details.order_payment.penalty = paymentFee.surcharge
+          console.log("creadit card payment charges data: " + JSON.stringify(paymentFee.total));
           console.log("full details: " + JSON.stringify(this.full_details))
           this.$store.dispatch("SAVE_PAYMENT", this.full_details).then(result => {
               console.log("saved payment " + JSON.stringify(result));
@@ -458,6 +470,12 @@
               this.$notifyError(err)
             })
           // this.$router.push("/app/payments/summary");
+        }else{
+          this.$notify({
+          message: "Please enter fields correctly",
+          color: "warning",
+          initialMargin: 100
+        });
         }
       }
     }

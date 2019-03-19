@@ -7,33 +7,36 @@
           <slot :name="'header-step-' + step"></slot>
         </v-card-title>
         <v-window v-model="onboarding">
-          <v-window-item v-for="st in steps" :key="st">
-            <v-card style="box-shadow: none  !important;" height="calc(100% - 80px)">
-              <v-progress-linear></v-progress-linear>
-              <v-container
-                mt-3
-                id="scroll-target"
-                style="max-height: calc(100% - 80px)"
-                class="scroll-target scroll-y">
-                <v-layout
+          <template v-for="st in steps">
+            <v-window-item :key="st">
+              <v-card style="box-shadow: none  !important;" height="calc(100% - 80px)">
+                <v-progress-linear></v-progress-linear>
+                <v-container
                   mt-3
-                  column
-                  style="height: calc(100% - 80px)"
-                  align-center
-                  justify-center
+                  id="scroll-target"
+                  style="max-height: calc(100% - 80px)"
+                  class="scroll-target scroll-y"
                 >
-                  <slot :name="'content-step-' + st"></slot>
-                </v-layout>
-              </v-container>
-            </v-card>
-          </v-window-item>
+                  <v-layout
+                    mt-3
+                    column
+                    style="height: calc(100% - 80px)"
+                    align-center
+                    justify-center
+                  >
+                    <slot :name="'content-step-' + step"></slot>
+                  </v-layout>
+                </v-container>
+              </v-card>
+            </v-window-item>
+          </template>
         </v-window>
         <v-card-actions class="justify-space-between">
           <v-btn flat @click="prev">
-            <v-icon>mdi-chevron-left</v-icon>
+            <v-icon color="primary">fas fa-chevron-circle-left</v-icon>
           </v-btn>
           <v-item-group v-model="onboarding" text-xs-center mandatory>
-            <v-item class="step" v-for="n in steps" :key="`btn-${n}`">
+            <v-item class="step" v-for="n in steps" :key="n">
               <v-btn
                 slot-scope="{ active}"
                 :input-value="active"
@@ -44,7 +47,7 @@
           </v-item-group>
           <v-btn color="primary" flat @click="next">
             <span v-if="steps === step">{{submitText}}</span>
-            <v-icon v-else>mdi-chevron-right</v-icon>
+            <v-icon v-else color="primary">fas fa-chevron-circle-right</v-icon>
           </v-btn>
         </v-card-actions>
       </v-card>
