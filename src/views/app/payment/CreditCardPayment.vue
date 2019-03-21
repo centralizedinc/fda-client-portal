@@ -197,121 +197,141 @@
             order_payment: {}
           }
         },
-        rules: {
-          required: value => !!value || "This is a required field",
-          card_validity: value => this.loading || "Invalid Credit Card Number",
-          // expiry_validity: value2 => !!this.loading2 || "Invalid Expiration Date",
-          // cvc_validity: value3 => this.loading3 === true || "Invalid CVV"
-          email: value => {
-            const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-            return pattern.test(value) || "Invalid e-mail.";
-          }
+        payment_details: {
+          amount: 0,
+          currency: "Php",
+          description: "",
+          statement_descriptor: "",
+          capture: true
         },
-        gaps: [],
-        cvc_max: 3,
-        code_name: "CVC"
-      };
-    },
-    watch: {
-      date(val) {
-        this.dateFormatted = this.formatDate(this.date);
+        transaction_details: {
+          application_type: "",
+          application: "License",
+          case_no: "",
+          order_payment: {}
+        }
       },
-      "full_details.card_details.email": function(val) {
-        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        console.log("email verification: " + pattern.test(val))
-        if(pattern.test(val) === false){
-            this.$notify({
+      rules: {
+        required: value => !!value || "This is a required field",
+        card_validity: value => this.loading || "Invalid Credit Card Number",
+        // expiry_validity: value2 => !!this.loading2 || "Invalid Expiration Date",
+        // cvc_validity: value3 => this.loading3 === true || "Invalid CVV"
+        email: value => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || "Invalid e-mail.";
+        }
+      },
+      gaps: [],
+      cvc_max: 3,
+      code_name: "CVC"
+    
+  },
+  watch: {
+    date(val) {
+      this.dateFormatted = this.formatDate(this.date);
+    },
+    "full_details.card_details.email": function(val) {
+      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      console.log("email verification: " + pattern.test(val));
+      if (pattern.test(val) === false) {
+        this.$notify({
           message: "Enter valid email",
           color: "warning",
           initialMargin: 100
         });
-        }
-        // return pattern.test(value) || "Invalid e-mail.";
-        //   this.$notify({
-        //   message: "creadit",
-        //   color: "warning",
-        //   initialMargin: 100
-        // });
-      },
-      "full_details.card_details.number": function(val) {
-        console.log("validate credit card number");
-        this.loading = true;
-        this.card_logo = null;
-        this.$store.state.payments.credit_card = "";
-        if (val !== "") {
-          this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result => {
-            var creditCard = this.$store.state.payments.credit_card;
-            if (creditCard.isValid) {
-              console.log(
-                "####### credit card details: " +
+      }
+      // return pattern.test(value) || "Invalid e-mail.";
+      //   this.$notify({
+      //   message: "creadit",
+      //   color: "warning",
+      //   initialMargin: 100
+      // });
+    },
+    "full_details.card_details.number": function(val) {
+      console.log("validate credit card number");
+      this.loading = true;
+      this.card_logo = null;
+      this.$store.state.payments.credit_card = "";
+      if (val !== "") {
+        this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result => {
+          var creditCard = this.$store.state.payments.credit_card;
+          if (creditCard.isValid) {
+            console.log(
+              "####### credit card details: " +
                 JSON.stringify(creditCard.isValid)
-              );
-              this.card_logo = images[creditCard.card.type];
-              console.log("test logo: " + JSON.stringify(creditCard.card.type));
-              this.$notify({
-          message: "You entered a " + creditCard.card.type + " credit card number",
-          color: "primary",
-          initialMargin: 100
+            );
+            this.card_logo = images[creditCard.card.type];
+            console.log("test logo: " + JSON.stringify(creditCard.card.type));
+            this.$notify({
+              message:
+                "You entered a " + creditCard.card.type + " credit card number",
+              color: "primary",
+              initialMargin: 100
+            });
+            this.loading = false;
+            this.gaps = creditCard.card.gaps;
+            this.cvc_max = creditCard.card.code.size;
+            this.code_name = creditCard.card.code.name;
+          } else {
+            this.loading = true;
+            this.$notify({
+              message: "Enter valid credit card number",
+              color: "warning",
+              initialMargin: 100
+            });
+          }
         });
-              this.loading = false;
-              this.gaps = creditCard.card.gaps;
-              this.cvc_max = creditCard.card.code.size;
-              this.code_name = creditCard.card.code.name;
-            } else {
-              this.loading = true;
-              this.$notify({
-          message: "Enter valid credit card number",
-          color: "warning",
-          initialMargin: 100
-        });
-            }
-          });
-        }
-      },
-      "full_details.card_details.cvc": function(val) {
-        // this.loading3 = true;
-        this.$store.state.payments.cvv = "";
-        if (val !== "") {
-          console.log("cvv number data: " + JSON.stringify(val));
-          this.$store.dispatch("VALIDATE_CVV", val).then(result => {
-            var cvv = this.$store.state.payments.cvv;
-            if (cvv.isValid) {
-              console.log(
-                "####### cvv/cvc details: " + JSON.stringify(cvv.isValid)
-              );
-              // this.loading3 = false;
-            }
-          });
-        } else {
-          // this.loading3 = false
-        }
       }
     },
-    created() {
-      console.log("creadit card payment form data: " + JSON.stringify(this.form));
-      this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
-        if (locations) {
-          this.regions = locations.regions;
-          this.provinces = locations.provinces;
-          this.cities = locations.cities;
-          console.log("regions data: " + JSON.stringify(this.regions))
-          console.log("provinces data: " + JSON.stringify(this.provinces))
-          console.log("cities data: " + JSON.stringify(this.cities))
-        }
-      });
-    },
-    computed: {
-      getProvinces() {
+    "full_details.card_details.cvc": function(val) {
+      // this.loading3 = true;
+      this.$store.state.payments.cvv = "";
+      if (val !== "") {
+        console.log("cvv number data: " + JSON.stringify(val));
+        this.$store.dispatch("VALIDATE_CVV", val).then(result => {
+          var cvv = this.$store.state.payments.cvv;
+          if (cvv.isValid) {
+            console.log(
+              "####### cvv/cvc details: " + JSON.stringify(cvv.isValid)
+            );
+            // this.loading3 = false;
+          }
+        });
+      } else {
+        // this.loading3 = false
+      }
+    }
+  },
+  created() {
+    console.log("creadit card payment form data: " + JSON.stringify(this.form));
+    this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
+      if (locations) {
+        this.regions = locations.regions;
+        this.provinces = locations.provinces;
+        this.cities = locations.cities;
+        console.log("regions data: " + JSON.stringify(this.regions));
+        console.log("provinces data: " + JSON.stringify(this.provinces));
+        console.log("cities data: " + JSON.stringify(this.cities));
+      }
+    });
+  },
+  computed: {
+    getProvinces() {
       // this.form.addresses.office.province = null;
-      console.log("get provinces computed: " + JSON.stringify(this.findProvinces(this.full_details.card_details.provinces)))
+      console.log(
+        "get provinces computed: " +
+          JSON.stringify(
+            this.findProvinces(this.full_details.card_details.provinces)
+          )
+      );
       return this.findProvinces(this.full_details.card_details.provinces);
     },
     getCities() {
       //  this.form.addresses.office.city = null;
       return this.findCities(this.full_details.card_details.cities);
     }
-    },
-    methods: {
+  },
+  methods: {
     //   getProvinces() {
     //   this.$store
     //     .dispatch("GET_PROVINCE", this.form.addresses.office.region)
@@ -336,148 +356,157 @@
     //       this.provinces = this.$store.state.places.provinces;
     //     });
     // },
-      formatDate(date) {
-        if (!date) return null;
-        const [year, month] = date.split("-");
-        this.full_details.card_details.exp_month = `${month}`;
-        this.full_details.card_details.exp_year = `${year}`;
-        console.log(
-          "expiry: " +
+    formatDate(date) {
+      if (!date) return null;
+      const [year, month] = date.split("-");
+      this.full_details.card_details.exp_month = `${month}`;
+      this.full_details.card_details.exp_year = `${year}`;
+      console.log(
+        "expiry: " +
           this.full_details.card_details.exp_month +
           "/" +
           this.full_details.card_details.exp_year
+      );
+      return `${month}/${year}`;
+    },
+    isEmpty(str) {
+      return !str || str === null || str === "";
+    },
+    isEmptyStrings(arr) {
+      for (let i = 0; i < arr.length; i++) {
+        if (this.isEmpty(arr[i])) {
+          return true;
+        }
+      }
+      return false;
+    },
+    submit() {
+      // console.log("props form data: " + JSON.stringify(this.form))
+      // var form = {
+      //   "current_task": "",
+      //   "user": "",
+      //   "created_by": "5c6bbbb590a2b609204b1fec",
+      //   "uploaded_files": [{
+      //     "location": "https://fda-portal.s3.us-west-2.amazonaws.com/upload/l20192802000198/1551313621054",
+      //     "contentType": "application/pdf",
+      //     "key": "upload/l20192802000198/1551313621054",
+      //     "mimetype": "application/pdf",
+      //     "originalname": "Screen Shot 2019-02-01 at 8.57.32 AM.pdf",
+      //     "_id": {
+      //       "$oid": "5c772ad6de7872001725d258"
+      //     },
+      //     "date": {
+      //       "$date": "2019-02-27T06:44:01.948Z"
+      //     }
+      //   }],
+      //   "date_modified": {
+      //     "$date": "2019-02-28T00:27:02.093Z"
+      //   },
+      //   "date_created": null,
+      //   "qualified": [],
+      //   "auth_officer": {
+      //     "mail_add": {
+      //       "zipcode": "",
+      //       "city": "",
+      //       "province": "",
+      //       "region": "",
+      //       "address": ""
+      //     },
+      //     "id_expiry": "",
+      //     "id_no": "",
+      //     "id_type": "",
+      //     "birthday": "",
+      //     "tin": "",
+      //     "email": "test@email.com",
+      //     "designation": "",
+      //     "middlename": "",
+      //     "firstname": "",
+      //     "lastname": "opiopiopipo"
+      //   },
+      //   "addresses": {
+      //     "office": {
+      //       "location": {
+      //         "lng": 120.3209373,
+      //         "lat": 16.6158906
+      //       },
+      //       "zipcode": "",
+      //       "city": "",
+      //       "province": "5c6387a6654fc728fc927504",
+      //       "region": "5c627cfe5a7e9c21c44071bf",
+      //       "address": ""
+      //     },
+      //     "warehouse": [],
+      //     "plant": {
+      //       "zipcode": "",
+      //       "city": "",
+      //       "province": "",
+      //       "region": "",
+      //       "address": ""
+      //     }
+      //   },
+      //   "estab_details": {
+      //     "mobile": "",
+      //     "fax": "",
+      //     "landline": "",
+      //     "email": "",
+      //     "tin": "090909090909",
+      //     "establishment_owner": "kljlkj",
+      //     "establishment_name": "lkl;kl;"
+      //   },
+      //   "general_info": {
+      //     "declared_capital": "5c106397b19f7a29c4096aba",
+      //     "primary_activity": "5c106ad2b19f7a29c4096ac6",
+      //     "product_type": "5c106cb7b19f7a29c4096ad0"
+      //   },
+      //   "application_type": 0,
+      //   "status": 0,
+      //   "case_no": "l20192802000198",
+      //   "modified_by": "5c6bbbb590a2b609204b1fec"
+      // }
+      // this.$print(this.form, "PAY");
+      console.log("submit: " + JSON.stringify(this.full_details));
+      if (
+        !this.isEmptyStrings([
+          this.full_details.card_details.number,
+          this.full_details.card_details.exp_month,
+          this.full_details.card_details.exp_year,
+          this.full_details.card_details.cvc,
+          this.full_details.card_details.name,
+          this.full_details.card_details.email,
+          this.full_details.card_details.address_line1,
+          this.full_details.card_details.regions,
+          this.full_details.card_details.provinces,
+          this.full_details.card_details.cities,
+          this.full_details.card_details.zip
+        ]) &&
+        this.loading === false
+      ) {
+        var paymentFee = this.$store.state.payments.fee;
+        console.log("payment fee data: " + JSON.stringify(paymentFee));
+        this.full_details.payment_details.amount = paymentFee.total;
+        this.full_details.payment_details.description = paymentFee.description;
+        this.full_details.transaction_details.application_type = this.form.application_type;
+        this.full_details.transaction_details.case_no = this.form.case_no;
+        this.full_details.transaction_details.order_payment.penalty =
+          paymentFee.surcharge;
+        console.log(
+          "creadit card payment charges data: " +
+            JSON.stringify(paymentFee.total)
         );
-        return `${month}/${year}`;
-      },
-      isEmpty(str) {
-        return !str || str === null || str === "";
-      },
-      isEmptyStrings(arr) {
-        for (let i = 0; i < arr.length; i++) {
-          if (this.isEmpty(arr[i])) {
-            return true;
-          }
-        }
-        return false;
-      },
-      submit() {
-        console.log("props form data: " + JSON.stringify(this.form))
-        var form = {
-          "current_task": "",
-          "user": "",
-          "created_by": "5c6bbbb590a2b609204b1fec",
-          "uploaded_files": [{
-            "location": "https://fda-portal.s3.us-west-2.amazonaws.com/upload/l20192802000198/1551313621054",
-            "contentType": "application/pdf",
-            "key": "upload/l20192802000198/1551313621054",
-            "mimetype": "application/pdf",
-            "originalname": "Screen Shot 2019-02-01 at 8.57.32 AM.pdf",
-            "_id": {
-              "$oid": "5c772ad6de7872001725d258"
-            },
-            "date": {
-              "$date": "2019-02-27T06:44:01.948Z"
-            }
-          }],
-          "date_modified": {
-            "$date": "2019-02-28T00:27:02.093Z"
-          },
-          "date_created": null,
-          "qualified": [],
-          "auth_officer": {
-            "mail_add": {
-              "zipcode": "",
-              "city": "",
-              "province": "",
-              "region": "",
-              "address": ""
-            },
-            "id_expiry": "",
-            "id_no": "",
-            "id_type": "",
-            "birthday": "",
-            "tin": "",
-            "email": "test@email.com",
-            "designation": "",
-            "middlename": "",
-            "firstname": "",
-            "lastname": "opiopiopipo"
-          },
-          "addresses": {
-            "office": {
-              "location": {
-                "lng": 120.3209373,
-                "lat": 16.6158906
-              },
-              "zipcode": "",
-              "city": "",
-              "province": "5c6387a6654fc728fc927504",
-              "region": "5c627cfe5a7e9c21c44071bf",
-              "address": ""
-            },
-            "warehouse": [],
-            "plant": {
-              "zipcode": "",
-              "city": "",
-              "province": "",
-              "region": "",
-              "address": ""
-            }
-          },
-          "estab_details": {
-            "mobile": "",
-            "fax": "",
-            "landline": "",
-            "email": "",
-            "tin": "090909090909",
-            "establishment_owner": "kljlkj",
-            "establishment_name": "lkl;kl;"
-          },
-          "general_info": {
-            "declared_capital": "5c106397b19f7a29c4096aba",
-            "primary_activity": "5c106ad2b19f7a29c4096ac6",
-            "product_type": "5c106cb7b19f7a29c4096ad0"
-          },
-          "application_type": 0,
-          "status": 0,
-          "case_no": "l20192802000198",
-          "modified_by": "5c6bbbb590a2b609204b1fec"
-        }
-        this.$print(form, "PAY");
-        console.log("submit: " + JSON.stringify(this.full_details));
-        if (!this.isEmptyStrings([
-            this.full_details.card_details.number,
-            this.full_details.card_details.exp_month,
-            this.full_details.card_details.exp_year,
-            this.full_details.card_details.cvc,
-            this.full_details.card_details.name,
-            this.full_details.card_details.email,
-            this.full_details.card_details.address_line1,
-            this.full_details.card_details.regions,
-            this.full_details.card_details.provinces,
-            this.full_details.card_details.cities,
-            this.full_details.card_details.zip
-          ]) && this.loading === false) {
-          var paymentFee = this.$store.state.payments.fee
-          console.log("payment fee data: " + JSON.stringify(paymentFee))
-          this.full_details.payment_details.amount = paymentFee.total
-          this.full_details.payment_details.description = paymentFee.description
-          this.full_details.transaction_details.application_type = this.form.application_type
-          this.full_details.transaction_details.case_no = this.form.case_no
-          this.full_details.transaction_details.order_payment.penalty = paymentFee.surcharge
-          console.log("creadit card payment charges data: " + JSON.stringify(paymentFee.total));
-          console.log("full details: " + JSON.stringify(this.full_details))
-          this.$store.dispatch("SAVE_PAYMENT", this.full_details).then(result => {
-              console.log("saved payment " + JSON.stringify(result));
-              // this.$router.push("/");
-            })
-            .catch(err => {
-              console.log('ERROR: ' + err)
-              this.$notifyError(err)
-            })
-          // this.$router.push("/app/payments/summary");
-        }else{
-          this.$notify({
+        console.log("full details: " + JSON.stringify(this.full_details));
+        this.$store
+          .dispatch("SAVE_PAYMENT", this.full_details)
+          .then(result => {
+            console.log("saved payment " + JSON.stringify(result));
+            // this.$router.push("/");
+          })
+          .catch(err => {
+            console.log("ERROR: " + err);
+            this.$notifyError(err);
+          });
+        // this.$router.push("/app/payments/summary");
+      } else {
+        this.$notify({
           message: "Please enter fields correctly",
           color: "warning",
           initialMargin: 100
@@ -485,9 +514,8 @@
         }
       }
     }
-  };
+  }
 </script>
 
 <style>
-
 </style>
