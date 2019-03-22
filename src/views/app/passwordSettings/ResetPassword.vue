@@ -40,7 +40,15 @@
             </v-card-actions>
         </v-card>
         <v-layout row wrap v-else>
-            
+          <v-flex xs12 pa-4>
+            <span class="display-2 font-weight-bold">Sorry! </span>                         
+          </v-flex>
+          <v-flex xs12 pa-4>
+            <span class="headline font-weight-thin">It seems like your session has been expired</span>
+          </v-flex>
+          <v-flex xs12 pa-4>
+            <v-btn class="font-weight-light" color="primary" @click="home()">Home</v-btn>
+          </v-flex>       
         </v-layout>
         <v-dialog v-model="dialog" width="270">
           <v-card>
@@ -103,7 +111,6 @@ export default {
         .catch(err => {
           console.log("### CONFIRM_RESET_PASSWORD err :", err);
           this.$notifyError(err);
-          // this.$router.push("/");
         });
     },
     validate() {
@@ -150,7 +157,6 @@ export default {
                 color: "success",
                 icon: "check_circle"
               });
-              this.$router.push("/");
             } else {
               this.$notifyError(result.data.errors);
             }
@@ -159,9 +165,11 @@ export default {
             this.loading = false;
             console.log("### RESET_PASSWORD err :", err);
             this.$notifyError(err);
-            // this.$router.push("/");
           });
       }
+    },
+    home() {
+      this.$router.push("/");
     }
   }
 };
