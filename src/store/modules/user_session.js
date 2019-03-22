@@ -3,6 +3,7 @@
 
 import RegistrationAPI from "@/api/RegistrationAPI";
 import UserAPI from "@/api/UserAPI";
+import PasswordApi from '../../api/PasswordAPI';
 import ProductAPI from "../../api/ProductApi";
 
 const state = {
@@ -33,8 +34,8 @@ const mutations = {
   REGISTER: (state, payload) => {
     state.registration_details = payload;
   },
-  ADMIN : (state, payload) =>{
-    state.admin_user = payload    
+  ADMIN: (state, payload) => {
+    state.admin_user = payload
   }
 };
 
@@ -170,11 +171,11 @@ var actions = {
 
   },
 
-  GET_ADMIN(context){
+  GET_ADMIN(context) {
     return new Promise((resolve, reject) => {
       console.log("get admin action")
       new UserAPI(context.rootState.user_session.token).getAdmin((err, admin) => {
-        if(!err) {
+        if (!err) {
           context.commit('ADMIN', admin)
           resolve(admin)
         } else {
@@ -182,6 +183,20 @@ var actions = {
         }
       })
     })
+  },
+
+  REQUEST_RESET_PASSWORD(context, old_password) {
+    return new PasswordApi(context.rootState.user_session.token)
+      .requestResetPassword(old_password)
+  },
+
+  CONFIRM_RESET_PASSWORD(context, token) {
+    return new PasswordApi(token).confirmResetPassword()
+  },
+
+  RESET_PASSWORD(context, account) {
+    console.log('account :', account);
+    return new PasswordApi().resetPassword(account)
   }
 };
 

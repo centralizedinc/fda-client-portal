@@ -99,6 +99,11 @@ var router = new Router({
           path: '/recovery',
           name: 'Account Recovery',
           component: () => import('@/views/Recovery.vue')
+        },
+        {
+          path: '/password/reset/:token',
+          name: 'Reset Password',
+          component: () => import('@/views/app/passwordSettings/ResetPassword.vue')
         }
       ]
 
