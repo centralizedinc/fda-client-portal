@@ -18,7 +18,7 @@
                     label="*Expiration Month(MM)"
                     mask="##"
                     v-model="full_details.card_details.exp_month"
-                    :rules="[rules.required, rules.expiry_validity]"
+                    :rules="[rules.required, rules.expiry_validity]" 
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs4>
@@ -209,8 +209,7 @@
           application: "License",
           case_no: "",
           order_payment: {}
-        }
-      },
+        },      
       rules: {
         required: value => !!value || "This is a required field",
         card_validity: value => this.loading || "Invalid Credit Card Number",
@@ -224,7 +223,7 @@
       gaps: [],
       cvc_max: 3,
       code_name: "CVC"
-    
+    }
   },
   watch: {
     date(val) {

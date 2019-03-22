@@ -26,6 +26,9 @@ export default class CaseAPI {
         //     cb(err)
         // })
     }
+    getCaseByCaseNumber(case_no){
+        return axios.get('lto-api/case/case_id/' + case_no)
+    }
 
     uploadFile(comply) {
         return axios.post('documents/uploads?account_id=' + comply.case_no, comply.form_data)

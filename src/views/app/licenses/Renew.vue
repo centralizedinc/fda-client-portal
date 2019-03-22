@@ -210,7 +210,7 @@ export default {
           declaredCapital: this.form.general_info.declared_capital,
           appType: this.form.application_type
         };
-        console.log("load fees new license: " + JSON.stringify(details));
+        console.log("load fees renew: " + JSON.stringify(details));
         this.$store.dispatch("GET_FEES", details).then(result => {
           this.charges = result;
           console.log(

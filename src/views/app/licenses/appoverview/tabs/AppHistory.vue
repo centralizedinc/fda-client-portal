@@ -2,7 +2,7 @@
   <v-layout row wrap>
     <v-layout row wrap>
       <v-flex xs12 md4 class="subheading">Task</v-flex>
-      <v-flex xs12 md8>{{form.current_task}}</v-flex>
+      <v-flex xs12 md8>{{getTask(form.current_task).name}}</v-flex>
       <v-flex xs12 md4 class="subheading">Date Started</v-flex>
       <v-flex xs12 md8>{{formatDate(form.date_started)}}</v-flex>
       <v-flex xs12 md4 class="subheading">Date Completed</v-flex>

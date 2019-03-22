@@ -19,7 +19,37 @@
 
 <script>
 export default {
-  props: ["form","charges"]
+  props: ["form","charges"],
+  watch:{
+    "form": function(params) {
+      console.log("watch form payment summary!!!!!!!!!!!!!!!")
+      this.load_fees();
+    }
+  },
+  methods:{
+    load_fees() {
+      if (
+        this.form.general_info.product_type !== null &&
+        this.form.general_info.primary_activity !== null &&
+        this.form.general_info.declared_capital !== null &&
+        this.form.application_type !== null
+      ) {
+        var details = {
+          productType: this.form.general_info.product_type,
+          primaryActivity: this.form.general_info.primary_activity,
+          declaredCapital: this.form.general_info.declared_capital,
+          appType: this.form.application_type
+        };
+        console.log("load fees payment details: " + JSON.stringify(details));
+        this.$store.dispatch("GET_FEES", details).then(result => {
+          this.charges = result;
+          console.log(
+            "charges data payment details: " + JSON.stringify(this.charges)
+          );
+        });
+      }
+    }
+  }
 }
 </script>
 
