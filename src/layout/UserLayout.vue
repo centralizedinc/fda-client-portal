@@ -1,5 +1,6 @@
 <template>
   <v-app>
+    <!-- <v-container fluid class="bg2"> -->
     <notification></notification>
     <v-navigation-drawer app :mini-variant="mini || $vuetify.breakpoint.mdAndDown" width="250">
       <v-toolbar
@@ -40,7 +41,11 @@
         </v-list-tile>
 
         <template v-if="user.status === 2">
-          <v-list-tile @click="goTo('/app/licenses')" class="ma-1" :style="activeRoute('Licenses')">
+          <v-list-tile
+            @click="goTo('/app/licenses')"
+            class="ma-1"
+            :style="activeRoute('License to Operate')"
+          >
             <v-list-tile-action>
               <v-tooltip top>
                 <v-btn slot="activator" icon>
@@ -55,7 +60,7 @@
           <v-list-tile
             @click="goTo('/app/certificates')"
             class="ma-1"
-            :style="activeRoute('Certificates')"
+            :style="activeRoute('Certificate of Product Registration')"
           >
             <v-list-tile-action>
               <v-tooltip top>
@@ -96,7 +101,6 @@
               <v-list-tile-title class="body-1 font-weight-light">Payments</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-
           <v-divider></v-divider>
         </template>
 
@@ -200,14 +204,18 @@
           </v-avatar>
         </v-btn>
         <v-list two-line subheader>
-          <v-list-tile avatar @click="goTo('/app/profile')">
+          <v-list-tile avatar @click="goTo('/app/profile')" :style="activeRoute('Profile')">
             <v-list-tile-content>
               <v-list-tile-title class="body-2 font-weight-light">My Profile</v-list-tile-title>
               <v-list-tile-sub-title class="caption font-weight-thin">Change your account details</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
-          <v-list-tile avatar @click="goTo('/app/password')">
+          <v-list-tile
+            avatar
+            @click="goTo('/app/password')"
+            :style="activeRoute('Change Password')"
+          >
             <v-list-tile-content>
               <v-list-tile-title class="body-2 font-weight-light">Password Settings</v-list-tile-title>
               <v-list-tile-sub-title
@@ -216,7 +224,7 @@
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
-          <v-list-tile avatar @click="showLogout">
+          <v-list-tile avatar @click="showLogout" :style="activeRoute('logout')">
             <v-list-tile-content>
               <v-list-tile-title class="body-2 font-weight-light">Logout</v-list-tile-title>
               <v-list-tile-sub-title class="caption font-weight-thin">Sing out of FDA Portal</v-list-tile-sub-title>
@@ -230,7 +238,7 @@
     </v-toolbar>
     <!-- <v-content> -->
     <v-container fluid>
-      <!-- <v-card class="mt-3 mx-auto">
+      <!-- <v-card class="mt-3 mx-auto" color="fdaSilver">
       <v-layout row wrap ml-3>-->
       <v-sheet
         class="v-sheet--offset pa-2 mt-3 pt-3"
@@ -253,7 +261,7 @@
       </v-sheet>
       <v-spacer></v-spacer>
       <router-view></router-view>
-      <!-- </v-layout> -->
+      <!-- </v-layout>-->
       <!-- </v-card> -->
       <!-- <v-divider></v-divider> -->
       <!-- <transition name="fade"> -->
@@ -293,10 +301,11 @@
       class="pa-1"
       style="background: linear-gradient(5deg, #b5c25a 0%, #104b2a 100%)"
     >
-      <span class="caption">Copyright © 2019 FDA All rights reserved. v.{{app_version}}</span>
+      <span class="caption">Copyright © 2019 FDA All rights reserved.</span>
       <v-spacer></v-spacer>
       <span class="caption">Food And Drug Administration of the Philippines</span>
     </v-footer>
+    <!-- </v-container> -->
   </v-app>
 </template>
 
@@ -355,15 +364,16 @@ export default {
     },
     breadcrumbs() {
       return this.$store.state.breadcrumbs.navigation;
-    },
-    app_version(){
-      return process.env.VUE_APP_VERSION
     }
   }
 };
 </script>
 
 <style>
+.bg2 {
+  /* The image used */
+  background-image: url("https://i.postimg.cc/c4jZYszr/FDASlider1-1920x675.png");
+}
 .v-sheet--offset {
   top: -24px;
   position: relative;

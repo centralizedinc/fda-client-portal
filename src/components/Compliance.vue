@@ -1,86 +1,101 @@
 <template>
-    <v-card class="dcard" height="410">
-        <v-toolbar class="compliance-title">
-          <v-toolbar-title>For Compliance</v-toolbar-title>
+  <v-card class="dcard" height="410">
+    <v-toolbar class="compliance-title">
+      <v-toolbar-title>For Compliance</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <!-- <v-btn icon>
+        <v-icon>more_vert</v-icon>
+      </v-btn>-->
+    </v-toolbar>
+    <v-list class="scrollList" three-line width>
+      <template v-for="(item, index) in compliance_data">
+        <v-list-tile avatar :key="index" class="data-item">
+          <v-list-tile-content>
+            <v-list-tile-sub-title>{{formatDate(item.date_completed)}}</v-list-tile-sub-title>
+            <v-list-tile-sub-title>
+              {{getCaseType(item.case_type)}} Application with Case No.:
+              <v-tooltip bottom>
+                <a slot="activator" @click="viewCase(item.application_id)">{{item.case_no}}</a>
+                View Case
+              </v-tooltip>
+            </v-list-tile-sub-title>
+            <v-list-tile-title>
+              <span class="font-weight-bold" color="error">{{getTask(item.task).name}} Remarks:</span>
+              {{item.remarks}}
+            </v-list-tile-title>
+          </v-list-tile-content>
           <v-spacer></v-spacer>
-          <v-btn icon>
-            <v-icon>more_vert</v-icon>
-          </v-btn>
-        </v-toolbar>
-        <v-list class="scrollList" three-line width>
-          <template v-for="(item, index) in compliance_data">
-              <v-divider :key="index">></v-divider>
-              <v-list-tile avatar :key="index" @click="comply(item)" class="data-item">
-                <v-list-tile-content>
-                  <v-list-tile-title>
-                    {{getCaseType(item.case_type)}} Application with Case No.: 
-                    <v-tooltip bottom>
-                      <a slot="activator" @click="viewCase(item.application_id)">{{item.case_no}}</a>
-                      View Details
-                    </v-tooltip>
-                  </v-list-tile-title>
-                  <v-list-tile-sub-title><span class="font-weight-bold">{{getTask(item.task).name}}</span> - {{item.remarks}}</v-list-tile-sub-title>
-                </v-list-tile-content>
-              </v-list-tile>
-          </template>
-          <v-layout row wrap v-if="compliance_data.length === 0" class="text-xs-center subheading font-italic" mt-5>
-              <v-flex xs12>
-                  There is no compliance for today.
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="primary" @click="comply(item)">
+              <v-icon>fas fa-search</v-icon>
+            </v-btn>View Details
+          </v-tooltip>
+        </v-list-tile>
+        <v-divider :key="index">></v-divider>
+      </template>
+      <v-layout
+        row
+        wrap
+        v-if="compliance_data.length === 0"
+        class="text-xs-center subheading font-italic"
+        mt-5
+      >
+        <v-flex xs12>There is no compliance for today.</v-flex>
+      </v-layout>
+    </v-list>
+    <v-divider></v-divider>
+    <v-dialog
+      v-model="complyDialog"
+      persistent
+      :overlay="false"
+      max-width="600px"
+      transition="dialog-transition"
+    >
+      <v-card>
+        <v-spacer></v-spacer>
+        <v-card-title class="headline font-weight-thin compliance-dialog-title">
+          <v-avatar class="mr-3" color="grey">
+            <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
+          </v-avatar>Compliance
+          <v-spacer></v-spacer>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="black" @click="complyDialog=false">
+              <i class="fas fa-times-circle"></i>
+            </v-btn>Close
+          </v-tooltip>
+        </v-card-title>
+        <v-card-text class="subheading">
+          <v-card flat>
+            <v-card-text box>
+              <v-flex xs12 class="font-weight-light" mb-2>
+                Remarks as of
+                <span
+                  class="font-weight-light"
+                >{{formatDate(selected.date_completed)}}:</span>
               </v-flex>
-          </v-layout>
-        </v-list>
+              <v-flex xs12 class="font-italic text--indent font-weight-bold">{{selected.remarks}}</v-flex>
+            </v-card-text>
+          </v-card>
+        </v-card-text>
         <v-divider></v-divider>
-        <v-dialog
-            v-model="complyDialog"
-            persistent
-            :overlay="false"
-            max-width="500px"
-            transition="dialog-transition">
-            <v-card>
-                <v-spacer></v-spacer>
-                <v-card-title class="headline font-weight-thin compliance-dialog-title">
-                  <v-avatar class="mr-3" color="grey">
-                    <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
-                  </v-avatar>
-                  Compliance
-                  <v-spacer></v-spacer>
-                  <v-tooltip top>
-                      <v-btn slot="activator" flat icon color="black" @click="complyDialog=false">
-                          <i class="fas fa-times-circle"></i>
-                      </v-btn>Close
-                  </v-tooltip>
-                </v-card-title>
-                <v-card-text class="subheading">
-                  <v-card>
-                    <v-card-text>
-                      <v-flex xs12 class="font-italic" mb-2>
-                        As of <span class="font-weight-black">{{formatDate(selected.date_completed)}}</span>
-                      </v-flex>
-                      <v-flex xs12 class="text--indent">
-                        {{selected.remarks}}
-                      </v-flex>
-                    </v-card-text>
-                  </v-card>
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-text>
-                    <v-layout row wrap>
-                        <v-flex xs12 mt-3>
-                            <v-text-field box multi-line label="User Remarks" v-model="remarks"></v-text-field>
-                        </v-flex>
-                        <v-flex xs12>
-                          <uploader @upload="upload"></uploader>
-                        </v-flex>
-                    </v-layout>
-                </v-card-text>
+        <v-card-text>
+          <v-layout row wrap>
+            <v-flex xs12 mt-3>
+              <v-text-field box multi-line label="User Remarks" v-model="remarks"></v-text-field>
+            </v-flex>
+            <v-flex xs12>
+              <uploader @upload="upload"></uploader>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
 
-                <v-divider></v-divider>
-                <v-card-actions>
-                <v-btn block color="success" @click="submit">Submit</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
-    </v-card>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn block color="success" @click="submit">Submit</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-card>
 </template>
 
 <script>
@@ -92,7 +107,7 @@ export default {
     return {
       compliance_data: [],
       complyDialog: false,
-      remarks: "",
+      remarks: null,
       form_data: null,
       selected: {},
       loading: false
@@ -137,15 +152,33 @@ export default {
       this.form_data = file;
     },
     submit() {
-      this.$store
-        .dispatch("SAVE_COMPLY", {
-          case_id: this.selected.case_id,
-          case_no: this.selected.case_no,
-          remarks: this.remarks,
-          form_data: this.form_data
-        })
-        .then(result => this.init())
-        .catch(err => console.log("err :", err));
+      if (this.remarks != null) {
+        this.$store
+          .dispatch("SAVE_COMPLY", {
+            case_id: this.selected.case_id,
+            case_no: this.selected.case_no,
+            remarks: this.remarks,
+            form_data: this.form_data
+          })
+          .then(result => this.init());
+        this.complyDialog = false;
+        this.$notify({
+          message: "Compliance has been submitted",
+          color: "success",
+          icon: "check_circle"
+        }).catch(err => console.log("err :", err));
+        this.$notify({
+          message: "Oops! Something went wrong. Please try again.",
+          color: "error",
+          icon: "error_outline"
+        });
+      } else {
+        this.$notify({
+          message: "User Remarks is required",
+          color: "error",
+          icon: "check_circle"
+        });
+      }
     }
   }
 };
