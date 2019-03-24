@@ -24,9 +24,9 @@ export default {
   },
   created() {},
   methods: {},
-  computed:{
-    app_version(){
-      return process.env.VUE_APP_VERSION
+  computed: {
+    app_version() {
+      return process.env.VUE_APP_VERSION;
     }
   }
 };

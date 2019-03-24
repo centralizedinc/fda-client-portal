@@ -50,11 +50,12 @@
                 color="primary"
                 class="caption font-weight-light"
                 @click="signup()"
-              >Sign-up</v-btn> -->
+              >Sign-up</v-btn>-->
               <v-btn
-              block
+                block
                 color="success"
                 :loading="loading"
+                :disabled="loading"
                 type="submit"
                 class="caption font-weight-light"
               >Login</v-btn>
@@ -71,8 +72,11 @@
       </v-flex>
       <v-dialog v-model="dialog" persistent max-width="300px" transition="dialog-transition">
         <v-card>
-          <v-toolbar dark color="primary">
-            <span class="title font-weight-light">Forgot Password</span>
+          <v-toolbar
+            color="fdaGreen"
+            style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+          >
+            <span class="font-weight-light headline">Forgot Password</span>
             <v-spacer></v-spacer>
             <v-btn flat icon @click.native="dialog=false">
               <v-icon>close</v-icon>
@@ -94,7 +98,7 @@
               @click.native="dialog =false"
             >Cancel</v-btn>
             <v-btn
-              color="primary"
+              color="success"
               class="caption font-weight-light"
               :loading="loading2"
               @click="forgot_password"

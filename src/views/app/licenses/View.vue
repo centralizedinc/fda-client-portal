@@ -129,6 +129,7 @@ export default {
   },
   created() {
     this.form = this.$store.state.licenses.view_license;
+    console.log("###########FORM  :", JSON.stringify(this.form));
   }
 };
 </script>

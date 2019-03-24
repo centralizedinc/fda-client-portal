@@ -32,9 +32,13 @@
           </template>
         </v-window>
         <v-card-actions class="justify-space-between">
-          <v-btn flat @click="prev">
-            <v-icon color="primary">fas fa-chevron-circle-left</v-icon>
-          </v-btn>
+          <v-tooltip top>
+            <v-btn slot="activator" flat @click="prev" v-if="step > 1">
+              <v-icon color="primary">fas fa-chevron-circle-left</v-icon>
+            </v-btn>Previous
+          </v-tooltip>
+
+          <v-spacer></v-spacer>
           <v-item-group v-model="onboarding" text-xs-center mandatory>
             <v-item class="step" v-for="n in steps" :key="n">
               <v-btn
@@ -45,10 +49,13 @@
               >{{n}}</v-btn>
             </v-item>
           </v-item-group>
-          <v-btn color="primary" flat @click="next">
-            <span v-if="steps === step">{{submitText}}</span>
-            <v-icon v-else color="primary">fas fa-chevron-circle-right</v-icon>
-          </v-btn>
+          <v-spacer></v-spacer>
+          <v-tooltip top>
+            <v-btn slot="activator" color="primary" flat @click="next">
+              <span v-if="steps === step">{{submitText}}</span>
+              <v-icon v-else color="primary">fas fa-chevron-circle-right</v-icon>
+            </v-btn>Next
+          </v-tooltip>
         </v-card-actions>
       </v-card>
     </v-flex>
