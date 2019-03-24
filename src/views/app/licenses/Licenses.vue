@@ -178,6 +178,7 @@ export default {
         .dispatch("GET_LICENSE_BY_ID", application_id)
         .then(result => {
           if (result.data.success) {
+            console.log("get license data: " + JSON.stringify(result.data.model));
             this.$store.commit("SET_VIEW_LICENSE", result.data.model);
             this.$router.push("/app/licenses/view");
           } else console.log("result.data.errors :", result.data.errors);

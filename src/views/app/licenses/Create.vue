@@ -266,7 +266,7 @@ export default {
       if (
         this.form.general_info.product_type !== null &&
         this.form.general_info.primary_activity !== null &&
-        // this.form.general_info.declared_capital !== null &&
+        this.form.general_info.declared_capital !== null &&
         this.form.application_type !== null
       ) {
         var details = {
@@ -275,7 +275,7 @@ export default {
           declaredCapital: this.form.general_info.declared_capital,
           appType: this.form.application_type
         };
-        console.log("load fees new license: " + JSON.stringify(details));
+        console.log("load fees license create: " + JSON.stringify(details));
         this.$store.dispatch("GET_FEES", details).then(result => {
           this.charges = result;
           console.log(

@@ -1,6 +1,6 @@
 {
   "name": "fda-client-portal",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -14,7 +14,7 @@
     "clean": "if [ -d app ]; then rm -r app; fi",
     "pre-deploy": "npm run clean && mkdir app && cp -R dist app/dist && cp package.json app && cp server.js app && cd app",
     "deploy-pcf": "npm run build-pcf && npm run pre-deploy && cf push fda-client-portal -m 128M -k 512M",
-    "test": "mocha --timeout 10000",
+    "test": "mocha --exit",
     "push": "git add . && git commit -m 'update'&& npm version patch && git push"
   },
   "dependencies": {
@@ -44,15 +44,15 @@
     "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-pwa": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "mocha": ">=4.0.1",
     "node-sass": "^4.9.0",
     "sass-loader": "^7.0.1",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.1",
     "vue-cli-plugin-vuetify": "^0.4.6",
     "vue-template-compiler": "^2.6.8",
-    "vuetify-loader": "^1.2.1",
-    "chai": "^3.5.0",
-    "chai-http": "^2.0.1",
-    "mocha": "^2.4.5"
+    "vuetify-loader": "^1.2.1"
   }
 }

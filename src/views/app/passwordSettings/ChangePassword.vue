@@ -1,101 +1,81 @@
 <template>
-  <v-layout align-center justify-center>
-    <v-flex xs12>
-      <!-- <v-card-title primary-title>
-          Change Password
-      </v-card-title>-->
-      <!-- <v-toolbar dark color="primary">
-          <span class="title font-weight-light">Change Password</span>
-        </v-toolbar>
-      <v-divider></v-divider>-->
+  <v-container grid-list-xl>
+    <v-layout row wrap>
+      <v-flex xs12 md3></v-flex>
+      <v-flex xs12 md6>
+        <v-card>
+          <v-card-title class="headline title--header">
+            Change Password Request
+          </v-card-title>
+          <v-card-text>
+            <v-layout row wrap>
+              <span class="red--text" ml-5>*</span><i>Change Password Request <b>link</b> will be send to your <b>registered email</b>.</i>
+              <v-flex xs12 class="subheading">
+                Username: {{account.username}}
+              </v-flex>
+              <v-flex xs12 class="subheading">
+                Email: {{maskEmail(account.email)}}
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  outline
+                  @keypress.enter="dialog=true"
+                  :append-icon="show_password ? 'visibility' : 'visibility_off'"
+                  :rules="[rules.required]"
+                  :type="show_password ? 'text' : 'password'"
+                  name="input-10-2"
+                  label="Enter your Old Password"
+                  @click:append="show_password = !show_password"
+                  v-model="old_password"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <!-- <v-spacer></v-spacer> -->
+            <v-btn
+              block
+              color="success"
+              class="font-weight-light"
+              @click="dialog=true"
+            >Submit</v-btn>
+            <!-- <v-spacer></v-spacer> -->
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+      <v-flex xs12 md3></v-flex>
+    </v-layout>
+    <v-dialog v-model="dialog" width="270">
       <v-card>
-        <v-layout align-center justify-center>
-          <v-flex xs6 class="pt-5">
-            <v-text-field
-              outline
-              :append-icon="old_password ? 'visibility' : 'visibility_off'"
-              :rules="[rules.required, rules.min]"
-              :type="old_password ? 'text' : 'password'"
-              name="input-10-2"
-              label="Enter your Old Password"
-              @click:append="old_password = !old_password"
-              v-model="account.password"
-            ></v-text-field>
-            <v-text-field
-              outline
-              :append-icon="new_password ? 'visibility' : 'visibility_off'"
-              :rules="[rules.required, rules.min]"
-              :type="new_password ? 'text' : 'password'"
-              label="Enter your New Password"
-              hint="At least 8 characters"
-              @click:append="new_password = !new_password"
-              v-model="account.new_password"
-            ></v-text-field>
-            <v-text-field
-              outline
-              :append-icon="confirm_password ? 'visibility' : 'visibility_off'"
-              :rules="[rules.required, rules.confirm_password]"
-              :type="confirm_password ? 'text' : 'password'"
-              label="Confirm Password"
-              @click:append="confirm_password = !confirm_password"
-              v-model="confirm"
-            ></v-text-field>
-          </v-flex>
-        </v-layout>
+        <!-- <v-card-title
+          primary-title
+          class="headline title--header">
+          Confirmation
+        </v-card-title> -->
+        <v-card-text class="title">Do you want to proceed?</v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <!-- <v-spacer></v-spacer> -->
-          <v-btn block color="success" class="font-weight-light" @click="submit()">Submit</v-btn>
-          <!-- <v-spacer></v-spacer> -->
+          <v-btn color="error" flat @click="dialog=false">Cancel</v-btn>
+          <v-spacer></v-spacer>
+          <v-btn color="success" :loading="loading" :disabled="loading" @click="submit">Yes</v-btn>
         </v-card-actions>
       </v-card>
-      <v-dialog v-model="dialog" width="500">
-        <v-card>
-          <v-card-title
-            primary-title
-            class="headline"
-            style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
-          >Confirmation</v-card-title>
-          <v-divider></v-divider>
-          <v-card-text>Please enter your registered email address. Access the link in your mail to login with your new password.</v-card-text>
-          <v-flex xs12 pa-2>
-            <v-text-field
-              v-model="email"
-              :rules="[rules.required, rules.email]"
-              prepend-icon="email"
-              label="Enter your email address"
-            ></v-text-field>
-          </v-flex>
-          <v-divider></v-divider>
-          <v-spacer></v-spacer>
-          <v-btn color="success" flat @click="submit">Submit</v-btn>
-        </v-card>
-      </v-dialog>
-    </v-flex>
-  </v-layout>
+    </v-dialog>
+  </v-container>
 </template>
 
 <script>
 export default {
   data() {
     return {
+      loading: false,
       account: {},
-      confirm: "",
-      old_password: false,
-      new_password: false,
-      confirm_password: false,
+      old_password: "",
+      show_password: "",
       dialog: false,
-      email: "",
-      password: "Password",
       rules: {
-        required: value => !!value || "Required.",
-        confirm_password: value =>
-          value === this.account.new_password ||
-          "The new password and confirm password you entered doesn't match",
-        email: value => {
-          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          return pattern.test(value) || "Invalid e-mail.";
-        }
+        required: value => !!value || "Required."
       }
     };
   },
@@ -105,28 +85,76 @@ export default {
   methods: {
     init() {
       this.account = this.$store.state.user_session.user;
+      console.log("#### My account" + JSON.stringify(this.account));
+    },
+    isEmpty(str) {
+      return !str || str === null || str === "";
+    },
+    maskEmail(email) {
+      var masked_email = "";
+      if (email && email.indexOf("@") !== -1) {
+        var end_index = email.indexOf("@");
+        masked_email = email.substring(0, 1);
+        var i = email.substring(1, end_index - 1).length;
+        while (i > 0) {
+          masked_email += "*";
+          i--;
+        }
+        masked_email += email.substring(end_index - 1, email.length);
+      }
+      return masked_email;
     },
     submit() {
-      // this.$router.push("/");
-      this.$store
-        .dispatch("CHANGE_PASSWORD", this.account)
-        .then(result => {
-          this.$notify({
-            message: "Password updated.",
-            color: "success",
-            icon: "check_circle"
+      this.loading = true;
+      if (!this.isEmpty(this.old_password)) {
+        this.account.password = this.old_password;
+        this.$store
+          .dispatch("REQUEST_RESET_PASSWORD", this.old_password)
+          .then(result => {
+            console.log("result.data :", result.data);
+            this.loading = false;
+            this.dialog = false;
+            if (result.data.success) {
+              this.$notify({
+                message: "Reset password request has been sent to your email.",
+                color: "success",
+                icon: "check_circle"
+              });
+              this.$store.dispatch("LOGOUT");
+              this.$router.push("/");
+            } else {
+              this.$notifyError(result.data.errors);
+            }
+          })
+          .catch(err => {
+            this.dialog = false;
+            this.loading = false;
+            console.log(err);
+            this.$notifyError(err);
           });
-          this.$store.dispatch("LOGOUT");
-          this.$router.push("/login");
-        })
-        .catch(err => {
-          console.log(err);
-          this.$notifyError(err);
+        // } else if (this.new_password !== this.confirm_password) {
+        //   this.loading = false;
+        //   this.$notify({
+        //     message: "New password does not match the confirm password.",
+        //     icon: "error_outline",
+        //     color: "error"
+        //   });
+      } else {
+        this.loading = false;
+        this.dialog = false;
+        this.$notify({
+          message: "Please enter your old password.",
+          icon: "error_outline",
+          color: "error"
         });
+      }
     }
   }
 };
 </script>
 
 <style>
+.title--header {
+  background: linear-gradient(45deg, #104b2a 0%, #b5c25a 100%);
+}
 </style>

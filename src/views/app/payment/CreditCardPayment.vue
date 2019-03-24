@@ -18,7 +18,7 @@
                     label="*Expiration Month(MM)"
                     mask="##"
                     v-model="full_details.card_details.exp_month"
-                    :rules="[rules.required, rules.expiry_validity]"
+                    :rules="[rules.required, rules.expiry_validity]" 
                   ></v-text-field>
                 </v-flex>
                 <v-flex xs4>
@@ -154,33 +154,48 @@
 </template>
 
 <script>
-import images from "./cards.js";
-export default {
-  props: ["form"],
-  data() {
-    return {
-      card_logo: "",
-      loading: false,
-      date: new Date().toISOString().substr(0, 7),
-      menu1: false,
-      expiry: "",
-      regions: [],
-      provinces: [],
-      cities: [],
-      full_details: {
-        card_details: {
-          number: "",
-          exp_month: "",
-          exp_year: "",
-          cvc: "",
-          name: "",
-          email: "",
-          address_line1: "",
-          address_line2: "",
-          region: "",
-          province: "",
-          city: "",
-          zip: ""
+  import images from "./cards.js";
+  export default {
+    props: ["form"],
+    data() {
+      return {
+        card_logo: "",
+        loading: false,
+        date: new Date().toISOString().substr(0, 7),
+        menu1: false,
+        expiry: "",
+        regions: [],
+        provinces: [],
+        cities: [],
+        full_details: {
+          card_details: {
+            number: "",
+            exp_month: "",
+            exp_year: "",
+            cvc: "",
+            name: "",
+            email: "",
+            address_line1: "",
+            address_line2: "",
+            region: "",
+            province: "",
+            city:"",
+            zip: ""
+          },
+          payment_details: {
+            amount: 0,
+            mode_of_payment: 0,
+            currency: "Php",
+            description: "",
+            statement_descriptor: "",
+            capture: true
+          },
+          transaction_details: {
+            application_type: "",
+            application: 0,
+            case_no: "",
+            order_payment: {}
+          }
         },
         payment_details: {
           amount: 0,
@@ -194,8 +209,7 @@ export default {
           application: "License",
           case_no: "",
           order_payment: {}
-        }
-      },
+        },      
       rules: {
         required: value => !!value || "This is a required field",
         card_validity: value => this.loading || "Invalid Credit Card Number",
@@ -209,7 +223,7 @@ export default {
       gaps: [],
       cvc_max: 3,
       code_name: "CVC"
-    };
+    }
   },
   watch: {
     date(val) {
@@ -496,10 +510,10 @@ export default {
           color: "warning",
           initialMargin: 100
         });
+        }
       }
     }
   }
-};
 </script>
 
 <style>

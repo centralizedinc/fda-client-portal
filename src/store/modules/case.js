@@ -2,7 +2,8 @@ import CaseAPI from '../../api/CaseAPI';
 
 const state = {
     cases: [],
-    complied: []
+    complied: [],
+    // getCase: {}
 }
 
 const mutations = {
@@ -14,7 +15,10 @@ const mutations = {
     },
     CLEAR_DATA(state) {
         state.cases = [];
-    }
+    },
+    // SET_ONE_CASE(state, cases){
+    //     state.getCase = cases;
+    // }
 }
 
 var actions = {
@@ -33,6 +37,23 @@ var actions = {
                     console.log('err :', err);
                     reject(err)
                 });
+        })
+    },
+    GET_ONE_CASE(context, case_no){
+        return new Promise((resolve, reject) => {
+            new CaseAPI(context.rootState.user_session.token).getCaseByCaseNumber(case_no)
+            .then((result) =>{
+                if (result.data.success) {
+                    // context.commit('SET_ONE_CASE', result.data.model);
+                    resolve(result.data.model)
+                } else {
+                    console.log('SET_ONE_CASE err :', result.data.errors)
+                    reject(result.data.errors)
+                }
+            }).catch((err) => {
+                console.log('err :', err);
+                reject(err)
+            });
         })
     },
     GET_COMPLY(context) {

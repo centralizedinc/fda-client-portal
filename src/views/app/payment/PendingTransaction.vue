@@ -17,7 +17,7 @@
         </v-flex>
         <v-flex xs4 mr-5>
           <!-- <v-chip class="font-weight-bold" label color="fdaYellow" text-color="black">PENDING</v-chip> -->
-          <v-chip class="font-weight-bold" label color="fdaYellow" text-color="black">{{case_holder.current_task}}</v-chip>
+          <v-chip class="font-weight-bold" label color="fdaYellow" text-color="black">{{case_holder.is_paid ? "PAID" : "UNPAID"}}</v-chip>
         </v-flex>
         <v-flex xs4 ml-3>
           <span class="body-2">Due Date</span>
@@ -45,6 +45,12 @@
       form: {
         type: Object
       },
+      charges: {
+        type: Object
+      },
+      case_holder: {
+        type: Object
+      },
       allow_paylater: {
         type: Boolean,
         default: true
@@ -54,7 +60,7 @@
       return {
         paymentDialog: false,
         expiration: null,
-        charges: null,
+        // charges: null,
         cases: [],
         case_holder: null,
         date: null
@@ -65,73 +71,78 @@
       this.date = new Date(new Date().setTime(new Date().getTime() + 30 * 24 * 60 * 60 * 1000))
       console.log("date of expiration: " + this.date)
     },
-    watch: {
-      form() {
-        // this.load_fees()
-        console.log("pending transaction form: " + JSON.stringify(this.form));
-        // var bill = {
-        //   appType: this.form.appType,
-        //   productType: this.form.productType,
-        //   primaryActivity: this.form.primaryActivity,
-        //   declaredCapital: this.form.declaredCapital
-        // }
-        // this.$store.dispatch("GET_UNAPPROVED_LICENSES").then((result) => {
-        //   console.log("expiration date: "+JSON.stringify(result))
-        //   // this.expiration = result.model.expiry_date;
-        // }).catch((err) => {
-        // });
-        console.log("load fees pasok dito!!!!")
-        if (
-          // !this.isEmptyStrings([
-          //   this.form.general_info.product_type,
-          //   this.form.general_info.primary_activity,
-          //   // this.form.general_info.declared_capital,
-          //   // this.form.application_type,
-          // ])
-          this.form.general_info.product_type !== "" &&
-          this.form.general_info.primary_activity !== "" &&
-          this.charges === null
-          // this.form.general_info.declared_capital !== null &&
-          // this.form.application_type !== null
-        ) {
-          var details = {
-            productType: this.form.general_info.product_type,
-            primaryActivity: this.form.general_info.primary_activity,
-            declaredCapital: this.form.general_info.declared_capital,
-            appType: this.form.application_type
-          }
-          this.$store
-            .dispatch("GET_CASES")
-            .then(result => {
-              this.cases = result;
-              this.cases.forEach(element => {
-                if (element.case_no === this.form.case_no) {
-                  this.case_holder = element
-                }
-              })
-              // return this.$store.dispatch("GET_FEES", details)
-            })
-          this.$store.dispatch("GET_FEES", details).then(result => {
-            this.charges = result;
-          })
-        } else {
-          console.log("error no data found")
-        }
-      },
-      // case_holder(){
-      //   console.log("case holder watch: " + JSON.stringify(this.case_holder))
-      // }
-      // "form.case_no": function(val) {
-      //   console.log("element data labas: " + JSON.stringify(this.cases))
-      //   this.cases.forEach(element => {
-      //     console.log("element data: " + JSON.stringify(element))
-      //     if (element.case_no === this.form.case_no) {
-      //       this.case_holder = element
-      //     }
-      //   })
-      //   console.log("case holder data: " + JSON.stringify(this.case_holder))
-      // }
+    watch:{
+      "form": function() {
+        console.log("charges from pending transaction: " + JSON.stringify(this.form))
+      }
     },
+    // watch: {
+    //   "form": function() {
+    //     // this.load_fees()
+    //     console.log("pending transaction form: " + JSON.stringify(this.form));
+    //     // var bill = {
+    //     //   appType: this.form.appType,
+    //     //   productType: this.form.productType,
+    //     //   primaryActivity: this.form.primaryActivity,
+    //     //   declaredCapital: this.form.declaredCapital
+    //     // }
+    //     // this.$store.dispatch("GET_UNAPPROVED_LICENSES").then((result) => {
+    //     //   console.log("expiration date: "+JSON.stringify(result))
+    //     //   // this.expiration = result.model.expiry_date;
+    //     // }).catch((err) => {
+    //     // });
+    //     console.log("load fees pasok dito!!!!")
+    //     if (
+    //       // !this.isEmptyStrings([
+    //       //   this.form.general_info.product_type,
+    //       //   this.form.general_info.primary_activity,
+    //       //   // this.form.general_info.declared_capital,
+    //       //   // this.form.application_type,
+    //       // ])
+    //       this.form.general_info.product_type !== "" &&
+    //       this.form.general_info.primary_activity !== "" &&
+    //       this.charges === null
+    //       // this.form.general_info.declared_capital !== null &&
+    //       // this.form.application_type !== null
+    //     ) {
+    //       var details = {
+    //         productType: this.form.general_info.product_type,
+    //         primaryActivity: this.form.general_info.primary_activity,
+    //         declaredCapital: this.form.general_info.declared_capital,
+    //         appType: this.form.application_type
+    //       }
+    //       this.$store
+    //         .dispatch("GET_CASES")
+    //         .then(result => {
+    //           this.cases = result;
+    //           this.cases.forEach(element => {
+    //             if (element.case_no === this.form.case_no) {
+    //               this.case_holder = element
+    //             }
+    //           })
+    //           // return this.$store.dispatch("GET_FEES", details)
+    //         })
+    //       this.$store.dispatch("GET_FEES", details).then(result => {
+    //         this.charges = result;
+    //       })
+    //     } else {
+    //       console.log("error no data found")
+    //     }
+    //   },
+    //   // case_holder(){
+    //   //   console.log("case holder watch: " + JSON.stringify(this.case_holder))
+    //   // }
+    //   // "form.case_no": function(val) {
+    //   //   console.log("element data labas: " + JSON.stringify(this.cases))
+    //   //   this.cases.forEach(element => {
+    //   //     console.log("element data: " + JSON.stringify(element))
+    //   //     if (element.case_no === this.form.case_no) {
+    //   //       this.case_holder = element
+    //   //     }
+    //   //   })
+    //   //   console.log("case holder data: " + JSON.stringify(this.case_holder))
+    //   // }
+    // },
     methods: {
       isEmpty(str) {
         return !str || str === null || str === "";

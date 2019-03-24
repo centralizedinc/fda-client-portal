@@ -1,11 +1,10 @@
 import axios from "axios";
 
-axios.defaults.baseURL = "https://fda-services.herokuapp.com/v1.0";
 // axios.defaults.baseURL = "http://localhost:4000";
 
 export default class UserAPI {
   constructor(token) {
-    this.token = token;
+    axios.defaults.baseURL = "https://fda-services.herokuapp.com/v1.0";
     axios.defaults.headers.common["Content-Type"] = "application/json";
     axios.defaults.headers.common['access_token'] = token;
   }
@@ -143,15 +142,15 @@ export default class UserAPI {
       })
   }
 
-  getAdmin(cb){
+  getAdmin(cb) {
     console.log("get admin api")
     axios.get('secured/accounts/admin').then((result) => {
       console.log("get admin: " + JSON.stringify(result.data.model))
       cb(result.data.errors, result.data.model)
-  }).catch(err => {
+    }).catch(err => {
       console.log('######getLicenses error :', err)
       cb(err)
-  })
+    })
   }
 
 }
