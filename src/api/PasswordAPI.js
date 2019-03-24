@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export default class TaskApi {
+export default class PasswordAPI {
     constructor(token) {
         axios.defaults.baseURL = 'https://fda-services.herokuapp.com/v1.0/secured/accounts';
         axios.defaults.headers.common['Content-Type'] = 'application/json'
@@ -18,7 +18,6 @@ export default class TaskApi {
     }
 
     resetPassword(account) {
-        console.log('account2 :', account);
         return axios.post('/password', account)
     }
 }
