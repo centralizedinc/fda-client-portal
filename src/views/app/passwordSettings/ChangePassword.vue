@@ -10,7 +10,7 @@
             color="primary"
             style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
           >
-            <span class="title font-weight-thin">Change Password Request</span>
+            <span class="title font-weight-light">Change Password Request</span>
           </v-toolbar>
           <v-card-text>
             <v-layout row wrap>
@@ -63,14 +63,14 @@
           color="primary"
           style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
         >
-          <span class="title font-weight-thin">Confirmation</span>
+          <span class="title font-weight-light">Confirmation</span>
         </v-toolbar>
         <v-card-text
           class="title font-weight-thin"
         >Are you sure you want to change your password? This action cannot be undone.</v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="error" outline @click="dialog=false">Cancel</v-btn>
+          <v-btn color="secondary" outline @click="dialog=false">Cancel</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="success" :loading="loading" :disabled="loading" @click="submit">Yes</v-btn>
         </v-card-actions>

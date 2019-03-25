@@ -28,7 +28,7 @@
     <v-flex v-show="isSuccess" xs12>
       <!--SUCCESS-->
       <v-card>
-        <v-toolbar>Preview
+        <v-toolbar dark>Preview
           <v-spacer></v-spacer>
           <v-btn color="success" @click="reset">RESET</v-btn>
         </v-toolbar>
@@ -140,7 +140,7 @@ export default {
       });
 
       this.currentStatus = STATUS_SUCCESS;
-      console.log('formData :', formData);
+      console.log("formData :", formData);
       this.$emit("upload", formData);
     },
     prettify(name) {

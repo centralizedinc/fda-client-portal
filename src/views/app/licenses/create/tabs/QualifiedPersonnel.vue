@@ -149,7 +149,7 @@
                 v-model="qualified.id_expiry"
               >
                 <v-spacer></v-spacer>
-                <v-btn flat color="primary" @click="menu2 = false">Cancel</v-btn>
+                <v-btn flat color="secondary" outline @click="menu2 = false">Cancel</v-btn>
                 <v-btn flat color="primary" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
               </v-date-picker>
             </v-menu>

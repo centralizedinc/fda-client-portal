@@ -274,7 +274,7 @@
             color="fdaGreen"
             style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
           >
-            <span class="title font-weight-thin">Logout</span>
+            <span class="title font-weight-light">Logout</span>
           </v-toolbar>
           <v-card-text>
             <span class="font-weight-light">Are you sure you want to logout?</span>

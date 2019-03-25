@@ -9,6 +9,7 @@
     >
       <v-card>
         <v-toolbar
+          dark
           color="fdaGreen"
           style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
         >

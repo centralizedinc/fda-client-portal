@@ -6,7 +6,7 @@
                             Company
                         </v-card-title> -->
             <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
-                <span class="title font-weight-thin">Company Details</span>
+                <span class="title font-weight-light">Company Details</span>
             </v-toolbar>
             <v-divider></v-divider>
             <v-card-text>
@@ -24,7 +24,7 @@
     <v-flex xs12 md4 pa-2>
         <v-card>
             <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
-                <span class="title font-weight-thin">User Details</span>
+                <span class="title font-weight-light">User Details</span>
             </v-toolbar>
             <v-divider></v-divider>
             <!-- <v-card-text>
@@ -50,7 +50,7 @@
     <v-flex xs12 md4 pa-2>
         <v-card>
             <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
-                <span class="title font-weight-thin">User Account</span>
+                <span class="title font-weight-light">User Account</span>
             </v-toolbar>
             <v-divider></v-divider>
             <v-card-text>
