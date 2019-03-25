@@ -234,7 +234,7 @@ export default {
             declaredCapital: this.form.general_info.declared_capital,
             appType: this.form.application_type
           }
-          console.log("load fees create: " + JSON.stringify(details))
+          console.log("load fees registration create: " + JSON.stringify(details))
           this.$store.dispatch("GET_FEES", details).then(result =>{
             this.charges = result;
             console.log("charges data payment details: " + JSON.stringify(this.charges))
