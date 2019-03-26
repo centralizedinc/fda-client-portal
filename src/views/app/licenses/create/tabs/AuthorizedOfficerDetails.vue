@@ -145,7 +145,7 @@
             scrollable
           >
             <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
+            <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
             <v-btn flat color="primary" @click="$refs.menu.save(form.auth_officer.id_expiry)">OK</v-btn>
           </v-date-picker>
         </v-menu>

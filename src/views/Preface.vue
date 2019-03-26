@@ -70,13 +70,14 @@
           </v-form>
         </v-card>
       </v-flex>
-      <v-dialog v-model="dialog" persistent max-width="300px" transition="dialog-transition">
+      <v-dialog v-model="dialog" persistent max-width="400px" transition="dialog-transition">
         <v-card>
           <v-toolbar
+            dark
             color="fdaGreen"
             style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
           >
-            <span class="font-weight-light headline">Forgot Password</span>
+            <span class="font-weight-thin headline">Forgot Password</span>
             <v-spacer></v-spacer>
             <v-btn flat icon @click.native="dialog=false">
               <v-icon>close</v-icon>

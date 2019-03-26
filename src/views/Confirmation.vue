@@ -34,7 +34,7 @@
     <v-dialog v-model="dialog" persistent max-width="300px" transition="dialog-transition">
       <v-card>
         <v-toolbar dark color="primary">
-          <span class="title font-weight-thin">Confirmation</span>
+          <span class="title font-weight-light">Confirmation</span>
         </v-toolbar>
         <v-card-text>
           <span class="font-weight-thin">Confirmation was already sent to your email.</span>
