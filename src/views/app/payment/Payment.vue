@@ -14,9 +14,12 @@
               <td>{{ props.item.case_no }}</td>
               <!-- <td>{{ props.item.case_no }}</td> -->
               <td>{{ getAppType(props.item.application_type) }}</td>
+              <td>{{getCaseType(props.item.case_type)}}</td>
               <td>{{ getTask(props.item.current_task).name }}</td>
               <td>{{ formatDate (props.item.date_created) }}</td>
-              <td>props.item.payment_status }}</td>
+              <td
+                :class="props.item.is_paid ? 'paid': 'unpaid'"
+              >{{ props.item.is_paid ? "Paid" : "Unpaid" }}</td>
               <!-- <td>
               <v-layout row wrap>
                 <v-flex xs6>
@@ -50,6 +53,7 @@ export default {
         { text: "Case No", value: "case_no" },
         // { text: "License No", value: "case_no" },
         { text: "Type", value: "application_type" },
+        { text: "Case Type", value: "case_type" },
         { text: "Current Task", value: "current_task" },
         { text: "Date Created", value: "date_created" },
         { text: "Payment Status", value: "payment_status" }

@@ -14,7 +14,14 @@
             style=" height: 100px; background:url('https://i.postimg.cc/YCbD5mHP/image.png') repeat center center"
           >
             <v-list-tile-avatar class="mt-4">
-              <img src="http://i.pravatar.cc/300">
+              <v-btn fab icon slot="activator">
+                <v-avatar size="50px" v-if="user.avatar">
+                  <img :src="user.avatar">
+                </v-avatar>
+                <v-avatar class="elevation-10" dark v-else color="fdaSilver">
+                  <h4 class="black--text font-weight-bold">{{userInitials}}</h4>
+                </v-avatar>
+              </v-btn>
             </v-list-tile-avatar>
             <v-spacer></v-spacer>
             <v-list-tile-content class="mt-4">
@@ -184,30 +191,32 @@
         <v-list two-line subheader>
           <v-subheader>Notifications</v-subheader>
           <v-divider></v-divider>
-          <v-list-tile avatar>
-            <v-list-tile-content>
-              <v-list-tile-title class="body-2 font-weight-light">
-                <v-icon color="success" small right>check</v-icon>Account Activation
-              </v-list-tile-title>
-              <v-list-tile-sub-title
-                class="caption font-weight-thin"
-              >02/06/2019 3:26PM - Your account was activated</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
+          <template v-for="(item, index) in items">
+            <v-list-tile
+              :key="index"
+              avatar
+              color="black"
+              :style="item.color"
+              @click="viewNotification(item)"
+            ></v-list-tile>
+          </template>
         </v-list>
       </v-menu>
 
       <v-menu offset-y>
-        <v-btn icon slot="activator">
-          <v-avatar size="40">
-            <img src="http://i.pravatar.cc/200" alt="alt">
+        <v-btn fab icon flat slot="activator">
+          <v-avatar size="50px" v-if="user.avatar">
+            <img :src="user.avatar">
+          </v-avatar>
+          <v-avatar dark v-else color="fdaSilver">
+            <h4 class="primary--text font-weight-bold">{{userInitials}}</h4>
           </v-avatar>
         </v-btn>
         <v-list two-line subheader>
           <v-list-tile avatar @click="goTo('/app/profile')" :style="activeRoute('Profile')">
             <v-list-tile-content>
-              <v-list-tile-title class="body-2 font-weight-light">My Profile</v-list-tile-title>
-              <v-list-tile-sub-title class="caption font-weight-thin">Change your account details</v-list-tile-sub-title>
+              <v-list-tile-title class="body-2">My Profile</v-list-tile-title>
+              <v-list-tile-sub-title class="caption">Change your account details</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
@@ -217,17 +226,15 @@
             :style="activeRoute('Change Password')"
           >
             <v-list-tile-content>
-              <v-list-tile-title class="body-2 font-weight-light">Password Settings</v-list-tile-title>
-              <v-list-tile-sub-title
-                class="caption font-weight-thin"
-              >Change Password and Security Settings</v-list-tile-sub-title>
+              <v-list-tile-title class="body-2">Password Settings</v-list-tile-title>
+              <v-list-tile-sub-title class="caption">Change Password and Security Settings</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
           <v-list-tile avatar @click="showLogout" :style="activeRoute('logout')">
             <v-list-tile-content>
-              <v-list-tile-title class="body-2 font-weight-light">Logout</v-list-tile-title>
-              <v-list-tile-sub-title class="caption font-weight-thin">Sign out of FDA Portal</v-list-tile-sub-title>
+              <v-list-tile-title class="body-2">Logout</v-list-tile-title>
+              <v-list-tile-sub-title class="caption">Sign out of FDA Portal</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -367,6 +374,13 @@ export default {
     },
     app_version() {
       return process.env.VUE_APP_VERSION;
+    },
+    userInitials() {
+      console.log("this.user.name :", this.user);
+      return (
+        this.user.first_name.substring(0, 1) +
+        this.user.last_name.substring(0, 1)
+      );
     }
   }
 };
