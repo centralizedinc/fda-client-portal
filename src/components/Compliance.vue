@@ -91,7 +91,7 @@
 
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn block color="success" @click="submit">Submit</v-btn>
+          <v-btn block color="success" :loading="loading" @click="submit">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -152,6 +152,7 @@ export default {
       this.form_data = file;
     },
     submit() {
+      this.loading = true;
       if (this.remarks != null) {
         this.$store
           .dispatch("SAVE_COMPLY", {
@@ -161,18 +162,21 @@ export default {
             form_data: this.form_data
           })
           .then(result => this.init());
+        this.loading = false;
         this.complyDialog = false;
         this.$notify({
           message: "Compliance has been submitted",
           color: "success",
           icon: "check_circle"
         }).catch(err => console.log("err :", err));
+        this.loading = false;
         this.$notify({
           message: "Oops! Something went wrong. Please try again.",
           color: "error",
           icon: "error_outline"
         });
       } else {
+        this.loading = false;
         this.$notify({
           message: "User Remarks is required",
           color: "error",

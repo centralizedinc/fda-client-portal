@@ -227,7 +227,7 @@
           <v-list-tile avatar @click="showLogout" :style="activeRoute('logout')">
             <v-list-tile-content>
               <v-list-tile-title class="body-2 font-weight-light">Logout</v-list-tile-title>
-              <v-list-tile-sub-title class="caption font-weight-thin">Sing out of FDA Portal</v-list-tile-sub-title>
+              <v-list-tile-sub-title class="caption font-weight-thin">Sign out of FDA Portal</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
@@ -301,7 +301,7 @@
       class="pa-1"
       style="background: linear-gradient(5deg, #b5c25a 0%, #104b2a 100%)"
     >
-      <span class="caption">Copyright © 2019 FDA All rights reserved.</span>
+      <span class="caption">Copyright © 2019 FDA All rights reserved. v{{app_version}}</span>
       <v-spacer></v-spacer>
       <span class="caption">Food And Drug Administration of the Philippines</span>
     </v-footer>
@@ -364,6 +364,9 @@ export default {
     },
     breadcrumbs() {
       return this.$store.state.breadcrumbs.navigation;
+    },
+    app_version() {
+      return process.env.VUE_APP_VERSION;
     }
   }
 };

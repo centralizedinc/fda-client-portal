@@ -266,7 +266,7 @@ export default {
       if (
         this.form.general_info.product_type !== null &&
         this.form.general_info.primary_activity !== null &&
-        this.form.general_info.declared_capital !== null &&
+        // this.form.general_info.declared_capital !== null &&
         this.form.application_type !== null
       ) {
         var details = {

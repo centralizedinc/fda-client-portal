@@ -1,22 +1,31 @@
 <template>
-  <v-container grid-list-xl>
+  <div>
+    <!-- <v-container grid-list-xl> -->
     <v-layout row wrap>
       <v-flex xs12 md3></v-flex>
       <v-flex xs12 md6>
         <v-card>
-          <v-card-title class="headline title--header">
-            Change Password Request
-          </v-card-title>
+          <v-toolbar
+            dark
+            color="primary"
+            style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+          >
+            <span class="title font-weight-thin">Change Password Request</span>
+          </v-toolbar>
           <v-card-text>
             <v-layout row wrap>
-              <span class="red--text" ml-5>*</span><i>Change Password Request <b>link</b> will be send to your <b>registered email</b>.</i>
-              <v-flex xs12 class="subheading">
-                Username: {{account.username}}
-              </v-flex>
-              <v-flex xs12 class="subheading">
-                Email: {{maskEmail(account.email)}}
-              </v-flex>
-              <v-flex xs12>
+              <span
+                class="headline font-weight-light pa-2 mb-2"
+              >Change your password in 3 easy steps. This will keep your new password secure</span>
+              <ol>
+                <li>Enter your current password and submit</li>
+                <li>A link to change your password will be sent to your registered email address</li>
+                <li>Check your email address and click the link provided</li>
+              </ol>
+              <v-divider class="mt-3"></v-divider>
+              <v-flex xs12 class="mt-2 ml-1 subheading">Username: {{account.username}}</v-flex>
+              <v-flex xs12 class="mt-2 ml-1 subheading">Email: {{maskEmail(account.email)}}</v-flex>
+              <v-flex xs12 class="mt-2">
                 <v-text-field
                   outline
                   @keypress.enter="dialog=true"
@@ -24,45 +33,51 @@
                   :rules="[rules.required]"
                   :type="show_password ? 'text' : 'password'"
                   name="input-10-2"
-                  label="Enter your Old Password"
+                  label="Enter your Current Password"
                   @click:append="show_password = !show_password"
                   v-model="old_password"
                 ></v-text-field>
               </v-flex>
+              <!-- <span class="red--text ml-3">*</span>
+              <i class="ml-3">
+                Change Password Request
+                <b>link</b> will be sent to your
+                <b>registered email</b>.
+              </i>-->
             </v-layout>
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
             <!-- <v-spacer></v-spacer> -->
-            <v-btn
-              block
-              color="success"
-              class="font-weight-light"
-              @click="dialog=true"
-            >Submit</v-btn>
+            <v-btn block color="success" class="font-weight-light" @click="dialog=true">Submit</v-btn>
             <!-- <v-spacer></v-spacer> -->
           </v-card-actions>
         </v-card>
       </v-flex>
       <v-flex xs12 md3></v-flex>
     </v-layout>
-    <v-dialog v-model="dialog" width="270">
+    <v-dialog v-model="dialog" width="500">
       <v-card>
-        <!-- <v-card-title
-          primary-title
-          class="headline title--header">
-          Confirmation
-        </v-card-title> -->
-        <v-card-text class="title">Do you want to proceed?</v-card-text>
+        <v-toolbar
+          dark
+          color="primary"
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+        >
+          <span class="title font-weight-thin">Confirmation</span>
+        </v-toolbar>
+        <v-card-text
+          class="title font-weight-thin"
+        >Are you sure you want to change your password? This action cannot be undone.</v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="error" flat @click="dialog=false">Cancel</v-btn>
+          <v-btn color="error" outline @click="dialog=false">Cancel</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="success" :loading="loading" :disabled="loading" @click="submit">Yes</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-container>
+    <!-- </v-container> -->
+  </div>
 </template>
 
 <script>

@@ -79,8 +79,20 @@
                           <!-- Payment Details -->
                           <v-card flat v-show="window===5">
                             <!-- Display if PENDING or PAID TRANSACTION -->
-                            <pending-trans :form="form" :charges="charges" :case_holder="case_holder" :allow_paylater="false"></pending-trans>
-                            <paid-trans :form="form" :charges="charges" :case_holder="case_holder" :allow_paylater="false"></paid-trans>
+                            <pending-trans 
+                              v-if="case_holder.is_paid"                            
+                              :form="form"
+                              :charges="charges"
+                              :case_holder="case_holder"
+                              :allow_paylater="false"
+                            ></pending-trans>
+                            <paid-trans
+                              v-else
+                              :form="form"
+                              :charges="charges"
+                              :case_holder="case_holder"
+                              :allow_paylater="false"
+                            ></paid-trans>
                           </v-card>
                         </v-card-text>
                       </v-card>
@@ -132,31 +144,35 @@ export default {
   },
   created() {
     this.form = this.$store.state.licenses.view_license;
+    console.log("###########FORM  :", JSON.stringify(this.form));
 
-      if (
-        this.form.general_info.product_type !== null &&
-        this.form.general_info.primary_activity !== null &&
-        // this.form.general_info.declared_capital !== null &&
-        this.form.application_type !== null
-      ) {
-        var details = {
-          productType: this.form.general_info.product_type,
-          primaryActivity: this.form.general_info.primary_activity,
-          declaredCapital: this.form.general_info.declared_capital,
-          appType: this.form.application_type
-        };
-        console.log("load fees view: " + JSON.stringify(details));
-        this.$store.dispatch("GET_FEES", details).then(result => {
+    if (
+      this.form.general_info.product_type !== null &&
+      this.form.general_info.primary_activity !== null &&
+      // this.form.general_info.declared_capital !== null &&
+      this.form.application_type !== null
+    ) {
+      var details = {
+        productType: this.form.general_info.product_type,
+        primaryActivity: this.form.general_info.primary_activity,
+        declaredCapital: this.form.general_info.declared_capital,
+        appType: this.form.application_type
+      };
+      console.log("load fees view: " + JSON.stringify(details));
+      this.$store
+        .dispatch("GET_FEES", details)
+        .then(result => {
           this.charges = result;
           console.log(
             "charges data payment details: " + JSON.stringify(this.charges)
-          )
-          return this.$store.dispatch("GET_ONE_CASE", this.form.case_no) 
-        }).then(result => {
-          console.log("get onse case @ view: " + JSON.stringify(result));
-          this.case_holder = result
+          );
+          return this.$store.dispatch("GET_ONE_CASE", this.form.case_no);
         })
-      }
+        .then(result => {
+          console.log("get onse case @ view: " + JSON.stringify(result));
+          this.case_holder = result;
+        });
+    }
   }
 };
 </script>

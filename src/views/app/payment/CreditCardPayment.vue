@@ -37,7 +37,7 @@
               </v-menu>
             </v-flex>
             <v-flex xs4>
-              <v-text-field label="*CVC" v-model="full_details.card_details.cvc" mask="###" :rules="[rules.required, rules.cvc_validity]"></v-text-field>
+              <v-text-field label="*CVC" v-model="full_details.card_details.cvc" mask="###" :rules="[rules.cvc_validity]"></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field label="*Card Holder Full Name" v-model="full_details.card_details.name" :rules="[rules.required]"></v-text-field>
@@ -52,10 +52,10 @@
               <v-text-field label="Address Line 2" v-model="full_details.card_details.address_line2"></v-text-field>
             </v-flex>
             <!-- ----------------------------- -->
-            <v-flex xs12 md3 pa-2>
+            <v-flex xs12 md4 pa-2>
       <v-autocomplete
         color="green darken-1"
-        v-model="full_details.card_details.regions"
+        v-model="full_details.card_details.region"
         :items="regions"
         item-text="name"
         item-value="_id"
@@ -65,12 +65,11 @@
         :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
-    <v-flex xs12 md3 pa-2>
+    <v-flex xs12 md4 pa-2>
       <v-autocomplete
         color="green darken-1"
-        v-model="full_details.card_details.provinces"
+        v-model="full_details.card_details.province"
         :items="getProvinces"
-        @change="getProvinces"
         item-text="name"
         item-value="_id"
         hide-no-data
@@ -79,10 +78,10 @@
         :rules="[rules.required]"
       ></v-autocomplete>
     </v-flex>
-    <v-flex xs12 md3 pa-2>
+    <v-flex xs12 md4 pa-2>
       <v-autocomplete
         color="green darken-1"
-        v-model="full_details.card_details.cities"
+        v-model="full_details.card_details.city"
         :items="getCities"
         item-text="name"
         item-value="_id"
@@ -161,6 +160,7 @@
       return {
         card_logo: "",
         loading: false,
+        loading3: false,
         date: new Date().toISOString().substr(0, 7),
         menu1: false,
         expiry: "",
@@ -185,7 +185,7 @@
           payment_details: {
             amount: 0,
             mode_of_payment: 0,
-            currency: "Php",
+            currency: "₱",
             description: "",
             statement_descriptor: "",
             capture: true
@@ -199,14 +199,14 @@
         },
         payment_details: {
           amount: 0,
-          currency: "Php",
+          currency: "₱",
           description: "",
           statement_descriptor: "",
           capture: true
         },
         transaction_details: {
           application_type: "",
-          application: "License",
+          application: 0,
           case_no: "",
           order_payment: {}
         },      
@@ -214,7 +214,7 @@
         required: value => !!value || "This is a required field",
         card_validity: value => this.loading || "Invalid Credit Card Number",
         // expiry_validity: value2 => !!this.loading2 || "Invalid Expiration Date",
-        // cvc_validity: value3 => this.loading3 === true || "Invalid CVV"
+        cvc_validity: value => this.loading3 === false || "Invalid CVV",
         email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Invalid e-mail.";
@@ -283,9 +283,9 @@
       }
     },
     "full_details.card_details.cvc": function(val) {
-      // this.loading3 = true;
+      // this.loading3 = false;
       this.$store.state.payments.cvv = "";
-      if (val !== "") {
+      if (val.length == 3 ) {
         console.log("cvv number data: " + JSON.stringify(val));
         this.$store.dispatch("VALIDATE_CVV", val).then(result => {
           var cvv = this.$store.state.payments.cvv;
@@ -293,11 +293,23 @@
             console.log(
               "####### cvv/cvc details: " + JSON.stringify(cvv.isValid)
             );
-            // this.loading3 = false;
+            this.loading3 = false;
+            this.$notify({
+              message: "Valid CVC number",
+              color: "primary",
+              initialMargin: 100
+            });
           }
         });
       } else {
-        // this.loading3 = false
+        console.log("cvv number data else: " + JSON.stringify(val.length));
+        console.log("loading status: " + JSON.stringify(this.loading3))
+        this.loading3 = true
+        this.$notify({
+              message: "Enter valid CVC number",
+              color: "warning",
+              initialMargin: 100
+            });
       }
     }
   },
@@ -308,9 +320,6 @@
         this.regions = locations.regions;
         this.provinces = locations.provinces;
         this.cities = locations.cities;
-        console.log("regions data: " + JSON.stringify(this.regions));
-        console.log("provinces data: " + JSON.stringify(this.provinces));
-        console.log("cities data: " + JSON.stringify(this.cities));
       }
     });
   },
@@ -320,14 +329,17 @@
       console.log(
         "get provinces computed: " +
           JSON.stringify(
-            this.findProvinces(this.full_details.card_details.provinces)
+            // this.findProvinces(
+              this.full_details.card_details.region
+              // )
           )
       );
-      return this.findProvinces(this.full_details.card_details.provinces);
+      return this.findProvinces(this.full_details.card_details.region);
     },
     getCities() {
       //  this.form.addresses.office.city = null;
-      return this.findCities(this.full_details.card_details.cities);
+      return this.findCities(this.full_details.card_details.province);
+      console.log("get cities computed data: " + JSON.stringify(this.full_details.card_details.city))
     }
   },
   methods: {
@@ -462,7 +474,7 @@
       //   "case_no": "l20192802000198",
       //   "modified_by": "5c6bbbb590a2b609204b1fec"
       // }
-      // this.$print(this.form, "PAY");
+      // this.$download(this.form, "PAY");
       console.log("submit: " + JSON.stringify(this.full_details));
       if (
         !this.isEmptyStrings([
@@ -478,7 +490,7 @@
           this.full_details.card_details.cities,
           this.full_details.card_details.zip
         ]) &&
-        this.loading === false
+        !this.loading && !this.loading3
       ) {
         var paymentFee = this.$store.state.payments.fee;
         console.log("payment fee data: " + JSON.stringify(paymentFee));
@@ -497,7 +509,12 @@
           .dispatch("SAVE_PAYMENT", this.full_details)
           .then(result => {
             console.log("saved payment " + JSON.stringify(result));
-            // this.$router.push("/");
+            this.$router.push("/");
+            this.$notify({
+          message: "Payment success",
+          color: "primary",
+          initialMargin: 100
+        });
           })
           .catch(err => {
             console.log("ERROR: " + err);
@@ -506,7 +523,7 @@
         // this.$router.push("/app/payments/summary");
       } else {
         this.$notify({
-          message: "Please enter fields correctly",
+          message: "Please enter all fields & correctly",
           color: "warning",
           initialMargin: 100
         });

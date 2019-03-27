@@ -152,17 +152,21 @@ export default {
           .then(result => {
             if (result.data.success) {
               this.loading = false;
+              this.dialog = false;
               this.$notify({
                 message: "Successfully Password Reset!",
                 color: "success",
                 icon: "check_circle"
               });
             } else {
+              this.loading = false;
+              this.dialog = false;
               this.$notifyError(result.data.errors);
             }
           })
           .catch(err => {
             this.loading = false;
+            this.dialog = false;
             console.log("### RESET_PASSWORD err :", err);
             this.$notifyError(err);
           });

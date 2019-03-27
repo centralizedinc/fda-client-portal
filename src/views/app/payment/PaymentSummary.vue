@@ -18,33 +18,34 @@
                 <label class="subheading">Application Fee:</label>
               </v-flex>
               <v-flex xs6>
-                <label class="subheading">Php {{fees_form.fee}}</label>
+                <label class="subheading">₱ {{numberWithCommas(fees_form.fee)}}</label>
               </v-flex>
               <v-flex xs6>
                 <label class="subheading"># of year/s applied:</label>
               </v-flex>
               <v-flex xs6>
-                <label class="subheading">{{fees_form.yearsApplied}}</label>
+                <label class="subheading">{{fees_form.yearsApplied}} years</label>
               </v-flex>
               <v-flex xs6>
                 <label class="subheading">Surcharge:</label>
               </v-flex>
               <v-flex xs6>
                 <label class="subheading">
-                  <v-icon medium color="error">close</v-icon>
+                  <label class="subheading">₱ {{numberWithCommas(fees_form.surcharge)}}</label>
+                  <!-- <v-icon medium color="error">close</v-icon> -->
                 </label>
               </v-flex>
               <v-flex xs6>
                 <label class="subheading">Legal Research Fund (LRF):</label>
               </v-flex>
               <v-flex xs6>
-                <label class="subheading">Php {{fees_form.lrf}}</label>
+                <label class="subheading">₱ {{numberWithCommas(fees_form.lrf)}}</label>
               </v-flex>
               <v-flex xs6>
                 <label class="subheading" color="error">Total Payment Due:</label>
               </v-flex>
               <v-flex xs6>
-                <label class="subheading">{{fees_form.total}}</label>
+                <label class="subheading">₱ {{numberWithCommas(fees_form.total)}}</label>
               </v-flex>
             <!-- </v-flex> -->
 
@@ -269,7 +270,7 @@ export default {
       full_details.formDetails.addresses.city = this.getCityName(full_details.formDetails.addresses.city)
       full_details.formDetails.application_type = this.getAppType(full_details.formDetails.application_type)
       console.log("fulldetails data: " + JSON.stringify(full_details))
-      this.$print(full_details, "PAY");
+      this.$download(full_details, "PAY");
 console.log("application form data: " + JSON.stringify(this.app_form))
 console.log("fees form data: " + JSON.stringify(this.fees_form))
       OrderOfPaymentGenerator.generateOrderOfPayment(this.app_form, this.fees_form);

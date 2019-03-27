@@ -142,6 +142,15 @@ export default class UserAPI {
       })
   }
 
+  getUser(cb) {
+    axios.get('secured/accounts/users/info').then((result) => {
+      console.log("get user: " + JSON.stringify(result.data.model))
+      cb(result.data.errors, result.data.model)
+    }).catch(err => {
+      cb(err)
+    })
+  }
+
   getAdmin(cb) {
     console.log("get admin api")
     axios.get('secured/accounts/admin').then((result) => {

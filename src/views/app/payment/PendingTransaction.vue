@@ -9,7 +9,7 @@
       </v-flex>
       <v-flex xs12>
         To process your application, please pay the amount of
-        <b class="font-weight-bold">PHP {{charges.total}}</b> to your selected accredited payment channels. To avoid late charges/ penalties, we encourage you to pay on or before the payment due date.
+        <b class="font-weight-bold">PHP {{numberWithCommas(charges.total)}}</b> to your selected accredited payment channels. To avoid late charges/ penalties, we encourage you to pay on or before the payment due date.
       </v-flex>
       <v-layout row wrap>
         <v-flex xs4 mt-2 ml-3>
