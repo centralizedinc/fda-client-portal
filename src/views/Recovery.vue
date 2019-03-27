@@ -47,7 +47,7 @@
                 outline
                 name="name"
                 label="Enter your new password"
-                :append-icon="value ? 'visibility' : 'visibility_off'"
+                :append-icon="value ? 'visibility_off' : 'visibility'"
                 :append-icon-cb="() => (value = !value)"
                 :type="value ? 'password' : 'text'"
                 v-model="account.password"
@@ -56,7 +56,7 @@
                 outline
                 name="name"
                 label="Confirm your password"
-                :append-icon="value2 ? 'visibility' : 'visibility_off'"
+                :append-icon="value2 ? 'visibility_off' : 'visibility'"
                 :append-icon-cb="() => (value2 = !value2)"
                 :type="value2 ? 'password' : 'text'"
                 v-model="confirm"
@@ -65,7 +65,7 @@
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" type="submit" :loader="loading">Submit</v-btn>
+              <v-btn color="success" type="submit" :disabled="loading" :loading="loading">Submit</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>
@@ -136,7 +136,7 @@ export default {
           this.$notify({
             message: "You have successfully changed your password!",
             color: "success",
-            icon: "check_outline"
+            icon: "check_circle"
           });
           this.$router.push("/");
         })

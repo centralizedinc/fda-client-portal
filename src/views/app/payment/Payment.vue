@@ -30,6 +30,31 @@
               </v-layout>
               </td>-->
             </tr>
+            <v-dialog v-model="paymentDialog" max-width="calc(100% - 10px)">
+              <v-card flat>
+                <v-toolbar flat>
+                  <v-spacer></v-spacer>
+                  <v-tooltip top>
+                    <v-btn slot="activator" flat icon color="black" @click="paymentDialog = false">
+                      <v-icon>fas fa-times</v-icon>
+                    </v-btn>Close
+                  </v-tooltip>
+                </v-toolbar>
+                <!-- Display if PENDING or PAID TRANSACTION -->
+                <pending-trans
+                  :form="form"
+                  :charges="charges"
+                  :case_holder="case_holder"
+                  :allow_paylater="false"
+                ></pending-trans>
+                <!-- <paid-trans
+                  :form="form"
+                  :charges="charges"
+                  :case_holder="case_holder"
+                  :allow_paylater="false"
+                ></paid-trans>-->
+              </v-card>
+            </v-dialog>
           </template>
         </v-data-table>
         <div class="text-xs-center pt-2">
@@ -43,20 +68,44 @@
 <script>
 export default {
   components: {
-    ActiveLicense: () => import("@/components/ActiveLicense.vue")
+    ActiveLicense: () => import("@/components/ActiveLicense.vue"),
+    PendingTrans: () => import("./PendingTransaction.vue"),
+    PaidTrans: () => import("./PaidTransaction.vue")
   },
   data() {
     return {
+      form: {},
       pagination: {},
+      charges: {},
+      case_holder: {},
+      paymentDialog: false,
       mode: 0, // 0 - new, 1 - variation, 2 - renewal
       headers: [
-        { text: "Case No", value: "case_no" },
+        {
+          text: "Case No",
+          value: "case_no"
+        },
         // { text: "License No", value: "case_no" },
-        { text: "Type", value: "application_type" },
-        { text: "Case Type", value: "case_type" },
-        { text: "Current Task", value: "current_task" },
-        { text: "Date Created", value: "date_created" },
-        { text: "Payment Status", value: "payment_status" }
+        {
+          text: "Type",
+          value: "application_type"
+        },
+        {
+          text: "Case Type",
+          value: "case_type"
+        },
+        {
+          text: "Current Task",
+          value: "current_task"
+        },
+        {
+          text: "Date Created",
+          value: "date_created"
+        },
+        {
+          text: "Payment Status",
+          value: "payment_status"
+        }
         // { text: "Actions", value: "" }
       ]
     };
@@ -93,7 +142,43 @@ export default {
               "get license data: " + JSON.stringify(result.data.model)
             );
             this.$store.commit("SET_VIEW_LICENSE", result.data.model);
-            this.$router.push("/app/licenses/view");
+            this.form = this.$store.state.licenses.view_license;
+            console.log("###########FORM  :", JSON.stringify(this.form));
+
+            if (
+              this.form.general_info.product_type !== null &&
+              this.form.general_info.primary_activity !== null &&
+              // this.form.general_info.declared_capital !== null &&
+              this.form.application_type !== null
+            ) {
+              var details = {
+                productType: this.form.general_info.product_type,
+                primaryActivity: this.form.general_info.primary_activity,
+                declaredCapital: this.form.general_info.declared_capital,
+                appType: this.form.application_type
+              };
+              console.log("load fees view: " + JSON.stringify(details));
+              this.$store
+                .dispatch("GET_FEES", details)
+                .then(result => {
+                  this.charges = result;
+                  console.log(
+                    "charges data payment details: " +
+                      JSON.stringify(this.charges)
+                  );
+                  return this.$store.dispatch(
+                    "GET_ONE_CASE",
+                    this.form.case_no
+                  );
+                })
+                .then(result => {
+                  console.log(
+                    "get onse case @ view: " + JSON.stringify(result)
+                  );
+                  this.case_holder = result;
+                });
+            }
+            this.paymentDialog = true;
           } else console.log("result.data.errors :", result.data.errors);
         })
         .catch(err => {
