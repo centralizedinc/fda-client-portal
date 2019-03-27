@@ -8,12 +8,15 @@
         <span class="body-2">Case Number</span>
       </v-flex>
       <v-flex xs4 mr-5>
-        <v-chip class="font-weight-bold" label color="fdaGreen" text-color="white">10001919029</v-chip>
+        <v-chip class="font-weight-bold" label color="fdaGreen" text-color="white">{{form.case_no}}</v-chip>
       </v-flex>
       <v-flex xs4 ml-3>
         <span class="body-2">Application Type</span>
       </v-flex>
-      <v-flex xs4 mr-5 ml-1>{{form.application_type + " - " + "LICENSE"}}</v-flex>
+      <v-flex xs4 mr-5 ml-1>{{getAppType(form.application_type)}} - {{getCaseType(case_holder.case_type)}}</v-flex>
+      <!-- <v-flex xs4 mr-5 ml-1>
+        <v-chip class="font-weight-bold" label color="fdaGreen" text-color="white">{{getCaseType(case_holder.case_type)}}</v-chip>
+      </v-flex> -->
       <v-flex xs4 ml-3>
         <span class="body-2">Establishment</span>
       </v-flex>
@@ -31,7 +34,21 @@
 
 <script>
 export default {
-  props: ["form"]
+  props: {
+      form: {
+        type: Object
+      },
+      charges: {
+        type: Object
+      },
+      case_holder: {
+        type: Object
+      },
+      allow_paylater: {
+        type: Boolean,
+        default: true
+      }
+    }
 };
 </script>
 

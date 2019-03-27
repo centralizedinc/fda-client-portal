@@ -34,7 +34,7 @@
                   :class="`${getAppStatusColor(props.item.status)}--text`"
                 >{{ getAppStatus(props.item.status) }}</td>
                 <td>{{ getTask(props.item.current_task).name }}</td>
-                <td>{{ props.item.current_assigned_user }}</td>
+                <!-- <td>{{ getUsername(props.item.current_assigned_user) }}</td> -->
                 <td>{{ formatDate (props.item.date_created) }}</td>
                 <td>{{ props.item.remarks }}</td>
               </tr>

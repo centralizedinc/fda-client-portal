@@ -79,13 +79,15 @@
                           <!-- Payment Details -->
                           <v-card flat v-show="window===5">
                             <!-- Display if PENDING or PAID TRANSACTION -->
-                            <pending-trans
+                            <pending-trans 
+                              v-if="case_holder.is_paid"                            
                               :form="form"
                               :charges="charges"
                               :case_holder="case_holder"
                               :allow_paylater="false"
                             ></pending-trans>
                             <paid-trans
+                              v-else
                               :form="form"
                               :charges="charges"
                               :case_holder="case_holder"
