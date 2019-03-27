@@ -87,7 +87,13 @@
             <span
               class="subheading font-weight-thin"
             >Enter your email address to recover your account.</span>
-            <v-text-field class="font-weight-thin" outline v-model="email" label="Email Address"></v-text-field>
+            <v-text-field
+              class="font-weight-thin"
+              @keypress.enter="forgot_password"
+              outline
+              v-model="email"
+              label="Email Address"
+            ></v-text-field>
             <v-divider></v-divider>
           </v-card-text>
           <v-card-actions>
@@ -101,6 +107,7 @@
             <v-btn
               color="success"
               class="caption font-weight-light"
+              :disabled="loading2"
               :loading="loading2"
               @click="forgot_password"
             >Submit</v-btn>
