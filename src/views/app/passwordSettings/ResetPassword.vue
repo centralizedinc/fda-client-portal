@@ -1,69 +1,89 @@
 <template>
   <v-container grid-list-xl>
-    <v-card v-if="valid">
-      <v-card-title class="headline">Reset Password</v-card-title>
-      <v-divider></v-divider>
-      <v-card-text>
-        <v-layout row wrap>
-          <v-flex xs12>
-            <v-text-field
-              outline
-              @keypress.enter="dialog=true"
-              :append-icon="new_password_show ? 'visibility' : 'visibility_off'"
-              :rules="[rules.required, rules.check_password]"
-              :type="new_password_show ? 'text' : 'password'"
-              name="new_password"
-              label="Enter your New Password"
-              @click:append="new_password_show = !new_password_show"
-              v-model="account.password"
-            ></v-text-field>
+    <v-layout row align-center justify-center>
+      <v-flex xs6>
+        <v-card v-if="valid">
+          <v-card-title
+            class="headline white--text font-weight-light"
+            color="primary"
+            style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+          >Reset Password</v-card-title>
+          <v-divider></v-divider>
+          <v-card-text>
+            <v-layout row wrap>
+              <v-flex xs12>
+                <v-text-field
+                  outline
+                  @keypress.enter="dialog=true"
+                  :append-icon="new_password_show ? 'visibility_off' : 'visibility'"
+                  :rules="[rules.required, rules.check_password]"
+                  :type="new_password_show ? 'text' : 'password'"
+                  name="new_password"
+                  label="Enter your New Password"
+                  @click:append="new_password_show = !new_password_show"
+                  v-model="account.password"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12>
+                <v-text-field
+                  outline
+                  @keypress.enter="dialog=true"
+                  :append-icon="confirm_password_show ? 'visibility_off' : 'visibility'"
+                  :rules="[rules.required, rules.match_password]"
+                  :type="confirm_password_show ? 'text' : 'password'"
+                  name="confirm_password"
+                  label="Confirm Password"
+                  @click:append="confirm_password_show = !confirm_password_show"
+                  v-model="confirm_password"
+                ></v-text-field>
+              </v-flex>
+            </v-layout>
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-btn
+              color="success"
+              :loading="loading"
+              :disabled="loading"
+              block
+              @click="dialog=true"
+            >Reset</v-btn>
+          </v-card-actions>
+        </v-card>
+        <v-layout row wrap v-else>
+          <v-flex xs12 pa-4>
+            <span class="display-2 font-weight-bold">Sorry!</span>
           </v-flex>
-          <v-flex xs12>
-            <v-text-field
-              outline
-              @keypress.enter="dialog=true"
-              :append-icon="confirm_password_show ? 'visibility' : 'visibility_off'"
-              :rules="[rules.required, rules.match_password]"
-              :type="confirm_password_show ? 'text' : 'password'"
-              name="confirm_password"
-              label="Confirm Password"
-              @click:append="confirm_password_show = !confirm_password_show"
-              v-model="confirm_password"
-            ></v-text-field>
+          <v-flex xs12 pa-4>
+            <span class="headline font-weight-light">It seems like your session has been expired</span>
+          </v-flex>
+          <v-flex xs12 pa-4>
+            <v-btn class="font-weight-light" color="success" @click="home()">Home</v-btn>
           </v-flex>
         </v-layout>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn color="success" block @click="dialog=true">Reset</v-btn>
-      </v-card-actions>
-    </v-card>
-    <v-layout row wrap v-else>
-      <v-flex xs12 pa-4>
-        <span class="display-2 font-weight-bold">Sorry!</span>
-      </v-flex>
-      <v-flex xs12 pa-4>
-        <span class="headline font-weight-thin">It seems like your session has been expired</span>
-      </v-flex>
-      <v-flex xs12 pa-4>
-        <v-btn class="font-weight-light" color="primary" @click="home()">Home</v-btn>
+        <v-dialog v-model="dialog" width="270">
+          <v-card>
+            <v-toolbar
+              dark
+              color="primary"
+              style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+            >
+              <span class="title font-weight-light">Confirmation</span>
+            </v-toolbar>
+            <v-card-text
+              class="title font-weight-light"
+              @keypress.enter="reset"
+            >Do you want to proceed?</v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-btn color="secondary" outline @click="dialog=false">Cancel</v-btn>
+              <v-spacer></v-spacer>
+              <v-btn color="success" :loading="loading" :disabled="loading" @click="reset">Yes</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
       </v-flex>
     </v-layout>
-    <v-dialog v-model="dialog" width="270">
-      <v-card>
-        <!-- <v-card-title
-              primary-title
-              class="headline title--header">
-              Confirmation
-        </v-card-title>-->
-        <v-card-text class="title">Do you want to proceed?</v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-btn color="secondary" outline @click="dialog=false">Cancel</v-btn>
-          <v-spacer></v-spacer>
-          <v-btn color="success" :loading="loading" :disabled="loading" @click="reset">Yes</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
@@ -144,18 +164,20 @@ export default {
       return true;
     },
     reset() {
+      this.loading = true;
       if (this.validate()) {
         this.$store
           .dispatch("RESET_PASSWORD", this.account)
           .then(result => {
+            this.loading = false;
             if (result.data.success) {
-              this.loading = false;
               this.dialog = false;
               this.$notify({
-                message: "Successfully Password Reset!",
+                message: "Password successfully reset",
                 color: "success",
                 icon: "check_circle"
               });
+              this.$router.push("/");
             } else {
               this.loading = false;
               this.dialog = false;
