@@ -15,17 +15,17 @@
           >
             <v-list-tile-avatar class="mt-4">
               <v-btn fab icon slot="activator">
-                <v-avatar size="50px" v-if="user.avatar">
-                  <img :src="user.avatar">
+                <v-avatar size="50px">
+                  <img :src="display_avatar">
                 </v-avatar>
-                <v-avatar class="elevation-10" dark v-else color="fdaSilver">
+                <!-- <v-avatar class="elevation-10" dark v-else color="fdaSilver">
                   <h4 class="black--text font-weight-bold">{{userInitials}}</h4>
-                </v-avatar>
+                </v-avatar> -->
               </v-btn>
             </v-list-tile-avatar>
             <v-spacer></v-spacer>
             <v-list-tile-content class="mt-4">
-              <v-list-tile-title class="body-2">{{user.username}}</v-list-tile-title>
+              <v-list-tile-title class="body-2">{{display_name}}</v-list-tile-title>
               <v-list-tile-sub-title class="caption">Last Logged in:</v-list-tile-sub-title>
               <v-list-tile-sub-title class="caption">{{formatDate(user.last_login)}}</v-list-tile-sub-title>
             </v-list-tile-content>
@@ -204,13 +204,13 @@
       </v-menu>
 
       <v-menu offset-y>
-        <v-btn fab icon flat slot="activator">
-          <v-avatar size="50px" v-if="user.avatar">
-            <img :src="user.avatar">
+        <v-btn fab icon small flat slot="activator">
+          <v-avatar size="38px">
+            <img :src="display_avatar">
           </v-avatar>
-          <v-avatar dark v-else color="fdaSilver">
+          <!-- <v-avatar dark v-else color="fdaSilver">
             <h4 class="primary--text font-weight-bold">{{userInitials}}</h4>
-          </v-avatar>
+          </v-avatar> -->
         </v-btn>
         <v-list two-line subheader>
           <v-list-tile avatar @click="goTo('/app/profile')" :style="activeRoute('Profile')">
@@ -328,7 +328,8 @@ export default {
   //#########################
   data() {
     return {
-      showNav:true,
+      items: [],
+      showNav: true,
       mini: false,
       route_name: "",
       user: {},
@@ -347,6 +348,7 @@ export default {
   methods: {
     init() {
       this.user = this.$store.state.user_session.user;
+      if (!this.user.avatar) this.user.avatar = {};
     },
     goTo(router) {
       this.$router.push(router);
@@ -380,18 +382,16 @@ export default {
       return process.env.VUE_APP_VERSION;
     },
     userInitials() {
-      console.log("this.user.name :", this.user);
-      if(this.user.first_name && this.user.last_name){
-          return (        
-            this.user.first_name.substring(0, 1) +
-            this.user.last_name.substring(0, 1)
-          );
-      }else{
-        return "";
-      }      
+      var initials = "";
+      if (this.user.name && this.user.name.first && this.user.name.last) {
+        initials =
+          this.user.name.first.substring(0, 1) +
+          this.user.name.last.substring(0, 1);
+      }
+      return initials;
     },
-    isMiniView(){
-      return this.$vuetify.breakpoint.smAndDown
+    isMiniView() {
+      return this.$vuetify.breakpoint.smAndDown;
     }
   }
 };

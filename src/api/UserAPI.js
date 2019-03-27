@@ -122,26 +122,6 @@ export default class UserAPI {
       })
   }
 
-  /**
-   * @description
-   * @param {AccountsModel} account 
-   * @param {Function} cb 
-   */
-  static updateAccount(account, cb) {
-    axios.post('secured/accounts/' + account._id, account)
-      .then(result => {
-        if (result.data.success) {
-          cb(result.data.model);
-        } else {
-          cb(null, result.data.errors);
-        }
-      })
-      .catch(err => {
-        console.log("err... " + err);
-        cb(null, err);
-      })
-  }
-
   getAdmin(cb) {
     console.log("get admin api")
     axios.get('secured/accounts/admin').then((result) => {
@@ -153,4 +133,30 @@ export default class UserAPI {
     })
   }
 
+  /**
+   * @description
+   * @param {AccountsModel} account 
+   * @param {Function} cb 
+   */
+  static updateAccount(profile) {
+
+    return new Promise((resolve, reject) => {
+      axios.post('documents/avatars?account_id=' + profile.account._id, profile.avatar)
+        .then(result1 => {
+          if (result1.data.success) {
+            profile.account.avatar = result1.data.model
+            return axios.post('secured/accounts/' + profile.account._id, profile.account)
+          } else {
+            resolve(result1.data)
+          }
+        })
+        .then(result2 => {
+          resolve(result2.data)
+        })
+        .catch(err => {
+          reject(err)
+        })
+
+    })
+  }
 }

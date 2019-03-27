@@ -36,6 +36,9 @@ const mutations = {
   },
   ADMIN: (state, payload) => {
     state.admin_user = payload
+  },
+  UPDATE_USER: (state, user) => {
+    state.user = user;
   }
 };
 
@@ -157,18 +160,18 @@ var actions = {
     })
   },
 
-
   UPDATE_ACCOUNT: (context, account) => {
     return new Promise((resolve, reject) => {
-      UserAPI.updateAccount(account, (res, err) => {
-        if (!err) {
-          resolve(res)
-        } else {
+      UserAPI.updateAccount(account)
+        .then((result) => {
+          if (result.success) {
+            context.commit('UPDATE_USER', result.model)
+          }
+          resolve(result)
+        }).catch((err) => {
           reject(err)
-        }
-      })
+        });
     })
-
   },
 
   GET_ADMIN(context) {
