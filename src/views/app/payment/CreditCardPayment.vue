@@ -278,7 +278,7 @@ export default {
       gaps: [],
       cvc_max: 3,
       code_name: "CVC"
-    };
+    }      
   },
   watch: {
     date(val) {
