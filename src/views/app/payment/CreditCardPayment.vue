@@ -67,7 +67,12 @@
               </v-menu>
             </v-flex>
             <v-flex xs4>
-              <v-text-field label="*CVC" v-model="full_details.card_details.cvc" mask="###" :rules="[rules.cvc_validity]"></v-text-field>
+              <v-text-field
+                label="*CVC"
+                v-model="full_details.card_details.cvc"
+                mask="###"
+                :rules="[rules.cvc_validity]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field
@@ -98,44 +103,44 @@
             </v-flex>
             <!-- ----------------------------- -->
             <v-flex xs12 md4 pa-2>
-      <v-autocomplete
-        color="green darken-1"
-        v-model="full_details.card_details.region"
-        :items="regions"
-        item-text="name"
-        item-value="_id"
-        hide-no-data
-        hide-selected
-        label="Region"
-        :rules="[rules.required]"
-      ></v-autocomplete>
-    </v-flex>
-    <v-flex xs12 md4 pa-2>
-      <v-autocomplete
-        color="green darken-1"
-        v-model="full_details.card_details.province"
-        :items="getProvinces"
-        item-text="name"
-        item-value="_id"
-        hide-no-data
-        hide-selected
-        label="Province"
-        :rules="[rules.required]"
-      ></v-autocomplete>
-    </v-flex>
-    <v-flex xs12 md4 pa-2>
-      <v-autocomplete
-        color="green darken-1"
-        v-model="full_details.card_details.city"
-        :items="getCities"
-        item-text="name"
-        item-value="_id"
-        hide-no-data
-        hide-selected
-        label="City / Town"
-        :rules="[rules.required]"
-      ></v-autocomplete>
-    </v-flex>
+              <v-autocomplete
+                color="green darken-1"
+                v-model="full_details.card_details.region"
+                :items="regions"
+                item-text="name"
+                item-value="_id"
+                hide-no-data
+                hide-selected
+                label="Region"
+                :rules="[rules.required]"
+              ></v-autocomplete>
+            </v-flex>
+            <v-flex xs12 md4 pa-2>
+              <v-autocomplete
+                color="green darken-1"
+                v-model="full_details.card_details.province"
+                :items="getProvinces"
+                item-text="name"
+                item-value="_id"
+                hide-no-data
+                hide-selected
+                label="Province"
+                :rules="[rules.required]"
+              ></v-autocomplete>
+            </v-flex>
+            <v-flex xs12 md4 pa-2>
+              <v-autocomplete
+                color="green darken-1"
+                v-model="full_details.card_details.city"
+                :items="getCities"
+                item-text="name"
+                item-value="_id"
+                hide-no-data
+                hide-selected
+                label="City / Town"
+                :rules="[rules.required]"
+              ></v-autocomplete>
+            </v-flex>
             <!-- <v-flex xs12>
             <v-autocomplete
               color="green darken-1"
@@ -203,52 +208,38 @@
 </template>
 
 <script>
-  import images from "./cards.js";
-  export default {
-    props: ["form"],
-    data() {
-      return {
-        card_logo: "",
-        loading: false,
-        loading3: false,
-        date: new Date().toISOString().substr(0, 7),
-        menu1: false,
-        expiry: "",
-        regions: [],
-        provinces: [],
-        cities: [],
-        full_details: {
-          card_details: {
-            number: "",
-            exp_month: "",
-            exp_year: "",
-            cvc: "",
-            name: "",
-            email: "",
-            address_line1: "",
-            address_line2: "",
-            region: "",
-            province: "",
-            city:"",
-            zip: ""
-          },
-          payment_details: {
-            amount: 0,
-            mode_of_payment: 0,
-            currency: "₱",
-            description: "",
-            statement_descriptor: "",
-            capture: true
-          },
-          transaction_details: {
-            application_type: "",
-            application: 0,
-            case_no: "",
-            order_payment: {}
-          }
+import images from "./cards.js";
+export default {
+  props: ["form"],
+  data() {
+    return {
+      card_logo: "",
+      loading: false,
+      loading3: false,
+      date: new Date().toISOString().substr(0, 7),
+      menu1: false,
+      expiry: "",
+      regions: [],
+      provinces: [],
+      cities: [],
+      full_details: {
+        card_details: {
+          number: "",
+          exp_month: "",
+          exp_year: "",
+          cvc: "",
+          name: "",
+          email: "",
+          address_line1: "",
+          address_line2: "",
+          region: "",
+          province: "",
+          city: "",
+          zip: ""
         },
         payment_details: {
           amount: 0,
+          mode_of_payment: 0,
           currency: "₱",
           description: "",
           statement_descriptor: "",
@@ -263,14 +254,14 @@
       },
       payment_details: {
         amount: 0,
-        currency: "Php",
+        currency: "₱",
         description: "",
         statement_descriptor: "",
         capture: true
       },
       transaction_details: {
         application_type: "",
-        application: "License",
+        application: 0,
         case_no: "",
         order_payment: {}
       },
@@ -349,7 +340,7 @@
     "full_details.card_details.cvc": function(val) {
       // this.loading3 = false;
       this.$store.state.payments.cvv = "";
-      if (val.length == 3 ) {
+      if (val.length == 3) {
         console.log("cvv number data: " + JSON.stringify(val));
         this.$store.dispatch("VALIDATE_CVV", val).then(result => {
           var cvv = this.$store.state.payments.cvv;
@@ -367,13 +358,13 @@
         });
       } else {
         console.log("cvv number data else: " + JSON.stringify(val.length));
-        console.log("loading status: " + JSON.stringify(this.loading3))
-        this.loading3 = true
+        console.log("loading status: " + JSON.stringify(this.loading3));
+        this.loading3 = true;
         this.$notify({
-              message: "Enter valid CVC number",
-              color: "warning",
-              initialMargin: 100
-            });
+          message: "Enter valid CVC number",
+          color: "warning",
+          initialMargin: 100
+        });
       }
     }
   },
@@ -394,8 +385,8 @@
         "get provinces computed: " +
           JSON.stringify(
             // this.findProvinces(
-              this.full_details.card_details.region
-              // )
+            this.full_details.card_details.region
+            // )
           )
       );
       return this.findProvinces(this.full_details.card_details.region);
@@ -403,7 +394,10 @@
     getCities() {
       //  this.form.addresses.office.city = null;
       return this.findCities(this.full_details.card_details.province);
-      console.log("get cities computed data: " + JSON.stringify(this.full_details.card_details.city))
+      console.log(
+        "get cities computed data: " +
+          JSON.stringify(this.full_details.card_details.city)
+      );
     }
   },
   methods: {
@@ -554,7 +548,8 @@
           this.full_details.card_details.cities,
           this.full_details.card_details.zip
         ]) &&
-        !this.loading && !this.loading3
+        !this.loading &&
+        !this.loading3
       ) {
         var paymentFee = this.$store.state.payments.fee;
         console.log("payment fee data: " + JSON.stringify(paymentFee));
@@ -575,10 +570,10 @@
             console.log("saved payment " + JSON.stringify(result));
             this.$router.push("/");
             this.$notify({
-          message: "Payment success",
-          color: "primary",
-          initialMargin: 100
-        });
+              message: "Payment success",
+              color: "primary",
+              initialMargin: 100
+            });
           })
           .catch(err => {
             console.log("ERROR: " + err);

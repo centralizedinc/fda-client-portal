@@ -182,7 +182,6 @@
           :items="regions"
           item-text="name"
           item-value="_id"
-          @change="getProvinces"
           hide-no-data
           hide-selected
           label="Region"
@@ -193,8 +192,7 @@
           color="green darken-1"
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.province"
-          :items="provinces"
-          @change="getCities"
+          :items="filtered_provinces"
           item-text="name"
           item-value="_id"
           hide-no-data
@@ -207,7 +205,7 @@
           color="green darken-1"
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.city"
-          :items="cities"
+          :items="filtered_cities"
           item-text="name"
           item-value="_id"
           hide-no-data
@@ -271,33 +269,48 @@ export default {
   },
   methods: {
     init() {
-      this.$store.dispatch("GET_REGION").then(result => {
-        this.regions = this.$store.state.places.regions;
+      // this.$store.dispatch("GET_REGION").then(result => {
+      //   this.regions = this.$store.state.places.regions;
+      // });
+      this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
+        if (locations) {
+          this.regions = locations.regions;
+          this.provinces = locations.provinces;
+          this.cities = locations.provinces;
+        }
       });
+    }
+    // getProvinces() {
+    //   this.$store
+    //     .dispatch("GET_PROVINCE", this.form.auth_officer.mail_add.region)
+    //     .then(result => {
+    //       this.provinces = this.$store.state.places.provinces;
+    //       return this.$store.dispatch("GET_REGION");
+    //     })
+    //     .then(result => {
+    //       // GET region data
+    //       this.regions = this.$store.state.places.regions;
+    //     });
+    // },
+    // getCities() {
+    //   this.$store
+    //     .dispatch("GET_CITY", this.form.auth_officer.mail_add.city)
+    //     .then(result => {
+    //       this.cities = this.$store.state.places.city;
+    //       return this.$store.dispatch("GET_PROVINCE");
+    //     })
+    //     .then(result => {
+    //       // GET CITIES data
+    //       this.provinces = this.$store.state.places.provinces;
+    //     });
+    // }
+  },
+  computed: {
+    filtered_provinces() {
+      return this.findProvinces(this.form.auth_officer.mail_add.region);
     },
-    getProvinces() {
-      this.$store
-        .dispatch("GET_PROVINCE", this.form.auth_officer.mail_add.region)
-        .then(result => {
-          this.provinces = this.$store.state.places.provinces;
-          return this.$store.dispatch("GET_REGION");
-        })
-        .then(result => {
-          // GET region data
-          this.regions = this.$store.state.places.regions;
-        });
-    },
-    getCities() {
-      this.$store
-        .dispatch("GET_CITY", this.form.auth_officer.mail_add.city)
-        .then(result => {
-          this.cities = this.$store.state.places.city;
-          return this.$store.dispatch("GET_PROVINCE");
-        })
-        .then(result => {
-          // GET CITIES data
-          this.provinces = this.$store.state.places.provinces;
-        });
+    filtered_cities() {
+      return this.findCities(this.form.auth_officer.mail_add.province);
     }
   }
 };

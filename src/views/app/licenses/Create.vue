@@ -357,7 +357,8 @@ export default {
               message:
                 "Successfully applied a new License with Case No.: " +
                 result.model.case_details.case_no,
-              color: "primary"
+              color: "success",
+              icon: "check_circle"
             });
             this.$store.commit("SET_FORM", result.model);
             this.confirmDialog = false;
