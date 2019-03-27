@@ -259,22 +259,8 @@
           application: 0,
           case_no: "",
           order_payment: {}
-        }
-      },
-      payment_details: {
-        amount: 0,
-        currency: "Php",
-        description: "",
-        statement_descriptor: "",
-        capture: true
-      },
-      transaction_details: {
-        application_type: "",
-        application: "License",
-        case_no: "",
-        order_payment: {}
-      },
-      rules: {
+        },
+        rules: {
         required: value => !!value || "This is a required field",
         card_validity: value => this.loading || "Invalid Credit Card Number",
         // expiry_validity: value2 => !!this.loading2 || "Invalid Expiration Date",
@@ -287,7 +273,7 @@
       gaps: [],
       cvc_max: 3,
       code_name: "CVC"
-    };
+    }      
   },
   watch: {
     date(val) {

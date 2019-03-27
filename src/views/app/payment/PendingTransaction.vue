@@ -13,16 +13,16 @@
       </v-flex>
       <v-layout row wrap>
         <v-flex xs4 mt-2 ml-3>
-          <span class="body-2">Application Status</span>
+          <span class="body-2">Payment Status</span>
         </v-flex>
         <v-flex xs4 mr-5>
           <!-- <v-chip class="font-weight-bold" label color="fdaYellow" text-color="black">PENDING</v-chip> -->
           <v-chip class="font-weight-bold" label color="fdaYellow" text-color="black">{{case_holder.is_paid ? "PAID" : "UNPAID"}}</v-chip>
         </v-flex>
-        <v-flex xs4 ml-3>
+        <!-- <v-flex xs4 ml-3>
           <span class="body-2">Due Date</span>
         </v-flex>
-        <v-flex xs6 mr-5 ml-2>MM DD, YYYY HH:MM:SS AM/PM</v-flex>
+        <v-flex xs6 mr-5 ml-2>MM DD, YYYY HH:MM:SS AM/PM</v-flex> -->
       </v-layout>
       <v-flex xs12>
         <v-divider></v-divider>
