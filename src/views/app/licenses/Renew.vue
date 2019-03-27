@@ -1,123 +1,120 @@
 <template>
   <v-layout align-start justify-start column fill-height>
-    <payment-summary
-        v-if="paymentDialog"
-        :form="form"
-        :charges="charges">
-    </payment-summary>
+    <payment-summary v-if="paymentDialog" :form="form" :charges="charges"></payment-summary>
     <v-card v-else width="calc(100% - 0px">
-        <v-card-text>
-            <v-layout align-start justify-start row fill-height>
-            <v-flex xs3 mr-5 mt-3 pt-3 pr-5>
-                <v-item-group v-model="window" class="shrink mr-5" mandatory tag="v-flex">
-                <v-item v-for="n in title" :key="n">
-                    <div class="mr-5 pr-5" left slot-scope="{ active, toggle }">
-                    <v-btn class="text-align: left" ripple flat @click="toggle">
-                        <v-icon>mdi-record</v-icon>
-                        {{n}}
-                    </v-btn>
-                    </div>
-                </v-item>
-                </v-item-group>
+      <v-card-text>
+        <v-layout align-start justify-start row fill-height>
+          <v-flex xs3 mr-5 mt-3 pt-3 pr-5>
+            <v-item-group v-model="window" class="shrink mr-5" mandatory tag="v-flex">
+              <v-item v-for="n in title" :key="n">
+                <div class="mr-5 pr-5" left slot-scope="{ active, toggle }">
+                  <v-btn class="text-align: left" ripple flat @click="toggle">
+                    <v-icon>mdi-record</v-icon>
+                    {{n}}
+                  </v-btn>
+                </div>
+              </v-item>
+            </v-item-group>
+          </v-flex>
+          <v-layout align-start justify-start row fill-height>
+            <v-flex xs12 pl-2>
+              <v-window
+                v-model="window"
+                class="elevation-5 mt-3"
+                style="border-radius: 8px"
+                vertical
+              >
+                <v-window-item v-for="n in title" :key="n">
+                  <v-layout align-start justify-start row fill-height>
+                    <v-flex>
+                      <v-card flat>
+                        <v-card-text>
+                          <v-layout align-center justify-center fill-height mb-3>
+                            <v-avatar class="mr-3" color="grey">
+                              <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
+                            </v-avatar>
+
+                            <strong class="title text-transform: uppercase">{{ n }}</strong>
+                            <v-spacer></v-spacer>
+                            <v-btn icon>
+                              <v-icon>mdi-account</v-icon>
+                            </v-btn>
+                          </v-layout>
+                          <v-divider></v-divider>
+
+                          <!-- Summary-->
+                          <v-card flat v-show="window===0">
+                            <v-container grid-list-md text-xs-left>
+                              <app-summary :form="form"></app-summary>
+                            </v-container>
+                          </v-card>
+
+                          <!-- Data -->
+                          <v-card flat v-show="window===1">
+                            <v-container grid-list-md text-xs-left>
+                              <app-data :form="form"></app-data>
+                            </v-container>
+                          </v-card>
+
+                          <!-- Uploaded Documents -->
+                          <v-card flat v-show="window===2">
+                            <v-container grid-list-md text-xs-left>
+                              <documents-upload :form="form" @upload="uploadFile"></documents-upload>
+                            </v-container>
+                          </v-card>
+
+                          <!-- Output Documents -->
+                          <v-card flat v-show="window===3">
+                            <v-container grid-list-md text-xs-left>
+                              <output-docs :form="form"></output-docs>
+                            </v-container>
+                          </v-card>
+
+                          <!-- Application History -->
+                          <v-card flat v-show="window===4">
+                            <v-container grid-list-md text-xs-left>
+                              <app-history :form="form"></app-history>
+                            </v-container>
+                          </v-card>
+                        </v-card-text>
+                      </v-card>
+                    </v-flex>
+                  </v-layout>
+                </v-window-item>
+              </v-window>
             </v-flex>
-            <v-layout align-start justify-start row fill-height>
-                <v-flex xs12 pl-2>
-                <v-window
-                    v-model="window"
-                    class="elevation-5 mt-3"
-                    style="border-radius: 8px"
-                    vertical>
-                    <v-window-item v-for="n in title" :key="n">
-                    <v-layout align-start justify-start row fill-height>
-                        <v-flex>
-                        <v-card flat>
-                            <v-card-text>
-                                <v-layout align-center justify-center fill-height mb-3>
-                                    <v-avatar class="mr-3" color="grey">
-                                    <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
-                                    </v-avatar>
+          </v-layout>
+        </v-layout>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn block color="success" @click="confirmDialog=true">Continue</v-btn>
+      </v-card-actions>
 
-                                    <strong class="title text-transform: uppercase">{{ n }}</strong>
-                                    <v-spacer></v-spacer>
-                                    <v-btn icon>
-                                    <v-icon>mdi-account</v-icon>
-                                    </v-btn>
-                                </v-layout>
-                                <v-divider></v-divider>
-
-                                <!-- Summary-->
-                                <v-card flat v-show="window===0">
-                                    <v-container grid-list-md text-xs-left>
-                                    <app-summary :form="form"></app-summary>
-                                    </v-container>
-                                </v-card>
-
-                                <!-- Data -->
-                                <v-card flat v-show="window===1">
-                                    <v-container grid-list-md text-xs-left>
-                                    <app-data :form="form"></app-data>
-                                    </v-container>
-                                </v-card>
-
-                                <!-- Uploaded Documents -->
-                                <v-card flat v-show="window===2">
-                                    <v-container grid-list-md text-xs-left>
-                                    <documents-upload :form="form" @upload="uploadFile"></documents-upload>
-                                    </v-container>
-                                </v-card>
-
-                                <!-- Output Documents -->
-                                <v-card flat v-show="window===3">
-                                    <v-container grid-list-md text-xs-left>
-                                    <output-docs :form="form"></output-docs>
-                                    </v-container>
-                                </v-card>
-
-                                <!-- Application History -->
-                                <v-card flat v-show="window===4">
-                                    <v-container grid-list-md text-xs-left>
-                                    <app-history :form="form"></app-history>
-                                    </v-container>
-                                </v-card>
-                            </v-card-text>
-                        </v-card>
-                        </v-flex>
-                    </v-layout>
-                    </v-window-item>
-                </v-window>
-                </v-flex>
-            </v-layout>
-            </v-layout>
-        </v-card-text>
-        <v-card-actions>
-            <v-btn block color="success" @click="confirmDialog=true">Continue</v-btn>
-        </v-card-actions>
-
-        <!-- Confirmation -->
-        <v-dialog
-            v-model="confirmDialog"
-            persistent
-            :overlay="false"
-            max-width="500px"
-            transition="dialog-transition">
-            <v-card>
-                <v-toolbar
-                    color="fdaGreen"
-                    style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
-                >
-                    <span class="font-weight-light title">Note</span>
-                </v-toolbar>
-                <v-card-text>
-                    Once you clicked Submit, you won't be able to modify any of the data you have entered.
-                </v-card-text>
-                <v-divider></v-divider>
-                <v-card-actions>
-                    <v-btn flat color="error" @click="confirmDialog=false">Cancel</v-btn>
-                    <v-spacer></v-spacer>
-                    <v-btn flat color="success" @click="apply">Submit</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+      <!-- Confirmation -->
+      <v-dialog
+        v-model="confirmDialog"
+        persistent
+        :overlay="false"
+        max-width="500px"
+        transition="dialog-transition"
+      >
+        <v-card>
+          <v-toolbar
+            dark
+            color="fdaGreen"
+            style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+          >
+            <span class="font-weight-light title">Note</span>
+          </v-toolbar>
+          <v-card-text>Once you clicked Submit, you won't be able to modify any of the data you have entered.</v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-btn flat color="secondary" outline @click="confirmDialog=false">Cancel</v-btn>
+            <v-spacer></v-spacer>
+            <v-btn flat color="success" @click="apply">Submit</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-card>
   </v-layout>
 </template>
@@ -126,9 +123,12 @@
 import appOverviewTabs from "./appoverview/tabs";
 import createTabs from "./create/tabs";
 
-const tabsComponents = Object.assign({
+const tabsComponents = Object.assign(
+  {
     PaymentSummary: () => import("../payment/PaymentSummary.vue")
-}, Object.assign(createTabs, appOverviewTabs));
+  },
+  Object.assign(createTabs, appOverviewTabs)
+);
 
 export default {
   components: tabsComponents,

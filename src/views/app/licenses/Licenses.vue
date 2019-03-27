@@ -2,12 +2,13 @@
   <div>
     <v-layout row wrap>
       <!-- ACTIVE LICENSE -->
-      <active-license menu 
-        @view="viewForm" 
+      <active-license
+        menu
+        @view="viewForm"
         @variate="variateForm"
         @renew="renewForm"
-        @print="confirmPrinting">
-      </active-license>
+        @print="confirmPrinting"
+      ></active-license>
 
       <!-- HISTORY CASES -->
       <v-flex xs12 pa-2>
@@ -59,6 +60,7 @@
       <v-dialog v-model="printDialog" persistent max-width="300px" transition="dialog-transition">
         <v-card>
           <v-toolbar
+            dark
             color="fdaGreen"
             style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
           >
@@ -178,7 +180,9 @@ export default {
         .dispatch("GET_LICENSE_BY_ID", application_id)
         .then(result => {
           if (result.data.success) {
-            console.log("get license data: " + JSON.stringify(result.data.model));
+            console.log(
+              "get license data: " + JSON.stringify(result.data.model)
+            );
             this.$store.commit("SET_VIEW_LICENSE", result.data.model);
             this.$router.push("/app/licenses/view");
           } else console.log("result.data.errors :", result.data.errors);

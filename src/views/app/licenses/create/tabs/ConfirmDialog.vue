@@ -8,14 +8,14 @@
   >
     <v-card>
       <v-toolbar
+        dark
         color="fdaGreen"
         style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
       >
         <span class="font-weight-light title">Note</span>
       </v-toolbar>
       <!-- <v-card-title primary-title class="headline">Note:</v-card-title> -->
-      <v-card-text>
-        Before you proceed on to the next step, kindly review your application and make sure you have entered all values correctly. Once you clicked Submit, you won't be able to modify any of the data you have entered.
+      <v-card-text>Before you proceed on to the next step, kindly review your application and make sure you have entered all values correctly. Once you clicked Submit, you won't be able to modify any of the data you have entered.
         <div></div>
         <v-spacer></v-spacer>
         <v-btn block color="success" @click="$emit('overview')">Review your Application</v-btn>

@@ -48,7 +48,6 @@
                 <label class="subheading">₱ {{numberWithCommas(fees_form.total)}}</label>
               </v-flex>
             <!-- </v-flex> -->
-
             <!-- <v-flex xs5>
               <v-flex xs12>
                 <label class="subheading">Php {{fees_form.fee}}</label>
@@ -67,7 +66,7 @@
               <v-flex xs12>
                 <label class="subheading">{{fees_form.total}}</label>
               </v-flex>
-            </v-flex> -->
+            </v-flex>-->
           </v-layout>
         </v-container>
         <v-divider></v-divider>
@@ -105,9 +104,11 @@
       scrollable
       persistent
       transition="dialog-transition"
-      max-width="500">
+      max-width="500"
+    >
       <v-card>
         <v-toolbar
+          dark
           color="fdaGreen"
           style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
         >
@@ -150,9 +151,11 @@
       scrollable
       persistent
       transition="dialog-transition"
-      max-width="500">
+      max-width="500"
+    >
       <v-card>
         <v-toolbar
+          dark
           color="fdaGreen"
           style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
         >
@@ -234,7 +237,9 @@ export default {
     init() {
       this.app_form = this.form ? this.form : this.$store.state.licenses.form;
       console.log("Welcome to payment summary");
-      this.fees_form = this.charges ? this.charges : this.$store.state.payments.fee
+      this.fees_form = this.charges
+        ? this.charges
+        : this.$store.state.payments.fee;
     },
     cancel() {
       this.showCreditCard = false;
@@ -242,7 +247,10 @@ export default {
     },
     generatePDF() {
       this.cashierPayment = true;
-      OrderOfPaymentGenerator.generateOrderOfPayment(this.app_form, this.fees_form);
+      OrderOfPaymentGenerator.generateOrderOfPayment(
+        this.app_form,
+        this.fees_form
+      );
     },
     creditCard() {
       this.cashierPayment = false;

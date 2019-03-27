@@ -37,7 +37,7 @@
           color="primary"
           style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
         >
-          <span class="subheading font-weight-normal">{{steps_headers[step_curr-1]}}</span>
+          <span class="subheading font-weight-light">{{steps_headers[step_curr-1]}}</span>
         </v-toolbar>
         <v-progress-linear
           color="warning"

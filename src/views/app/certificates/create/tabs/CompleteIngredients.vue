@@ -3,8 +3,9 @@
     <v-flex xs12>
       <v-card>
         <v-toolbar
+          dar
           color="fdaGold"
-          class="subheading"
+          class="subheading font-weight-light"
           style="background: linear-gradient(45deg, #cad0a0 0%, #b5c25a 100%)"
         >Add new ingredient</v-toolbar>
         <v-card-text>

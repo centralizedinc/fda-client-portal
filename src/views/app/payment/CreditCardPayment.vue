@@ -6,7 +6,12 @@
         <v-container grid-list-xl>
           <v-layout row wrap>
             <v-flex xs12>
-              <v-text-field label="*Credit Card Number" mask="####-####-####-####" v-model="full_details.card_details.number" :rules="[rules.required, rules.card_validity]">
+              <v-text-field
+                label="*Credit Card Number"
+                mask="####-####-####-####"
+                v-model="full_details.card_details.number"
+                :rules="[rules.required, rules.card_validity]"
+              >
                 <v-fade-transition slot="append">
                   <v-progress-circular v-if="loading" size="24" color="info" indeterminate></v-progress-circular>
                   <img v-else :src="card_logo" alt>
@@ -28,28 +33,68 @@
                     v-model="full_details.card_details.exp_year"
                     :rules="[rules.required, rules.expiry_validity]"
                   ></v-text-field>
-                </v-flex>-->
+            </v-flex>-->
             <!-- ---------------------------------- -->
             <v-flex xs8>
-              <v-menu ref="menu1" v-model="menu1" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-                <v-text-field slot="activator" v-model="dateFormatted" label="Date" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)" color="primary"></v-text-field>
-                <v-date-picker v-model="date" no-title @input="menu1 = false" type="month" :min="new Date().toISOString().substr(0, 10)"></v-date-picker>
+              <v-menu
+                ref="menu1"
+                v-model="menu1"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                lazy
+                transition="scale-transition"
+                offset-y
+                full-width
+                max-width="290px"
+                min-width="290px"
+              >
+                <v-text-field
+                  slot="activator"
+                  v-model="dateFormatted"
+                  label="Date"
+                  persistent-hint
+                  prepend-icon="event"
+                  @blur="date = parseDate(dateFormatted)"
+                  color="primary"
+                ></v-text-field>
+                <v-date-picker
+                  v-model="date"
+                  no-title
+                  @input="menu1 = false"
+                  type="month"
+                  :min="new Date().toISOString().substr(0, 10)"
+                ></v-date-picker>
               </v-menu>
             </v-flex>
             <v-flex xs4>
               <v-text-field label="*CVC" v-model="full_details.card_details.cvc" mask="###" :rules="[rules.cvc_validity]"></v-text-field>
             </v-flex>
             <v-flex xs12>
-              <v-text-field label="*Card Holder Full Name" v-model="full_details.card_details.name" :rules="[rules.required]"></v-text-field>
+              <v-text-field
+                label="*Card Holder Full Name"
+                v-model="full_details.card_details.name"
+                :rules="[rules.required]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs12>
-              <v-text-field label="*Email Address" v-model="full_details.card_details.email" :rules="[rules.required, rules.email]"></v-text-field>
+              <v-text-field
+                label="*Email Address"
+                v-model="full_details.card_details.email"
+                :rules="[rules.required, rules.email]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs12>
-              <v-text-field label="*Address Line 1" v-model="full_details.card_details.address_line1" :rules="[rules.required]"></v-text-field>
+              <v-text-field
+                label="*Address Line 1"
+                v-model="full_details.card_details.address_line1"
+                :rules="[rules.required]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs12>
-              <v-text-field label="Address Line 2" v-model="full_details.card_details.address_line2"></v-text-field>
+              <v-text-field
+                label="Address Line 2"
+                v-model="full_details.card_details.address_line2"
+              ></v-text-field>
             </v-flex>
             <!-- ----------------------------- -->
             <v-flex xs12 md4 pa-2>
@@ -128,22 +173,27 @@
               label="City / Town"
               :rules="[rules.required]"
             ></v-autocomplete>
-          </v-flex> -->
+            </v-flex>-->
             <!-- ----------------------------- -->
             <!-- <v-flex xs12>
               <v-text-field label="*Region/State" v-model="full_details.card_details.state" :rules="[rules.required]"></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field label="*City" v-model="full_details.card_details.address_city" :rules="[rules.required]"></v-text-field>
-            </v-flex> -->
+            </v-flex>-->
             <v-flex xs12>
-              <v-text-field label="*Zip Code" v-model="full_details.card_details.zip" mask="#####" :rules="[rules.required]"></v-text-field>
+              <v-text-field
+                label="*Zip Code"
+                v-model="full_details.card_details.zip"
+                mask="#####"
+                :rules="[rules.required]"
+              ></v-text-field>
             </v-flex>
           </v-layout>
         </v-container>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn color="error" @click="$emit('cancel')">Cancel</v-btn>
+          <v-btn color="secondary" outline @click="$emit('cancel')">Cancel</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="success" @click="submit">Submit</v-btn>
         </v-card-actions>
@@ -209,7 +259,21 @@
           application: 0,
           case_no: "",
           order_payment: {}
-        },      
+        }
+      },
+      payment_details: {
+        amount: 0,
+        currency: "Php",
+        description: "",
+        statement_descriptor: "",
+        capture: true
+      },
+      transaction_details: {
+        application_type: "",
+        application: "License",
+        case_no: "",
+        order_payment: {}
+      },
       rules: {
         required: value => !!value || "This is a required field",
         card_validity: value => this.loading || "Invalid Credit Card Number",
@@ -223,7 +287,7 @@
       gaps: [],
       cvc_max: 3,
       code_name: "CVC"
-    }
+    };
   },
   watch: {
     date(val) {
@@ -527,10 +591,10 @@
           color: "warning",
           initialMargin: 100
         });
-        }
       }
     }
   }
+};
 </script>
 
 <style>

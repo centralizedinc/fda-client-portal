@@ -2,7 +2,7 @@
   <v-app>
     <!-- <v-container fluid class="bg2"> -->
     <notification></notification>
-    <v-navigation-drawer app :mini-variant="mini || $vuetify.breakpoint.mdAndDown" width="250">
+    <v-navigation-drawer app :mini-variant="mini" width="250" v-model="showNav">
       <v-toolbar
         dark
         style="height: 100px; background: linear-gradient(45deg, #38c73c 0%, #b5c25a 100%)"
@@ -14,7 +14,14 @@
             style=" height: 100px; background:url('https://i.postimg.cc/YCbD5mHP/image.png') repeat center center"
           >
             <v-list-tile-avatar class="mt-4">
-              <img src="http://i.pravatar.cc/300">
+              <v-btn fab icon slot="activator">
+                <v-avatar size="50px" v-if="user.avatar">
+                  <img :src="user.avatar">
+                </v-avatar>
+                <v-avatar class="elevation-10" dark v-else color="fdaSilver">
+                  <h4 class="black--text font-weight-bold">{{userInitials}}</h4>
+                </v-avatar>
+              </v-btn>
             </v-list-tile-avatar>
             <v-spacer></v-spacer>
             <v-list-tile-content class="mt-4">
@@ -170,7 +177,7 @@
       dark
       style="background: linear-gradient(45deg, #104b2a 0%, #b5c25a 100%); box-shadow: 0 6px 20px 0 rgba(77, 182, 172, 0.5)"
     >
-      <v-btn icon color="transparent" @click.stop="mini = !mini">
+      <v-btn icon color="transparent" @click.stop="mini = !mini" v-if="!isMiniView">
         <v-icon color="fdaGold" v-if="mini">menu</v-icon>
         <v-icon color="fdaGold" v-else>chevron_left</v-icon>
       </v-btn>
@@ -184,30 +191,32 @@
         <v-list two-line subheader>
           <v-subheader>Notifications</v-subheader>
           <v-divider></v-divider>
-          <v-list-tile avatar>
-            <v-list-tile-content>
-              <v-list-tile-title class="body-2 font-weight-light">
-                <v-icon color="success" small right>check</v-icon>Account Activation
-              </v-list-tile-title>
-              <v-list-tile-sub-title
-                class="caption font-weight-thin"
-              >02/06/2019 3:26PM - Your account was activated</v-list-tile-sub-title>
-            </v-list-tile-content>
-          </v-list-tile>
+          <template v-for="(item, index) in items">
+            <v-list-tile
+              :key="index"
+              avatar
+              color="black"
+              :style="item.color"
+              @click="viewNotification(item)"
+            ></v-list-tile>
+          </template>
         </v-list>
       </v-menu>
 
       <v-menu offset-y>
-        <v-btn icon slot="activator">
-          <v-avatar size="40">
-            <img src="http://i.pravatar.cc/200" alt="alt">
+        <v-btn fab icon flat slot="activator">
+          <v-avatar size="50px" v-if="user.avatar">
+            <img :src="user.avatar">
+          </v-avatar>
+          <v-avatar dark v-else color="fdaSilver">
+            <h4 class="primary--text font-weight-bold">{{userInitials}}</h4>
           </v-avatar>
         </v-btn>
         <v-list two-line subheader>
           <v-list-tile avatar @click="goTo('/app/profile')" :style="activeRoute('Profile')">
             <v-list-tile-content>
-              <v-list-tile-title class="body-2 font-weight-light">My Profile</v-list-tile-title>
-              <v-list-tile-sub-title class="caption font-weight-thin">Change your account details</v-list-tile-sub-title>
+              <v-list-tile-title class="body-2">My Profile</v-list-tile-title>
+              <v-list-tile-sub-title class="caption">Change your account details</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
@@ -217,23 +226,24 @@
             :style="activeRoute('Change Password')"
           >
             <v-list-tile-content>
-              <v-list-tile-title class="body-2 font-weight-light">Password Settings</v-list-tile-title>
-              <v-list-tile-sub-title
-                class="caption font-weight-thin"
-              >Change Password and Security Settings</v-list-tile-sub-title>
+              <v-list-tile-title class="body-2">Password Settings</v-list-tile-title>
+              <v-list-tile-sub-title class="caption">Change Password and Security Settings</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
           <v-divider></v-divider>
           <v-list-tile avatar @click="showLogout" :style="activeRoute('logout')">
             <v-list-tile-content>
-              <v-list-tile-title class="body-2 font-weight-light">Logout</v-list-tile-title>
-              <v-list-tile-sub-title class="caption font-weight-thin">Sign out of FDA Portal</v-list-tile-sub-title>
+              <v-list-tile-title class="body-2">Logout</v-list-tile-title>
+              <v-list-tile-sub-title class="caption">Sign out of FDA Portal</v-list-tile-sub-title>
             </v-list-tile-content>
           </v-list-tile>
         </v-list>
       </v-menu>
       <v-btn icon>
         <v-icon small>fas fa-indent</v-icon>
+      </v-btn>
+      <v-btn flat icon v-if="isMiniView" @click="showNav=!showNav">
+          <v-icon>menu</v-icon>
       </v-btn>
     </v-toolbar>
     <!-- <v-content> -->
@@ -274,7 +284,7 @@
             color="fdaGreen"
             style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
           >
-            <span class="title font-weight-thin">Logout</span>
+            <span class="title font-weight-light">Logout</span>
           </v-toolbar>
           <v-card-text>
             <span class="font-weight-light">Are you sure you want to logout?</span>
@@ -318,6 +328,7 @@ export default {
   //#########################
   data() {
     return {
+      showNav:true,
       mini: false,
       route_name: "",
       user: {},
@@ -367,6 +378,20 @@ export default {
     },
     app_version() {
       return process.env.VUE_APP_VERSION;
+    },
+    userInitials() {
+      console.log("this.user.name :", this.user);
+      if(this.user.first_name && this.user.last_name){
+          return (        
+            this.user.first_name.substring(0, 1) +
+            this.user.last_name.substring(0, 1)
+          );
+      }else{
+        return "";
+      }      
+    },
+    isMiniView(){
+      return this.$vuetify.breakpoint.smAndDown
     }
   }
 };

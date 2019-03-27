@@ -84,6 +84,7 @@
               <v-text-field box multi-line label="User Remarks" v-model="remarks"></v-text-field>
             </v-flex>
             <v-flex xs12>
+              <span class="error--text">*</span><i class="font-weight-bold">Note: Only PDF files are accepted.</i>
               <uploader @upload="upload"></uploader>
             </v-flex>
           </v-layout>
