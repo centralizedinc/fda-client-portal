@@ -2,7 +2,7 @@
   <v-app>
     <!-- <v-container fluid class="bg2"> -->
     <notification></notification>
-    <v-navigation-drawer app :mini-variant="mini || $vuetify.breakpoint.mdAndDown" width="250">
+    <v-navigation-drawer app :mini-variant="mini" width="250" v-model="showNav">
       <v-toolbar
         dark
         style="height: 100px; background: linear-gradient(45deg, #38c73c 0%, #b5c25a 100%)"
@@ -177,7 +177,7 @@
       dark
       style="background: linear-gradient(45deg, #104b2a 0%, #b5c25a 100%); box-shadow: 0 6px 20px 0 rgba(77, 182, 172, 0.5)"
     >
-      <v-btn icon color="transparent" @click.stop="mini = !mini">
+      <v-btn icon color="transparent" @click.stop="mini = !mini" v-if="!isMiniView">
         <v-icon color="fdaGold" v-if="mini">menu</v-icon>
         <v-icon color="fdaGold" v-else>chevron_left</v-icon>
       </v-btn>
@@ -241,6 +241,9 @@
       </v-menu>
       <v-btn icon>
         <v-icon small>fas fa-indent</v-icon>
+      </v-btn>
+      <v-btn flat icon v-if="isMiniView" @click="showNav=!showNav">
+          <v-icon>menu</v-icon>
       </v-btn>
     </v-toolbar>
     <!-- <v-content> -->
@@ -325,6 +328,7 @@ export default {
   //#########################
   data() {
     return {
+      showNav:true,
       mini: false,
       route_name: "",
       user: {},
@@ -377,10 +381,18 @@ export default {
     },
     userInitials() {
       console.log("this.user.name :", this.user);
-      return (
-        this.user.first_name.substring(0, 1) +
-        this.user.last_name.substring(0, 1)
-      );
+      if(this.user.first_name && this.user.last_name){
+          return (        
+            this.user.first_name.substring(0, 1) +
+            this.user.last_name.substring(0, 1)
+          );
+      }else{
+        return "";
+      }
+      
+    },
+    isMiniView(){
+      return this.$vuetify.breakpoint.smAndDown
     }
   }
 };
