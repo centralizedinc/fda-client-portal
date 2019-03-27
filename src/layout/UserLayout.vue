@@ -388,8 +388,7 @@ export default {
           );
       }else{
         return "";
-      }
-      
+      }      
     },
     isMiniView(){
       return this.$vuetify.breakpoint.smAndDown
