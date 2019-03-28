@@ -29,7 +29,7 @@
         <!-- <v-flex xs4 ml-3>
           <span class="body-2">Due Date</span>
         </v-flex>
-        <v-flex xs6 mr-5 ml-2>MM DD, YYYY HH:MM:SS AM/PM</v-flex> -->
+        <v-flex xs6 mr-5 ml-2>MM DD, YYYY HH:MM:SS AM/PM</v-flex>-->
       </v-layout>
       <v-flex xs12>
         <v-divider></v-divider>
@@ -48,6 +48,9 @@ export default {
     PaymentSummary: () => import("./PaymentSummary.vue")
   },
   props: {
+    close: {
+      type: Boolean
+    },
     form: {
       type: Object
     },
@@ -86,6 +89,7 @@ export default {
       console.log(
         "charges from pending transaction: " + JSON.stringify(this.form)
       );
+      this.paymentDialog = false;
     }
   },
   // watch: {

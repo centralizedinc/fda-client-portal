@@ -17,7 +17,7 @@
               <v-divider></v-divider>
               <v-stepper-step :complete="e1 > 2" step="2">Establishment Information</v-stepper-step>
               <v-divider></v-divider>
-              <v-stepper-step :complete="e1 > 3" step="3">Authorized Personnel</v-stepper-step>
+              <v-stepper-step :complete="e1 > 3" step="3">Qualified Personnel</v-stepper-step>
               <v-divider></v-divider>
               <v-stepper-step step="4">Create Login Credentials</v-stepper-step>
             </v-stepper-header>
@@ -232,7 +232,7 @@ export default {
         "Head, Regulatory Affairs",
         "Head, Production"
       ],
-      existing_form:{},
+      existing_form: {},
       form: {
         license_no: "",
         estab_details: {
@@ -302,9 +302,8 @@ export default {
         console.log(
           "submit existing state: " +
             JSON.stringify(this.$store.state.licenses.existingLicenses)
-
         );
-        this.existing_form = this.$store.state.licenses.existingLicenses
+        this.existing_form = this.$store.state.licenses.existingLicenses;
         console.log("submit existing cb: " + JSON.stringify(result));
         if (result != null) {
           this.$notify({
@@ -312,19 +311,19 @@ export default {
             color: "warning",
             icon: "check_circle"
           });
-          this.$store.dispatch("SAVE_LICENSES", this.form)
-          .then(result => {
-          this.$notify({
-            message: "You have successfully applied a new license",
-            color: "success",
-            icon: "check_circle"
-          })
-          this.$router.push("/login")
-        })
-        .catch(err => {
-          console.log("error in uploading files: " + err);
-        });
-          
+          this.$store
+            .dispatch("SAVE_LICENSES", this.form)
+            .then(result => {
+              this.$notify({
+                message: "You have successfully applied a new license",
+                color: "success",
+                icon: "check_circle"
+              });
+              this.$router.push("/login");
+            })
+            .catch(err => {
+              console.log("error in uploading files: " + err);
+            });
         } else {
           this.$notify({
             message: "License not found",

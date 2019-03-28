@@ -94,6 +94,16 @@
             @click="payLater"
             v-if="allow_paylater"
           >Pay Later</v-btn>
+          <v-dialog v-model="dialogPayLater" max-width="300px" transition="dialog-transition">
+            <v-card class="title">
+              <v-card-text>You have chosen to pay later. Make sure to settle payment on or before the payment deadline to avoid charges.</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" flat @click="dialogPayLater=false">Pay Now</v-btn>
+                <v-btn color="success" @click="$router.push('/')">Ok!</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
           <v-spacer></v-spacer>
         </v-card-actions>
       </v-card>
@@ -262,7 +272,8 @@ export default {
       this.cashierPayment = false;
       this.ecPayDialog = false;
       this.showPayLater = true;
-      // this.$router.push("/app/payments/paylater");
+      this.dialogPayLater = true;
+      // this.$router.push("/");
     },
     ecPay() {
       // this.ecPayDialog = true;

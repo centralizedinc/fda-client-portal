@@ -1,10 +1,61 @@
 <template>
-    <v-layout row wrap>
-        <v-flex xs12 md4 pa-2>
+  <v-layout row wrap>
+    <!-- Temporary -->
+
+    <v-flex xs12 md6 offset-md3 pa-2>
+      <v-card>
+        <v-toolbar
+          dark
+          color="primary"
+          style="background: linear-gradient(45deg, #b5c25a 0%, #104b2a 100%); box-shadow: 0 6px 20px 0 rgba(77, 182, 172, 0.5)"
+        >
+          <span class="title font-weight-thin">User Account</span>
+        </v-toolbar>
+        <v-divider></v-divider>
+        <v-layout align-center justify-center pa-3>
+          <v-hover>
+            <v-avatar
+              slot-scope="{ hover }"
+              class="elevation-5 chooseAvatar"
+              size="150"
+              @click="$refs.image.click()"
+            >
+              <v-img :src="avatar || display_avatar" alt="avatar">
+                <v-expand-transition>
+                  <div
+                    v-if="hover"
+                    class="transition-fast-in-fast-out green darken-4 body-1 v-card--reveal white--text"
+                  >
+                    <!-- <br><br><br> -->
+                    Change
+                    <br>Avatar
+                  </div>
+                </v-expand-transition>
+              </v-img>
+              <input
+                type="file"
+                name="avatar"
+                style="display: none"
+                ref="image"
+                accept="image/*"
+                @change="onFilePicked"
+              >
+            </v-avatar>
+          </v-hover>
+        </v-layout>
+        <v-card-text>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-text-field label="First Name" outline v-model="account.name.first"></v-text-field>
+              <v-text-field label="Last Name" outline v-model="account.name.last"></v-text-field>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+      </v-card>
+    </v-flex>
+
+    <!-- <v-flex xs12 md4 pa-2>
             <v-card>
-                <!-- <v-card-title primary-title>
-                                    Company
-                                </v-card-title> -->
                 <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
                     <span class="title font-weight-light">Company Details</span>
                 </v-toolbar>
@@ -27,15 +78,6 @@
                     <span class="title font-weight-light">User Details</span>
                 </v-toolbar>
                 <v-divider></v-divider>
-                <!-- <v-card-text>
-                            <v-text-field label="Last Name"   v-model="account.name.last"></v-text-field>
-                            <v-text-field label="First Name"   v-model="account.name.first"></v-text-field>
-                            <v-text-field label="Middle Name"   v-model="account.name.middle"></v-text-field>
-                            <v-text-field label="TIN"   v-model="account.tin" mask="###-###-###-###"></v-text-field>
-                            <v-text-field label="Email Address"   v-model="account.email"></v-text-field>
-                            <v-text-field label="Phone Number"></v-text-field>
-                            <v-text-field label="Mobile Number"></v-text-field>
-                        </v-card-text> -->
                 <v-card-text>
                     <v-text-field label="Last Name"></v-text-field>
                     <v-text-field label="First Name"></v-text-field>
@@ -72,8 +114,8 @@
                     <v-text-field label="Password" type="password" :disabled="true" value="12345678"></v-text-field>
                 </v-card-text>
             </v-card>
-        </v-flex>
-        <!-- <v-spacer></v-spacer>
+    </v-flex>-->
+    <!-- <v-spacer></v-spacer>
                         <v-btn style="bottom: 40px"
                         color="blue darken-2"
                         dark
@@ -83,60 +125,111 @@
                         absolute
                       >
                         <v-icon>save</v-icon>
-                      </v-btn> -->
-        <v-layout column class="fab-container">
-            <v-tooltip top>
-                <v-btn slot="activator" large fab color="success" @click="save()">
-                    <v-icon>save</v-icon>
-                </v-btn>
-                Save Changes
-            </v-tooltip>
-        </v-layout>
+    </v-btn>-->
+    <v-layout column class="fab-container">
+      <v-tooltip top>
+        <v-btn slot="activator" large fab color="success" @click="dialog=true">
+          <v-icon>save</v-icon>
+        </v-btn>Save Changes
+      </v-tooltip>
     </v-layout>
+    <v-dialog v-model="dialog" max-width="300px" transition="dialog-transition">
+      <v-card class="title">
+        <v-card-text>Do you want to save any changes ?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="error" flat @click="dialog=false">Cancel</v-btn>
+          <v-btn
+            color="success"
+            @click="save()"
+            :loading="avatar_loading"
+            :disabled="avatar_loading"
+          >Yes</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-layout>
 </template>
 
 <script>
-    export default {
-        props: ["user"],
-        data: () => ({
-            items: "",
-            imageName: "",
-            imageUrl: "",
-            imageFile: "",
-        }),
-        created() {
-            this.imageUrl = this.user.avatar;
-        },
-        methods: {
-            pickFile() {
-                this.$refs.image.click();
-            },
-            onFilePicked(e) {
-                const files = e.target.files;
-                if (files[0] !== undefined) {
-                    this.imageName = files[0].name;
-                    if (this.imageName.lastIndexOf(".") <= 0) {
-                        return;
-                    }
-                    const fr = new FileReader();
-                    fr.readAsDataURL(files[0]);
-                    fr.addEventListener("load", () => {
-                        this.imageUrl = fr.result;
-                        this.imageFile = files[0];
-                        this.$emit("upload", this.imageFile);
-                    });
-                } else {
-                    this.imageName = "";
-                    this.imageFile = "";
-                    this.imageUrl = "";
-                }
-            },
-        }
-    };
+export default {
+  data: () => ({
+    dialog: false,
+    account: {
+      avatar: {
+        location: ""
+      }
+    },
+    formData: {},
+    file_uploader: {},
+    avatar_loading: false,
+    avatar: null
+  }),
+  created() {
+    this.init();
+  },
+  methods: {
+    init() {
+      this.account = this.deepCopy(this.$store.state.user_session.user);
+      if (!this.account.avatar) this.account.avatar = {};
+    },
+    onFilePicked(event) {
+      console.log(event.target.files[0]);
+      this.formData = new FormData();
+      this.formData.append(
+        event.target.name,
+        event.target.files[0],
+        event.target.files[0].name
+      );
+      this.account.avatar.location = URL.createObjectURL(event.target.files[0]);
+      this.avatar = this.account.avatar.location;
+    },
+    save() {
+      this.avatar_loading = true;
+      console.log("PROFILE: " + JSON.stringify(this.account));
+      this.$store
+        .dispatch("UPDATE_ACCOUNT", {
+          account: this.account,
+          avatar: this.formData
+        })
+        .then(result => {
+          console.log("result :", result);
+          this.dialog = false;
+          this.avatar_loading = false;
+          if (result.success) {
+            this.$notify({
+              message: "Your account has been updated!",
+              color: "success",
+              icon: "check_circle"
+            });
+          } else {
+            this.$notifyError(result.errors);
+          }
+          // this.$store.dispatch('LOGOUT')
+          // this.$router.push('/')
+        })
+        .catch(error => {
+          this.dialog = false;
+          this.avatar_loading = false;
+          this.$notifyError(error);
+        });
+    }
+  }
+};
 </script>
 
 <style>
-    .chooseAvatar:hover {
-        cursor: pointer;
-    }
+.chooseAvatar:hover {
+  cursor: pointer;
+}
+
+.v-card--reveal {
+  align-items: center;
+  bottom: 0;
+  justify-content: center;
+  opacity: 0.8;
+  position: absolute;
+  width: 100%;
+  /* height: 100%; */
+}
 </style>

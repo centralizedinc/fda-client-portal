@@ -19,7 +19,8 @@
       @changePage="changePage"
       @submit="confirmDialog=true"
     >
-      <template slot="header-step-1">General Information
+      <template slot="header-step-1">
+        General Information
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -28,7 +29,8 @@
         </v-tooltip>
       </template>
       <step-one slot="content-step-1" :form="form"></step-one>
-      <template slot="header-step-2">Establishment Information
+      <template slot="header-step-2">
+        Establishment Information
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -37,7 +39,8 @@
         </v-tooltip>
       </template>
       <step-two slot="content-step-2" :form="form"></step-two>
-      <template slot="header-step-3">Office Address
+      <template slot="header-step-3">
+        Office Address
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -46,7 +49,8 @@
         </v-tooltip>
       </template>
       <step-three slot="content-step-3" :form="form"></step-three>
-      <template slot="header-step-4">Authorized Officer Details
+      <template slot="header-step-4">
+        Authorized Officer Details
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -55,7 +59,8 @@
         </v-tooltip>
       </template>
       <step-four slot="content-step-4" :form="form"></step-four>
-      <template slot="header-step-5">Qualified Personnel
+      <template slot="header-step-5">
+        Qualified Personnel
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -64,7 +69,8 @@
         </v-tooltip>
       </template>
       <step-five slot="content-step-5" :form="form"></step-five>
-      <template slot="header-step-6">Documents Upload
+      <template slot="header-step-6">
+        Documents Upload
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -78,6 +84,8 @@
       :show="confirmDialog"
       @close="confirmDialog=false"
       @submit="apply"
+      :loading="loading"
+      :disabled="loading"
       @overview="confirmDialog = false ; showAppOverview = true"
     ></confirm-to-review-app>
     <application-overview :show="showAppOverview" @close="close">
@@ -112,6 +120,7 @@ export default {
     PaymentSummary: () => import("../payment/PaymentSummary.vue")
   },
   data: () => ({
+    loading: false,
     e1: 1,
     confirmDialog: false,
     ecpayDialog: false,
@@ -346,6 +355,7 @@ export default {
       this.formData = upload;
     },
     apply() {
+      this.loading = true;
       this.$store
         .dispatch("APPLY_LICENSE", {
           license: this.form,
@@ -353,6 +363,7 @@ export default {
         })
         .then(result => {
           if (result.success) {
+            this.loading = false;
             this.$notify({
               message:
                 "Successfully applied a new License with Case No.: " +
@@ -361,14 +372,17 @@ export default {
               icon: "check_circle"
             });
             this.$store.commit("SET_FORM", result.model);
+            this.loading = false;
             this.confirmDialog = false;
             this.showAppOverview = false;
             this.paymentDialog = true;
           } else {
+            this.loading = false;
             this.$notifyError(result.errors);
           }
         })
         .catch(err => {
+          this.loading = false;
           console.log("ERROR: " + err);
           this.$notifyError(err);
         });

@@ -30,12 +30,12 @@
               </v-layout>
               </td>-->
             </tr>
-            <v-dialog v-model="paymentDialog" max-width="calc(100% - 10px)">
+            <v-dialog v-model="callPendingTrans" max-width="calc(100% - 10px)" persistent>
               <v-card flat>
                 <v-toolbar flat>
                   <v-spacer></v-spacer>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="black" @click="paymentDialog = false">
+                    <v-btn slot="activator" flat icon color="black" @click="close">
                       <v-icon>fas fa-times-circle fa-1x</v-icon>
                     </v-btn>Close
                   </v-tooltip>
@@ -78,7 +78,7 @@ export default {
       pagination: {},
       charges: {},
       case_holder: {},
-      paymentDialog: false,
+      callPendingTrans: false,
       mode: 0, // 0 - new, 1 - variation, 2 - renewal
       headers: [
         {
@@ -178,16 +178,19 @@ export default {
                   this.case_holder = result;
                 });
             }
-            this.paymentDialog = true;
+            this.callPendingTrans = true;
           } else console.log("result.data.errors :", result.data.errors);
         })
         .catch(err => {
           console.log("###loadForm err :", err);
         });
     },
-    pay() {
-      this.$router.push("/app/payments/summary");
+    close() {
+      this.callPendingTrans = false;
     }
+    // pay() {
+    //   this.$router.push("/app/payments/summary");
+    // }
   },
   computed: {
     pages() {
