@@ -1,47 +1,60 @@
 <template>
-    <v-layout row wrap>
+  <v-layout row wrap>
+    <!-- Temporary -->
 
-        <!-- Temporary -->
-        
-        <v-flex xs12 md6 offset-md3 pa-2>
-            <v-card>
-                <v-toolbar dark color="primary">
-                    <span class="title font-weight-thin">User Account</span>
-                </v-toolbar>
-                <v-divider></v-divider>
-                <v-layout align-center justify-center pa-3>
-                    <v-hover>
-                        <v-avatar 
-                            slot-scope="{ hover }" 
-                            class="elevation-5 chooseAvatar" 
-                            size="150" 
-                            @click="$refs.image.click()">
-                            <v-img :src="avatar || display_avatar"
-                                alt="avatar">
-                                <v-expand-transition>
-                                    <div v-if="hover" 
-                                        class="transition-fast-in-fast-out green darken-4 title v-card--reveal white--text">
-                                        <!-- <br><br><br> -->
-                                        Change<br>Avatar
-                                    </div>
-                                </v-expand-transition>
-                            </v-img>
-                            <input type="file" name="avatar" style="display: none" ref="image" accept="image/*" @change="onFilePicked">
-                        </v-avatar>
-                    </v-hover>
-                </v-layout>
-                <v-card-text>
-                    <v-layout row wrap>
-                        <v-flex xs12>        
-                            <v-text-field label="First Name" outline v-model="account.name.first"></v-text-field>
-                            <v-text-field label="Last Name" outline v-model="account.name.last"></v-text-field>
-                        </v-flex>
-                    </v-layout>
-                </v-card-text>
-            </v-card>
-        </v-flex>
+    <v-flex xs12 md6 offset-md3 pa-2>
+      <v-card>
+        <v-toolbar
+          dark
+          color="primary"
+          style="background: linear-gradient(45deg, #b5c25a 0%, #104b2a 100%); box-shadow: 0 6px 20px 0 rgba(77, 182, 172, 0.5)"
+        >
+          <span class="title font-weight-thin">User Account</span>
+        </v-toolbar>
+        <v-divider></v-divider>
+        <v-layout align-center justify-center pa-3>
+          <v-hover>
+            <v-avatar
+              slot-scope="{ hover }"
+              class="elevation-5 chooseAvatar"
+              size="150"
+              @click="$refs.image.click()"
+            >
+              <v-img :src="avatar || display_avatar" alt="avatar">
+                <v-expand-transition>
+                  <div
+                    v-if="hover"
+                    class="transition-fast-in-fast-out green darken-4 body-1 v-card--reveal white--text"
+                  >
+                    <!-- <br><br><br> -->
+                    Change
+                    <br>Avatar
+                  </div>
+                </v-expand-transition>
+              </v-img>
+              <input
+                type="file"
+                name="avatar"
+                style="display: none"
+                ref="image"
+                accept="image/*"
+                @change="onFilePicked"
+              >
+            </v-avatar>
+          </v-hover>
+        </v-layout>
+        <v-card-text>
+          <v-layout row wrap>
+            <v-flex xs12>
+              <v-text-field label="First Name" outline v-model="account.name.first"></v-text-field>
+              <v-text-field label="Last Name" outline v-model="account.name.last"></v-text-field>
+            </v-flex>
+          </v-layout>
+        </v-card-text>
+      </v-card>
+    </v-flex>
 
-        <!-- <v-flex xs12 md4 pa-2>
+    <!-- <v-flex xs12 md4 pa-2>
             <v-card>
                 <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
                     <span class="title font-weight-light">Company Details</span>
@@ -101,8 +114,8 @@
                     <v-text-field label="Password" type="password" :disabled="true" value="12345678"></v-text-field>
                 </v-card-text>
             </v-card>
-        </v-flex> -->
-        <!-- <v-spacer></v-spacer>
+    </v-flex>-->
+    <!-- <v-spacer></v-spacer>
                         <v-btn style="bottom: 40px"
                         color="blue darken-2"
                         dark
@@ -112,31 +125,30 @@
                         absolute
                       >
                         <v-icon>save</v-icon>
-                      </v-btn> -->
-        <v-layout column class="fab-container">
-            <v-tooltip top>
-                <v-btn slot="activator" large fab color="success" @click="dialog=true">
-                    <v-icon>save</v-icon>
-                </v-btn>
-                Save Changes
-            </v-tooltip>
-        </v-layout>
-        <v-dialog
-            v-model="dialog"
-            max-width="300px"
-            transition="dialog-transition">
-            <v-card class="title">
-                <v-card-text>
-                    Do you want to save any changes ?
-                </v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn color="error" flat @click="dialog=false">Cancel</v-btn>
-                    <v-btn color="success" @click="save()" :loading="avatar_loading" :disabled="avatar_loading">Yes</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+    </v-btn>-->
+    <v-layout column class="fab-container">
+      <v-tooltip top>
+        <v-btn slot="activator" large fab color="success" @click="dialog=true">
+          <v-icon>save</v-icon>
+        </v-btn>Save Changes
+      </v-tooltip>
     </v-layout>
+    <v-dialog v-model="dialog" max-width="300px" transition="dialog-transition">
+      <v-card class="title">
+        <v-card-text>Do you want to save any changes ?</v-card-text>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="error" flat @click="dialog=false">Cancel</v-btn>
+          <v-btn
+            color="success"
+            @click="save()"
+            :loading="avatar_loading"
+            :disabled="avatar_loading"
+          >Yes</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-layout>
 </template>
 
 <script>
@@ -187,7 +199,8 @@ export default {
           if (result.success) {
             this.$notify({
               message: "Your account has been updated!",
-              color: "primary"
+              color: "success",
+              icon: "check_circle"
             });
           } else {
             this.$notifyError(result.errors);

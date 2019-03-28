@@ -44,7 +44,7 @@
                           <!-- Summary-->
                           <v-card flat v-show="window===0">
                             <v-container grid-list-md text-xs-left>
-                              <app-summary :form="form"></app-summary>
+                              <app-summary :form="form" :case_holder="case_holder"></app-summary>
                             </v-container>
                           </v-card>
 
@@ -72,7 +72,7 @@
                           <!-- Application History -->
                           <v-card flat v-show="window===4">
                             <v-container grid-list-md text-xs-left>
-                              <app-history :form="form"></app-history>
+                              <app-history :form="form" :case_holder="case_holder"></app-history>
                             </v-container>
                           </v-card>
 

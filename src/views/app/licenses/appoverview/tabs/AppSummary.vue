@@ -12,7 +12,7 @@
     <v-flex xs12 md4 class="subheading">Primary Activity</v-flex>
     <v-flex xs12 md8>{{getPrimary(form.general_info.primary_activity)}}</v-flex>
     <v-flex xs12 md4 class="subheading">Current Task</v-flex>
-    <v-flex xs12 md8>{{getTask(form.current_task).name}}</v-flex>
+    <v-flex xs12 md8>{{getTask(case_holder.current_task).name}}</v-flex>
     <!-- <v-flex xs12 md4 class="subheading">Current User</v-flex>
     <v-flex xs12 md8>{{getAdminName(form.user)}}</v-flex> -->
     <!-- <v-flex xs12 md4 class="subheading">Required Action</v-flex>
@@ -20,13 +20,13 @@
     <v-flex xs12 md4 class="subheading">Created by</v-flex>
     <v-flex xs12 md8>{{getUsername(form.created_by)}}</v-flex>
     <v-flex xs12 md4 class="subheading">Created Date</v-flex>
-    <v-flex xs12 md8>{{formatDate(form.date_created)}}</v-flex>
+    <v-flex xs12 md8>{{formatDate(case_holder.date_created)}}</v-flex>
   </v-layout>
 </template>
 
 <script>
 export default {
-  props: ["form"]
+  props: ["form", "case_holder"]
 };
 </script>
 

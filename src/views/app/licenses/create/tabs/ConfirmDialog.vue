@@ -15,7 +15,8 @@
         <span class="font-weight-light title">Note</span>
       </v-toolbar>
       <!-- <v-card-title primary-title class="headline">Note:</v-card-title> -->
-      <v-card-text>Before you proceed on to the next step, kindly review your application and make sure you have entered all values correctly. Once you clicked Submit, you won't be able to modify any of the data you have entered.
+      <v-card-text>
+        Before you proceed on to the next step, kindly review your application and make sure you have entered all values correctly. Once you clicked Submit, you won't be able to modify any of the data you have entered.
         <div></div>
         <v-spacer></v-spacer>
         <v-btn block color="success" @click="$emit('overview')">Review your Application</v-btn>
@@ -25,7 +26,13 @@
       <v-card-actions>
         <v-btn flat color="error" @click="$emit('close')">Close</v-btn>
         <v-spacer></v-spacer>
-        <v-btn flat color="success" :disabled="loading" :loading="loading" @click="$emit('submit')">Submit</v-btn>
+        <v-btn
+          flat
+          color="success"
+          :loading="loading"
+          :disabled="loading"
+          @click="$emit('submit')"
+        >Submit</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -45,10 +52,20 @@ export default {
       default: false
     },
     loading: {
+<<<<<<< HEAD
       type: Boolean,
       default: false
+=======
+      type: Boolean
+    },
+    disabled: {
+      type: Boolean
+>>>>>>> 4642298aabf95e5965559be23b9b3f4fb53d12a6
     }
   }
+  // data: () => ({
+  //   loading: false
+  // })
 };
 </script>
 

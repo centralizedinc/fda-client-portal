@@ -17,7 +17,7 @@
               <v-divider></v-divider>
               <v-stepper-step :complete="e1 > 2" step="2">Establishment Information</v-stepper-step>
               <v-divider></v-divider>
-              <v-stepper-step :complete="e1 > 3" step="3">Authorized Personnel</v-stepper-step>
+              <v-stepper-step :complete="e1 > 3" step="3">Qualified Personnel</v-stepper-step>
               <v-divider></v-divider>
               <v-stepper-step step="4">Create Login Credentials</v-stepper-step>
             </v-stepper-header>

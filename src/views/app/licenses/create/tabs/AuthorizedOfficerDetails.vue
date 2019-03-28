@@ -312,6 +312,16 @@ export default {
     filtered_cities() {
       return this.findCities(this.form.auth_officer.mail_add.province);
     }
+  },
+  computed: {
+    filtered_provinces() {
+      // this.form.addresses.office.province = null;
+      return this.findProvinces(this.form.auth_officer.mail_add.region);
+    },
+    filtered_cities() {
+      //  this.form.addresses.office.city = null;
+      return this.findCities(this.form.auth_officer.mail_add.province);
+    }
   }
 };
 </script>

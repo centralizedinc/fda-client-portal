@@ -80,7 +80,7 @@
             <span class="font-weight-thin headline">Forgot Password</span>
             <v-spacer></v-spacer>
             <v-btn flat icon @click.native="dialog=false">
-              <v-icon>close</v-icon>
+              <v-icon>fas fa-times-circle fa-1x</v-icon>
             </v-btn>
           </v-toolbar>
           <v-card-text>
