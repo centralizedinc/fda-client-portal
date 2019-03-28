@@ -2,6 +2,7 @@
 // var jwt = require('jsonwebtoken')
 import LicenseAPI from '../../api/LicenseApi';
 import CaseAPI from '../../api/CaseAPI';
+import RegistrationAPI from "../../api/RegistrationAPI";
 
 const state = {
     licenses: [],
@@ -80,16 +81,7 @@ var actions = {
         })
     },
     SAVE_LICENSES(context, license) {
-        return new Promise((resolve, reject) => {
-            new LicenseAPI(context.rootState.user_session.token).saveLicenses(license, (licenses, err) => {
-                if (!err) {
-                    resolve(licenses)
-                } else {
-                    console.log("actions save licenses error: " + JSON.stringify(err))
-                    reject()
-                }
-            })
-        })
+        return new LicenseAPI(context.rootState.user_session.token).saveLicenses(license)
     },
     SAVE_MODIFY_LICENSES(context, license) {
         return new Promise((resolve, reject) => {
@@ -100,19 +92,6 @@ var actions = {
                 } else {
                     console.log("actions save modify licenses error: " + JSON.stringify(err))
                     reject()
-                }
-            })
-        })
-    },
-    UPLOAD_LICENSES(context, uploadData) {
-        return new Promise((resolve, reject) => {
-            new LicenseAPI(context.rootState.user_session.token).uploadLicenses(uploadData, (uploadedData, err) => {
-                if (!err) {
-                    context.commit('UPLOADED_DATA', uploadedData)
-                    resolve(uploadedData)
-                } else {
-                    console.log(JSON.stringify(err))
-                    reject(err)
                 }
             })
         })
@@ -203,6 +182,9 @@ var actions = {
                 });
             })
         }
+    },
+    SAVE_NEW_LICENSE(context, data) {
+        return new LicenseAPI(context.rootState.user_session.token).applyLicenseWithAccount(data);
     }
 }
 

@@ -10,20 +10,17 @@ export default class RegistrationAPI {
    * @param {UserModel} user 
    * @param {Function} cb 
    */
-  static register(user, cb) {
-    axios
-      .post("public/accounts/register", user)
-      .then(result => {
-        console.log("REGISTRATION RESULT: " + JSON.stringify(result.data))
-        if (result.data.success) {
-          cb(result.data.model);
-        } else {
-          cb(null, result.data.errors);
-        }
-      })
-      .catch(err => {
-        cb(null, err);
-      });
+  static register(new_license) {
+    return axios.post("public/accounts/register", new_license)
+  };
+
+  /**
+   * 
+   * @param {Object} data
+   * @param {Function} cb 
+   */
+  saveLicenses(data) {
+    return axios.post("public/accounts/register", data)
   };
 
   /**

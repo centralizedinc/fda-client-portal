@@ -82,6 +82,7 @@
     </form-layout>
     <confirm-to-review-app
       :show="confirmDialog"
+      :loading="loading"
       @close="confirmDialog=false"
       @submit="submit"
       @overview="dialog = false ; showAppOverview = true"
@@ -94,14 +95,14 @@
       <app-history slot="apphistory" :form="form"></app-history>
       <payment slot="paymentdetails" :form="form" :charges="charges"></payment>
     </application-overview>
-    <v-btn
+    <!-- <v-btn
       dark
       @click="navDialog = true"
       block
       style="text-transform: uppercase"
       class="text--primary"
       color="warning"
-    >Apply later</v-btn>
+    >Apply later</v-btn> -->
 
     <!-- confirm navigation -->
     <v-dialog v-model="navDialog" max-width="500px" transition="dialog-transition">
@@ -242,10 +243,14 @@ export default {
     account: {
       username: "",
       password: "",
-      name: {}
+      name: {
+        first: "",
+        last: ""
+      }
     },
     formData: {},
-    charges: {}
+    charges: {},
+    loading: false
   }),
   created() {
     this.init();
@@ -302,40 +307,66 @@ export default {
       this.formData = upload;
     },
     submit() {
-      console.log("##### form: " + JSON.stringify(this.form));
-      console.log("##### account: " + JSON.stringify(this.account));
-      var files = this.form.uploaded_files;
-      const formData = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        if (files[i].file) {
-          formData.append("lto", files[i].file, files[i].file["name"]);
-        }
-      }
+      this.loading = false;
       this.$store
-        .dispatch("UPLOAD_LICENSES", formData)
-        .then(files => {
-          this.form.uploaded_files = files;
-          return this.$store.dispatch("REGISTER", {
-            license: this.form,
-            account: this.account
-          });
+        .dispatch("SAVE_NEW_LICENSE", {
+          upload: this.formData,
+          license: this.form,
+          account: this.account
         })
         .then(result => {
-          console.log(
-            "RESULT CREATE NEW ##################: " + JSON.stringify(result)
-          );
-          this.$notify({
-            message: "You have successfully applied a new license",
-            color: "success",
-            icon: "check_circle"
-          });
-          this.confirmDialog = false;
-          this.showAppOverview = false;
-          this.paymentDialog = true;
+          console.log("result :", result);
+          this.loading = false;
+          if (result.success) {
+            this.$notify({
+              message: "You have successfully applied a new license",
+              color: "success",
+              icon: "check_circle"
+            });
+            this.confirmDialog = false;
+            this.showAppOverview = false;
+            this.paymentDialog = true;
+          } else {
+            this.$notifyError(result.errors);
+          }
         })
         .catch(err => {
-          console.log("error in uploading files: " + err);
+          this.loading = false;
+          this.$notifyError(err);
         });
+
+      // var files = this.form.uploaded_files;
+      // const formData = new FormData();
+      // for (let i = 0; i < files.length; i++) {
+      //   if (files[i].file) {
+      //     formData.append("lto", files[i].file, files[i].file["name"]);
+      //   }
+      // }
+      // this.$store
+      //   .dispatch("UPLOAD_LICENSES", formData)
+      //   .then(files => {
+      //     this.form.uploaded_files = files;
+      //     return this.$store.dispatch("REGISTER", {
+      //       license: this.form,
+      //       account: this.account
+      //     });
+      //   })
+      //   .then(result => {
+      //     console.log(
+      //       "RESULT CREATE NEW ##################: " + JSON.stringify(result)
+      //     );
+      //     this.$notify({
+      //       message: "You have successfully applied a new license",
+      //       color: "success",
+      //       icon: "check_circle"
+      //     });
+      //     this.confirmDialog = false;
+      //     this.showAppOverview = false;
+      //     this.paymentDialog = true;
+      //   })
+      //   .catch(err => {
+      //     console.log("error in uploading files: " + err);
+      //   });
     }
   }
 };

@@ -232,7 +232,7 @@ export default {
         "Head, Regulatory Affairs",
         "Head, Production"
       ],
-      existing_form:{},
+      existing_form: {},
       form: {
         license_no: "",
         estab_details: {
@@ -302,9 +302,8 @@ export default {
         console.log(
           "submit existing state: " +
             JSON.stringify(this.$store.state.licenses.existingLicenses)
-
         );
-        this.existing_form = this.$store.state.licenses.existingLicenses
+        this.existing_form = this.$store.state.licenses.existingLicenses;
         console.log("submit existing cb: " + JSON.stringify(result));
         if (result != null) {
           this.$notify({
@@ -312,19 +311,24 @@ export default {
             color: "warning",
             icon: "check_circle"
           });
-          this.$store.dispatch("SAVE_LICENSES", this.form)
-          .then(result => {
-          this.$notify({
-            message: "You have successfully applied a new license",
-            color: "success",
-            icon: "check_circle"
-          })
-          this.$router.push("/login")
-        })
-        .catch(err => {
-          console.log("error in uploading files: " + err);
-        });
-          
+          this.$store
+            .dispatch("SAVE_LICENSES", this.form)
+            .then(result => {
+              if (result.data.success) {
+                this.$notify({
+                  message: "You have successfully applied a new license",
+                  color: "success",
+                  icon: "check_circle"
+                });
+                this.$router.push("/login");
+              } else {
+                this.$notifyError(result.data.errors);
+              }
+            })
+            .catch(err => {
+              console.log("SAVE_LICENSES err: " + err);
+              this.$notifyError(err);
+            });
         } else {
           this.$notify({
             message: "License not found",

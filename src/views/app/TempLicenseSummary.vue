@@ -320,7 +320,7 @@ export default {
       this.$store
         .dispatch("GET_UNAPPROVED_LICENSES")
         .then(result => {
-          console.log("JSON.stringify(result) :", JSON.stringify(result));
+          console.log("##JSON.stringify(result) :", JSON.stringify(result));
           this.form = result.license;
         })
         .catch(err => {
