@@ -182,7 +182,6 @@
           :items="regions"
           item-text="name"
           item-value="_id"
-          @change="getProvinces"
           hide-no-data
           hide-selected
           label="Region"
@@ -193,8 +192,7 @@
           color="green darken-1"
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.province"
-          :items="provinces"
-          @change="getCities"
+          :items="filtered_provinces"
           item-text="name"
           item-value="_id"
           hide-no-data
@@ -207,7 +205,7 @@
           color="green darken-1"
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.city"
-          :items="cities"
+          :items="filtered_cities"
           item-text="name"
           item-value="_id"
           hide-no-data
@@ -298,6 +296,16 @@ export default {
           // GET CITIES data
           this.provinces = this.$store.state.places.provinces;
         });
+    }
+  },
+  computed: {
+    filtered_provinces() {
+      // this.form.addresses.office.province = null;
+      return this.findProvinces(this.form.auth_officer.mail_add.region);
+    },
+    filtered_cities() {
+      //  this.form.addresses.office.city = null;
+      return this.findCities(this.form.auth_officer.mail_add.province);
     }
   }
 };

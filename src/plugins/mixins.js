@@ -12,7 +12,7 @@ export default {
           return app_status_color[status]
         },
         getAppType(type) {
-          var app_type = ["Initial", "Variation", "Renewal"];
+          var app_type = ["Initial", "Variation", "Renewal"]
           return app_type[type];
         },
         getActStatus(status){
@@ -22,6 +22,18 @@ export default {
         getCaseType(type){
           var case_type = ["License", "Certificate", "Registerd User"]
           return case_type[type]
+        },
+        numberMask(number){
+          var length = number.length
+          var final = null
+          if(length === 12){
+            final = number.replace(/(\d{3})(\d{3})(\d{3})(\d{3})/, "$1 - $2 - $3 - $4")
+          }else if(length === 11){
+            final = number.replace(/(\d{4})(\d{3})(\d{4})/, "($1) - $2 - $3")
+          }else if(length === 10){
+            final = number.replace(/(\d{2})(\d{4})(\d{4})/, "($1) - $2 - $3")
+          }          
+          return final
         },
         getTask(task_id) {
           if (this.$store.state.tasks.tasks) {
@@ -154,27 +166,45 @@ export default {
           return validate;
         },
         getRegionName(id) {
+          var found = false;
           for (var i = 0; i < this.$store.state.places.regions.length; i++) {
             var region = this.$store.state.places.regions[i]
             if (region._id === id) {
               return region.name
-            }
+            }else{
+              found = true
+            } 
+          }
+          if(found){
+            return "";
           }
         },
         getProvinceName(id) {
+          var found = false;
           for (var i = 0; i < this.$store.state.places.provinces.length; i++) {
             var province = this.$store.state.places.provinces[i]
             if (province._id === id) {
               return province.name
-            }
+            }else{
+              found = true
+            } 
+          }
+          if(found){
+            return "";
           }
         },
         getCityName(id) {
+          var found = false;
           for (var i = 0; i < this.$store.state.places.city.length; i++) {
             var city = this.$store.state.places.city[i]
             if (city._id === id) {
               return city.name
-            }
+            }else{
+              found = true
+            } 
+          }
+          if(found){
+            return "";
           }
         },
         findProvinces(region) {
