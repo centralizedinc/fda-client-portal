@@ -52,15 +52,11 @@ export default {
       default: false
     },
     loading: {
-<<<<<<< HEAD
       type: Boolean,
       default: false
-=======
-      type: Boolean
     },
     disabled: {
       type: Boolean
->>>>>>> 4642298aabf95e5965559be23b9b3f4fb53d12a6
     }
   }
   // data: () => ({
