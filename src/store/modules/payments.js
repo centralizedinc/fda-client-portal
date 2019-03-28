@@ -57,17 +57,7 @@ var actions = {
         })
     },
     VALIDATE_EXPIRATION_DATE(context, expirationDate) {
-        return new Promise((resolve, reject) => {
-            new PaymentAPI(context.rootState.user_session.token).expirationDate(expirationDate, (credit, err) => {
-                if (!err) {
-                    context.commit('EXPIRY', credit)
-                    resolve()
-                } else {
-                    console.log(JSON.stringify(err))
-                    reject()
-                }
-            })
-        })
+        return new PaymentAPI(context.rootState.user_session.token).expirationDate(expirationDate);
     },
     GET_FEES(context, fees) {
         return new Promise((resolve, reject) => {
@@ -86,34 +76,19 @@ var actions = {
     },
     SAVE_PAYMENT(context, fullDetails) {
         return new Promise((resolve, reject) => {
-        console.log("save payment store actions" + JSON.stringify(fullDetails))
+            console.log("save payment store actions" + JSON.stringify(fullDetails))
 
-        new PaymentAPI(context.rootState.user_session.token).savePayment(fullDetails, (details, err) => {
-            if (!err) {
-                console.log('actions save licenses: ' + JSON.stringify(details))
-                resolve(details)
-            } else {
-                console.log("actions save licenses error: " + JSON.stringify(err))
-                reject(err)
-            }
+            new PaymentAPI(context.rootState.user_session.token).savePayment(fullDetails, (details, err) => {
+                if (!err) {
+                    console.log('actions save licenses: ' + JSON.stringify(details))
+                    resolve(details)
+                } else {
+                    console.log("actions save licenses error: " + JSON.stringify(err))
+                    reject(err)
+                }
+            })
         })
-    })
-    },
-    BILLS_PAYMENT(context, fullDetails) {
-        console.log("bill payment store actions" + JSON.stringify(fullDetails))
-        return new Promise((resolve, reject) => {
-        new PaymentAPI(context.rootState.user_session.token).feesDetails(fullDetails, (details, err) => {
-            if (!err) {
-                console.log('actions save licenses: ' + JSON.stringify(details))
-                resolve(details)
-            } else {
-                console.log("actions save licenses error: " + JSON.stringify(err))
-                reject(err)
-            }
-        })
-    })
     }
-
 }
 
 export default {

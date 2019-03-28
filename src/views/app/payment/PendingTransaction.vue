@@ -71,7 +71,6 @@ export default {
       expiration: null,
       // charges: null,
       cases: [],
-      case_holder: null,
       date: null
     };
   },

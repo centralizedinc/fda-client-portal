@@ -37,7 +37,7 @@
             <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help
         </v-tooltip>
-      </template>
+      </template> 
       <step-two slot="content-step-2" :form="form"></step-two>
       <template slot="header-step-3">
         Office Address
@@ -324,7 +324,8 @@ export default {
         .dispatch("UPLOAD_LICENSES", formData)
         .then(files => {
           this.form.uploaded_files = files;
-          return this.$store.dispatch("SAVE_LICENSES", this.form);
+          console.log("save license to be saved data: " + JSON.stringify(this.form))
+          // return this.$store.dispatch("SAVE_LICENSES", this.form);
         })
         .then(result => {
           this.$notify({
@@ -335,16 +336,6 @@ export default {
           this.confirmDialog = false;
           this.showAppOverview = false;
           this.paymentDialog = true;
-
-          // var details = {
-          //   apptype: this.form.application_type,
-          //   productType: this.form.general_info.product_type,
-          //   primaryActivity: this.form.general_info.primary_activity,
-          //   declaredCapital: this.form.general_info.declared_capital,
-          //   date_expiry: this.form.date_expiry
-
-          // }
-          // return this.$store.dispatch("BILLS_PAYMENT", )
         })
         .catch(err => {
           console.log("error in uploading files: " + err);
