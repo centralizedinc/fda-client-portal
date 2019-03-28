@@ -91,14 +91,14 @@ export default {
             return ''
           }
         },
-        getProductLine(productLine_id){
-          if(this.$store.state.products.prod_line){
+        getProductLine(productLine_id) {
+          if (this.$store.state.products.prod_line) {
             var product_line = null;
             product_line = this.$store.state.products.prod_line.find(x => {
               return x._id === productLine_id
             })
             return product_line ? product_line.name : ''
-          }else{
+          } else {
             return ''
           }
         },
@@ -129,8 +129,8 @@ export default {
           }
         },
         numberWithCommas(x) {
-          return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      },
+          return x ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00';
+        },
         formatDate: (date, type) => {
           if (!date) {
             return "";
@@ -174,7 +174,8 @@ export default {
           var validate = false;
           var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
           validate = this.isEmpty(email) || !re.test(email);
-          return validate;
+          console.log('test: ', email, !validate);
+          return !validate;
         },
         getRegionName(id) {
           for (var i = 0; i < this.$store.state.places.regions.length; i++) {

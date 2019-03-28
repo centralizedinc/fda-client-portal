@@ -326,16 +326,6 @@ export default {
           this.confirmDialog = false;
           this.showAppOverview = false;
           this.paymentDialog = true;
-
-          // var details = {
-          //   apptype: this.form.application_type,
-          //   productType: this.form.general_info.product_type,
-          //   primaryActivity: this.form.general_info.primary_activity,
-          //   declaredCapital: this.form.general_info.declared_capital,
-          //   date_expiry: this.form.date_expiry
-
-          // }
-          // return this.$store.dispatch("BILLS_PAYMENT", )
         })
         .catch(err => {
           console.log("error in uploading files: " + err);
