@@ -40,7 +40,7 @@
       :key="index"
     >
       <v-layout row wrap>
-        <v-flex xs12 md8 class="subheading">{{item.prod_line}}</v-flex>
+        <v-flex xs12 md8 class="subheading">{{getProductLine(item.prod_line)}}</v-flex>
         <v-flex xs12 md4>{{item.remarks}}</v-flex>
       </v-layout>
     </v-container>

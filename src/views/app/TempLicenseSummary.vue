@@ -79,7 +79,20 @@
                           <!-- Payment Details -->
                           <v-card flat v-show="window===5">
                             <!-- Display if PENDING or PAID TRANSACTION -->
-                            <pending-trans :form="form" :allow_paylater="false"></pending-trans>
+                            <paid-trans
+                              v-if="case_holder.is_paid"  
+                              :form="form"
+                              :charges="charges"
+                              :case_holder="case_holder"
+                              :allow_paylater="false">
+                            </paid-trans>
+                            <pending-trans      
+                              v-else                     
+                              :form="form"
+                              :charges="charges"
+                              :case_holder="case_holder"
+                              :allow_paylater="false">
+                            </pending-trans>
                           </v-card>
 
                           <!-- COmpliance -->
@@ -141,99 +154,102 @@ const tabscomponents = Object.assign(
 export default {
   components: tabscomponents,
   data: () => ({
-    form: {
-      current_task: "",
-      user: "",
-      action: "",
-      created_by: "",
-      date_created: "",
-      application_type: "",
-      general_info: {
-        product_type: "",
-        primary_activity: "",
-        declared_capital: ""
-      },
-      estab_details: {
-        establishment_name: "",
-        establishment_owner: "",
-        tin: "",
-        email: "",
-        landline: "",
-        fax: "",
-        mobile: "",
-        products: [
-          {
-            prod_line: "",
-            remarks: ""
-          }
-        ]
-      },
-      addresses: {
-        office: {
-          address: "",
-          region: "",
-          province: "",
-          city: "",
-          zipcode: "",
-          location: ""
-        },
-        warehouse: [],
-        plant: {
-          address: "",
-          region: "",
-          province: "",
-          city: "",
-          zipcode: ""
-        }
-      },
-      auth_officer: {
-        mail_add: {
-          address: "",
-          region: "",
-          province: "",
-          city: "",
-          zipcode: ""
-        },
-        lastname: "",
-        firstname: "",
-        middlename: "",
-        designation: "",
-        email: "",
-        tin: "",
-        birthday: "",
-        id_type: "",
-        id_no: "",
-        id_expiry: ""
-      },
-      qualified: [],
-      uploaded_files: [
-        {
-          purpose: "Proof of Business Name Registration",
-          file_name: "",
-          file: null
-        },
-        {
-          purpose: "Site Master File",
-          file_name: "",
-          file: null
-        },
-        {
-          purpose: "Risk Management Plan",
-          file_name: "",
-          file: null
-        },
-        {
-          purpose: "Licensing Seminar Certificate",
-          file_name: "",
-          file: null
-        },
-        {
-          purpose: "PRC ID",
-          file_name: "",
-          file: null
-        }
-      ]
-    },
+    form: {},
+    charges: {},
+    case_holder: {},
+    // form: {
+    //   current_task: "",
+    //   user: "",
+    //   action: "",
+    //   created_by: "",
+    //   date_created: "",
+    //   application_type: "",
+    //   general_info: {
+    //     product_type: "",
+    //     primary_activity: "",
+    //     declared_capital: ""
+    //   },
+    //   estab_details: {
+    //     establishment_name: "",
+    //     establishment_owner: "",
+    //     tin: "",
+    //     email: "",
+    //     landline: "",
+    //     fax: "",
+    //     mobile: "",
+    //     products: [
+    //       {
+    //         prod_line: "",
+    //         remarks: ""
+    //       }
+    //     ]
+    //   },
+    //   addresses: {
+    //     office: {
+    //       address: "",
+    //       region: "",
+    //       province: "",
+    //       city: "",
+    //       zipcode: "",
+    //       location: ""
+    //     },
+    //     warehouse: [],
+    //     plant: {
+    //       address: "",
+    //       region: "",
+    //       province: "",
+    //       city: "",
+    //       zipcode: ""
+    //     }
+    //   },
+    //   auth_officer: {
+    //     mail_add: {
+    //       address: "",
+    //       region: "",
+    //       province: "",
+    //       city: "",
+    //       zipcode: ""
+    //     },
+    //     lastname: "",
+    //     firstname: "",
+    //     middlename: "",
+    //     designation: "",
+    //     email: "",
+    //     tin: "",
+    //     birthday: "",
+    //     id_type: "",
+    //     id_no: "",
+    //     id_expiry: ""
+    //   },
+    //   qualified: [],
+    //   uploaded_files: [
+    //     {
+    //       purpose: "Proof of Business Name Registration",
+    //       file_name: "",
+    //       file: null
+    //     },
+    //     {
+    //       purpose: "Site Master File",
+    //       file_name: "",
+    //       file: null
+    //     },
+    //     {
+    //       purpose: "Risk Management Plan",
+    //       file_name: "",
+    //       file: null
+    //     },
+    //     {
+    //       purpose: "Licensing Seminar Certificate",
+    //       file_name: "",
+    //       file: null
+    //     },
+    //     {
+    //       purpose: "PRC ID",
+    //       file_name: "",
+    //       file: null
+    //     }
+    //   ]
+    // },
     window: 0,
     headers: [
       {
@@ -324,12 +340,37 @@ export default {
         })
         .then(result => {
           console.log("result GET_TASKS :", JSON.stringify(result));
+          if (
+      this.form.general_info.product_type !== null &&
+      this.form.general_info.primary_activity !== null &&
+      // this.form.general_info.declared_capital !== null &&
+      this.form.application_type !== null
+    ) {
+      var details = {
+        productType: this.form.general_info.product_type,
+        primaryActivity: this.form.general_info.primary_activity,
+        declaredCapital: this.form.general_info.declared_capital,
+        appType: this.form.application_type
+      };
+      console.log("load fees view: " + JSON.stringify(details));
+      this.$store
+        .dispatch("GET_FEES", details)
+        .then(result => {
+          this.charges = result;
+          console.log(
+            "charges data payment details: " + JSON.stringify(this.charges)
+          );
+          return this.$store.dispatch("GET_ONE_CASE", this.form.case_no);
+        })
+        .then(result => {
+          console.log("get onse case @ view: " + JSON.stringify(result));
+          this.case_holder = result;
+        });
+    }
         })
         .catch(err => {
           console.log("err :", err);
         });
-
-
     }
   }
 };

@@ -49,7 +49,14 @@
           <v-divider></v-divider>
           <v-card-actions>
             <!-- <v-spacer></v-spacer> -->
-            <v-btn block color="success" class="font-weight-light" @click="dialog=true">Submit</v-btn>
+            <v-btn
+              block
+              color="success"
+              class="font-weight-light"
+              :loading="loading"
+              :disabled="loading"
+              @click="dialog=true"
+            >Submit</v-btn>
             <!-- <v-spacer></v-spacer> -->
           </v-card-actions>
         </v-card>

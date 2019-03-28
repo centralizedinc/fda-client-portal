@@ -191,15 +191,8 @@
         <v-list two-line subheader>
           <v-subheader>Notifications</v-subheader>
           <v-divider></v-divider>
-          <template v-for="(item, index) in items">
-            <v-list-tile
-              :key="index"
-              avatar
-              color="black"
-              :style="item.color"
-              @click="viewNotification(item)"
-            ></v-list-tile>
-          </template>
+          <!-- Avatar Toolbar -->
+          <v-list-tile avatar color="black"></v-list-tile>
         </v-list>
       </v-menu>
 

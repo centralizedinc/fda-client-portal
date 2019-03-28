@@ -34,7 +34,7 @@
                   :class="`${getAppStatusColor(props.item.status)}--text`"
                 >{{ getAppStatus(props.item.status) }}</td>
                 <td>{{ getTask(props.item.current_task).name }}</td>
-                <td>{{ props.item.current_assigned_user }}</td>
+                <!-- <td>{{ getUsername(props.item.current_assigned_user) }}</td> -->
                 <td>{{ formatDate (props.item.date_created) }}</td>
                 <td>{{ props.item.remarks }}</td>
               </tr>
@@ -119,7 +119,7 @@ export default {
         { text: "Type", value: "application_type" },
         { text: "Status", value: "status", sortable: true },
         { text: "Current Task", value: "current_task" },
-        { text: "Current User", value: "current_assigned_user" },
+        // { text: "Current User", value: "current_assigned_user" },
         { text: "Date Created", value: "date_created" },
         { text: "Remarks", value: "remarks" }
       ],

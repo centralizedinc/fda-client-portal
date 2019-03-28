@@ -266,7 +266,7 @@ export default {
       if (
         this.form.general_info.product_type !== null &&
         this.form.general_info.primary_activity !== null &&
-        this.form.general_info.declared_capital !== null &&
+        // this.form.general_info.declared_capital !== null &&
         this.form.application_type !== null
       ) {
         var details = {
@@ -357,7 +357,8 @@ export default {
               message:
                 "Successfully applied a new License with Case No.: " +
                 result.model.case_details.case_no,
-              color: "primary"
+              color: "success",
+              icon: "check_circle"
             });
             this.$store.commit("SET_FORM", result.model);
             this.confirmDialog = false;

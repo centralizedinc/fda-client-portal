@@ -91,13 +91,27 @@ export default {
             return ''
           }
         },
+        getProductLine(productLine_id){
+          if(this.$store.state.products.prod_line){
+            var product_line = null;
+            product_line = this.$store.state.products.prod_line.find(x => {
+              return x._id === productLine_id
+            })
+            return product_line ? product_line.name : ''
+          }else{
+            return ''
+          }
+        },
         getUsername(user_id) {
           if (this.$store.state.user_session) {
             var user = null;
-            user = this.$store.state.user_session.find(x => {
-              return x._id === user_id
-            })
-            return user ? user.name : ''
+            console.log("store state user session: " + JSON.stringify(this.$store.state.user_session.user))
+            user = this.$store.state.user_session.user
+            return user.first_name + " " + user.last_name
+            // user = this.$store.state.user_session.user.find(x => {
+            //   return x._id === user_id
+            // })
+            // return user ? user.username : ''
           } else {
             return ''
           }
@@ -114,6 +128,9 @@ export default {
             return null;
           }
         },
+        numberWithCommas(x) {
+          return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      },
         formatDate: (date, type) => {
           if (!date) {
             return "";
