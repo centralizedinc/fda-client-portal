@@ -36,7 +36,7 @@
                   <v-spacer></v-spacer>
                   <v-tooltip top>
                     <v-btn slot="activator" flat icon color="black" @click="paymentDialog = false">
-                      <v-icon>fas fa-times</v-icon>
+                      <v-icon>fas fa-times-circle fa-1x</v-icon>
                     </v-btn>Close
                   </v-tooltip>
                 </v-toolbar>
