@@ -108,7 +108,7 @@
         title="Warehouse Address"
       >
         <template slot="content">
-          <v-checkbox label="Same as Office Address"></v-checkbox>
+          <v-checkbox color="primary" label="Same as Office Address"></v-checkbox>
           <v-flex xs12>
             <v-text-field
               color="green darken-1"
@@ -125,7 +125,7 @@
               v-model="warehouse.region"
               :items="regions"
               item-text="name"
-              @change="getProvinces"
+              item-value="_id"
               hide-no-data
               hide-selected
               label="Region"
@@ -136,8 +136,9 @@
             <v-autocomplete
               color="green darken-1"
               v-model="warehouse.province"
-              :items="provinces"
+              :items="filtered_warehouse_provinces"
               item-text="name"
+              item-value="_id"
               @change="getCities"
               hide-no-data
               hide-selected
@@ -149,8 +150,9 @@
             <v-autocomplete
               color="green darken-1"
               v-model="warehouse.city"
-              :items="cities"
+              :items="filtered_warehouse_cities"
               item-text="name"
+              item-value="_id"
               hide-no-data
               hide-selected
               label="City / Town"
@@ -380,30 +382,30 @@ export default {
         }
       });
     },
-    getProvinces() {
-      this.$store
-        .dispatch("GET_PROVINCE", this.form.addresses.office.region)
-        .then(result => {
-          this.provinces = this.$store.state.places.provinces;
-          return this.$store.dispatch("GET_REGION");
-        })
-        .then(result => {
-          // GET region data
-          this.regions = this.$store.state.places.regions;
-        });
-    },
-    getCities() {
-      this.$store
-        .dispatch("GET_CITY", this.form.addresses.office.city)
-        .then(result => {
-          this.cities = this.$store.state.places.city;
-          return this.$store.dispatch("GET_PROVINCE");
-        })
-        .then(result => {
-          // GET CITIES data
-          this.provinces = this.$store.state.places.provinces;
-        });
-    },
+    // getProvinces() {
+    //   this.$store
+    //     .dispatch("GET_PROVINCE", this.form.addresses.office.region)
+    //     .then(result => {
+    //       this.provinces = this.$store.state.places.provinces;
+    //       return this.$store.dispatch("GET_REGION");
+    //     })
+    //     .then(result => {
+    //       // GET region data
+    //       this.regions = this.$store.state.places.regions;
+    //     });
+    // },
+    // getCities() {
+    //   this.$store
+    //     .dispatch("GET_CITY", this.form.addresses.office.city)
+    //     .then(result => {
+    //       this.cities = this.$store.state.places.city;
+    //       return this.$store.dispatch("GET_PROVINCE");
+    //     })
+    //     .then(result => {
+    //       // GET CITIES data
+    //       this.provinces = this.$store.state.places.provinces;
+    //     });
+    // },
     setOfficeLocation(loc) {
       console.log("setting office location... " + JSON.stringify(loc));
       this.form.addresses.office.location = loc;
@@ -465,6 +467,12 @@ export default {
     filtered_cities() {
       //  this.form.addresses.office.city = null;
       return this.findCities(this.form.addresses.office.province);
+    },
+    filtered_warehouse_provinces() {
+      return this.findProvinces(this.warehouse.region);
+    },
+    filtered_warehouse_cities() {
+      return this.findCities(this.warehouse.province);
     },
     filtered_plant_provinces() {
       // this.form.addresses.plant.province = null;

@@ -32,14 +32,9 @@ export default class PaymentAPI {
         })
     }
 
-    expirationDate(expiryDate, cb) {
-        axios.post('payments/creditcard/validate/expiry', {
-            expiry: expiryDate
-        }).then((result) => {
-            cb(result.data.model)
-        }).catch(err => {
-            console.log('##########error save expirationDate: ' + JSON.stringify(err))
-            cb(null, err)
+    expirationDate(expiry) {
+        return axios.post('payments/creditcard/validate/expiry', {
+            expiry
         })
     }
 

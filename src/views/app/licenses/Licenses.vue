@@ -119,7 +119,7 @@ export default {
         { text: "Type", value: "application_type" },
         { text: "Status", value: "status", sortable: true },
         { text: "Current Task", value: "current_task" },
-        { text: "Current User", value: "current_assigned_user" },
+        // { text: "Current User", value: "current_assigned_user" },
         { text: "Date Created", value: "date_created" },
         { text: "Remarks", value: "remarks" }
       ],

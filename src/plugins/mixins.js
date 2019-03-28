@@ -2,6 +2,29 @@ export default {
 
   install(Vue) {
     Vue.mixin({
+      computed: {
+        display_name() {
+          var display = ""
+          if (this.$store.state.user_session.user) {
+            if (this.$store.state.user_session.user.name &&
+              this.$store.state.user_session.user.name.first &&
+              this.$store.state.user_session.user.name.last)
+              display = this.$store.state.user_session.user.name.first + ' ' + this.$store.state.user_session.user.name.last;
+            else
+              display = this.$store.state.user_session.user.username
+          }
+          return display;
+        },
+        display_avatar() {
+          if (this.$store.state.user_session.user)
+            return this.$store.state.user_session.user.avatar.location ?
+              this.$store.state.user_session.user.avatar.location :
+              "https://avatars.dicebear.com/v2/identicon/" +
+              this.$store.state.user_session.user.username +
+              ".svg";
+          else return ""
+        },
+      },
       methods: {
         getAppStatus(status) {
           var apps = ["On Process", "Approved", "Compliance", "Denied", "Expired"];
@@ -15,11 +38,11 @@ export default {
           var app_type = ["Initial", "Variation", "Renewal"]
           return app_type[type];
         },
-        getActStatus(status){
+        getActStatus(status) {
           var act_status = ["Approved", "Recommend for Compliance", "Denied"]
           return act_status[status]
         },
-        getCaseType(type){
+        getCaseType(type) {
           var case_type = ["License", "Certificate", "Registerd User"]
           return case_type[type]
         },
@@ -80,14 +103,14 @@ export default {
             return ''
           }
         },
-        getProductLine(productLine_id){
-          if(this.$store.state.products.prod_line){
+        getProductLine(productLine_id) {
+          if (this.$store.state.products.prod_line) {
             var product_line = null;
             product_line = this.$store.state.products.prod_line.find(x => {
               return x._id === productLine_id
             })
             return product_line ? product_line.name : ''
-          }else{
+          } else {
             return ''
           }
         },
@@ -105,7 +128,7 @@ export default {
             return ''
           }
         },
-        getAdminName(admin_id){
+        getAdminName(admin_id) {
           if (this.$store.state.user_session.admin_user) {
             console.log('admin_id :', admin_id + " ::: " + JSON.stringify(this.$store.state.user_session.admin_user));
             var admin = this.$store.state.user_session.admin_user.find(x => {
@@ -118,8 +141,8 @@ export default {
           }
         },
         numberWithCommas(x) {
-          return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      },
+          return x ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00';
+        },
         formatDate: (date, type) => {
           if (!date) {
             return "";
@@ -163,7 +186,8 @@ export default {
           var validate = false;
           var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
           validate = this.isEmpty(email) || !re.test(email);
-          return validate;
+          console.log('test: ', email, !validate);
+          return !validate;
         },
         getRegionName(id) {
           var found = false;
@@ -237,8 +261,15 @@ export default {
         deepCopy(obj) {
           return JSON.parse(JSON.stringify(obj));
         },
-        replaceAll(str, search, replacement){
+        replaceAll(str, search, replacement) {
           return str.split(search).join(replacement);
+        },
+        check_avatar(avatar) {
+          return avatar ?
+            avatar :
+            "https://avatars.dicebear.com/v2/identicon/" +
+            this.$store.state.user_session.user.username +
+            ".svg";
         },
         logout() {
           this.$store.dispatch("LOGOUT");

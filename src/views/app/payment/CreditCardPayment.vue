@@ -13,61 +13,48 @@
                 :rules="[rules.required, rules.card_validity]"
               >
                 <v-fade-transition slot="append">
-                  <v-progress-circular v-if="loading" size="24" color="info" indeterminate></v-progress-circular>
+                  <v-progress-circular v-if="loading_cc" size="24" color="info" indeterminate></v-progress-circular>
                   <img v-else :src="card_logo" alt>
                 </v-fade-transition>
               </v-text-field>
             </v-flex>
-            <!-- <v-flex xs4>
-                  <v-text-field
-                    label="*Expiration Month(MM)"
-                    mask="##"
-                    v-model="full_details.card_details.exp_month"
-                    :rules="[rules.required, rules.expiry_validity]" 
-                  ></v-text-field>
-                </v-flex>
-                <v-flex xs4>
-                  <v-text-field
-                    label="*Expiration Year(YYYY)"
-                    mask="####"
-                    v-model="full_details.card_details.exp_year"
-                    :rules="[rules.required, rules.expiry_validity]"
-                  ></v-text-field>
-            </v-flex>-->
-            <!-- ---------------------------------- -->
             <v-flex xs8>
               <v-menu
-                ref="menu1"
-                v-model="menu1"
+                v-model="expiry_menu"
                 :close-on-content-click="false"
                 :nudge-right="40"
                 lazy
                 transition="scale-transition"
                 offset-y
                 full-width
-                max-width="290px"
-                min-width="290px"
-              >
-                <v-text-field
-                  slot="activator"
-                  v-model="dateFormatted"
-                  label="Date"
-                  persistent-hint
-                  prepend-icon="event"
-                  @blur="date = parseDate(dateFormatted)"
-                  color="primary"
-                ></v-text-field>
+                min-width="290px">
+                <template v-slot:activator="{ on }">
+                  <v-text-field
+                    v-model="expiry_date"
+                    label="Date Expiry"
+                    prepend-icon="event"
+                    readonly
+                    v-on="on">
+                  </v-text-field>
+                </template>
                 <v-date-picker
-                  v-model="date"
-                  no-title
-                  @input="menu1 = false"
+                  v-model="dateFormatted"
                   type="month"
-                  :min="new Date().toISOString().substr(0, 10)"
-                ></v-date-picker>
+                  no-title
+                  scrollable
+                  @input="expiry_menu=false"
+                  :min="new Date().toISOString().substr(0, 10)">
+                </v-date-picker>
               </v-menu>
             </v-flex>
             <v-flex xs4>
-              <v-text-field label="*CVC" v-model="full_details.card_details.cvc" mask="###" :rules="[rules.cvc_validity]"></v-text-field>
+              <v-text-field
+                label="*CVC"
+                v-model="full_details.card_details.cvc"
+                mask="###"
+                :loading="loading_cvc"
+                :rules="[rules.required, rules.cvc_validity]"
+              ></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field
@@ -96,92 +83,48 @@
                 v-model="full_details.card_details.address_line2"
               ></v-text-field>
             </v-flex>
-            <!-- ----------------------------- -->
-            <v-flex xs12 md4 pa-2>
-      <v-autocomplete
-        color="green darken-1"
-        v-model="full_details.card_details.region"
-        :items="regions"
-        item-text="name"
-        item-value="_id"
-        hide-no-data
-        hide-selected
-        label="Region"
-        :rules="[rules.required]"
-      ></v-autocomplete>
-    </v-flex>
-    <v-flex xs12 md4 pa-2>
-      <v-autocomplete
-        color="green darken-1"
-        v-model="full_details.card_details.province"
-        :items="getProvinces"
-        item-text="name"
-        item-value="_id"
-        hide-no-data
-        hide-selected
-        label="Province"
-        :rules="[rules.required]"
-      ></v-autocomplete>
-    </v-flex>
-    <v-flex xs12 md4 pa-2>
-      <v-autocomplete
-        color="green darken-1"
-        v-model="full_details.card_details.city"
-        :items="getCities"
-        item-text="name"
-        item-value="_id"
-        hide-no-data
-        hide-selected
-        label="City / Town"
-        :rules="[rules.required]"
-      ></v-autocomplete>
-    </v-flex>
-            <!-- <v-flex xs12>
-            <v-autocomplete
-              color="green darken-1"
-              v-model="full_details.card_details.regions"
-              :items="regions"
-              item-text="name"
-              @change="getProvinces"
-              hide-no-data
-              hide-selected
-              label="Region"
-              :rules="[rules.required]"
-            ></v-autocomplete>
-          </v-flex>
-          <v-flex xs12>
-            <v-autocomplete
-              color="green darken-1"
-              v-model="full_details.card_details.provinces"
-              :items="provinces"
-              item-text="name"
-              @change="getCities"
-              hide-no-data
-              hide-selected
-              label="Province"
-              :rules="[rules.required]"
-            ></v-autocomplete>
-          </v-flex>
-          <v-flex xs12>
-            <v-autocomplete
-              color="green darken-1"
-              v-model="full_details.card_details.cities"
-              :items="cities"
-              item-text="name"
-              hide-no-data
-              hide-selected
-              label="City / Town"
-              :rules="[rules.required]"
-            ></v-autocomplete>
-            </v-flex>-->
-            <!-- ----------------------------- -->
-            <!-- <v-flex xs12>
-              <v-text-field label="*Region/State" v-model="full_details.card_details.state" :rules="[rules.required]"></v-text-field>
+            <v-flex xs12 md6 pa-2>
+              <v-autocomplete
+                color="green darken-1"
+                v-model="full_details.card_details.region"
+                :items="regions"
+                item-text="name"
+                item-value="_id"
+                hide-no-data
+                hide-selected
+                label="Region"
+                :rules="[rules.required]"
+              ></v-autocomplete>
             </v-flex>
-            <v-flex xs12>
-              <v-text-field label="*City" v-model="full_details.card_details.address_city" :rules="[rules.required]"></v-text-field>
-            </v-flex>-->
-            <v-flex xs12>
+            <v-flex xs12 md6 pa-2>
+              <v-autocomplete
+                color="green darken-1"
+                v-model="full_details.card_details.province"
+                :items="getProvinces"
+                item-text="name"
+                item-value="_id"
+                :disabled="!full_details.card_details.region"
+                hide-no-data
+                hide-selected
+                label="Province"
+                :rules="[rules.required]"
+              ></v-autocomplete>
+            </v-flex>
+            <v-flex xs12 md6 pa-2>
+              <v-autocomplete
+                color="green darken-1"
+                v-model="full_details.card_details.city"
+                :items="getCities"
+                item-text="name"
+                item-value="_id"
+                :disabled="!full_details.card_details.province"
+                hide-no-data
+                hide-selected
+                label="City / Town"
+                :rules="[rules.required]"
+              ></v-autocomplete>
+            </v-flex>
+            <v-flex xs12 md6>
               <v-text-field
                 label="*Zip Code"
                 v-model="full_details.card_details.zip"
@@ -203,52 +146,39 @@
 </template>
 
 <script>
-  import images from "./cards.js";
-  export default {
-    props: ["form"],
-    data() {
-      return {
-        card_logo: "",
-        loading: false,
-        loading3: false,
-        date: new Date().toISOString().substr(0, 7),
-        menu1: false,
-        expiry: "",
-        regions: [],
-        provinces: [],
-        cities: [],
-        full_details: {
-          card_details: {
-            number: "",
-            exp_month: "",
-            exp_year: "",
-            cvc: "",
-            name: "",
-            email: "",
-            address_line1: "",
-            address_line2: "",
-            region: "",
-            province: "",
-            city:"",
-            zip: ""
-          },
-          payment_details: {
-            amount: 0,
-            mode_of_payment: 0,
-            currency: "₱",
-            description: "",
-            statement_descriptor: "",
-            capture: true
-          },
-          transaction_details: {
-            application_type: "",
-            application: 0,
-            case_no: "",
-            order_payment: {}
-          }
+import images from "./cards.js";
+export default {
+  props: ["form"],
+  data() {
+    return {
+      card_logo: "",
+      loading_cc: false,
+      loading_cvc: false,
+      date: new Date().toISOString().substr(0, 7),
+      menu1: false,
+      expiry: "",
+      expiry_menu: false,
+      regions: [],
+      provinces: [],
+      cities: [],
+      full_details: {
+        card_details: {
+          number: "",
+          exp_month: "",
+          exp_year: "",
+          cvc: "",
+          name: "",
+          email: "",
+          address_line1: "",
+          address_line2: "",
+          region: "",
+          province: "",
+          city: "",
+          zip: ""
         },
         payment_details: {
           amount: 0,
+          mode_of_payment: 0,
           currency: "₱",
           description: "",
           statement_descriptor: "",
@@ -259,70 +189,65 @@
           application: 0,
           case_no: "",
           order_payment: {}
-        },
-        rules: {
-        required: value => !!value || "This is a required field",
-        card_validity: value => this.loading || "Invalid Credit Card Number",
-        // expiry_validity: value2 => !!this.loading2 || "Invalid Expiration Date",
-        cvc_validity: value => this.loading3 === false || "Invalid CVV",
-        email: value => {
-          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-          return pattern.test(value) || "Invalid e-mail.";
         }
+      },
+      payment_details: {
+        amount: 0,
+        currency: "₱",
+        description: "",
+        statement_descriptor: "",
+        capture: true
+      },
+      transaction_details: {
+        application_type: "",
+        application: 0,
+        case_no: "",
+        order_payment: {}
+      },
+      rules: {
+        required: value => !!value || "This is a required field",
+        card_validity: v => (v.length === 16 && true) || "Invalid Card Number",
+        expiry_validity: v => true || "Invalid Expiration Date",
+        cvc_validity: v => v.length === 3 || "Invalid CVV",
+        email: value => this.checkEmail(value) || "Invalid email"
       },
       gaps: [],
       cvc_max: 3,
-      code_name: "CVC"
-    }      
+      code_name: "CVC",
+      dateFormatted: null,
+      expiry_date: null,
+      loading_expiry: false
+    };
   },
   watch: {
-    date(val) {
-      this.dateFormatted = this.formatDate(this.date);
-    },
-    "full_details.card_details.email": function(val) {
-      const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      console.log("email verification: " + pattern.test(val));
-      if (pattern.test(val) === false) {
-        this.$notify({
-          message: "Enter valid email",
-          color: "warning",
-          initialMargin: 100
-        });
-      }
-      // return pattern.test(value) || "Invalid e-mail.";
-      //   this.$notify({
-      //   message: "creadit",
-      //   color: "warning",
-      //   initialMargin: 100
-      // });
+    dateFormatted(val) {
+      this.expiry_date = this.parseDate(val);
     },
     "full_details.card_details.number": function(val) {
-      console.log("validate credit card number");
-      this.loading = true;
+      this.loading_cc = true;
       this.card_logo = null;
       this.$store.state.payments.credit_card = "";
-      if (val !== "") {
+      this.rules.card_validity = val.length === 16 || "Invalid Card Number";
+      if (val !== "" && val.length === 16) {
         this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result => {
           var creditCard = this.$store.state.payments.credit_card;
+          this.rules.card_validity =
+            creditCard.isValid || "Invalid Card Number";
           if (creditCard.isValid) {
-            console.log(
-              "####### credit card details: " +
-                JSON.stringify(creditCard.isValid)
-            );
             this.card_logo = images[creditCard.card.type];
-            console.log("test logo: " + JSON.stringify(creditCard.card.type));
             this.$notify({
               message:
                 "You entered a " + creditCard.card.type + " credit card number",
               color: "primary",
+              icon: "check_circle",
               initialMargin: 100
             });
-            this.loading = false;
+            this.loading_cc = false;
             this.gaps = creditCard.card.gaps;
             this.cvc_max = creditCard.card.code.size;
             this.code_name = creditCard.card.code.name;
           } else {
-            this.loading = true;
+            this.loading_cc = false;
             this.$notify({
               message: "Enter valid credit card number",
               color: "warning",
@@ -330,36 +255,36 @@
             });
           }
         });
+      } else {
+        this.loading_cc = false;
       }
     },
     "full_details.card_details.cvc": function(val) {
-      // this.loading3 = false;
+      this.loading_cvc = true;
       this.$store.state.payments.cvv = "";
-      if (val.length == 3 ) {
-        console.log("cvv number data: " + JSON.stringify(val));
+      this.rules.cvc_validity = val.length === 3 || "Invalid CVC";
+      if (val !== "" && val.length == 3) {
         this.$store.dispatch("VALIDATE_CVV", val).then(result => {
           var cvv = this.$store.state.payments.cvv;
+          this.rules.cvc_validity = cvv.isValid || "Invalid CVC";
           if (cvv.isValid) {
-            console.log(
-              "####### cvv/cvc details: " + JSON.stringify(cvv.isValid)
-            );
-            this.loading3 = false;
             this.$notify({
               message: "Valid CVC number",
               color: "primary",
+              icon: "check_circle",
               initialMargin: 100
             });
-          }
-        });
-      } else {
-        console.log("cvv number data else: " + JSON.stringify(val.length));
-        console.log("loading status: " + JSON.stringify(this.loading3))
-        this.loading3 = true
-        this.$notify({
+          } else {
+            this.$notify({
               message: "Enter valid CVC number",
               color: "warning",
               initialMargin: 100
             });
+          }
+          this.loading_cvc = false;
+        });
+      } else {
+        this.loading_cvc = false;
       }
     }
   },
@@ -375,21 +300,10 @@
   },
   computed: {
     getProvinces() {
-      // this.form.addresses.office.province = null;
-      console.log(
-        "get provinces computed: " +
-          JSON.stringify(
-            // this.findProvinces(
-              this.full_details.card_details.region
-              // )
-          )
-      );
       return this.findProvinces(this.full_details.card_details.region);
     },
     getCities() {
-      //  this.form.addresses.office.city = null;
       return this.findCities(this.full_details.card_details.province);
-      console.log("get cities computed data: " + JSON.stringify(this.full_details.card_details.city))
     }
   },
   methods: {
@@ -417,18 +331,46 @@
     //       this.provinces = this.$store.state.places.provinces;
     //     });
     // },
-    formatDate(date) {
+    parseDate(date) {
       if (!date) return null;
       const [year, month] = date.split("-");
       this.full_details.card_details.exp_month = `${month}`;
       this.full_details.card_details.exp_year = `${year}`;
-      console.log(
-        "expiry: " +
-          this.full_details.card_details.exp_month +
-          "/" +
-          this.full_details.card_details.exp_year
-      );
+      this.checkExpiry(month, year);
       return `${month}/${year}`;
+    },
+    checkExpiry(month, year) {
+      this.loading_expiry = true;
+      var expiry = { month, year };
+      this.$store
+        .dispatch("VALIDATE_EXPIRATION_DATE", expiry)
+        .then(result => {
+          this.loading_expiry = false;
+          if (result.data.success) {
+            this.rules.expiry_validity =
+              result.data.model.isValid || "Invalid Date Expiry";
+            if (result.data.model.isValid) {
+              this.$notify({
+                message: "Valid Date Expiry",
+                color: "primary",
+                icon: "check_circle",
+                initialMargin: 100
+              });
+            } else {
+              this.$notify({
+                message: "Enter valid date expiry",
+                color: "warning",
+                initialMargin: 100
+              });
+            }
+          } else {
+            this.$notifyError(result.data.errors);
+          }
+        })
+        .catch(err => {
+          this.$notifyError(err);
+          this.loading_expiry = false;
+        });
     },
     isEmpty(str) {
       return !str || str === null || str === "";
@@ -540,7 +482,8 @@
           this.full_details.card_details.cities,
           this.full_details.card_details.zip
         ]) &&
-        !this.loading && !this.loading3
+        !this.loading_cc &&
+        !this.loading_cvc
       ) {
         var paymentFee = this.$store.state.payments.fee;
         console.log("payment fee data: " + JSON.stringify(paymentFee));
@@ -561,10 +504,10 @@
             console.log("saved payment " + JSON.stringify(result));
             this.$router.push("/");
             this.$notify({
-          message: "Payment success",
-          color: "primary",
-          initialMargin: 100
-        });
+              message: "Payment success",
+              color: "primary",
+              initialMargin: 100
+            });
           })
           .catch(err => {
             console.log("ERROR: " + err);

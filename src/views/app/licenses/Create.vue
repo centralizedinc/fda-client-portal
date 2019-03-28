@@ -327,16 +327,6 @@ export default {
           this.confirmDialog = false;
           this.showAppOverview = false;
           this.paymentDialog = true;
-
-          // var details = {
-          //   apptype: this.form.application_type,
-          //   productType: this.form.general_info.product_type,
-          //   primaryActivity: this.form.general_info.primary_activity,
-          //   declaredCapital: this.form.general_info.declared_capital,
-          //   date_expiry: this.form.date_expiry
-
-          // }
-          // return this.$store.dispatch("BILLS_PAYMENT", )
         })
         .catch(err => {
           console.log("error in uploading files: " + err);
@@ -358,7 +348,8 @@ export default {
               message:
                 "Successfully applied a new License with Case No.: " +
                 result.model.case_details.case_no,
-              color: "primary"
+              color: "success",
+              icon: "check_circle"
             });
             this.$store.commit("SET_FORM", result.model);
             this.confirmDialog = false;

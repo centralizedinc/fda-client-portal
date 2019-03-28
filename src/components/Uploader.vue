@@ -28,9 +28,21 @@
     <v-flex v-show="isSuccess" xs12>
       <!--SUCCESS-->
       <v-card>
-        <v-toolbar dark>Preview
+        <v-toolbar class="title font-weight-light" style="text-transform: uppercase">Preview
           <v-spacer></v-spacer>
-          <v-btn color="success" @click="reset">RESET</v-btn>
+          <v-tooltip top>
+            <v-btn
+              class="elevation-2"
+              slot="activator"
+              fab
+              small
+              icon
+              color="success"
+              @click="reset"
+            >
+              <v-icon>fas fa-redo-alt</v-icon>
+            </v-btn>Reset
+          </v-tooltip>
         </v-toolbar>
         <v-container grid-list-sm fluid>
           <v-layout row wrap>
