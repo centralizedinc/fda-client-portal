@@ -109,7 +109,10 @@ export default {
       dialogView: false,
       initial: false,
       selected_case: {},
-      pagination: {},
+      pagination: {
+        sortBy: 'date_created',
+        descending: true
+      },
       details: {
         license_details: {},
         case_details: {}
