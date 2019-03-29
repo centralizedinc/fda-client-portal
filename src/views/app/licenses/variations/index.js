@@ -1,12 +1,4 @@
-var {
-    AppData,
-    AppHistory,
-    ApplicationOverview,
-    AppSummary,
-    Files,
-    OutputDocs,
-    PaymentDetails
-} = require('../appoverview/tabs');
+import tabs from '../appoverview/tabs';
 
 export default {
     ChangeForm: () =>
@@ -21,11 +13,11 @@ export default {
         import("../../payment/PaymentSummary.vue"),
     QualifiedPersonnel: () =>
         import('./tabs/QualifiedPersonnel.vue'),
-    AppData,
-    AppHistory,
-    ApplicationOverview,
-    AppSummary,
-    UploadedFiles: Files,
-    OutputDocs,
-    Payment: PaymentDetails
+    AppData: tabs.AppData,
+    AppHistory: tabs.AppHistory,
+    ApplicationOverview: tabs.ApplicationOverview,
+    AppSummary: tabs.AppSummary,
+    UploadedFiles: tabs.Files,
+    OutputDocs: tabs.OutputDocs,
+    Payment: tabs.PaymentDetails
 }

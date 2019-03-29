@@ -1,38 +1,23 @@
-var {
-    AuthorizedOfficerDetails,
-    ConfirmDialog,
-    DocumentsUpload,
-    EstablishmentInfo,
-    GeneralInfo,
-    OfficeAddress,
-    QualifiedPersonnel
-} = require("@/views/app/licenses/create/tabs");
+import createTabs from "../../app/licenses/create/tabs";
 
-var {
-    AppHistory,
-    AppSummary,
-    AppData,
-    Files,
-    OutputDocs,
-    PaymentDetails
-} = require("@/views/app/licenses/appoverview/tabs");
+import overviewTabs from "../../app/licenses/appoverview/tabs";
 
 export default {
     FormLayout: () => import('@/components/FormLayout'),
     ApplicationOverview: () => import('@/components/ApplicationOverview'),
-    ConfirmToReviewApp: ConfirmDialog,
-    StepOne: GeneralInfo,
-    StepTwo: EstablishmentInfo,
-    StepThree: OfficeAddress,
-    StepFour: AuthorizedOfficerDetails,
-    StepFive: QualifiedPersonnel,
-    StepSix: DocumentsUpload,
+    ConfirmToReviewApp: createTabs.ConfirmDialog,
+    StepOne: createTabs.GeneralInfo,
+    StepTwo: createTabs.EstablishmentInfo,
+    StepThree: createTabs.OfficeAddress,
+    StepFour: createTabs.AuthorizedOfficerDetails,
+    StepFive: createTabs.QualifiedPersonnel,
+    StepSix: createTabs.DocumentsUpload,
     StepSeven: () => import('./Account.vue'),
-    AppHistory,
-    AppSummary,
-    AppData,
-    UploadedFiles: Files,
-    OutputDocs: OutputDocs,
-    Payment: PaymentDetails,
+    AppHistory: overviewTabs.AppHistory,
+    AppSummary: overviewTabs.AppSummary,
+    AppData: overviewTabs.AppData,
+    UploadedFiles: overviewTabs.Files,
+    OutputDocs: overviewTabs.OutputDocs,
+    Payment: overviewTabs.PaymentDetails,
     PaymentSummary: () => import('@/views/app/payment/PaymentSummary')
 }
