@@ -48,9 +48,6 @@ export default {
     PaymentSummary: () => import("./PaymentSummary.vue")
   },
   props: {
-    close: {
-      type: Boolean
-    },
     form: {
       type: Object
     },

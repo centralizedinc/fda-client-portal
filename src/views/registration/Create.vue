@@ -102,14 +102,15 @@
       <app-history slot="apphistory" :form="form"></app-history>
       <payment slot="paymentdetails" :form="form" :charges="charges"></payment>
     </application-overview>
-    <!-- <v-btn
+    <v-btn
+      v-if="e1 <= 6 "
       dark
       @click="navDialog = true"
       block
       style="text-transform: uppercase"
       class="text--primary"
       color="warning"
-    >Apply later</v-btn> -->
+    >Apply later</v-btn>
 
     <!-- confirm navigation -->
     <v-dialog v-model="navDialog" max-width="500px" transition="dialog-transition">
