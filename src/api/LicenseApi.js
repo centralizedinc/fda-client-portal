@@ -119,7 +119,7 @@ export default class LicenseAPI {
 
     verifyExistingLicenses(licenses, cb) {
         console.log("api existing licenses: " + JSON.stringify(licenses))
-        axios.post('lto-api/verify/existing/license', licenses).then((result) => {
+        axios.get('lto-api/verify/', licenses).then((result) => {
             cb(result.data.model)
         }).catch(err => {
             cb(err)
