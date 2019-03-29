@@ -2,11 +2,11 @@
   <v-layout row wrap>
     <v-flex xs12 p1-2>
       <v-card>
-        <v-data-table
+        <v-data-table 
           :pagination.sync="pagination"
           :headers="headers"
           hide-actions
-          :items="details.cases"
+          :items="case_items"
           class="elevation-1"
         >
           <template slot="items" slot-scope="props">
@@ -30,13 +30,13 @@
               </v-layout>
               </td>-->
             </tr>
-            <v-dialog v-model="paymentDialog" max-width="calc(100% - 10px)">
+            <v-dialog v-model="callPendingTrans" max-width="calc(100% - 10px)" persistent>
               <v-card flat>
                 <v-toolbar flat>
                   <v-spacer></v-spacer>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="black" @click="paymentDialog = false">
-                      <v-icon>fas fa-times</v-icon>
+                    <v-btn slot="activator" flat icon color="black" @click="close">
+                      <v-icon>fas fa-times-circle fa-1x</v-icon>
                     </v-btn>Close
                   </v-tooltip>
                 </v-toolbar>
@@ -75,10 +75,13 @@ export default {
   data() {
     return {
       form: {},
-      pagination: {},
+      pagination: {
+        sortBy: 'date_created',
+        descending: true
+      },
       charges: {},
       case_holder: {},
-      paymentDialog: false,
+      callPendingTrans: false,
       mode: 0, // 0 - new, 1 - variation, 2 - renewal
       headers: [
         {
@@ -100,14 +103,14 @@ export default {
         },
         {
           text: "Date Created",
-          value: "date_created"
+          value: "date_created"        
         },
         {
           text: "Payment Status",
           value: "payment_status"
         }
         // { text: "Actions", value: "" }
-      ]
+      ],
     };
   },
   created() {
@@ -178,18 +181,30 @@ export default {
                   this.case_holder = result;
                 });
             }
-            this.paymentDialog = true;
+            this.callPendingTrans = true;
           } else console.log("result.data.errors :", result.data.errors);
         })
         .catch(err => {
           console.log("###loadForm err :", err);
         });
     },
-    pay() {
-      this.$router.push("/app/payments/summary");
+    close() {
+      this.callPendingTrans = false;
     }
+    // pay() {
+    //   this.$router.push("/app/payments/summary");
+    // }
   },
   computed: {
+    case_items(){
+      var items = []
+      this.details.cases.forEach(caseDetails => {
+        if(!caseDetails.is_paid){
+          items.push(caseDetails)
+        }
+      })
+      return items
+    },
     pages() {
       if (
         this.pagination.rowsPerPage == null ||

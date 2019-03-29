@@ -14,39 +14,39 @@
         <v-container grid-list-xl>
           <v-layout row wrap align-center justify-center fill-height>
             <!-- <v-flex xs6> -->
-              <v-flex xs6>
-                <label class="subheading">Application Fee:</label>
-              </v-flex>
-              <v-flex xs6>
-                <label class="subheading">₱ {{numberWithCommas(fees_form.fee)}}</label>
-              </v-flex>
-              <v-flex xs6>
-                <label class="subheading"># of year/s applied:</label>
-              </v-flex>
-              <v-flex xs6>
-                <label class="subheading">{{fees_form.yearsApplied}} years</label>
-              </v-flex>
-              <v-flex xs6>
-                <label class="subheading">Surcharge:</label>
-              </v-flex>
-              <v-flex xs6>
-                <label class="subheading">
-                  <label class="subheading">₱ {{numberWithCommas(fees_form.surcharge)}}</label>
-                  <!-- <v-icon medium color="error">close</v-icon> -->
-                </label>
-              </v-flex>
-              <v-flex xs6>
-                <label class="subheading">Legal Research Fund (LRF):</label>
-              </v-flex>
-              <v-flex xs6>
-                <label class="subheading">₱ {{numberWithCommas(fees_form.lrf)}}</label>
-              </v-flex>
-              <v-flex xs6>
-                <label class="subheading" color="error">Total Payment Due:</label>
-              </v-flex>
-              <v-flex xs6>
-                <label class="subheading">₱ {{numberWithCommas(fees_form.total)}}</label>
-              </v-flex>
+            <v-flex xs6>
+              <label class="subheading">Application Fee:</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading">₱ {{numberWithCommas(fees_form.fee)}}</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading"># of year/s applied:</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading">{{fees_form.yearsApplied}} years</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading">Surcharge:</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading">
+                <label class="subheading">₱ {{numberWithCommas(fees_form.surcharge)}}</label>
+                <!-- <v-icon medium color="error">close</v-icon> -->
+              </label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading">Legal Research Fund (LRF):</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading">₱ {{numberWithCommas(fees_form.lrf)}}</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading" color="error">Total Payment Due:</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading">₱ {{numberWithCommas(fees_form.total)}}</label>
+            </v-flex>
             <!-- </v-flex> -->
             <!-- <v-flex xs5>
               <v-flex xs12>
@@ -99,6 +99,16 @@
       </v-card>
     </v-flex>
 
+<v-dialog v-model="dialogPayLater" max-width="300px" transition="dialog-transition">
+            <v-card class="title">
+              <v-card-text>You have chosen to pay later. Make sure to settle payment on or before the payment deadline to avoid charges.</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="success" @click="dialogPayLater=false">Pay Now</v-btn>
+                <v-btn color="primary" flat @click="$router.push('/')">Ok!</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
     <v-dialog
       v-model="cashierPayment"
       scrollable
@@ -117,7 +127,7 @@
           <v-spacer></v-spacer>
           <v-tooltip top>
             <v-btn slot="activator" flat icon color="black" @click="cashierPayment =false">
-              <i class="fas fa-times-circle"></i>
+              <i class="fas fa-times-circle fa-1x"></i>
             </v-btn>Close
           </v-tooltip>
         </v-toolbar>
@@ -164,7 +174,7 @@
           <v-spacer></v-spacer>
           <v-tooltip top>
             <v-btn slot="activator" flat icon color="black" @click="ecPayDialog =false">
-              <i class="fas fa-times-circle"></i>
+              <i class="fas fa-times-circle fa-1x"></i>
             </v-btn>Close
           </v-tooltip>
         </v-toolbar>
@@ -225,6 +235,7 @@ export default {
       fees_form: {},
       cashierPayment: false,
       ecPayDialog: false,
+      dialogPayLater: false,
       showCreditCard: false,
       showPayLater: false
       // bancnetDialog: false
@@ -259,10 +270,11 @@ export default {
       // this.$router.push("/app/payments/creditcard");
     },
     payLater() {
-      this.cashierPayment = false;
-      this.ecPayDialog = false;
-      this.showPayLater = true;
-      // this.$router.push("/app/payments/paylater");
+      this.dialogPayLater = true;
+      // this.cashierPayment = false;
+      // this.ecPayDialog = false;
+      // this.showPayLater = true;
+      // this.$router.push("/");
     },
     ecPay() {
       // this.ecPayDialog = true;

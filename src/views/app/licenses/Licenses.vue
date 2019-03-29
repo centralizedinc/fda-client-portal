@@ -68,11 +68,12 @@
             <v-spacer></v-spacer>
             <v-tooltip top>
               <v-btn slot="activator" flat icon color="black" @click="printDialog = false">
-                <v-icon small>close</v-icon>
+                <v-icon small>fas fa-times-circle fa-1x</v-icon>
               </v-btn>Close
             </v-tooltip>
           </v-toolbar>
-          <v-card-text class="subheading font-weight-light">Please take note that:
+          <v-card-text class="subheading font-weight-light">
+            Please take note that:
             <ol>
               <li>
                 This printed License is
@@ -108,7 +109,10 @@ export default {
       dialogView: false,
       initial: false,
       selected_case: {},
-      pagination: {},
+      pagination: {
+        sortBy: 'date_created',
+        descending: true
+      },
       details: {
         license_details: {},
         case_details: {}

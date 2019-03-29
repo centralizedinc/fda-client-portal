@@ -16,7 +16,8 @@
       @submit="confirmDialog=true"
       submitText="Continue"
     >
-      <template slot="header-step-1">General Information
+      <template slot="header-step-1">
+        General Information
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -25,7 +26,8 @@
         </v-tooltip>
       </template>
       <step-one slot="content-step-1" :form="form"></step-one>
-      <template slot="header-step-2">Establishment Information
+      <template slot="header-step-2">
+        Establishment Information
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -34,16 +36,18 @@
         </v-tooltip>
       </template>
       <step-two slot="content-step-2" :form="form"></step-two>
-      <template slot="header-step-3">Office Address
+      <template slot="header-step-3">
+        Office Address
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
+          </v-btn>Select the the Region, Province, City and Zip Code accordingly
         </v-tooltip>
       </template>
       <step-three slot="content-step-3" :form="form"></step-three>
-      <template slot="header-step-4">Authorized Officer Details
+      <template slot="header-step-4">
+        Authorized Officer Details
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -52,7 +56,8 @@
         </v-tooltip>
       </template>
       <step-four slot="content-step-4" :form="form"></step-four>
-      <template slot="header-step-5">Qualified Personnel
+      <template slot="header-step-5">
+        Qualified Personnel
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -61,7 +66,8 @@
         </v-tooltip>
       </template>
       <step-five slot="content-step-5" :form="form"></step-five>
-      <template slot="header-step-6">Documents Upload
+      <template slot="header-step-6">
+        Documents Upload
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -70,7 +76,8 @@
         </v-tooltip>
       </template>
       <step-six slot="content-step-6" :form="form" @upload="uploadFile" style="width: 100%"></step-six>
-      <template slot="header-step-7">Account Info
+      <template slot="header-step-7">
+        Account Info
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
@@ -82,6 +89,7 @@
     </form-layout>
     <confirm-to-review-app
       :show="confirmDialog"
+      :loading="loading"
       @close="confirmDialog=false"
       @submit="submit"
       @overview="dialog = false ; showAppOverview = true"
@@ -94,14 +102,14 @@
       <app-history slot="apphistory" :form="form"></app-history>
       <payment slot="paymentdetails" :form="form" :charges="charges"></payment>
     </application-overview>
-    <v-btn
+    <!-- <v-btn
       dark
       @click="navDialog = true"
       block
       style="text-transform: uppercase"
       class="text--primary"
       color="warning"
-    >Apply later</v-btn>
+    >Apply later</v-btn> -->
 
     <!-- confirm navigation -->
     <v-dialog v-model="navDialog" max-width="500px" transition="dialog-transition">
@@ -114,7 +122,7 @@
           <v-spacer></v-spacer>
           <v-tooltip top>
             <v-btn slot="activator" flat icon color="black" @click="navDialog = false">
-              <v-icon>close</v-icon>
+              <v-icon>fas fa-times-circle fa-1x</v-icon>
             </v-btn>Close
           </v-tooltip>
         </v-toolbar>
@@ -242,10 +250,14 @@ export default {
     account: {
       username: "",
       password: "",
-      name: {}
+      name: {
+        first: "",
+        last: ""
+      }
     },
     formData: {},
-    charges: {}
+    charges: {},
+    loading: false
   }),
   created() {
     this.init();
@@ -302,40 +314,66 @@ export default {
       this.formData = upload;
     },
     submit() {
-      console.log("##### form: " + JSON.stringify(this.form));
-      console.log("##### account: " + JSON.stringify(this.account));
-      var files = this.form.uploaded_files;
-      const formData = new FormData();
-      for (let i = 0; i < files.length; i++) {
-        if (files[i].file) {
-          formData.append("lto", files[i].file, files[i].file["name"]);
-        }
-      }
+      this.loading = false;
       this.$store
-        .dispatch("UPLOAD_LICENSES", formData)
-        .then(files => {
-          this.form.uploaded_files = files;
-          return this.$store.dispatch("REGISTER", {
-            license: this.form,
-            account: this.account
-          });
+        .dispatch("SAVE_NEW_LICENSE", {
+          upload: this.formData,
+          license: this.form,
+          account: this.account
         })
         .then(result => {
-          console.log(
-            "RESULT CREATE NEW ##################: " + JSON.stringify(result)
-          );
-          this.$notify({
-            message: "You have successfully applied a new license",
-            color: "success",
-            icon: "check_circle"
-          });
-          this.confirmDialog = false;
-          this.showAppOverview = false;
-          this.paymentDialog = true;
+          console.log("result :", result);
+          this.loading = false;
+          if (result.success) {
+            this.$notify({
+              message: "You have successfully applied a new license",
+              color: "success",
+              icon: "check_circle"
+            });
+            this.confirmDialog = false;
+            this.showAppOverview = false;
+            this.paymentDialog = true;
+          } else {
+            this.$notifyError(result.errors);
+          }
         })
         .catch(err => {
-          console.log("error in uploading files: " + err);
+          this.loading = false;
+          this.$notifyError(err);
         });
+
+      // var files = this.form.uploaded_files;
+      // const formData = new FormData();
+      // for (let i = 0; i < files.length; i++) {
+      //   if (files[i].file) {
+      //     formData.append("lto", files[i].file, files[i].file["name"]);
+      //   }
+      // }
+      // this.$store
+      //   .dispatch("UPLOAD_LICENSES", formData)
+      //   .then(files => {
+      //     this.form.uploaded_files = files;
+      //     return this.$store.dispatch("REGISTER", {
+      //       license: this.form,
+      //       account: this.account
+      //     });
+      //   })
+      //   .then(result => {
+      //     console.log(
+      //       "RESULT CREATE NEW ##################: " + JSON.stringify(result)
+      //     );
+      //     this.$notify({
+      //       message: "You have successfully applied a new license",
+      //       color: "success",
+      //       icon: "check_circle"
+      //     });
+      //     this.confirmDialog = false;
+      //     this.showAppOverview = false;
+      //     this.paymentDialog = true;
+      //   })
+      //   .catch(err => {
+      //     console.log("error in uploading files: " + err);
+      //   });
     }
   }
 };

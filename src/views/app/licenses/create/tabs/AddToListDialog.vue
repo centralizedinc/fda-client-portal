@@ -18,7 +18,7 @@
           <v-spacer></v-spacer>
           <v-tooltip top>
             <v-btn slot="activator" flat icon color="black" @click="$emit('cancel')">
-              <i class="fas fa-times-circle"></i>
+              <i class="fas fa-times-circle fa-1x"></i>
             </v-btn>Close
           </v-tooltip>
           <!-- <v-btn top right absolute color="accent" @click="$emit('cancel')">Cancel</v-btn> -->

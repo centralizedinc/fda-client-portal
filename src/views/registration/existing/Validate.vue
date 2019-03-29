@@ -17,7 +17,7 @@
               <v-divider></v-divider>
               <v-stepper-step :complete="e1 > 2" step="2">Establishment Information</v-stepper-step>
               <v-divider></v-divider>
-              <v-stepper-step :complete="e1 > 3" step="3">Authorized Personnel</v-stepper-step>
+              <v-stepper-step :complete="e1 > 3" step="3">Qualified Personnel</v-stepper-step>
               <v-divider></v-divider>
               <v-stepper-step step="4">Create Login Credentials</v-stepper-step>
             </v-stepper-header>
@@ -232,8 +232,7 @@ export default {
         "Head, Regulatory Affairs",
         "Head, Production"
       ],
-      existing_form:{},
-
+      existing_form: {},
       form: {
         general_info: {
         product_type: "",
@@ -310,9 +309,8 @@ export default {
         console.log(
           "submit existing state: " +
             JSON.stringify(this.$store.state.licenses.existingLicenses)
-
         );
-        this.existing_form = this.$store.state.licenses.existingLicenses
+        this.existing_form = this.$store.state.licenses.existingLicenses;
         console.log("submit existing cb: " + JSON.stringify(result));
         if (result != null) {
           this.$notify({

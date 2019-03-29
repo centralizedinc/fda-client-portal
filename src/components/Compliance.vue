@@ -43,7 +43,8 @@
         <v-flex xs12>There is no compliance for today.</v-flex>
       </v-layout>
     </v-list>
-    <v-divider></v-divider>
+    <!-- <v-divider></v-divider> -->
+    
     <v-dialog
       v-model="complyDialog"
       persistent
@@ -89,7 +90,6 @@
             </v-flex>
           </v-layout>
         </v-card-text>
-
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn block color="success" :loading="loading" @click="submit">Submit</v-btn>

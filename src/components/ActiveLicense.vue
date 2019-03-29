@@ -1,11 +1,11 @@
 <template>
     <v-flex xs12>
-        <v-card color="fdaSilver" class="elevation-15">
-          <v-card-title class="active-license-title">
+        <v-card color="fdaSilver" class="elevation-5">
+          <v-card-title class="active-license-title fdaSilver--text" >
             <v-avatar class="mr-3" color="grey">
               <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
             </v-avatar>
-            <span class="headline">License No.: {{details.license_details.license_no}}</span>
+            <span class="display-1 font-weight-light">License No.: {{details.license_details.license_no}}</span>
             <v-spacer></v-spacer>
             <v-speed-dial
               v-if="menu"

@@ -19,57 +19,68 @@
       @changePage="changePage"
       @submit="confirmDialog=true"
     >
-      <template slot="header-step-1">General Information
+      <template slot="header-step-1">
+        General Information
         <v-spacer></v-spacer>
-        <v-tooltip left>
+        <!-- <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
           </v-btn>Get Help
-        </v-tooltip>
+        </v-tooltip>-->
       </template>
       <step-one slot="content-step-1" :form="form"></step-one>
-      <template slot="header-step-2">Establishment Information
+      <template slot="header-step-2">
+        Establishment Information
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
+          </v-btn>Avoid using numbers on Establishment Owner field
         </v-tooltip>
-      </template> 
+      </template>
       <step-two slot="content-step-2" :form="form"></step-two>
-      <template slot="header-step-3">Office Address
+      <template slot="header-step-3">
+        Office Address
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
+          </v-btn>Select the the Region, Province, City and Zip Code accordingly
         </v-tooltip>
       </template>
       <step-three slot="content-step-3" :form="form"></step-three>
-      <template slot="header-step-4">Authorized Officer Details
+      <template slot="header-step-4">
+        Authorized Officer Details
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
+          </v-btn>Should be someone that can be contacted anytime
         </v-tooltip>
       </template>
       <step-four slot="content-step-4" :form="form"></step-four>
-      <template slot="header-step-5">Qualified Personnel
+      <template slot="header-step-5">
+        Qualified Personnel
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
+          </v-btn>Provide at least one (1) Qualified Personnel
+          <br>Must be active and present to avoid delay of application
+          <br>To validate information, make sure all fields are correct
         </v-tooltip>
       </template>
       <step-five slot="content-step-5" :form="form"></step-five>
-      <template slot="header-step-6">Documents Upload
+      <template slot="header-step-6">
+        Documents Upload
         <v-spacer></v-spacer>
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
+          </v-btn>Upload multiple files by dragging and dropping
+          <br>Files should be renamed accordingly and must be in PDF format for faster transaction
+          <br>Compress files if needed
+          <br>
         </v-tooltip>
       </template>
       <step-six slot="content-step-6" :form="form" @upload="uploadFile" style="width: 100%"></step-six>
@@ -78,6 +89,8 @@
       :show="confirmDialog"
       @close="confirmDialog=false"
       @submit="apply"
+      :loading="loading"
+      :disabled="loading"
       @overview="confirmDialog = false ; showAppOverview = true"
     ></confirm-to-review-app>
     <application-overview :show="showAppOverview" @close="close">
@@ -112,6 +125,7 @@ export default {
     PaymentSummary: () => import("../payment/PaymentSummary.vue")
   },
   data: () => ({
+    loading: false,
     e1: 1,
     confirmDialog: false,
     ecpayDialog: false,
@@ -315,7 +329,9 @@ export default {
         .dispatch("UPLOAD_LICENSES", formData)
         .then(files => {
           this.form.uploaded_files = files;
-          console.log("save license to be saved data: " + JSON.stringify(this.form))
+          console.log(
+            "save license to be saved data: " + JSON.stringify(this.form)
+          );
           // return this.$store.dispatch("SAVE_LICENSES", this.form);
         })
         .then(result => {
@@ -337,6 +353,7 @@ export default {
       this.formData = upload;
     },
     apply() {
+      this.loading = true;
       this.$store
         .dispatch("APPLY_LICENSE", {
           license: this.form,
@@ -344,6 +361,7 @@ export default {
         })
         .then(result => {
           if (result.success) {
+            this.loading = false;
             this.$notify({
               message:
                 "Successfully applied a new License with Case No.: " +
@@ -352,14 +370,17 @@ export default {
               icon: "check_circle"
             });
             this.$store.commit("SET_FORM", result.model);
+            this.loading = false;
             this.confirmDialog = false;
             this.showAppOverview = false;
             this.paymentDialog = true;
           } else {
+            this.loading = false;
             this.$notifyError(result.errors);
           }
         })
         .catch(err => {
+          this.loading = false;
           console.log("ERROR: " + err);
           this.$notifyError(err);
         });
