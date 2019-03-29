@@ -42,7 +42,7 @@
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
+          </v-btn>Select the the Region, Province, City and Zip Code accordingly
         </v-tooltip>
       </template>
       <step-three slot="content-step-3" :form="form"></step-three>

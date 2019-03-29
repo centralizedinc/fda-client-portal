@@ -48,14 +48,16 @@
       height="35"
       width="calc(100% - 30px)"
       style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
-    >Contact Information
+    >
+      Contact Information
       <v-tooltip top>
         <v-btn slot="activator" flat icon small color="error">
           <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
-        </v-btn>Get Help
+        </v-btn>Note: Please indicate "N/A" for Not Applicable
+        <br>Email must be valid. Contact numbers should be active
       </v-tooltip>
     </v-sheet>
-    <p class="category ml-5">Note: Please indicate "N/A" for Not Applicable</p>
+    <!-- <p class="category ml-5">Note: Please indicate "N/A" for Not Applicable</p> -->
     <v-layout row wrap>
       <v-flex xs5 ml-5>
         <v-text-field
@@ -98,7 +100,7 @@
           :mask="mobile"
           v-model="form.estab_details.mobile"
           :disabled="form.application_type===2"
-          hint="Establisment's or administrator's mobile number"
+          hint="Establishment's or administrator's mobile number"
           class="input-group--focused"
         ></v-text-field>
       </v-flex>
@@ -111,11 +113,12 @@
       height="35"
       width="calc(100% - 30px)"
       style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
-    >Product Line
+    >
+      Product Line
       <v-tooltip top>
         <v-btn slot="activator" flat icon small color="error">
           <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
-        </v-btn>Get Help
+        </v-btn>Please add all applicable product line
       </v-tooltip>
     </v-sheet>
 

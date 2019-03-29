@@ -82,7 +82,7 @@
         <v-tooltip top>
           <v-btn slot="activator" flat icon small color="error">
             <v-icon small class="pb-1">fas fa-question</v-icon>
-          </v-btn>Get Help
+          </v-btn>We need to know the exact location of your Warehouse <br>This will make it easier for our Inspectors to locate it if necessary. <br>The easier it is for our Inspectors to locate, the faster your application will be processed
         </v-tooltip>
       </v-sheet>
       <!-- add button -->
@@ -236,7 +236,7 @@
       <v-tooltip top>
         <v-btn slot="activator" flat icon small color="error">
           <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
-        </v-btn>Get Help
+        </v-btn>Select the the Region, Province, City and Zip Code accordingly
       </v-tooltip>
     </v-sheet>
     <v-layout row wrap>
