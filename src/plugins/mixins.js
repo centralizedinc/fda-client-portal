@@ -194,6 +194,7 @@ export default {
           for (var i = 0; i < this.$store.state.places.regions.length; i++) {
             var region = this.$store.state.places.regions[i]
             if (region._id === id) {
+              console.log('###################region :', region);
               return region.name
             }else{
               found = true

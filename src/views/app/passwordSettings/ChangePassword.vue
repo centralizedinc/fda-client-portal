@@ -74,7 +74,7 @@
         </v-toolbar>
         <v-card-text
           class="title font-weight-thin"
-        >Are you sure you want to change your password? This action cannot be undone.</v-card-text>
+        >Do you want to proceed? This action cannot be undone.</v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-btn color="secondary" outline @click="dialog=false">Cancel</v-btn>

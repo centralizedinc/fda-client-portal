@@ -168,7 +168,7 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-btn flat color="error" @click="e1 = 2">Back</v-btn>
-                  <v-btn block color="success" @click="proceed">Submit</v-btn>
+                  <v-btn block color="success" @click="validateExisting">Submit</v-btn>
                 </v-card-actions>
               </v-stepper-content>
 
@@ -179,14 +179,14 @@
                       <user-account
                         slot="acctInfo"
                         :account="account"
-                        @keypress.enter="submitExisting"
+                        @keypress.enter="saveExisting"
                       ></user-account>
                     </v-flex>
                   </v-layout>
                 </v-container>
                 <v-divider></v-divider>
                 <v-card-actions>
-                  <v-btn block color="success" @click="submitExisting">Submit</v-btn>
+                  <v-btn block color="success" @click="saveExisting">Submit</v-btn>
                 </v-card-actions>
               </v-stepper-content>
             </v-stepper-items>
@@ -234,6 +234,12 @@ export default {
       ],
       existing_form: {},
       form: {
+        general_info: {
+        product_type: "",
+        primary_activity: "",
+        declared_capital: "",
+        addtl_activity: ""
+        },
         license_no: "",
         estab_details: {
           establishment_name: "",
@@ -248,8 +254,9 @@ export default {
           designation: "",
           email: ""
           // tin: ""
-        }
-      },
+        },
+        qualified: [],
+      },      
       account: {
         username: "",
         password: "",
@@ -287,10 +294,10 @@ export default {
         this.e1 = 4;
       }
     },
-    submitExisting() {
+    validateExisting() {
       this.form.auth_officer.fullname =
         this.form.auth_officer.lastname +
-        ", " +
+        "," +
         this.form.auth_officer.firstname +
         " " +
         this.form.auth_officer.middlename;
@@ -310,25 +317,8 @@ export default {
             message: "A confirmation email has been sent at",
             color: "warning",
             icon: "check_circle"
-          });
-          this.$store
-            .dispatch("SAVE_LICENSES", this.form)
-            .then(result => {
-              if (result.data.success) {
-                this.$notify({
-                  message: "You have successfully applied a new license",
-                  color: "success",
-                  icon: "check_circle"
-                });
-                this.$router.push("/login");
-              } else {
-                this.$notifyError(result.data.errors);
-              }
-            })
-            .catch(err => {
-              console.log("SAVE_LICENSES err: " + err);
-              this.$notifyError(err);
-            });
+          });          
+          this.e1 = 4;
         } else {
           this.$notify({
             message: "License not found",
@@ -338,6 +328,20 @@ export default {
           this.$router.push("/");
         }
       });
+    },
+    saveExisting() {
+      this.$store.dispatch("SAVE_LICENSES", this.form)
+          .then(result => {
+          this.$notify({
+            message: "You have successfully applied a new license",
+            color: "success",
+            icon: "check_circle"
+          })
+          this.$router.push("/")
+        })
+        .catch(err => {
+          console.log("error in uploading files: " + err);
+        });
     }
   }
 };

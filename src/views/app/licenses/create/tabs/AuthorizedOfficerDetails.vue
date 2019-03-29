@@ -90,11 +90,12 @@
         height="35"
         width="calc(100% - 30px)"
         style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
-      >Government Issued Identification Document
+      >
+        Government Issued Identification Document
         <v-tooltip top>
           <v-btn slot="activator" flat icon small color="error">
             <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
-          </v-btn>Get Help
+          </v-btn>Please make sure that the ID number is matched to the ID selected
         </v-tooltip>
       </v-sheet>
 
@@ -159,11 +160,12 @@
         height="35"
         width="calc(100% - 30px)"
         style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
-      >Mailing Address
+      >
+        Mailing Address
         <v-tooltip top>
           <v-btn slot="activator" flat icon small color="error">
             <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
-          </v-btn>Get Help
+          </v-btn>
         </v-tooltip>
       </v-sheet>
       <v-flex xs12>
