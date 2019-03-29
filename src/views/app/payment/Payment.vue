@@ -2,11 +2,11 @@
   <v-layout row wrap>
     <v-flex xs12 p1-2>
       <v-card>
-        <v-data-table
+        <v-data-table 
           :pagination.sync="pagination"
           :headers="headers"
           hide-actions
-          :items="details.cases"
+          :items="case_items"
           class="elevation-1"
         >
           <template slot="items" slot-scope="props">
@@ -75,7 +75,10 @@ export default {
   data() {
     return {
       form: {},
-      pagination: {},
+      pagination: {
+        sortBy: 'date_created',
+        descending: true
+      },
       charges: {},
       case_holder: {},
       callPendingTrans: false,
@@ -100,14 +103,14 @@ export default {
         },
         {
           text: "Date Created",
-          value: "date_created"
+          value: "date_created"        
         },
         {
           text: "Payment Status",
           value: "payment_status"
         }
         // { text: "Actions", value: "" }
-      ]
+      ],
     };
   },
   created() {
@@ -193,6 +196,15 @@ export default {
     // }
   },
   computed: {
+    case_items(){
+      var items = []
+      this.details.cases.forEach(caseDetails => {
+        if(!caseDetails.is_paid){
+          items.push(caseDetails)
+        }
+      })
+      return items
+    },
     pages() {
       if (
         this.pagination.rowsPerPage == null ||
