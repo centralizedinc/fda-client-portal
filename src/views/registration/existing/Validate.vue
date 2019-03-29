@@ -318,6 +318,7 @@ export default {
             color: "warning",
             icon: "check_circle"
           });          
+          this.proceed()
         } else {
           this.$notify({
             message: "License not found",

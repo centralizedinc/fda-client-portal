@@ -469,19 +469,19 @@ export default {
       // this.$download(this.form, "PAY");
       console.log("submit: " + JSON.stringify(this.full_details));
       if (
-        !this.isEmptyStrings([
-          this.full_details.card_details.number,
-          this.full_details.card_details.exp_month,
-          this.full_details.card_details.exp_year,
-          this.full_details.card_details.cvc,
-          this.full_details.card_details.name,
-          this.full_details.card_details.email,
-          this.full_details.card_details.address_line1,
-          this.full_details.card_details.regions,
-          this.full_details.card_details.provinces,
-          this.full_details.card_details.cities,
-          this.full_details.card_details.zip
-        ]) &&
+        // !this.isEmptyStrings([
+          isEmpty(this.full_details.card_details.number) &&
+          isEmpty(this.full_details.card_details.exp_month) &&
+          isEmpty(this.full_details.card_details.exp_year) &&
+          isEmpty(this.full_details.card_details.cvc) &&
+          isEmpty(this.full_details.card_details.name) &&
+          isEmpty(this.full_details.card_details.email) &&
+          isEmpty(this.full_details.card_details.address_line1) &&
+          isEmpty(this.full_details.card_details.region) &&
+          isEmpty(this.full_details.card_details.province) &&
+          isEmpty( this.full_details.card_details.city) &&
+          isEmpty(this.full_details.card_details.zip) &&
+        // ]) 
         !this.loading_cc &&
         !this.loading_cvc
       ) {
