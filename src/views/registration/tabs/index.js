@@ -1,4 +1,4 @@
-import {
+var {
     AuthorizedOfficerDetails,
     ConfirmDialog,
     DocumentsUpload,
@@ -6,17 +6,16 @@ import {
     GeneralInfo,
     OfficeAddress,
     QualifiedPersonnel
-} from "@/views/app/licenses/create/tabs";
+} = require("@/views/app/licenses/create/tabs");
 
-import {
+var {
     AppHistory,
     AppSummary,
     AppData,
     Files,
     OutputDocs,
     PaymentDetails
-}
-from "@/views/app/licenses/appoverview/tabs";
+} = require("@/views/app/licenses/appoverview/tabs");
 
 export default {
     FormLayout: () => import('@/components/FormLayout'),

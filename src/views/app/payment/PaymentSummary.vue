@@ -236,7 +236,8 @@ export default {
       cashierPayment: false,
       ecPayDialog: false,
       showCreditCard: false,
-      showPayLater: false
+      showPayLater: false,
+      dialogPayLater: false
       // bancnetDialog: false
     };
   },

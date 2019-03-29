@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     ApplicationOverview: () => import('@/components/ApplicationOverview.vue'),
     AppHistory: () => import('./AppHistory.vue'),
     AppSummary: () => import('./AppSummary.vue'),

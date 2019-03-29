@@ -327,46 +327,47 @@ export default {
           console.log("loading user status error: " + err);
         });
 
-
-
-
       this.details = this.$store.state.licenses.details;
       this.$store
         .dispatch("GET_ACTIVE_AND_CASES")
         .then(result => {
-          console.log("JSON.stringify(result) GET_ACTIVE_AND_CASES :", JSON.stringify(result));
+          console.log(
+            "JSON.stringify(result) GET_ACTIVE_AND_CASES :",
+            JSON.stringify(result)
+          );
           this.details = result;
           return this.$store.dispatch("GET_TASKS");
         })
         .then(result => {
           console.log("result GET_TASKS :", JSON.stringify(result));
           if (
-      this.form.general_info.product_type !== null &&
-      this.form.general_info.primary_activity !== null &&
-      // this.form.general_info.declared_capital !== null &&
-      this.form.application_type !== null
-    ) {
-      var details = {
-        productType: this.form.general_info.product_type,
-        primaryActivity: this.form.general_info.primary_activity,
-        declaredCapital: this.form.general_info.declared_capital,
-        appType: this.form.application_type
-      };
-      console.log("load fees view: " + JSON.stringify(details));
-      this.$store
-        .dispatch("GET_FEES", details)
-        .then(result => {
-          this.charges = result;
-          console.log(
-            "charges data payment details: " + JSON.stringify(this.charges)
-          );
-          return this.$store.dispatch("GET_ONE_CASE", this.form.case_no);
-        })
-        .then(result => {
-          console.log("get onse case @ view: " + JSON.stringify(result));
-          this.case_holder = result;
-        });
-    }
+            this.form.general_info.product_type !== null &&
+            this.form.general_info.primary_activity !== null &&
+            // this.form.general_info.declared_capital !== null &&
+            this.form.application_type !== null
+          ) {
+            var details = {
+              productType: this.form.general_info.product_type,
+              primaryActivity: this.form.general_info.primary_activity,
+              declaredCapital: this.form.general_info.declared_capital,
+              appType: this.form.application_type
+            };
+            console.log("load fees view: " + JSON.stringify(details));
+            this.$store
+              .dispatch("GET_FEES", details)
+              .then(result => {
+                this.charges = result;
+                console.log(
+                  "charges data payment details: " +
+                    JSON.stringify(this.charges)
+                );
+                return this.$store.dispatch("GET_ONE_CASE", this.form.case_no);
+              })
+              .then(result => {
+                console.log("get onse case @ view: " + JSON.stringify(result));
+                this.case_holder = result;
+              });
+          }
         })
         .catch(err => {
           console.log("err :", err);
