@@ -1,11 +1,11 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = 'https://fda-services.herokuapp.com/v1.0'
 
 export default class RegionType {
     constructor(token) {
-        this.token = token;
+        axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URI;
         axios.defaults.headers.common['Content-Type'] = 'application/json'
+        axios.defaults.headers.common['access_token'] = token;
     }
     //REGION
     getRegion(cb) {
@@ -51,20 +51,20 @@ export default class RegionType {
             })
     }
 
-    
+
     /**
      * @description promised based method for retrieving regions
      * @returns {Promise}
      */
-     getRegions(){
-         return axios.get('core/regions')
-     }
+    getRegions() {
+        return axios.get('core/regions')
+    }
 
-     /**
+    /**
      * @description promised based method for retrieving provinces
      * @returns {Promise}
      */
-    getProvinces(){
+    getProvinces() {
         return axios.get('core/provinces')
     }
 
@@ -72,7 +72,7 @@ export default class RegionType {
      * @description promised based method for retrieving cities
      * @returns {Promise}
      */
-    getCities(){
+    getCities() {
         return axios.get('core/city')
     }
 }

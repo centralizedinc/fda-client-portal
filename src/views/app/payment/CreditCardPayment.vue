@@ -4,6 +4,9 @@
       <v-card>
         <v-card-title class="display-1">Credit Card Details</v-card-title>
         <v-container grid-list-xl>
+          <v-form ref="form" v-model="valid">
+            
+          
           <v-layout row wrap>
             <v-flex xs12>
               <v-text-field
@@ -33,6 +36,7 @@
                     v-model="expiry_date"
                     label="Date Expiry"
                     prepend-icon="event"
+                    :rules="[rules.required]"
                     readonly
                     v-on="on">
                   </v-text-field>
@@ -77,12 +81,12 @@
                 :rules="[rules.required]"
               ></v-text-field>
             </v-flex>
-            <v-flex xs12>
+            <!-- <v-flex xs12>
               <v-text-field
                 label="Address Line 2"
                 v-model="full_details.card_details.address_line2"
               ></v-text-field>
-            </v-flex>
+            </v-flex> -->
             <v-flex xs12 md6 pa-2>
               <v-autocomplete
                 color="green darken-1"
@@ -132,7 +136,9 @@
                 :rules="[rules.required]"
               ></v-text-field>
             </v-flex>
+            
           </v-layout>
+          </v-form>
         </v-container>
         <v-divider></v-divider>
         <v-card-actions>
@@ -142,6 +148,7 @@
         </v-card-actions>
       </v-card>
     </v-flex>
+    
   </v-layout>
 </template>
 
@@ -151,6 +158,7 @@ export default {
   props: ["form"],
   data() {
     return {
+      valid:true,
       card_logo: "",
       loading_cc: false,
       loading_cvc: false,
@@ -384,6 +392,10 @@ export default {
       return false;
     },
     submit() {
+      this.$refs.form.validate()
+    },
+    submit1() {
+      this.$refs.form.validate()
       // console.log("props form data: " + JSON.stringify(this.form))
       // var form = {
       //   "current_task": "",
