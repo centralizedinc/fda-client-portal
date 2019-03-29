@@ -314,15 +314,20 @@ export default {
           this.$store
             .dispatch("SAVE_LICENSES", this.form)
             .then(result => {
-              this.$notify({
-                message: "You have successfully applied a new license",
-                color: "success",
-                icon: "check_circle"
-              });
-              this.$router.push("/login");
+              if (result.data.success) {
+                this.$notify({
+                  message: "You have successfully applied a new license",
+                  color: "success",
+                  icon: "check_circle"
+                });
+                this.$router.push("/login");
+              } else {
+                this.$notifyError(result.data.errors);
+              }
             })
             .catch(err => {
-              console.log("error in uploading files: " + err);
+              console.log("SAVE_LICENSES err: " + err);
+              this.$notifyError(err);
             });
         } else {
           this.$notify({

@@ -52,7 +52,8 @@ export default {
       default: false
     },
     loading: {
-      type: Boolean
+      type: Boolean,
+      default: false
     },
     disabled: {
       type: Boolean

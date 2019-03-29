@@ -62,16 +62,8 @@ var actions = {
   /**
    * @description invoke Registration API
    */
-  REGISTER: (context, account) => {
-    return new Promise((resolve, reject) => {
-      RegistrationAPI.register(account, (res, err) => {
-        if (!err) {
-          resolve(res)
-        } else {
-          reject(err)
-        }
-      });
-    })
+  REGISTER: (context, new_license) => {
+    return RegistrationAPI.register(new_license);
   },
 
   /**

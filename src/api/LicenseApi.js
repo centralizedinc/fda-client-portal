@@ -40,25 +40,16 @@ export default class LicenseAPI {
         })
     }
 
-    uploadLicenses(licenses, cb) {
-        axios.post('lto-api/upload/', licenses).then((result) => {
-            console.log("post licenses: " + JSON.stringify(result.data));
-            cb(result.data.model)
-        }).catch(err => {
-            console.log('##########error save uploadLicenses: ' + JSON.stringify(err))
-            cb(err)
-        })
+    uploadLicenses(formData) {
+        return axios.post('lto-api/upload/', formData)
     }
 
-    saveLicenses(licenses, cb) {
-        console.log('actions save licenses api: ' + JSON.stringify(licenses))
-        axios.post('lto-api/', licenses).then((result) => {
-            console.log("post licenses: " + JSON.stringify(result.data.model));
-            cb(result.data.model)
-        }).catch(err => {
-            console.log('##########error save saveLicenses: ' + JSON.stringify(err))
-            cb(err)
-        })
+    updateLicenseByID(id, license) {
+        return axios.post('lto-api/' + id, license)
+    }
+
+    saveLicenses(data) {
+        return axios.post('lto-api/', data.license)
     }
 
     applyLicense(lic_data) {
@@ -100,9 +91,51 @@ export default class LicenseAPI {
                     reject(err)
                 })
         })
+    }
 
+    applyLicenseWithAccount(lic_data) {
+        var saved_license = {};
+        var lic_case = {}
+        return new Promise((resolve, reject) => {
+            axios.post('public/accounts/register/', {
+                    license: lic_data.license,
+                    account: lic_data.account
+                })
+                // Save License Application first
+                .then(result1 => {
+                    console.log("RESULT SAVING LICENSE: " + JSON.stringify(result1.data))
+                    if (result1.data.success) {
+                        lic_case = result1.data.model;
+                        saved_license = result1.data.model.application.license;
+                        return axios.post('documents/uploads?account_id=' + saved_license.case_no, lic_data.upload)
+                    } else {
+                        resolve(result1.data)
+                    }
+                })
+                // upload file attachments to AWS S3
+                .then(result2 => {
+                    console.log("RESULT UPLOADING FILES: " + JSON.stringify(result2.data))
+                    var files = result2.data.model
+                    saved_license.uploaded_files = files;
+                    if (result2.data.success) {
+                        return axios.post('lto-api/' + saved_license._id, saved_license)
+                    } else {
+                        resolve(result2.data)
+                    }
 
+                })
+                // update license application merging uploaded files
+                .then(result3 => {
+                    console.log("RESULT UPDATING LICENSE: " + JSON.stringify(result3.data))
+                    lic_case.success = true;
+                    lic_case.application.license = result3.data.model;
+                    resolve(lic_case)
 
+                })
+                .catch(err => {
+                    reject(err)
+                })
+        })
     }
 
     modifyLicenses(licenses, cb) {
