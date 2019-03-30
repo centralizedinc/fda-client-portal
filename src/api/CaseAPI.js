@@ -26,7 +26,7 @@ export default class CaseAPI {
         //     cb(err)
         // })
     }
-    getCaseByCaseNumber(case_no){
+    getCaseByCaseNumber(case_no) {
         return axios.get('lto-api/case/case_id/' + case_no)
     }
 

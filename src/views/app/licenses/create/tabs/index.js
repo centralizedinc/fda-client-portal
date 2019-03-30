@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     AddToListDialog: () => import('./AddToListDialog.vue'),
     AuthorizedOfficerDetails: () => import('./AuthorizedOfficerDetails.vue'),
     ConfirmDialog: () => import('./ConfirmDialog.vue'),
