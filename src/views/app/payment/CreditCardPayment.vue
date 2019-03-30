@@ -392,6 +392,7 @@ export default {
       return false;
     },
     submit() {
+      //validate form
       this.$refs.form.validate()
       if (this.valid) {
         var paymentFee = this.$store.state.payments.fee;
