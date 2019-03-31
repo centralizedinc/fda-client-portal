@@ -401,6 +401,7 @@ export default {
         this.full_details.payment_details.description = paymentFee.description;
         this.full_details.transaction_details.application_type = this.form.application_type;
         this.full_details.transaction_details.case_no = this.form.case_no;
+        this.full_details.transaction_details.user_id = this.$store.state.user_session.user._id;
         this.full_details.transaction_details.order_payment.penalty =
           paymentFee.surcharge;
         console.log(

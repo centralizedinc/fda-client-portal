@@ -265,10 +265,15 @@ export default {
       );
     },
     creditCard() {
-      this.cashierPayment = false;
-      this.ecPayDialog = false;
-      this.showCreditCard = true;
-      // this.$router.push("/app/payments/creditcard");
+      var summary = [];
+      summary.push({description:'Application Fee', amount:this.fees_form.fee})      
+      summary.push({description:'LRF', amount:this.fees_form.lrf})
+      summary.push({description:'Surcharge', amount:this.fees_form.surcharge})      
+      this.$showCC({
+        summary,
+        case_no:this.form.case_no,
+        application_type:this.form.application_type
+      });      
     },
     payLater() {
       this.dialogPayLater = true;
