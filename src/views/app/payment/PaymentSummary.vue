@@ -248,7 +248,7 @@ export default {
   methods: {
     init() {
       this.app_form = this.form ? this.form : this.$store.state.licenses.form;
-      console.log("Welcome to payment summary");
+      console.log("Welcome to payment summary: " + JSON.stringify(this.charges));
       this.fees_form = this.charges
         ? this.charges
         : this.$store.state.payments.fee;

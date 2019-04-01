@@ -6,20 +6,19 @@
           :pagination.sync="pagination"
           :headers="headers"
           hide-actions
-          :items="case_items"
+          :items="transactions"
           class="elevation-1"
         >
           <template slot="items" slot-scope="props">
             <tr @click="loadForm(props.item.application_id)" class="data-row">
-              <td>{{ props.item.case_no }}</td>
-              <!-- <td>{{ props.item.case_no }}</td> -->
-              <td>{{ getAppType(props.item.application_type) }}</td>
-              <td>{{getCaseType(props.item.case_type)}}</td>
-              <td>{{ getTask(props.item.current_task).name }}</td>
+              
+              
+              <td>{{ props.item.transaction_id }}</td>
+              <td>{{ props.item.transaction_details.case_no }}</td>
+              <td>{{ getAppType(props.item.transaction_details.application_type) }}</td>
+              <td>{{ getModeOfPayment(props.item.payment_details.mode_of_payment) }}</td>
+              <td>{{ formatCurrency(props.item.payment_details.total_amount)}}</td>
               <td>{{ formatDate (props.item.date_created) }}</td>
-              <td
-                :class="props.item.is_paid ? 'paid': 'unpaid'"
-              >{{ props.item.is_paid ? "Paid" : "Unpaid" }}</td>
               <!-- <td>
               <v-layout row wrap>
                 <v-flex xs6>
@@ -74,11 +73,12 @@ export default {
   },
   data() {
     return {
+      transactions:[],
       form: {},
       pagination: {
         sortBy: 'date_created',
         descending: true
-        
+
       },
       charges: {},
       case_holder: {},
@@ -86,31 +86,30 @@ export default {
       mode: 0, // 0 - new, 1 - variation, 2 - renewal
       headers: [
         {
+          text:'Payment Transaction Id',
+          value:'transaction_id'
+        },
+        {
           text: "Case No",
           value: "case_no"
         },
         // { text: "License No", value: "case_no" },
         {
-          text: "Type",
+          text: "Application Type",
           value: "application_type"
         },
         {
-          text: "Case Type",
-          value: "case_type"
+          text: "Mode of Payment",
+          value: "mode_of_payment"
         },
         {
-          text: "Current Task",
-          value: "current_task"
+          text: "Amount",
+          value: "Amount"
         },
         {
-          text: "Date Created",
+          text: "Date Paid",
           value: "date_created"        
         },
-        {
-          text: "Payment Status",
-          value: "payment_status"
-        }
-        // { text: "Actions", value: "" }
       ],
     };
   },
@@ -118,20 +117,29 @@ export default {
     this.init();
   },
   methods: {
-    init() {
-      this.details = this.$store.state.licenses.details;
-      this.$store
-        .dispatch("GET_ACTIVE_AND_CASES")
-        .then(result => {
-          this.details = result;
-          return this.$store.dispatch("GET_TASKS");
-        })
-        .then(result => {
-          console.log("result :", result);
-        })
-        .catch(err => {
-          console.log("err :", err);
-        });
+    init() {       
+      this.$store.dispatch('FIND_PAYMENTS', this.$store.state.user_session.user._id) 
+      .then(results=>{
+        if(results.data.success){
+          console.log('RESULT:' + JSON.stringify(results.data.model))
+          this.transactions = results.data.model
+        }
+      })
+      .catch(err=>{
+        console.log('ERROR: ' + err)
+      }) 
+      // this.$store
+      //   .dispatch("GET_ACTIVE_AND_CASES")
+      //   .then(result => {
+      //     this.details = result;
+      //     return this.$store.dispatch("GET_TASKS");
+      //   })
+      //   .then(result => {
+      //     console.log("result :", result);
+      //   })
+      //   .catch(err => {
+      //     console.log("err :", err);
+      //   });
     },
     viewForm() {
       this.$store.commit("SET_VIEW_LICENSE", this.details.license_details);

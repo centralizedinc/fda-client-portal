@@ -45,7 +45,7 @@ const mutations = {
 
 var actions = {
     FIND_PAYMENTS(context, user_id){
-
+        return new PaymentAPI(context.rootState.user_session.token).getPayments(user_id)
     },
     VALIDATE_CREDIT_CARD(context, creditCard) {
         return new Promise((resolve, reject) => {

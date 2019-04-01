@@ -243,10 +243,23 @@ export default {
             });
             this.$store.commit("SET_FORM", result.model);
             this.confirmDialog = false;
-            this.paymentDialog = true;
+            
+            //find fees
+            var details = {
+                productType: this.updatedForm.general_info.product_type,
+                primaryActivity: this.updatedForm.general_info.primary_activity,
+                declaredCapital: this.updatedForm.general_info.declared_capital,
+                appType: this.updatedForm.application_type
+              };
+            return this.$store.dispatch("GET_FEES", details)
+                
           } else {
             this.$notifyError(result.errors);
           }
+        })
+        .then(payment_fees =>{
+          this.charges = payment_fees;
+          this.paymentDialog = true;
         })
         .catch(err => {
           console.log("Saving variation err :", err);

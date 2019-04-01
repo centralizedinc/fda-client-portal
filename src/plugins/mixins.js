@@ -259,6 +259,10 @@ export default {
             return prod_line ? prod_line : {}
           }
         },
+        getModeOfPayment(mode){
+          var mode_of_payment = ["Online Payment (Creditcard)", "Cash", "Credit Card (Cashier)", "Check", "Online Payment (EC)"]
+          return mode_of_payment[mode]
+        },
         deepCopy(obj) {
           return JSON.parse(JSON.stringify(obj));
         },
