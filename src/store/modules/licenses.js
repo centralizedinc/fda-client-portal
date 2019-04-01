@@ -185,6 +185,11 @@ var actions = {
     },
     SAVE_NEW_LICENSE(context, data) {
         return new LicenseAPI(context.rootState.user_session.token).applyLicenseWithAccount(data);
+    },
+
+    // Result of License Evaluation
+    GET_RESULT_BY_KEY(context, key) {
+        return new LicenseAPI().getResultByKey(key);
     }
 }
 

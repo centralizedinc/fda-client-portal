@@ -104,6 +104,11 @@ var router = new Router({
           path: '/password/reset/:token',
           name: 'Reset Password',
           component: () => import('@/views/app/passwordSettings/ResetPassword.vue')
+        },
+        {
+          path: '/result/license/:key',
+          name: 'License Result',
+          component: () => import('@/views/LicenseResult.vue')
         }
       ]
 
