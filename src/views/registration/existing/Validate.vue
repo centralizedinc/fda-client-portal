@@ -330,7 +330,7 @@ export default {
       });
     },
     saveExisting() {
-      this.$store.dispatch("SAVE_LICENSES", this.form)
+      this.$store.dispatch("SAVE_EXISTING_LICENSES", this.form)
           .then(result => {
           this.$notify({
             message: "You have successfully applied a new license",

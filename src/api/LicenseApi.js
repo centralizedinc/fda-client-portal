@@ -49,9 +49,14 @@ export default class LicenseAPI {
     }
 
     saveLicenses(data) {
+        console.log("save licenses data: " + JSON.stringify(data))
         return axios.post('lto-api/', data.license)
     }
 
+    saveExistingLicenses(data) {
+        console.log("save licenses data: " + JSON.stringify(data))
+        return axios.post('lto-api/save/existing/license', data.license)
+    }
     applyLicense(lic_data) {
         var saved_license = {};
         var lic_case = {}
@@ -152,7 +157,7 @@ export default class LicenseAPI {
 
     verifyExistingLicenses(licenses, cb) {
         console.log("api existing licenses: " + JSON.stringify(licenses))
-        axios.get('lto-api/verify/', licenses).then((result) => {
+        axios.get('lto-api/verify/existing/license', licenses).then((result) => {
             cb(result.data.model)
         }).catch(err => {
             cb(err)
