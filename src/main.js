@@ -7,6 +7,7 @@ import store from './store'
 import axios from 'axios'
 import NProgress from 'nprogress';
 import notify from "@/plugins/notify";
+import creditcard from "@/plugins/creditcard";
 // import print from "@/plugins/print";
 import print from 'fda-pdf-printer-plugin'
 import mixins from "@/plugins/mixins"
@@ -27,11 +28,12 @@ Vue.prototype.$http = axios
 
 Vue.use(vtooltip)
 Vue.use(notify, store)
+Vue.use(creditcard, store)
 Vue.use(print)
 Vue.use(mixins)
 Vue.use(VueGoogleMaps, {
-  load:{
-    key:'AIzaSyB-cPzUnnkk0E_4pYYYiPk0zo9q4tvqqrs',
+  load: {
+    key: 'AIzaSyB-cPzUnnkk0E_4pYYYiPk0zo9q4tvqqrs',
     libraries: 'places'
   }
 })

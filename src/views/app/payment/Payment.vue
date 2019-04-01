@@ -78,6 +78,7 @@ export default {
       pagination: {
         sortBy: 'date_created',
         descending: true
+        
       },
       charges: {},
       case_holder: {},

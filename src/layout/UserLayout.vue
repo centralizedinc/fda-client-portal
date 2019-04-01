@@ -2,6 +2,7 @@
   <v-app>
     <!-- <v-container fluid class="bg2"> -->
     <notification></notification>
+    <credit-card></credit-card>
     <v-navigation-drawer app :mini-variant="mini" width="250" v-model="showNav">
       <v-toolbar
         dark
@@ -314,8 +315,9 @@
 
 <script>
 import notification from "@/components/Notification";
+import creditCard from "@/components/CreditCardDialog"
 export default {
-  components: { notification },
+  components: { notification, creditCard },
   //#########################
   // variables
   //#########################

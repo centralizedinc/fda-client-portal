@@ -392,7 +392,46 @@ export default {
       return false;
     },
     submit() {
+      //validate form
       this.$refs.form.validate()
+      if (this.valid) {
+        var paymentFee = this.$store.state.payments.fee;
+        console.log("payment fee data: " + JSON.stringify(paymentFee));
+        this.full_details.payment_details.amount = paymentFee.total;
+        this.full_details.payment_details.description = paymentFee.description;
+        this.full_details.transaction_details.application_type = this.form.application_type;
+        this.full_details.transaction_details.case_no = this.form.case_no;
+        this.full_details.transaction_details.user_id = this.$store.state.user_session.user._id;
+        this.full_details.transaction_details.order_payment.penalty =
+          paymentFee.surcharge;
+        console.log(
+          "creadit card payment charges data: " +
+            JSON.stringify(paymentFee.total)
+        );
+        console.log("full details: " + JSON.stringify(this.full_details));
+        this.$store
+          .dispatch("SAVE_PAYMENT", this.full_details)
+          .then(result => {
+            console.log("saved payment " + JSON.stringify(result));
+            this.$router.push("/");
+            this.$notify({
+              message: "Payment success",
+              color: "primary",
+              initialMargin: 100
+            });
+          })
+          .catch(err => {
+            console.log("ERROR: " + err);
+            this.$notifyError(err);
+          });
+        // this.$router.push("/app/payments/summary");
+      } else {
+        this.$notify({
+          message: "Please enter all fields & correctly",
+          color: "warning",
+          initialMargin: 100
+        });
+      }
     },
     submit1() {
       this.$refs.form.validate()

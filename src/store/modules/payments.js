@@ -5,7 +5,11 @@ const state = {
     credit_card: null,
     cvv: null,
     expiry: null,
-    fee: null
+    fee: null,
+    payment_details:{
+        summary:[]
+    },
+    showCCDialog:false
 }
 
 const mutations = {
@@ -26,10 +30,23 @@ const mutations = {
         state.cvv = null
         state.expiry = null
         state.fee = null
+    },
+    SET_PAYMENT_HISTORY(state, payments){
+        state.payment_history = payments
+    },
+    SHOW_CC_DIALOG(state, payment_details){
+        state.payment_details = payment_details
+        state.showCCDialog = true;
+    },
+    HIDE_CC_DIALOG(state){
+        state.showCCDialog = false;
     }
 }
 
 var actions = {
+    FIND_PAYMENTS(context, user_id){
+
+    },
     VALIDATE_CREDIT_CARD(context, creditCard) {
         return new Promise((resolve, reject) => {
             new PaymentAPI(context.rootState.user_session.token).creditCard(creditCard, (credit, err) => {

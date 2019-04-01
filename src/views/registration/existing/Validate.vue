@@ -235,10 +235,10 @@ export default {
       existing_form: {},
       form: {
         general_info: {
-        product_type: "",
-        primary_activity: "",
-        declared_capital: "",
-        addtl_activity: ""
+          product_type: "",
+          primary_activity: "",
+          declared_capital: "",
+          addtl_activity: ""
         },
         license_no: "",
         estab_details: {
@@ -255,8 +255,8 @@ export default {
           email: ""
           // tin: ""
         },
-        qualified: [],
-      },      
+        qualified: []
+      },
       account: {
         username: "",
         password: "",
@@ -317,7 +317,7 @@ export default {
             message: "A confirmation email has been sent at",
             color: "warning",
             icon: "check_circle"
-          });          
+          });
           this.e1 = 4;
         } else {
           this.$notify({
@@ -330,14 +330,21 @@ export default {
       });
     },
     saveExisting() {
+<<<<<<< HEAD
       this.$store.dispatch("SAVE_EXISTING_LICENSES", this.form)
           .then(result => {
+=======
+      this.$store
+        .dispatch("SAVE_LICENSES", this.form)
+        .then(result => {
+          this.$emit("close");
+>>>>>>> 434a86ec4c8f9912b89dd9148fe274261d2a1db6
           this.$notify({
             message: "You have successfully applied a new license",
             color: "success",
             icon: "check_circle"
-          })
-          this.$router.push("/")
+          });
+          this.$router.push("/");
         })
         .catch(err => {
           console.log("error in uploading files: " + err);
