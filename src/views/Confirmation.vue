@@ -33,16 +33,16 @@
     </v-flex>
     <v-dialog v-model="dialog" persistent max-width="300px" transition="dialog-transition">
       <v-card>
-        <v-toolbar dark color="primary">
+        <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
           <span class="title font-weight-light">Confirmation</span>
         </v-toolbar>
         <v-card-text>
-          <span class="font-weight-thin">Confirmation was already sent to your email.</span>
+          <span class="font-weight-thin">Confirmation already sent to your email.</span>
           <v-divider></v-divider>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="home()">Ok</v-btn>
+          <v-btn color="success" @click="home()">Ok</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -22,7 +22,7 @@
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
+          </v-btn>Avoid using numbers on Establishment Owner field
         </v-tooltip>
       </template>
       <step-one slot="content-step-1" :form="form"></step-one>
@@ -52,7 +52,7 @@
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
+          </v-btn>Should be someone that can be contacted anytime
         </v-tooltip>
       </template>
       <step-four slot="content-step-4" :form="form"></step-four>
@@ -62,7 +62,9 @@
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
+          </v-btn>Provide at least one (1) Qualified Personnel
+          <br>Must be active and present to avoid delay of application
+          <br>To validate information, make sure all fields are correct
         </v-tooltip>
       </template>
       <step-five slot="content-step-5" :form="form"></step-five>
@@ -72,7 +74,9 @@
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
+          </v-btn>Upload multiple files by dragging and dropping
+          <br>Files should be renamed accordingly and must be in PDF format for faster transaction
+          <br>Compress files if needed
         </v-tooltip>
       </template>
       <step-six slot="content-step-6" :form="form" @upload="uploadFile" style="width: 100%"></step-six>
@@ -82,7 +86,7 @@
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
+          </v-btn>Create your username and password <br> This will be used to login to FDA 3.0 
         </v-tooltip>
       </template>
       <step-seven slot="content-step-7" :account="account"></step-seven>

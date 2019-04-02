@@ -34,7 +34,7 @@
     <v-flex xs12>
       <v-divider></v-divider>
     </v-flex>
-    <v-btn block color="success">Back to Main</v-btn>
+    <v-btn block color="secondary" @click="$router.push('/app')">Back to Main</v-btn>
   </v-layout>
 </template>
 

@@ -122,7 +122,7 @@
                               </v-list>
                               <v-divider></v-divider>
                               <v-card-actions>
-                                <v-btn flat block color="success">view more</v-btn>
+                                <v-btn flat block color="primary">view more</v-btn>
                               </v-card-actions>
                             </v-flex>
                           </v-card>

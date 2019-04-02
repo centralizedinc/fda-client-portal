@@ -36,7 +36,7 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn flat color="success" @click="validateLicense">Continue</v-btn>
+                  <v-btn flat color="primary" @click="validateLicense">Continue</v-btn>
                 </v-card-actions>
               </v-stepper-content>
 
@@ -81,7 +81,7 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn flat color="error" @click="e1 = 1">Back</v-btn>
+                  <v-btn flat outline color="secondary" @click="e1 = 1">Back</v-btn>
                   <v-btn flat color="success" @click="e1 = 3">Continue</v-btn>
                 </v-card-actions>
               </v-stepper-content>
@@ -167,7 +167,7 @@
                 </v-container>
                 <v-divider></v-divider>
                 <v-card-actions>
-                  <v-btn flat color="error" @click="e1 = 2">Back</v-btn>
+                  <v-btn flat outline color="secondary" @click="e1 = 2">Back</v-btn>
                   <v-btn block color="success" @click="validateExisting">Submit</v-btn>
                 </v-card-actions>
               </v-stepper-content>

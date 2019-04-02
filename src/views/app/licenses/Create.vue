@@ -35,7 +35,7 @@
         <v-tooltip left>
           <v-btn slot="activator" flat icon color="error">
             <i class="fas fa-question fa-lg"></i>
-          </v-btn>Avoid using numbers on Establishment Owner field
+          </v-btn>Avoid using numbers on Establishment Owner field 
         </v-tooltip>
       </template>
       <step-two slot="content-step-2" :form="form"></step-two>
@@ -80,7 +80,6 @@
           </v-btn>Upload multiple files by dragging and dropping
           <br>Files should be renamed accordingly and must be in PDF format for faster transaction
           <br>Compress files if needed
-          <br>
         </v-tooltip>
       </template>
       <step-six slot="content-step-6" :form="form" @upload="uploadFile" style="width: 100%"></step-six>
@@ -368,7 +367,7 @@ export default {
                 result.model.case_details.case_no,
               color: "success",
               icon: "check_circle"
-            });
+            }); this.$router.push('/app')
             this.$store.commit("SET_FORM", result.model);
             this.loading = false;
             this.confirmDialog = false;

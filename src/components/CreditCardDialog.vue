@@ -7,8 +7,8 @@
     transition="dialog-transition"
 >
       <v-card>
-          <v-toolbar dark color="primary">
-              <span class="title">Credit Card Payment</span>
+          <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
+             <span class="font-weight-light headline">Payment via Credit Card</span>
           </v-toolbar>
           <v-card-text> 
             <v-layout row wrap>
@@ -32,7 +32,7 @@
                     <td class="font-weight-bold" >₱ {{ numberWithCommas(total_amount) }}</td> 
                   </template>
                   </v-data-table> 
-                  <span class="pt-5 mt-5 caption primary--text">Note: For credit card transactions, an additional of 20.00 Pesos was charged as a convinience fee.</span>                 
+                  <span class="pt-5 mt-5 caption primary--text">Note: For credit card transactions, an additional Php20.00 will be charged for convenience fee.</span>                 
                 </v-layout>                                      
               </v-flex>
               <v-flex xs1 pl-4>
@@ -90,6 +90,7 @@
                             v-model="expiry_date"
                             label="Date Expiry"
                             append-icon="event"
+                            color="green darken-1"
                             :rules="[rules.required]"
                             readonly
                             v-on="on">
@@ -97,6 +98,7 @@
                         </template>
                         <v-date-picker 
                           v-model="dateFormatted"
+                          color="green darken-1"
                           type="month"
                           no-title
                           scrollable
@@ -207,7 +209,7 @@
                 
           <v-spacer></v-spacer>
           <v-btn color="secondary" outline @click="hide()">Cancel</v-btn>          
-          <v-btn color="primary" :loading="isLoading" @click="submit">Submit</v-btn>
+          <v-btn color="success" :disabled="isLoading" :loading="isLoading" @click="submit">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -311,7 +313,7 @@ export default {
             this.$notify({
               message:
                 "You entered a " + creditCard.card.type + " credit card number",
-              color: "primary",
+              color: "success",
               icon: "check_circle",
               initialMargin: 100
             });
@@ -343,7 +345,7 @@ export default {
           if (cvv.isValid) {
             this.$notify({
               message: "Valid CVC number",
-              color: "primary",
+              color: "success",
               icon: "check_circle",
               initialMargin: 100
             });
@@ -416,7 +418,7 @@ export default {
             if (result.data.model.isValid) {
               this.$notify({
                 message: "Valid Date Expiry",
-                color: "primary",
+                color: "success",
                 icon: "check_circle",
                 initialMargin: 100
               });
@@ -454,8 +456,8 @@ export default {
             this.$router.push("/app/payments");
             this.$hideCC();
             this.$notify({
-              message: "Payment success! The official reciept was sent to your email (" + this.full_details.card_details.email+")",
-              color: "primary",
+              message: "Payment success! The official receipt was sent to your email (" + this.full_details.card_details.email+")",
+              color: "success",
               initialMargin: 100
             });
           })
@@ -466,6 +468,7 @@ export default {
           });
         // this.$router.push("/app/payments/summary");
       } else {
+        this.isLoading = false;
         this.$notify({
           message: "Please enter all fields & correctly",
           color: "warning",

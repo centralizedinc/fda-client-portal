@@ -185,8 +185,8 @@
           <v-data-table :headers="headers" :items="form.addresses.warehouse" class="elevation-1">
             <template slot="items" slot-scope="props">
               <td>{{props.item.address}}</td>
-              <td>{{props.item.city}}</td>
-              <td>{{props.item.province}}</td>
+              <td>{{getCityName(props.item.city)}}</td>
+              <td>{{getProvinceName(props.item.province)}}</td>
               <td>{{props.item.zipcode}}</td>
               <td>
                 <v-layout row wrap>

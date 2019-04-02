@@ -170,7 +170,7 @@
             <td>{{props.item.id_no}}</td>
             <td>
               <v-layout row wrap>
-                <v-flex xs3>
+                <v-flex xs4>
                   <v-tooltip top>
                     <v-btn
                       slot="activator"
@@ -183,7 +183,7 @@
                     </v-btn>Edit item
                   </v-tooltip>
                 </v-flex>
-                <v-flex xs3>
+                <v-flex xs4>
                   <v-tooltip top>
                     <v-btn
                       slot="activator"
