@@ -25,9 +25,9 @@
         "description": "Change of key personnel for Quality Assurance, Quality Control, Production Manager, Authorized Person and Pharmacist",
         "code": "MN5",
         "fields": [
-            "auth_officer.last_name",
-            "auth_officer.first_name",
-            "auth_officer.middle_name",
+            "auth_officer.lastname",
+            "auth_officer.firstname",
+            "auth_officer.middlename",
             "auth_officer.email"
         ]
     }, {
