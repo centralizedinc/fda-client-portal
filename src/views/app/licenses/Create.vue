@@ -367,7 +367,7 @@ export default {
                 result.model.case_details.case_no,
               color: "success",
               icon: "check_circle"
-            }); this.$router.push('/app')
+            }); 
             this.$store.commit("SET_FORM", result.model);
             this.loading = false;
             this.confirmDialog = false;

@@ -181,7 +181,7 @@
                       outline
                         label="*Zip Code"
                         v-model="full_details.card_details.zip"
-                        mask="#####"
+                        mask="####"
                         :rules="[rules.required]"
                       ></v-text-field>
                     </v-flex>
