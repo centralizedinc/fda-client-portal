@@ -334,7 +334,7 @@ export default {
               message: "You have successfully applied a new license",
               color: "success",
               icon: "check_circle"
-            });
+            }); this.$router.push('/')
             this.confirmDialog = false;
             this.showAppOverview = false;
             this.paymentDialog = true;

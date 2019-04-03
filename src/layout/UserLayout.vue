@@ -233,7 +233,7 @@
           </v-list-tile>
         </v-list>
       </v-menu>
-      <v-btn icon>
+      <v-btn icon v-show="!isMiniView" @click="showNav=!showNav">
         <v-icon small>fas fa-indent</v-icon>
       </v-btn>
       <v-btn flat icon v-if="isMiniView" @click="showNav=!showNav">

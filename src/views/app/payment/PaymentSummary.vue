@@ -290,10 +290,11 @@ export default {
             this.$download(full_details, "PAY");
             console.log("application form data: " + JSON.stringify(this.app_form));
             console.log("fees form data: " + JSON.stringify(this.fees_form));
-            OrderOfPaymentGenerator.generateOrderOfPayment(
-                this.app_form,
-                this.fees_form
-            );
+            
+            // OrderOfPaymentGenerator.generateOrderOfPayment(
+            //     this.app_form,
+            //     this.fees_form
+            // );
         }
     }
 };

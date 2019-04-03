@@ -13,7 +13,7 @@
                     <v-layout row wrap class="subheading">
                         <v-flex xs6 class="font-weight-light">Application Type:</v-flex>
                         <v-flex xs6 class="font-weight-light">{{getAppType (license_details.application_type)}} Application</v-flex>
-                        <v-flex xs6 class="font-weight-light"> Establishment Name:</v-flex>
+                        <v-flex xs6 class="font-weight-light"> Establishment Address:</v-flex>
                         <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_name}}</v-flex>
                         <v-flex xs6 class="font-weight-light"> Establishment Owner:</v-flex>
                         <v-flex xs6 class="font-weight-light"> {{license_details.addresses.office.address}}</v-flex>

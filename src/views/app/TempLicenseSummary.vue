@@ -96,7 +96,7 @@
                           </v-card>
 
                           <!-- COmpliance -->
-                          <v-card flat v-show="window===6">
+                          <!-- <v-card flat v-show="window===6">
                             <v-flex mt-3 ml-2>
                               <v-list two-line width>
                                 <template v-for="(item, index) in items">
@@ -125,7 +125,7 @@
                                 <v-btn flat block color="primary">view more</v-btn>
                               </v-card-actions>
                             </v-flex>
-                          </v-card>
+                          </v-card> -->
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -285,7 +285,6 @@ export default {
       "Output Documents",
       "History",
       "Payment",
-      "Compliance"
     ],
     items: [
       { header: "Today" },
