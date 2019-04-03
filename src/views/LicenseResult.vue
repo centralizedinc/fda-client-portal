@@ -16,7 +16,7 @@
                         <v-flex xs6 class="font-weight-light"> Establishment Name:</v-flex>
                         <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_name}}</v-flex>
                         <v-flex xs6 class="font-weight-light"> Establishment Owner:</v-flex>
-                        <v-flex xs6 class="font-weight-light"> {{license_details.addresses.office.address}}</v-flex>
+                        <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_owner}}</v-flex>
                     </v-layout>
                     <br>
                     <span class="headline text--center font-weight-light"> This application has been <b class="red--text">DISAPPROVED.</b>
@@ -55,7 +55,8 @@ export default {
   data() {
     return {
       license_details: {
-        estab_details: {}
+        estab_details: {},
+        addresses: {}
       },
       case_details: {},
       client_details: {
@@ -101,7 +102,7 @@ export default {
         establishment_address: this.license_details.addresses.office.address,
         application_type: this.getAppType(
           this.license_details.application_type
-        ),
+        ) + " Application",
         case_no: this.case_details.case_no,
         reasons: this.director.remarks
       };
