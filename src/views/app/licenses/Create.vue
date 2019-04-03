@@ -154,12 +154,7 @@ export default {
         landline: "",
         fax: "",
         mobile: "",
-        products: [
-          {
-            prod_line: "",
-            remarks: ""
-          }
-        ]
+        products: []
       },
       addresses: {
         office: {
