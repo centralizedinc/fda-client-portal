@@ -97,7 +97,7 @@
       <app-data slot="appdata" :form="form"></app-data>
       <uploaded-files slot="uploadedfiles" :form="form"></uploaded-files>
       <output-docs slot="outputdocs" :form="form"></output-docs>
-      <app-history slot="apphistory" :form="form"></app-history>
+      <!-- <app-history slot="apphistory" :form="form"></app-history> -->
       <payment slot="paymentdetails" :form="form" :charges="charges"></payment>
     </application-overview>
   </div>
@@ -362,7 +362,7 @@ export default {
                 result.model.case_details.case_no,
               color: "success",
               icon: "check_circle"
-            }); 
+            });
             this.$store.commit("SET_FORM", result.model);
             this.loading = false;
             this.confirmDialog = false;

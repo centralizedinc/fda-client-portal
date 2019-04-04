@@ -103,7 +103,7 @@
       <app-data slot="appdata" :form="form"></app-data>
       <uploaded-files slot="uploadedfiles" :form="form"></uploaded-files>
       <output-docs slot="outputdocs" :form="form"></output-docs>
-      <app-history slot="apphistory" :form="form"></app-history>
+      <!-- <app-history slot="apphistory" :form="form"></app-history> -->
       <payment slot="paymentdetails" :form="form" :charges="charges"></payment>
     </application-overview>
     <v-btn
@@ -334,7 +334,8 @@ export default {
               message: "You have successfully applied a new license",
               color: "success",
               icon: "check_circle"
-            }); this.$router.push('/')
+            });
+            this.$router.push("/");
             this.confirmDialog = false;
             this.showAppOverview = false;
             this.paymentDialog = true;

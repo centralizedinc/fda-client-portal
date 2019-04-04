@@ -72,7 +72,7 @@
                           <!-- Application History -->
                           <v-card flat v-show="window===4">
                             <v-container grid-list-md text-xs-left>
-                              <app-history :form="form"></app-history>
+                              <app-history :form="form" :case_holder="case_holder"></app-history>
                             </v-container>
                           </v-card>
 
@@ -284,7 +284,7 @@ export default {
       "Uploaded Files",
       "Output Documents",
       "History",
-      "Payment",
+      "Payment"
     ],
     items: [
       { header: "Today" },

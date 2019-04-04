@@ -74,7 +74,7 @@
             <app-data slot="appdata" :form="updatedForm"></app-data>
             <uploaded-files slot="uploadedfiles" :form="updatedForm"></uploaded-files>
             <output-docs slot="outputdocs" :form="updatedForm"></output-docs>
-            <app-history slot="apphistory" :form="updatedForm"></app-history>
+            <!-- <app-history slot="apphistory" :form="updatedForm"></app-history> -->
             <payment slot="paymentdetails" :form="updatedForm" :charges="charges"></payment>
         </application-overview>
     </v-container>
