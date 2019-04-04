@@ -38,8 +38,8 @@ export default {
           var app_type = ["Initial", "Variation", "Renewal"]
           return app_type[type];
         },
-        getActStatus(status) {
-          var act_status = ["Approved", "Recommend for Compliance", "Denied"]
+        getActStatus(status, recommended_task) {
+          var act_status = ["Approved", `Recommend for ${recommended_task}`, "Denied"]
           return act_status[status]
         },
         getCaseType(type) {
