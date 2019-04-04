@@ -46,16 +46,16 @@ export default {
           var case_type = ["License", "Certificate", "Registerd User"]
           return case_type[type]
         },
-        numberMask(number){
+        numberMask(number) {
           var length = number.length
           var final = null
-          if(length === 12){
+          if (length === 12) {
             final = number.replace(/(\d{3})(\d{3})(\d{3})(\d{3})/, "$1 - $2 - $3 - $4")
-          }else if(length === 11){
+          } else if (length === 11) {
             final = number.replace(/(\d{4})(\d{3})(\d{4})/, "($1) - $2 - $3")
-          }else if(length === 10){
+          } else if (length === 10) {
             final = number.replace(/(\d{2})(\d{4})(\d{4})/, "($1) - $2 - $3")
-          }          
+          }
           return final
         },
         getTask(task_id) {
@@ -128,18 +128,6 @@ export default {
             return ''
           }
         },
-        getAdminName(admin_id) {
-          if (this.$store.state.user_session.admin_user) {
-            console.log('admin_id :', admin_id + " ::: " + JSON.stringify(this.$store.state.user_session.admin_user));
-            var admin = this.$store.state.user_session.admin_user.find(x => {
-              return x._id.toString() === admin_id;
-            });
-            console.log("returned task: " + JSON.stringify(admin))
-            return admin ? admin : {};
-          } else {
-            return null;
-          }
-        },
         numberWithCommas(x) {
           return x ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00';
         },
@@ -196,11 +184,11 @@ export default {
             if (region._id === id) {
               console.log('###################region :', region);
               return region.name
-            }else{
+            } else {
               found = true
-            } 
+            }
           }
-          if(found){
+          if (found) {
             return "";
           }
         },
@@ -210,11 +198,11 @@ export default {
             var province = this.$store.state.places.provinces[i]
             if (province._id === id) {
               return province.name
-            }else{
+            } else {
               found = true
-            } 
+            }
           }
-          if(found){
+          if (found) {
             return "";
           }
         },
@@ -224,11 +212,11 @@ export default {
             var city = this.$store.state.places.city[i]
             if (city._id === id) {
               return city.name
-            }else{
+            } else {
               found = true
-            } 
+            }
           }
-          if(found){
+          if (found) {
             return "";
           }
         },

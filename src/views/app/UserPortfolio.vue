@@ -125,12 +125,7 @@ export default {
           });
           return this.$store.dispatch("GET_TASKS");
         })
-        .then(result => {
-          return this.$store.dispatch("GET_ADMIN");
-        })
-        .then(result => {
-          console.log("result of get admin: " + JSON.stringify(result));
-        })
+        .then(result => {})
         .catch(err => {
           console.log("err :", err);
         });

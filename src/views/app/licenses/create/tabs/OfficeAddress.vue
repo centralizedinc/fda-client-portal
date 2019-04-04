@@ -139,7 +139,6 @@
               :items="filtered_warehouse_provinces"
               item-text="name"
               item-value="_id"
-              @change="getCities"
               hide-no-data
               hide-selected
               label="Province"
