@@ -78,12 +78,11 @@
         ></v-text-field>
       </v-flex>
       <v-flex xs12>
-        <v-text-field
+        <v-textarea
           color="green darken-1"
-          multi-line
           label="Supplier's Complete Address"
           v-model="form.estab_info.supplier_address"
-        ></v-text-field>
+        ></v-textarea>
       </v-flex>
       <v-flex xs12>
         <v-text-field
@@ -110,12 +109,11 @@
       ></v-text-field>
     </v-flex>
     <v-flex xs12>
-      <v-text-field
+      <v-textarea
         color="green darken-1"
-        multi-line
         label="Supplier's Complete Address"
         v-model="form.estab_info.supplier_address"
-      ></v-text-field>
+      ></v-textarea>
     </v-flex>
     <v-flex xs12>
       <v-text-field
@@ -125,12 +123,11 @@
       ></v-text-field>
     </v-flex>
     <v-flex xs12>
-      <v-text-field
-        multi-line
+      <v-textarea
         color="green darken-1"
         label="Manufacturer's Complete Address"
         v-model="form.estab_info.manufacturer_address"
-      ></v-text-field>
+      ></v-textarea>
     </v-flex>
   </v-layout>
 </template>

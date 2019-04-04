@@ -9,7 +9,7 @@
 
     <v-list class="scrollList" three-line width>
       <template v-for="(item, index) in activities">
-        <v-list-tile :key="index">
+        <v-list-tile :key="item._id">
           <v-list-tile-content>
             <v-list-tile-sub-title class="font-weight-light">{{formatDate(item.date_completed)}}</v-list-tile-sub-title>
             <v-list-tile-title>

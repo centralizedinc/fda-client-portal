@@ -21,7 +21,6 @@ const mutations = {
     state.token = payload.token;
     state.isAuthenticated = payload.isMatch;
     new UserAPI(payload.token);
-    console.log("PAYLOAD: " + JSON.stringify(payload))
   },
   LOGOUT: function (state) {
     state.user = {};
@@ -88,8 +87,10 @@ var actions = {
     return new Promise((resolve, reject) => {
       UserAPI.login(credentials, (res, err) => {
         if (!err) {
-          if (res.isConfirmed) context.commit('LOGIN', res);
-          context.dispatch('GET_PRODUCT_REFERENCE')
+          if (res.isConfirmed && res.isMatch) {
+            context.commit('LOGIN', res);
+            context.dispatch('GET_PRODUCT_REFERENCE')
+          }          
           resolve(res)
         } else {
           console.log(JSON.stringify(err));

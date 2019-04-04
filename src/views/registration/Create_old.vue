@@ -1,12 +1,53 @@
 <template>
   <div>
+    <v-navigation-drawer 
+      v-model="nav"    
+      hide-overlay
+      width="300"
+      app                    
+    >
+       <v-toolbar dark color="primary">
+        <span class="body-1 font-weight-light">Registration Process</span>
+        <v-spacer></v-spacer>
+        <v-btn flat icon dark @click="nav=false">
+          <v-icon >chevron_left</v-icon>
+        </v-btn>
+       </v-toolbar>
+       <v-stepper v-model="e1" vertical>
+         <v-stepper-step :complete="e1 > 1" step="1">
+           <span class="title font-weight-thin pa-1">General Information</span>
+           <span class="caption font-weight-thin pa-1">Enter the license number of your Establishment's LTO.</span>
+           </v-stepper-step>
+         <v-divider></v-divider>
+         <v-stepper-step :complete="e1 > 2" step="2">
+          <span class="title font-weight-thin pa-1">Establishment Details</span>
+           <span class="caption font-weight-thin pa-1">We need the Name and the Owner's Name of the registered establishment.</span>
+         </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step :complete="e1 > 3" step="3">
+            <span class="title font-weight-thin pa-1">Qualified Personnel</span>
+           <span class="caption font-weight-thin pa-1">To make sure that we can still contact the establishment, please enter the company's qualified/authorized personnel</span>
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step :complete="e1 > 4" step="4">
+            <span class="title font-weight-thin pa-1">Account Credentials</span>
+           <span class="caption font-weight-thin pa-1">Enter your username and password</span>
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step step="5">
+            <span class="title font-weight-thin pa-1">Confirm Email</span>
+           <span class="caption font-weight-thin pa-1">We will sent you an email with a confirmation link. Please check your email.</span>
+          </v-stepper-step>
+       </v-stepper>
+      </v-navigation-drawer>
     <!-- <v-tooltip top>
       <v-btn slot="activator" flat top right icon color="error" @click="navDialog = true">
         <v-icon>fas fa-times fa-2x</v-icon>
       </v-btn>Close this page
     </v-tooltip>-->
     <payment-summary v-if="paymentDialog" :form="form"></payment-summary>
-    <form-layout
+     <step-one :form="form"></step-one>
+    <!-- <form-layout
       v-else
       :step="e1"
       :steps="7"
@@ -86,7 +127,7 @@
         </v-tooltip>
       </template>
       <step-seven slot="content-step-7" :account="account"></step-seven>
-    </form-layout>
+    </form-layout> -->
     <confirm-to-review-app
       :show="confirmDialog"
       :loading="loading"

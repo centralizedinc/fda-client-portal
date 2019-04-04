@@ -45,7 +45,6 @@
               @click="signup()"
             >Sign-up</v-btn>
             <v-btn
-              color="success"
               :loading="loading"
               type="submit"
               class="caption font-weight-light"

@@ -124,10 +124,7 @@ export default {
             return dateB - dateA;
           });
           return this.$store.dispatch("GET_TASKS");
-        })
-        .then(result => {
-          return this.$store.dispatch("GET_ADMIN");
-        })
+        })        
         .then(result => {
           console.log("result of get admin: " + JSON.stringify(result));
         })

@@ -44,11 +44,26 @@ const mutations = {
 }
 
 var actions = {
-    GET_PRODUCT_REFERENCE(context) {
+    GET_PRODUCT_REFERENCE(context, refresh) {
         const ProductAPI = new ProductApi(context.rootState.user_session.token);
         var products = {};
         return new Promise((resolve, reject) => {
-            ProductAPI.getProductType()
+            //check if it is already loaded
+            if(!refresh &&
+                context.state.productType && context.state.productType.length >0
+                && context.state.primaryActivity && context.state.primaryActivity.length >0
+                && context.state.additional && context.state.additional.length >0
+                && context.state.declared && context.state.declared.length >0
+                && context.state.prod_line && context.state.prod_line.length >0){
+                    resolve({
+                        product_type:context.state.productType,
+                        primary:context.state.primaryActivity,
+                        additional:context.state.additional,
+                        declared:context.state.declared,
+                        prod_line:context.state.prod_line
+                    })
+            }else{
+                ProductAPI.getProductType()
                 .then((result) => {
                     if (result.data.success) {
                         products.product_type = result.data.model;
@@ -99,6 +114,7 @@ var actions = {
                     console.log('err in getting products references :', err);
                     reject(err);
                 });
+            }            
         })
     },
     GET_PRODUCT_TYPE(context) {

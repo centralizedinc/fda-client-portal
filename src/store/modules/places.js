@@ -33,7 +33,16 @@ var actions = {
         var locations = {};
         return new Promise((resolve, reject) => {
 
-            placesAPI.getRegions()
+            if(context.state.regions && context.state.regions.length >0
+                && context.state.provinces && context.state.provinces.length >0
+                && context.state.city && context.state.city.length >0){
+                    resolve({
+                        regions:context.state.regions,
+                        provinces: context.state.provinces,
+                        cities: context.state.city
+                    })
+            }else{
+                placesAPI.getRegions()
                 .then(regions => {
                     if (regions.data.success) {
                         locations.regions = regions.data.model;
@@ -64,11 +73,8 @@ var actions = {
                 .catch(err => {
                     reject(err)
                 })
-
+            }            
         })
-
-
-
     },
 
     // REGION

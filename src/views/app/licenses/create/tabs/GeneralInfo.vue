@@ -1,6 +1,7 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs12>
+ <v-form ref="vform" v-model="isValid">
+  <v-layout row wrap>   
+    <v-flex xs12>                    
       <v-autocomplete
         v-model="form.general_info.product_type"
         :items="product_items"
@@ -61,15 +62,18 @@
         item-text="name"
         item-value="_id"
         v-if="declared_items.length > 0"
-      ></v-autocomplete>
+      ></v-autocomplete>     
     </v-flex>
+   
   </v-layout>
+   </v-form>
 </template>
 
 <script>
 export default {
   props: ["form"],
   data: () => ({
+    isValid:true,
     rules: {
       required: value => !!value || "This field is required",
       declare: () =>
@@ -83,6 +87,9 @@ export default {
     "form.general_info.primary_activity": function(val) {
       this.form.general_info.addtl_activity = "";
       this.form.general_info.declared_capital = "";
+    },
+    "form.general_info.product_type": function(val){
+      console.log(this.form.general_info.addtl_activity)
     }
   },
   computed: {
@@ -127,7 +134,13 @@ export default {
       );
     }
   },
+  created(){
+    this.init();
+  },
   methods: {
+    init(){
+      this.$store.dispatch("GET_PRODUCT_REFERENCE")
+    },
     getItems(arr1, arr2) {
       var items = [];
       for (let a = 0; a < arr1.length; a++) {
@@ -139,6 +152,10 @@ export default {
         }
       }
       return items;
+    },
+    validate(){
+      this.$refs.vform.validate();
+      return this.isValid;
     }
   }
 };

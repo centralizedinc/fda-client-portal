@@ -1,11 +1,17 @@
 <template>
   <v-app>
     <notification></notification>
-    <v-toolbar dark style="background: linear-gradient(45deg, #104b2a 0%, #b5c25a 100%)">{{title}}</v-toolbar>
+    <v-toolbar scroll-off-screen app dark style="background: linear-gradient(45deg, #104b2a 0%, #b5c25a 100%)">
+      <span class="body-1">FDA Portal v3.0</span>  
+      <v-spacer></v-spacer>      
+      <v-btn flat>SIGN-UP</v-btn> 
+      <v-btn flat>LOGIN</v-btn> 
+      <v-btn outline>ABOUT</v-btn>    
+      </v-toolbar>
     <v-container fluid class="bg">
       <router-view></router-view>
     </v-container>
-    <v-footer dark style="background: linear-gradient(45deg, #b5c25a 0%, #104b2a 100%)">
+    <v-footer app dark style="background: linear-gradient(45deg, #b5c25a 0%, #104b2a 100%)">
       <span class="caption">Copyright © 2019 FDA All rights reserved. v.{{app_version}}</span>
       <v-spacer></v-spacer>
       <span class="caption">Food And Drug Administration of the Philippines</span>

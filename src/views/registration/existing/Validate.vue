@@ -1,31 +1,64 @@
 <template>
   <v-layout row justify-center>
-    <v-dialog v-model="show" persistent width="900">
+    <!-- <v-dialog v-model="show" persistent width="900"> -->
+      <v-navigation-drawer 
+      v-model="nav"    
+      hide-overlay
+      width="300"
+      app                    
+    >
+       <v-toolbar dark color="primary">
+        <span class="body-1 font-weight-light">Registration Process</span>
+        <v-spacer></v-spacer>
+        <v-btn flat icon dark @click="nav=false">
+          <v-icon >chevron_left</v-icon>
+        </v-btn>
+       </v-toolbar>
+       <v-stepper v-model="e1" vertical>
+         <v-stepper-step :complete="e1 > 1" step="1">
+           <span class="title font-weight-thin pa-1">License Number</span>
+           <span class="caption font-weight-thin pa-1">Enter the license number of your Establishment's LTO.</span>
+           </v-stepper-step>
+         <v-divider></v-divider>
+         <v-stepper-step :complete="e1 > 2" step="2">
+          <span class="title font-weight-thin pa-1">Establishment Details</span>
+           <span class="caption font-weight-thin pa-1">We need the Name and the Owner's Name of the registered establishment.</span>
+         </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step :complete="e1 > 3" step="3">
+            <span class="title font-weight-thin pa-1">Qualified Personnel</span>
+           <span class="caption font-weight-thin pa-1">To make sure that we can still contact the establishment, please enter the company's qualified/authorized personnel</span>
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step :complete="e1 > 4" step="4">
+            <span class="title font-weight-thin pa-1">Account Credentials</span>
+           <span class="caption font-weight-thin pa-1">Enter your username and password</span>
+          </v-stepper-step>
+          <v-divider></v-divider>
+          <v-stepper-step step="5">
+            <span class="title font-weight-thin pa-1">Confirm Email</span>
+           <span class="caption font-weight-thin pa-1">We will sent you an email with a confirmation link. Please check your email.</span>
+          </v-stepper-step>
+       </v-stepper>
+      </v-navigation-drawer>
+      <v-flex xs12 md8 pa-3 mt-3>
+        
+      
       <v-form v-model="valid">
         <v-card>
           <v-card-title style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
-            <span class="headline font-weight-thin white--text">Validate Existing User</span>
+            <span class="headline font-weight-thin white--text">Registration - Step {{e1}}</span>
             <v-spacer></v-spacer>
-            <v-btn flat icon color="black" @click="$emit('close')">
-              <v-icon>close</v-icon>
-            </v-btn>
+            <v-progress-circular color="primary" :rotate="270" size="50" :value="completion">
+            <span class="caption">{{completion}}%</span>
+            </v-progress-circular>
           </v-card-title>
 
           <v-stepper v-model="e1">
-            <v-stepper-header class="stepHeader">
-              <v-stepper-step :complete="e1 > 1" step="1">License Number</v-stepper-step>
-              <v-divider></v-divider>
-              <v-stepper-step :complete="e1 > 2" step="2">Establishment Information</v-stepper-step>
-              <v-divider></v-divider>
-              <v-stepper-step :complete="e1 > 3" step="3">Qualified Personnel</v-stepper-step>
-              <v-divider></v-divider>
-              <v-stepper-step step="4">Create Login Credentials</v-stepper-step>
-            </v-stepper-header>
-
             <v-stepper-items>
-              <v-stepper-content step="1">
+              <v-stepper-content step="1">                
                 <v-text-field
-                  box
+                  outline
                   v-model="form.license_no"
                   :rules="ltoRules"
                   :counter="13"
@@ -36,7 +69,8 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn flat color="success" @click="validateLicense">Continue</v-btn>
+                  <v-btn outline color="primary" @click="cancel">Cancel</v-btn>
+                  <v-btn color="primary" @click="validateLicense">Next</v-btn>
                 </v-card-actions>
               </v-stepper-content>
 
@@ -45,6 +79,7 @@
                   <v-layout row wrap>
                     <v-flex xs12>
                       <v-text-field
+                        outline
                         required
                         :rules="genericRules"
                         label="Name of Establishment"
@@ -52,21 +87,9 @@
                         v-model="form.estab_details.establishment_name"
                       ></v-text-field>
                     </v-flex>
-                    <!-- <v-flex xs4>
-                      <v-text-field
-                        required
-                        name="name"
-                        :counter="12"
-                        :rules="genericRules"
-                        label="TIN"
-                        @keypress.enter="e1 = 3"
-                        :mask="tin"
-                        v-model="form.estab_details.tin"
-                        id="id"
-                      ></v-text-field>
-                    </v-flex>-->
                     <v-flex xs12>
                       <v-text-field
+                        outline
                         required
                         :rules="nameRules"
                         name="name"
@@ -81,16 +104,17 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
-                  <v-btn flat color="error" @click="e1 = 1">Back</v-btn>
-                  <v-btn flat color="success" @click="e1 = 3">Continue</v-btn>
+                  <v-btn outline color="primary" @click="e1 = 1">Back</v-btn>
+                  <v-btn color="primary" @click="e1 = 3">Next</v-btn>
                 </v-card-actions>
               </v-stepper-content>
 
               <v-stepper-content step="3">
                 <v-container grid-list-xs text-xs-center>
                   <v-layout row wrap>
-                    <v-flex xs4>
+                    <v-flex xs12 md4 pa-1>
                       <v-text-field
+                      outline
                         required
                         :rules="nameRules"
                         label="Last Name"
@@ -98,8 +122,9 @@
                         @keypress.enter="proceed"
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs4>
+                    <v-flex xs12 md4 pa-1>
                       <v-text-field
+                      outline
                         required
                         :rules="nameRules"
                         name="name"
@@ -109,8 +134,9 @@
                         @keypress.enter="proceed"
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs4>
+                    <v-flex xs12 md4 pa-1>
                       <v-text-field
+                      outline
                         required
                         :rules="nameRules"
                         name="name"
@@ -120,7 +146,7 @@
                         @keypress.enter="proceed"
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs5>
+                    <v-flex xs12>
                       <!-- <v-autocomplete
                         color="green darken-1"
                         :rules="genericRules"
@@ -130,17 +156,20 @@
                         hide-selected
                         label="Designation"
                       ></v-autocomplete>-->
-                      <v-text-field
+                      <v-select
+                        :items="designation"
+                       outline
                         required
                         :rules="genericRules"
                         name="name"
                         v-model="form.auth_officer.designation"
                         label="Designation"
-                        id="id"
-                      ></v-text-field>
+                        id="id"                      
+                      ></v-select>
                     </v-flex>
-                    <v-flex xs3>
+                    <v-flex xs12>
                       <v-text-field
+                        outline
                         required
                         :rules="genericRules"
                         name="name"
@@ -152,8 +181,9 @@
                         @keypress.enter="proceed"
                       ></v-text-field>
                     </v-flex>
-                    <v-flex xs4>
+                    <v-flex xs12>
                       <v-text-field
+                        outline
                         required
                         v-model="form.auth_officer.email"
                         :rules="emailRules"
@@ -167,33 +197,71 @@
                 </v-container>
                 <v-divider></v-divider>
                 <v-card-actions>
-                  <v-btn flat color="error" @click="e1 = 2">Back</v-btn>
-                  <v-btn block color="success" @click="validateExisting">Submit</v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn outline color="primary" @click="e1 = 2">Back</v-btn>
+                  <v-btn  color="primary" :loading="isLoading" @click="validateExisting">Next</v-btn>
                 </v-card-actions>
               </v-stepper-content>
 
               <v-stepper-content step="4">
-                <v-container grid-list-xs text-xs-center>
-                  <v-layout align-center column>
-                    <v-flex xs8>
-                      <user-account
-                        slot="acctInfo"
-                        :account="account"
-                        @keypress.enter="saveExisting"
-                      ></user-account>
+                <v-card-text>
+                  <v-layout row wrap>
+    <v-flex xs12>
+      
+      <v-text-field outline 
+      label="Username" v-model="account.username"></v-text-field>
+    </v-flex>
+    <v-flex xs12>
+      <v-text-field
+      outline
+        label="Password"
+        v-model="account.password"
+        :append-icon="show_pass ? 'visibility_off' : 'visibility'"
+        :append-icon-cb="() => (show_pass = !show_pass)"
+        :type="show_pass ? 'password' : 'text'"
+      ></v-text-field>
+    </v-flex>
+    <v-flex xs12>
+      <v-text-field
+      outline
+        label="Confirm Password"
+        v-model="confirm_password"
+        :append-icon="show_conf_pass ? 'visibility_off' : 'visibility'"
+        :append-icon-cb="() => (show_conf_pass = !show_conf_pass)"
+        :type="show_conf_pass ? 'password' : 'text'"
+      ></v-text-field>
+    </v-flex>
+  </v-layout>
+                </v-card-text>
+                <v-divider></v-divider>    
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn outline color="primary"  @click="e1=3">Back</v-btn>
+                  <v-btn  color="primary" :loading="isLoading" @click="saveExisting">Submit</v-btn>
+                </v-card-actions>
+              </v-stepper-content>
+
+              <v-stepper-content step="5">
+                <v-card-text>
+                  <v-layout row wrap>
+                    <v-flex xs12>
+                      <span class="headline font-weight-bold pa-1">Success!</span>
+                      <div class="pa-2 title font-weight-thin">We have sent you an email confirmation. Please check your email to confirm you account.</div>
                     </v-flex>
                   </v-layout>
-                </v-container>
+                </v-card-text>
                 <v-divider></v-divider>
                 <v-card-actions>
-                  <v-btn block color="success" @click="saveExisting">Submit</v-btn>
+                  <v-spacer></v-spacer>
+                  <v-btn dark color="primary" @click="$router.push('/')">Home</v-btn>
                 </v-card-actions>
               </v-stepper-content>
             </v-stepper-items>
           </v-stepper>
         </v-card>
       </v-form>
-    </v-dialog>
+      </v-flex>
+    <!-- </v-dialog> -->
   </v-layout>
 </template>
 
@@ -210,8 +278,13 @@ export default {
   },
   data() {
     return {
+      show_pass:true,
+      show_conf_pass: true,
+      confirm_password:"",
+      isLoading:false,
+      nav:true,
       valid: false,
-      e1: 0,
+      e1: 1,
       tin: "###-###-###-###",
       ltoNumber: "#############",
 
@@ -230,9 +303,11 @@ export default {
         "CEO/ President/ General Manager",
         "Head, Quality Assurance/ Control",
         "Head, Regulatory Affairs",
-        "Head, Production"
+        "Head, Production",
+        "Company Pharmacist"
       ],
       existing_form: {},
+      orig_form:{},
       form: {
         general_info: {
           product_type: "",
@@ -252,17 +327,32 @@ export default {
           middlename: "",
           fullname: "",
           designation: "",
-          email: ""
-          // tin: ""
+          email: "",
+          tin: ""
         },
         qualified: []
       },
       account: {
         username: "",
         password: "",
+        email: "",
         name: {}
       }
     };
+  },
+  watch:{
+    e1(){
+      
+      if(!this.nav){
+        this.nav=true
+        
+      }
+    }
+  },
+  computed:{
+    completion(){
+      return (((this.e1-1)/5)*100)
+    }
   },
   methods: {
     validateLicense() {
@@ -295,49 +385,45 @@ export default {
       }
     },
     validateExisting() {
-      this.form.auth_officer.fullname =
-        this.form.auth_officer.lastname +
-        "," +
-        this.form.auth_officer.firstname +
-        " " +
-        this.form.auth_officer.middlename;
-      console.log(
-        "user fullname: " + JSON.stringify(this.form.auth_officer.fullname)
-      );
-      console.log("Submit existing: " + JSON.stringify(this.form));
-      this.$store.dispatch("VERIFY_LICENSES", this.form).then(result => {
-        console.log(
-          "submit existing state: " +
-            JSON.stringify(this.$store.state.licenses.existingLicenses)
-        );
-        this.existing_form = this.$store.state.licenses.existingLicenses;
-        console.log("submit existing cb: " + JSON.stringify(result));
-        if (result != null) {
-          this.$notify({
-            message: "A confirmation email has been sent at",
-            color: "warning",
-            icon: "check_circle"
-          });
+      this.form.auth_officer.fullname =this.form.auth_officer.lastname +"," +this.form.auth_officer.firstname +" " +this.form.auth_officer.middlename;
+      this.isLoading=true;
+      this.$store.dispatch("VERIFY_LICENSES", this.form)
+      .then(result => {
+        this.isLoading=false;
+        console.log('RESULT: ' + JSON.stringify(result))        
+        if(result.data.model){        
+          this.$notify({message: "License details found."});
           this.e1 = 4;
-        } else {
-          this.$notify({
-            message: "License not found",
-            color: "error",
-            icon: "check_circle"
-          });
-          this.$router.push("/");
-        }
-      });
+          this.orig_form = result.data.model;
+        }else{
+          this.$notifyError([{message:'License not found! Please check your details.'}])
+        }        
+      })
+      .catch(err=>{
+        this.$notifyError(err)
+      })
     },
-    saveExisting() {
-      this.$store.dispatch("SAVE_EXISTING_LICENSES", this.form)
+    saveExisting() { 
+      this.isLoading=true;
+      this.orig_form.auth_officer.email = "abalita@centralizedinc.com"  
+      this.orig_form._id = null;
+      this.orig_form.is_existing = true;   
+      var reg_details = {license: this.orig_form,account: this.account}
+      console.log(JSON.stringify(reg_details))
+      this.$store.dispatch("EXISTING_LIC_REG", reg_details)
           .then(result => {
-          this.$notify({
-            message: "You have successfully applied a new license",
-            color: "success",
-            icon: "check_circle"
-          });
-          this.$router.push("/");
+            this.isLoading=false;
+            if(result.data.success){
+              this.$notify({
+                message: "Account Registration completed.",
+                color: "success",
+                icon: "check_circle"
+              });
+              this.e1=5
+            }else{
+              this.$notifyError(result.data.errors)
+            }
+          
         })
         .catch(err => {
           console.log("error in uploading files: " + err);
