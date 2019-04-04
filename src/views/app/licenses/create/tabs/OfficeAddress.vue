@@ -50,15 +50,12 @@
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12 md3 pa-2>
-      <v-autocomplete
-        color="green darken-1"
+      <v-text-field
+        mask="####"
         v-model="form.addresses.office.zipcode"
-        :items="zipcodes"
-        hide-no-data
-        hide-selected
         label="Zip Code"
         :rules="[rules.required]"
-      ></v-autocomplete>
+      ></v-text-field>
     </v-flex>
     <v-flex xs12 pa-5>
       <address-map
@@ -159,15 +156,12 @@
             ></v-autocomplete>
           </v-flex>
           <v-flex xs12>
-            <v-autocomplete
-              color="green darken-1"
+            <v-text-field
+              mask="####"
               v-model="warehouse.zipcode"
-              :items="zipcodes"
-              hide-no-data
-              hide-selected
               label="Zip Code"
               :rules="[rules.required]"
-            ></v-autocomplete>
+            ></v-text-field>
           </v-flex>
           <v-flex xs12 pa-5>
             <address-map
@@ -184,8 +178,8 @@
           <v-data-table :headers="headers" :items="form.addresses.warehouse" class="elevation-1">
             <template slot="items" slot-scope="props">
               <td>{{props.item.address}}</td>
-              <td>{{props.item.city}}</td>
-              <td>{{props.item.province}}</td>
+              <td>{{getCityName(props.item.city)}}</td>
+              <td>{{getProvinceName(props.item.province)}}</td>
               <td>{{props.item.zipcode}}</td>
               <td>
                 <v-layout row wrap>
@@ -289,15 +283,12 @@
         ></v-autocomplete>
       </v-flex>
       <v-flex xs12 md3 pa-2>
-        <v-autocomplete
-          color="green darken-1"
+        <v-text-field
           v-model="form.addresses.plant.zipcode"
-          :items="zipcodes"
-          hide-no-data
-          hide-selected
+          mask="####"
           label="Zip Code"
           :rules="[rules.required]"
-        ></v-autocomplete>
+        ></v-text-field>
       </v-flex>
       <v-flex xs12 pa-5>
         <address-map

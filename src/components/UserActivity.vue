@@ -1,7 +1,7 @@
 <template>
   <v-card class="dcard" height="410">
     <v-toolbar width="calc(100% - 10px)" class="user-activity-title">
-      <v-toolbar-title class="font-weight-light">User Activity</v-toolbar-title>
+      <v-toolbar-title>Recent Activity</v-toolbar-title>
       <v-spacer></v-spacer>
       <!-- <v-btn icon><v-icon>more_vert</v-icon>
       </v-btn>-->

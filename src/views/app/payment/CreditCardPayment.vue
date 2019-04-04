@@ -214,7 +214,7 @@ export default {
       },
       rules: {
         required: value => !!value || "This is a required field",
-        card_validity: v => (v.length === 16 && true) || "Invalid Card Number",
+        card_validity: v => (v.length > 12 && true) || "Invalid Card Number",
         expiry_validity: v => true || "Invalid Expiration Date",
         cvc_validity: v => v.length === 3 || "Invalid CVV",
         email: value => this.checkEmail(value) || "Invalid email"
@@ -235,8 +235,8 @@ export default {
       this.loading_cc = true;
       this.card_logo = null;
       this.$store.state.payments.credit_card = "";
-      this.rules.card_validity = val.length === 16 || "Invalid Card Number";
-      if (val !== "" && val.length === 16) {
+      this.rules.card_validity = val.length > 12 || "Invalid Card Number";
+      if (val !== "" && val.length > 12) {
         this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result => {
           var creditCard = this.$store.state.payments.credit_card;
           this.rules.card_validity =

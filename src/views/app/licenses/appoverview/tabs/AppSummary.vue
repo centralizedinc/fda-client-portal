@@ -17,9 +17,13 @@
     <v-flex xs12 md8>{{getDeclared(form.general_info.declared_capital)}}</v-flex>
     <v-flex xs12 md4 class="subheading" v-if="show" >Current Task</v-flex>
     <v-flex xs12 md8 v-if="show">{{getTask(case_holder.current_task).name}}</v-flex>
-    <v-flex xs12 md4 class="subheading" v-if="show">Created by</v-flex>
-    <v-flex xs12 md8 v-if="show">{{getUsername(form.created_by)}}</v-flex>
-    <v-flex xs12 md4 class="subheading" v-if="show">Created Date</v-flex>
+    <!-- <v-flex xs12 md4 class="subheading">Current User</v-flex>
+    <v-flex xs12 md8>{{getAdminName(form.user)}}</v-flex> -->
+    <!-- <v-flex xs12 md4 class="subheading">Required Action</v-flex>
+    <v-flex xs12 md8>{{form.action}}</v-flex> -->
+    <!-- <v-flex xs12 md4 class="subheading" v-if="show">Created by</v-flex>
+    <v-flex xs12 md8 v-if="show">{{getUsername(form.created_by)}}</v-flex> -->
+    <v-flex xs12 md4 class="subheading" v-if="show">Date Submitted</v-flex>
     <v-flex xs12 md8 v-if="show">{{formatDate(form.date_created)}}</v-flex>
   </v-layout>
 </template>

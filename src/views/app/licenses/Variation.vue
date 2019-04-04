@@ -6,6 +6,7 @@
                     <v-flex xs12 v-for="(item, index) in variations" :key="index" mb-3>
                         <span class="title">{{item.title}}</span>
                         <v-checkbox 
+                        color="primary"
                             v-for="(field, i) in item.items" 
                             :key="i" 
                             :label="field.description" 
@@ -16,7 +17,7 @@
                         <v-divider></v-divider>
                     </v-flex>
                     <v-btn 
-                        color="info"
+                        color="primary"
                         @click="page=2"
                         :disabled="selected_variations.length===0" 
                         block>Continue
@@ -50,7 +51,7 @@
                     </v-flex>
                 </v-card-text>
                 <v-card-actions>
-                  <v-btn color="error" @click="page=1">Back</v-btn>
+                  <v-btn color="secondary" flat outline @click="page=1">Back</v-btn>
                   <v-spacer></v-spacer>
                   <v-btn color="success" @click="confirmDialog=true">Submit Changes</v-btn>
                 </v-card-actions>

@@ -216,17 +216,13 @@
         ></v-autocomplete>
       </v-flex>
       <v-flex xs12>
-        <v-autocomplete
-          color="green darken-1"
+        <v-text-field
           :rules="[rules.required]"
           v-model="form.auth_officer.mail_add.zipcode"
-          :items="zipcodes"
-          item-text="name"
-          item-value="_id"
-          hide-no-data
+          mask="####"
           hide-selected
           label="Zip Code"
-        ></v-autocomplete>
+        ></v-text-field>
       </v-flex>
     </v-flex>
   </v-layout>

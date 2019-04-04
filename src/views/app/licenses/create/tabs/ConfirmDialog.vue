@@ -28,7 +28,7 @@
         <v-spacer></v-spacer>
         <v-btn
           flat
-          color="success"
+          color="primary"
           :loading="loading"
           :disabled="loading"
           @click="$emit('submit')"

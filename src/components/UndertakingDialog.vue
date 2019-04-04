@@ -41,13 +41,9 @@
           </ol>
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-tooltip top>
-            <v-btn slot="activator" ripple flat color="success" @click.native.stop="apply">I accept</v-btn>Agree
-          </v-tooltip>
-          <v-spacer></v-spacer>
-        </v-card-actions>
+       <v-card-actions>
+            <v-btn block flat color="primary" @click.native.stop="apply">I accept</v-btn>
+       </v-card-actions>
       </v-card>
     </v-dialog>
   </div>
