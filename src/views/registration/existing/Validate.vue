@@ -69,8 +69,12 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
+<<<<<<< HEAD
                   <v-btn outline color="primary" @click="cancel">Cancel</v-btn>
                   <v-btn color="primary" @click="validateLicense">Next</v-btn>
+=======
+                  <v-btn flat color="primary" @click="validateLicense">Continue</v-btn>
+>>>>>>> 9dbbcd71b72117078645b768e111389fb8af589c
                 </v-card-actions>
               </v-stepper-content>
 
@@ -104,8 +108,13 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                   <v-spacer></v-spacer>
+<<<<<<< HEAD
                   <v-btn outline color="primary" @click="e1 = 1">Back</v-btn>
                   <v-btn color="primary" @click="e1 = 3">Next</v-btn>
+=======
+                  <v-btn flat outline color="secondary" @click="e1 = 1">Back</v-btn>
+                  <v-btn flat color="success" @click="e1 = 3">Continue</v-btn>
+>>>>>>> 9dbbcd71b72117078645b768e111389fb8af589c
                 </v-card-actions>
               </v-stepper-content>
 
@@ -197,9 +206,14 @@
                 </v-container>
                 <v-divider></v-divider>
                 <v-card-actions>
+<<<<<<< HEAD
                   <v-spacer></v-spacer>
                   <v-btn outline color="primary" @click="e1 = 2">Back</v-btn>
                   <v-btn  color="primary" :loading="isLoading" @click="validateExisting">Next</v-btn>
+=======
+                  <v-btn flat outline color="secondary" @click="e1 = 2">Back</v-btn>
+                  <v-btn block color="success" @click="validateExisting">Submit</v-btn>
+>>>>>>> 9dbbcd71b72117078645b768e111389fb8af589c
                 </v-card-actions>
               </v-stepper-content>
 

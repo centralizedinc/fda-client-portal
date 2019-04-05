@@ -7,8 +7,8 @@
     transition="dialog-transition"
 >
       <v-card>
-          <v-toolbar dark color="primary">
-              <span class="title">Credit Card Payment</span>
+          <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
+             <span class="font-weight-light headline">Payment via Credit Card</span>
           </v-toolbar>
           <v-card-text> 
             <v-layout row wrap>
@@ -32,7 +32,7 @@
                     <td class="font-weight-bold" >₱ {{ numberWithCommas(total_amount) }}</td> 
                   </template>
                   </v-data-table> 
-                  <span class="pt-5 mt-5 caption primary--text">Note: For credit card transactions, an additional of 20.00 Pesos was charged as a convinience fee.</span>                 
+                  <span class="pt-5 mt-5 caption primary--text">Note: For credit card transactions, an additional Php20.00 will be charged for convenience fee.</span>                 
                 </v-layout>                                      
               </v-flex>
               <v-flex xs1 pl-4>
@@ -90,6 +90,7 @@
                             v-model="expiry_date"
                             label="Date Expiry"
                             append-icon="event"
+                            color="green darken-1"
                             :rules="[rules.required]"
                             readonly
                             v-on="on">
@@ -97,6 +98,7 @@
                         </template>
                         <v-date-picker 
                           v-model="dateFormatted"
+                          color="green darken-1"
                           type="month"
                           no-title
                           scrollable
@@ -179,7 +181,7 @@
                       outline
                         label="*Zip Code"
                         v-model="full_details.card_details.zip"
-                        mask="#####"
+                        mask="####"
                         :rules="[rules.required]"
                       ></v-text-field>
                     </v-flex>
@@ -207,7 +209,7 @@
                 
           <v-spacer></v-spacer>
           <v-btn color="secondary" outline @click="hide()">Cancel</v-btn>          
-          <v-btn color="primary" :loading="isLoading" @click="submit">Submit</v-btn>
+          <v-btn color="success" :disabled="isLoading" :loading="isLoading" @click="submit">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -222,8 +224,8 @@ export default {
   data() {
     return {
       isLoading: false,
-      total_amount:0,
-      valid:true,
+      total_amount: 0,
+      valid: true,
       card_logo: "",
       loading_cc: false,
       loading_cvc: false,
@@ -241,7 +243,7 @@ export default {
           exp_year: "",
           cvc: "",
           name: "",
-          email:"",
+          email: "",
           address_line1: "",
           address_line2: "",
           region: "",
@@ -279,7 +281,7 @@ export default {
       },
       rules: {
         required: value => !!value || "This is a required field",
-        card_validity: v => (v.length === 16 && true) || "Invalid Card Number",
+        card_validity: v => v.length > 12 || "Invalid Card Number",
         expiry_validity: v => true || "Invalid Expiration Date",
         cvc_validity: v => v.length === 3 || "Invalid CVV",
         email: value => this.checkEmail(value) || "Invalid email"
@@ -300,8 +302,8 @@ export default {
       this.loading_cc = true;
       this.card_logo = null;
       this.$store.state.payments.credit_card = "";
-      this.rules.card_validity = val.length === 16 || "Invalid Card Number";
-      if (val !== "" && val.length === 16) {
+      this.rules.card_validity = val.length > 12 || "Invalid Card Number";
+      if (val !== "" && val.length > 12) {
         this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result => {
           var creditCard = this.$store.state.payments.credit_card;
           this.rules.card_validity =
@@ -311,7 +313,7 @@ export default {
             this.$notify({
               message:
                 "You entered a " + creditCard.card.type + " credit card number",
-              color: "primary",
+              color: "success",
               icon: "check_circle",
               initialMargin: 100
             });
@@ -343,7 +345,7 @@ export default {
           if (cvv.isValid) {
             this.$notify({
               message: "Valid CVC number",
-              color: "primary",
+              color: "success",
               icon: "check_circle",
               initialMargin: 100
             });
@@ -363,7 +365,7 @@ export default {
   },
   created() {
     //initial
-    this.full_details.card_details.email=this.$store.state.user_session.user.email;
+    this.full_details.card_details.email = this.$store.state.user_session.user.email;
     this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
       if (locations) {
         this.regions = locations.regions;
@@ -379,21 +381,21 @@ export default {
     getCities() {
       return this.findCities(this.full_details.card_details.province);
     },
-    show(){
-        return this.$store.state.payments.showCCDialog
+    show() {
+      return this.$store.state.payments.showCCDialog;
     },
-    payment_summary(){
-      var details = this.$store.state.payments.payment_details.summary
+    payment_summary() {
+      var details = this.$store.state.payments.payment_details.summary;
       this.total_amount = 0;
-      for(var i=0; i<details.length; i++){
-        this.total_amount = this.total_amount+ details[i].amount
+      for (var i = 0; i < details.length; i++) {
+        this.total_amount = this.total_amount + details[i].amount;
       }
       return details;
-    },
+    }
   },
   methods: {
-    hide(){
-      this.$hideCC()
+    hide() {
+      this.$hideCC();
     },
     parseDate(date) {
       if (!date) return null;
@@ -416,7 +418,7 @@ export default {
             if (result.data.model.isValid) {
               this.$notify({
                 message: "Valid Date Expiry",
-                color: "primary",
+                color: "success",
                 icon: "check_circle",
                 initialMargin: 100
               });
@@ -438,34 +440,54 @@ export default {
     },
     submit() {
       //validate form
-      this.$refs.form.validate()
+      this.$refs.form.validate();
       if (this.valid) {
-        this.isLoading=true;
+        this.isLoading = true;
         var paymentFee = this.$store.state.payments.fee;
         this.full_details.payment_details.amount = paymentFee.total;
         this.full_details.payment_details.description = paymentFee.description;
         this.full_details.transaction_details.application_type = this.$store.state.payments.payment_details.application_type;
         this.full_details.transaction_details.case_no = this.$store.state.payments.payment_details.case_no;
         this.full_details.transaction_details.user_id = this.$store.state.user_session.user._id;
-        this.full_details.transaction_details.order_payment.penalty =paymentFee.surcharge;
-        this.$store.dispatch("SAVE_PAYMENT", this.full_details)
+        this.full_details.transaction_details.order_payment.penalty =
+          paymentFee.surcharge;
+        this.$store
+          .dispatch("SAVE_PAYMENT", this.full_details)
           .then(result => {
-            this.isLoading=false;
+            this.isLoading = false;
+            var details = {
+              case_no: this.$store.state.payments.payment_details.case_no,
+              fee: `₱ ${this.numberWithCommas(paymentFee.fee)}`,
+              lrf: `₱ ${this.numberWithCommas(paymentFee.lrf)}`,
+              penalty: `₱ ${this.numberWithCommas(
+                parseFloat(paymentFee.surcharge) +
+                  parseFloat(paymentFee.interest)
+              )}`,
+              total: `₱ ${this.numberWithCommas(paymentFee.total)}`,
+              amount: `₱ ${this.numberWithCommas(paymentFee.total)}`,
+              remaining_balance: "₱ 0.00"
+            };
+
+            this.$print(details, "RCPT");
             this.$router.push("/app/payments");
             this.$hideCC();
             this.$notify({
-              message: "Payment success! The official reciept was sent to your email (" + this.full_details.card_details.email+")",
-              color: "primary",
+              message:
+                "Payment success! The official receipt was sent to your email (" +
+                this.full_details.card_details.email +
+                ")",
+              color: "success",
               initialMargin: 100
             });
           })
           .catch(err => {
-            this.isLoading=false;
+            this.isLoading = false;
             console.log("ERROR: " + err);
             this.$notifyError(err);
           });
         // this.$router.push("/app/payments/summary");
       } else {
+        this.isLoading = false;
         this.$notify({
           message: "Please enter all fields & correctly",
           color: "warning",

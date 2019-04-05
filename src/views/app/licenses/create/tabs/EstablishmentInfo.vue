@@ -46,8 +46,8 @@
       dark
       class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
       color="fdaGreen"
-      height="35"
-      width="calc(100% - 30px)"
+      height="40"
+      width="calc(100% - 10px)"
       style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
     >
       Contact Information
@@ -95,7 +95,6 @@
       </v-flex>
       <v-flex xs5 ml-5>
         <v-text-field
-          color="green darken-1"
           :rules="[rules.required]"
           label="4. Mobile Number"
           :mask="mobile"
@@ -111,8 +110,8 @@
       dark
       class="font-weight-normal elevation-2 pl-3 mb-3 mt-3 subheading"
       color="fdaGreen"
-      height="35"
-      width="calc(100% - 30px)"
+      height="40"
+      width="calc(100% - 10px)"
       style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
     >
       Product Line
@@ -121,13 +120,15 @@
           <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
         </v-btn>Please add all applicable product line
       </v-tooltip> -->
+      <!-- <v-btn outline icon >
+        <v-icon>add</v-icon>
+      </v-btn> -->
     </v-sheet>
 
     <v-layout row wrap>
       <template v-for="(item, index) in form.estab_details.products">
-        <v-flex xs5 ml-5 :key="item._id">
-          <v-autocomplete
-            color="green darken-1"
+        <v-flex xs4 :key="item._id" pa-2>
+          <v-autocomplete pa-2
             v-model="item.prod_line"
             :items="prod_lines"
             item-text="name"
@@ -138,24 +139,32 @@
             label="Product Line"
           ></v-autocomplete>
         </v-flex>
-        <v-flex xs5 ml-2 :key="index">
+        <v-flex xs8 :key="index" pa-2>
           <v-text-field
-            color="green darken-1"
+            color="primary"
             :rules="[rules.required]"
             label="Remarks"
             v-model="item.remarks"
+            :append-outer-icon="index == form.estab_details.products.length-1?'far fa-plus-square':''"
+            :append-icon="index != form.estab_details.products.length-1?'fas fa-backspace':''"
+            @click:append-outer="addItem"
+            @click:append="removeItem(index)"
           ></v-text-field>
         </v-flex>
-        
-        <v-flex xs1 mt-3 :key="index" v-if="index > 0">
-          <v-btn flat small icon @click="removeItem(index)">
-            <v-icon color="error">fas fa-trash-alt fa-lg</v-icon>
-          </v-btn>
-        </v-flex>
+         
+        <!-- <v-flex xs2 :key="index" >
+              <v-btn flat small icon @click="addItem" v-if="index == form.estab_details.products.length-1">
+                <v-icon color="primary">add</v-icon>
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn flat small icon @click="removeItem(index)" v-if="index > 0">
+                <v-icon color="primary">fas fa-trash-alt fa-lg</v-icon>
+              </v-btn>          
+        </v-flex> -->
       </template>
     </v-layout>
     <!-- add button -->
-    <v-flex xs12>
+    <!-- <v-flex xs12>
       <v-tooltip top>
         <v-btn
           color="transparent"
@@ -169,7 +178,7 @@
           <v-icon color="success">fas fa-plus fa-3x</v-icon>
         </v-btn>Add new
       </v-tooltip>
-    </v-flex>
+    </v-flex> -->
   </v-layout>
   </v-form>
 </template>

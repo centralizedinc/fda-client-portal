@@ -6,10 +6,10 @@ const state = {
     cvv: null,
     expiry: null,
     fee: null,
-    payment_details:{
-        summary:[]
+    payment_details: {
+        summary: []
     },
-    showCCDialog:false
+    showCCDialog: false
 }
 
 const mutations = {
@@ -31,14 +31,17 @@ const mutations = {
         state.expiry = null
         state.fee = null
     },
-    SET_PAYMENT_HISTORY(state, payments){
+    SET_PAYMENT_HISTORY(state, payments) {
         state.payment_history = payments
     },
-    SHOW_CC_DIALOG(state, payment_details){
+    SHOW_CC_DIALOG(state, payment_details) {
         state.payment_details = payment_details
         state.showCCDialog = true;
     },
-    HIDE_CC_DIALOG(state){
+    HIDE_CC_DIALOG(state) {
+        state.payment_details = {
+            summary: []
+        }
         state.showCCDialog = false;
     }
 }

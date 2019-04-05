@@ -184,6 +184,10 @@ export default class LicenseAPI {
         return axios.post('lto-api/variation', form);
     }
 
+    getResultByKey(key) {
+        return axios.get('public/license/result/' + key);
+    }
+
 }
 
 // module.exports = LicenseAPI

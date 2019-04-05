@@ -11,8 +11,7 @@ const state = {
   token: null,
   user: {},
   task: {},
-  registration_details: {},
-  admin_user: null
+  registration_details: {}
 };
 
 const mutations = {
@@ -32,9 +31,6 @@ const mutations = {
   },
   REGISTER: (state, payload) => {
     state.registration_details = payload;
-  },
-  ADMIN: (state, payload) => {
-    state.admin_user = payload
   },
   UPDATE_USER: (state, user) => {
     state.user = user;
@@ -164,20 +160,6 @@ var actions = {
         }).catch((err) => {
           reject(err)
         });
-    })
-  },
-
-  GET_ADMIN(context) {
-    return new Promise((resolve, reject) => {
-      console.log("get admin action")
-      new UserAPI(context.rootState.user_session.token).getAdmin((err, admin) => {
-        if (!err) {
-          context.commit('ADMIN', admin)
-          resolve(admin)
-        } else {
-          reject(err)
-        }
-      })
     })
   },
 

@@ -158,7 +158,7 @@ export default {
   props: ["form"],
   data() {
     return {
-      valid:true,
+      valid: true,
       card_logo: "",
       loading_cc: false,
       loading_cvc: false,
@@ -214,7 +214,7 @@ export default {
       },
       rules: {
         required: value => !!value || "This is a required field",
-        card_validity: v => (v.length === 16 && true) || "Invalid Card Number",
+        card_validity: v => v.length > 12 || "Invalid Card Number",
         expiry_validity: v => true || "Invalid Expiration Date",
         cvc_validity: v => v.length === 3 || "Invalid CVV",
         email: value => this.checkEmail(value) || "Invalid email"
@@ -235,8 +235,8 @@ export default {
       this.loading_cc = true;
       this.card_logo = null;
       this.$store.state.payments.credit_card = "";
-      this.rules.card_validity = val.length === 16 || "Invalid Card Number";
-      if (val !== "" && val.length === 16) {
+      this.rules.card_validity = val.length > 12 || "Invalid Card Number";
+      if (val !== "" && val.length > 12) {
         this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result => {
           var creditCard = this.$store.state.payments.credit_card;
           this.rules.card_validity =
@@ -393,7 +393,7 @@ export default {
     },
     submit() {
       //validate form
-      this.$refs.form.validate()
+      this.$refs.form.validate();
       if (this.valid) {
         var paymentFee = this.$store.state.payments.fee;
         console.log("payment fee data: " + JSON.stringify(paymentFee));
@@ -413,146 +413,22 @@ export default {
           .dispatch("SAVE_PAYMENT", this.full_details)
           .then(result => {
             console.log("saved payment " + JSON.stringify(result));
-            this.$router.push("/");
-            this.$notify({
-              message: "Payment success",
-              color: "primary",
-              initialMargin: 100
-            });
-          })
-          .catch(err => {
-            console.log("ERROR: " + err);
-            this.$notifyError(err);
-          });
-        // this.$router.push("/app/payments/summary");
-      } else {
-        this.$notify({
-          message: "Please enter all fields & correctly",
-          color: "warning",
-          initialMargin: 100
-        });
-      }
-    },
-    submit1() {
-      this.$refs.form.validate()
-      // console.log("props form data: " + JSON.stringify(this.form))
-      // var form = {
-      //   "current_task": "",
-      //   "user": "",
-      //   "created_by": "5c6bbbb590a2b609204b1fec",
-      //   "uploaded_files": [{
-      //     "location": "https://fda-portal.s3.us-west-2.amazonaws.com/upload/l20192802000198/1551313621054",
-      //     "contentType": "application/pdf",
-      //     "key": "upload/l20192802000198/1551313621054",
-      //     "mimetype": "application/pdf",
-      //     "originalname": "Screen Shot 2019-02-01 at 8.57.32 AM.pdf",
-      //     "_id": {
-      //       "$oid": "5c772ad6de7872001725d258"
-      //     },
-      //     "date": {
-      //       "$date": "2019-02-27T06:44:01.948Z"
-      //     }
-      //   }],
-      //   "date_modified": {
-      //     "$date": "2019-02-28T00:27:02.093Z"
-      //   },
-      //   "date_created": null,
-      //   "qualified": [],
-      //   "auth_officer": {
-      //     "mail_add": {
-      //       "zipcode": "",
-      //       "city": "",
-      //       "province": "",
-      //       "region": "",
-      //       "address": ""
-      //     },
-      //     "id_expiry": "",
-      //     "id_no": "",
-      //     "id_type": "",
-      //     "birthday": "",
-      //     "tin": "",
-      //     "email": "test@email.com",
-      //     "designation": "",
-      //     "middlename": "",
-      //     "firstname": "",
-      //     "lastname": "opiopiopipo"
-      //   },
-      //   "addresses": {
-      //     "office": {
-      //       "location": {
-      //         "lng": 120.3209373,
-      //         "lat": 16.6158906
-      //       },
-      //       "zipcode": "",
-      //       "city": "",
-      //       "province": "5c6387a6654fc728fc927504",
-      //       "region": "5c627cfe5a7e9c21c44071bf",
-      //       "address": ""
-      //     },
-      //     "warehouse": [],
-      //     "plant": {
-      //       "zipcode": "",
-      //       "city": "",
-      //       "province": "",
-      //       "region": "",
-      //       "address": ""
-      //     }
-      //   },
-      //   "estab_details": {
-      //     "mobile": "",
-      //     "fax": "",
-      //     "landline": "",
-      //     "email": "",
-      //     "tin": "090909090909",
-      //     "establishment_owner": "kljlkj",
-      //     "establishment_name": "lkl;kl;"
-      //   },
-      //   "general_info": {
-      //     "declared_capital": "5c106397b19f7a29c4096aba",
-      //     "primary_activity": "5c106ad2b19f7a29c4096ac6",
-      //     "product_type": "5c106cb7b19f7a29c4096ad0"
-      //   },
-      //   "application_type": 0,
-      //   "status": 0,
-      //   "case_no": "l20192802000198",
-      //   "modified_by": "5c6bbbb590a2b609204b1fec"
-      // }
-      // this.$download(this.form, "PAY");
-      console.log("submit: " + JSON.stringify(this.full_details));
-      if (
-        // !this.isEmptyStrings([
-          isEmpty(this.full_details.card_details.number) &&
-          isEmpty(this.full_details.card_details.exp_month) &&
-          isEmpty(this.full_details.card_details.exp_year) &&
-          isEmpty(this.full_details.card_details.cvc) &&
-          isEmpty(this.full_details.card_details.name) &&
-          isEmpty(this.full_details.card_details.email) &&
-          isEmpty(this.full_details.card_details.address_line1) &&
-          isEmpty(this.full_details.card_details.region) &&
-          isEmpty(this.full_details.card_details.province) &&
-          isEmpty( this.full_details.card_details.city) &&
-          isEmpty(this.full_details.card_details.zip) &&
-        // ]) 
-        !this.loading_cc &&
-        !this.loading_cvc
-      ) {
-        var paymentFee = this.$store.state.payments.fee;
-        console.log("payment fee data: " + JSON.stringify(paymentFee));
-        this.full_details.payment_details.amount = paymentFee.total;
-        this.full_details.payment_details.description = paymentFee.description;
-        this.full_details.transaction_details.application_type = this.form.application_type;
-        this.full_details.transaction_details.case_no = this.form.case_no;
-        this.full_details.transaction_details.order_payment.penalty =
-          paymentFee.surcharge;
-        console.log(
-          "creadit card payment charges data: " +
-            JSON.stringify(paymentFee.total)
-        );
-        console.log("full details: " + JSON.stringify(this.full_details));
-        this.$store
-          .dispatch("SAVE_PAYMENT", this.full_details)
-          .then(result => {
-            console.log("saved payment " + JSON.stringify(result));
+
+            // Print receipt
+            var details = {
+              case_no: this.form.case_no,
+              fee: `₱ ${this.numberWithCommas(paymentFee.fee)}`,
+              lrf: `₱ ${this.numberWithCommas(paymentFee.lrf)}`,
+              penalty: `₱ ${this.numberWithCommas(
+                parseFloat(paymentFee.surcharge) +
+                  parseFloat(paymentFee.interest)
+              )}`,
+              total: `₱ ${this.numberWithCommas(paymentFee.total)}`,
+              amount: `₱ ${this.numberWithCommas(paymentFee.total)}`,
+              remaining_balance: "₱ 0.00"
+            };
+
+            this.$print(details, "RCPT");
             this.$router.push("/");
             this.$notify({
               message: "Payment success",

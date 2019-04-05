@@ -46,16 +46,16 @@ export default {
           var case_type = ["License", "Certificate", "Registerd User"]
           return case_type[type]
         },
-        numberMask(number){
+        numberMask(number) {
           var length = number.length
           var final = null
-          if(length === 12){
+          if (length === 12) {
             final = number.replace(/(\d{3})(\d{3})(\d{3})(\d{3})/, "$1 - $2 - $3 - $4")
-          }else if(length === 11){
+          } else if (length === 11) {
             final = number.replace(/(\d{4})(\d{3})(\d{4})/, "($1) - $2 - $3")
-          }else if(length === 10){
+          } else if (length === 10) {
             final = number.replace(/(\d{2})(\d{4})(\d{4})/, "($1) - $2 - $3")
-          }          
+          }
           return final
         },
         getTask(task_id) {
@@ -141,7 +141,8 @@ export default {
           }
         },
         numberWithCommas(x) {
-          return x ? x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : '0.00';
+          if (!x || isNaN(x)) return "0.00"
+          return x.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
         },
         formatDate: (date, type) => {
           if (!date) {

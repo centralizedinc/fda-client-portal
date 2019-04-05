@@ -28,13 +28,14 @@
       </v-flex>
       <v-flex xs4 mr-5 ml-1>{{form.estab_details.establishment_name}}</v-flex>
       <v-flex xs12 text-xs-center>
-        <a href="#">Click here to download your official receipt</a>
+        <!-- <a href="#">Click here to download your official receipt</a> -->
+        <v-btn color="primary" flat @click="download_receipt"><u>Click here to download your official receipt</u></v-btn>
       </v-flex>
     </v-layout>
     <v-flex xs12>
       <v-divider></v-divider>
     </v-flex>
-    <v-btn block color="success">Back to Main</v-btn>
+    <v-btn block color="secondary" @click="$router.push('/app')">Back to Main</v-btn>
   </v-layout>
 </template>
 
@@ -53,6 +54,23 @@ export default {
     allow_paylater: {
       type: Boolean,
       default: true
+    }
+  },
+  methods: {
+    download_receipt() {
+      var details = {
+        case_no: this.form.case_no,
+        fee: `₱ ${this.numberWithCommas(this.charges.fee)}`,
+        lrf: `₱ ${this.numberWithCommas(this.charges.lrf)}`,
+        penalty: `₱ ${this.numberWithCommas(
+          parseFloat(this.charges.surcharge) + parseFloat(this.charges.interest)
+        )}`,
+        total: `₱ ${this.numberWithCommas(this.charges.total)}`,
+        amount: `₱ ${this.numberWithCommas(this.charges.total)}`,
+        remaining_balance: "₱ 0.00"
+      };
+      // if (details.penalty) details.penalty = 0;
+      this.$download(details, "RCPT", this.form.case_no);
     }
   }
 };

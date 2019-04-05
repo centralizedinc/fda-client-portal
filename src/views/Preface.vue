@@ -132,7 +132,8 @@
           ></undertaking-dialog>
 
           <!-- buttons for existing license -->
-          <v-flex xs6 md6 pa-2>
+          <a href="#signup"></a>
+          <v-flex xs6 md4 pa-2 id="signup">
             <v-card
               class="cardButton"
               color="fdaGold"
@@ -163,7 +164,7 @@
           </v-flex>
 
           <!-- button for new license -->
-          <v-flex xs6 md6 pa-2>
+          <v-flex xs6 md4 pa-2>
             
             <v-card
               class="cardButton"
@@ -192,12 +193,49 @@
               <!-- <existing-user :show="validationDialog" @close="validationDialog=false"></existing-user> -->
             </v-card>
           </v-flex>
+
+          <v-flex xs6 md4 pa-2>
+            
+            <v-card
+              class="cardButton"
+              style="background: linear-gradient(180deg, #EFF1E3, #CAD0A0)"
+              color="fdaTan"
+              hover
+              ripple
+              @click="redirect(2)"
+            >
+              <v-card-text>
+                <v-spacer></v-spacer>
+                <v-tooltip top>
+                  <v-icon class="pt-4" slot="activator" color="primary">fas fa-file-upload fa-4x</v-icon>
+                </v-tooltip>
+                <v-spacer></v-spacer>
+                <v-flex xs12 md12>
+                  <span
+                    class="headline font-weight-thin text-xs-center"
+                    style="text-transform: uppercase"
+                  >Continue your Application</span>
+                  <h1
+                    class="caption"
+                  >Upload your *.fda file to continue you license application</h1>
+                </v-flex>
+              </v-card-text>
+              <!-- <existing-user :show="validationDialog" @close="validationDialog=false"></existing-user> -->
+            </v-card>
+          </v-flex>
+
           <v-divider inset class="mt-4"></v-divider>          
         </v-layout>
       </v-container>
     </v-layout>
     
   </v-container>
+  <input style="display:none"
+                ref="file"
+              type="file"
+              @change="onFilePicked"
+              accept=".fdav3"
+            >
   </div>
 </template>
 
@@ -222,7 +260,7 @@ export default {
       required: value => !!value || "This field is required"
     }
   }),
-  methods: {
+  methods: {    
     login() {
       this.$refs.form.validate()
       if(this.isFormValid){
@@ -312,11 +350,29 @@ export default {
     launchAppForm() {
       this.showDialog = false;
       if (this.selected_index === 0) {
+        this.$store.commit('NEW_APPLICATION')
         this.$router.push("/registration/new");
       } else if (this.selected_index === 1) {
         // this.validationDialog = true;
         this.$router.push("/registration/existing");
+      }else if(this.selected_index === 2){
+        this.$refs.file.click();
+
       }
+    },
+    onFilePicked(e){
+        var files = e.target.files;
+        var reader = new FileReader();
+        var vue = this;
+        reader.addEventListener('load', function (e) {
+            var decoded = new Buffer(e.target.result, 'base64')
+            vue.$store.commit('CONTINUE_APPLICATION', JSON.parse(decoded))
+            vue.$router.push("/registration/new")
+            vue.$notify({message:'Welcome back! Let us continue where you left off.', color:'primary'})
+            // console.log(JSON.stringify(this.form))
+        });
+
+        reader.readAsBinaryString(files[0]);
     }
   }
 };

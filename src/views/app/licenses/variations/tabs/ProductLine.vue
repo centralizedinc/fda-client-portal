@@ -1,7 +1,7 @@
 <template>
   <v-container grid-list-xl fluid fill-height>
-    <v-layout row wrap child-flex>
-      <v-card>
+    <v-layout row wrap child-flex justify-center align-center>
+      <v-card flat>
           <v-card-title class="headline">
               Products
               <v-spacer></v-spacer>
@@ -76,7 +76,7 @@
                 </v-flex>
             </v-card-text>
             <v-card-actions>
-                <v-btn color="error" @click="clearProduct">Close</v-btn>
+                <v-btn flat outline color="secondary" @click="clearProduct">Close</v-btn>
                 <v-spacer></v-spacer>
                 <v-btn color="success" @click="submit">
                     {{ selected_index > -1 ? "Save": "Submit"}}

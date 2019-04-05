@@ -79,7 +79,7 @@ var router = new Router({
         },
         {
         path: '/registration/pay',
-        name: 'Registration',
+        name: 'Payment',
         component: () => import('@/views/app/payment/PaymentSummary.vue')
       },
         {
@@ -101,6 +101,11 @@ var router = new Router({
           path: '/password/reset/:token',
           name: 'Reset Password',
           component: () => import('@/views/app/passwordSettings/ResetPassword.vue')
+        },
+        {
+          path: '/result/license/:key',
+          name: 'License Result',
+          component: () => import('@/views/LicenseResult.vue')
         }
       ]
 

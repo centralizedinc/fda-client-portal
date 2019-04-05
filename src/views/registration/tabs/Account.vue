@@ -11,10 +11,17 @@
               <v-avatar style="left: 40%" size="120" :color="random_color">
                 <span class="white--text display-1">{{alias}}</span>
               </v-avatar>              
-          </v-flex>          
-          <v-flex xs12 pa-1>
-            <v-text-field :rules="[rules.required]" label="Last Name" v-model="account.last_name"></v-text-field>
-            <v-text-field :rules="[rules.required]" label="First Name" v-model="account.first_name"></v-text-field>
+          </v-flex> 
+           <v-flex xs12 md4 pa-1>
+             <v-text-field :rules="[rules.required]" label="Last Name" v-model="account.name.last"></v-text-field>
+           </v-flex>
+           <v-flex xs12 md4 pa-1>
+             <v-text-field :rules="[rules.required]" label="First Name" v-model="account.name.first"></v-text-field>
+           </v-flex> 
+           <v-flex xs12 md4 pa-1>
+             <v-text-field :rules="[rules.required]" label="Middle Name" v-model="account.middle"></v-text-field>
+           </v-flex>         
+          <v-flex xs12 pa-1>                        
             <v-text-field 
               label="Email" 
               v-model="account.email"

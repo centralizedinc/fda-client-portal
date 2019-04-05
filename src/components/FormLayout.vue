@@ -24,7 +24,7 @@
                     align-center
                     justify-center
                   >
-                    <slot :name="'content-step-' + step"></slot>
+                    <slot :name="'content-step-' + st"></slot>
                   </v-layout>
                 </v-container>
               </v-card>

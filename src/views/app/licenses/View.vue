@@ -105,7 +105,7 @@
         </v-layout>
       </v-card-text>
       <v-card-actions>
-        <v-btn flat color="success" @click="$router.go(-1)" block>back</v-btn>
+        <v-btn flat color="primary" @click="$router.go(-1)" block>back</v-btn>
       </v-card-actions>
     </v-card>
   </v-layout>

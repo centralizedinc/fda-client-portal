@@ -72,7 +72,7 @@
                           <!-- Application History -->
                           <v-card flat v-show="window===4">
                             <v-container grid-list-md text-xs-left>
-                              <app-history :form="form"></app-history>
+                              <app-history :form="form" :case_holder="case_holder"></app-history>
                             </v-container>
                           </v-card>
 
@@ -96,7 +96,7 @@
                           </v-card>
 
                           <!-- COmpliance -->
-                          <v-card flat v-show="window===6">
+                          <!-- <v-card flat v-show="window===6">
                             <v-flex mt-3 ml-2>
                               <v-list two-line width>
                                 <template v-for="(item, index) in items">
@@ -122,10 +122,10 @@
                               </v-list>
                               <v-divider></v-divider>
                               <v-card-actions>
-                                <v-btn flat block color="success">view more</v-btn>
+                                <v-btn flat block color="primary">view more</v-btn>
                               </v-card-actions>
                             </v-flex>
-                          </v-card>
+                          </v-card> -->
                         </v-card-text>
                       </v-card>
                     </v-flex>
@@ -284,8 +284,7 @@ export default {
       "Uploaded Files",
       "Output Documents",
       "History",
-      "Payment",
-      "Compliance"
+      "Payment"
     ],
     items: [
       { header: "Today" },

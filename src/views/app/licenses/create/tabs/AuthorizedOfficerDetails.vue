@@ -1,14 +1,25 @@
 <template>
 <v-form ref="vform" v-model="isValid">
 
-  <v-expansion-panel v-model="panels">
+  <!-- <v-expansion-panel v-model="panels">
     <v-expansion-panel-content class="ma-3 pa-3">
-      <div slot="header" class="title font-weight-light primary--text">Personal Details</div>
-      <v-card>              
-        <v-layout row wrap> 
-          <v-flex xs12>
-            <v-divider></v-divider>
-          </v-flex>             
+      <div slot="header" class="title font-weight-light primary--text">Personal Details</div> -->
+      
+      <v-card> 
+        <v-sheet
+            dark
+            class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
+            color="fdaGreen"
+            height="40"
+      width="calc(100% - 10px)"
+            style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
+          >
+            Personal Information
+          </v-sheet>
+        <v-card-text>
+          
+                    
+        <v-layout row wrap>              
           <v-flex xs12 md4 pa-2>
             <v-text-field
               color="green darken-1"
@@ -117,17 +128,26 @@
         </v-menu>
       </v-flex>
         </v-layout>
+        </v-card-text> 
         </v-card>
-    </v-expansion-panel-content>
+    <!-- </v-expansion-panel-content>
     <v-expansion-panel-content class="ma-3 pa-3">
-      <div slot="header" class="title font-weight-light primary--text">Address Details</div>
+      <div slot="header" class="title font-weight-light primary--text">Address Details</div> -->
       <v-card>
+       <v-sheet
+      dark
+      class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
+      color="fdaGreen"
+     height="40"
+      width="calc(100% - 10px)"
+      style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
+    >
+      Address Details
+    </v-sheet>
+     <v-card-text>       
         <v-layout row wrap>
           <v-flex xs12>
-            <v-divider></v-divider>
-          </v-flex>
-          <v-flex xs12>
-            <v-textarea
+            <v-textarea rows='2'
               color="green darken-1"
               label="Address"
               :rules="[rules.required]"
@@ -182,9 +202,10 @@
             ></v-text-field>
           </v-flex>
         </v-layout>
+        </v-card-text>
       </v-card>        
-    </v-expansion-panel-content>
-  </v-expansion-panel>
+    <!-- </v-expansion-panel-content>
+  </v-expansion-panel> -->
 
 
 
@@ -313,8 +334,9 @@ export default {
       if(!this.isValid){
         this.panels=[true, true]        
       }else{
-        this.account.first_name = this.form.auth_officer.firstname
-        this.account.last_name = this.form.auth_officer.lastname
+        this.account.name.first = this.form.auth_officer.firstname
+        this.account.name.last = this.form.auth_officer.lastname
+        this.account.name.middle = this.form.auth_officer.middlename
         this.account.email = this.form.auth_officer.email
       }
       console.log('ACCOUNT: ' + JSON.stringify(this.account))

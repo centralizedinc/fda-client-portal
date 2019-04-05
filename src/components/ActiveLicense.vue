@@ -1,7 +1,11 @@
 <template>
     <v-flex xs12>
-        <v-card color="fdaSilver" class="elevation-5">
-          <v-card-title class="active-license-title fdaSilver--text" >
+        <v-card color="fdaSilver" class="elevation-5" 
+          v-if="details.license_details && 
+          details.case_details && 
+          details.license_details.license_no && 
+          details.case_details.case_no">
+          <v-card-title class="active-license-title fdaSilver--text">
             <v-avatar class="mr-3" color="grey">
               <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
             </v-avatar>
@@ -61,6 +65,18 @@
                 <v-flex xs12 md6 lg3 xl2>{{getPrimary(details.case_details.primary_activity)}}</v-flex>
               </v-layout>
             </v-container>
+          </v-card-text>
+        </v-card>
+        <v-card class="elevation-5 active-license-title fdaSilver--text" 
+          v-else-if="details.license_details && 
+          details.case_details">
+          <v-card-text>
+            <i>Loading data ...</i>
+          </v-card-text>
+        </v-card>
+        <v-card color="error" class="elevation-5" v-else>
+          <v-card-text class="white--text subheading">
+            <i>No Active License</i>
           </v-card-text>
         </v-card>
     </v-flex>

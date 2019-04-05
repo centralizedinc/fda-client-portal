@@ -148,7 +148,7 @@ export default {
     ]
   }),
   created() {
-    console.log("JSON.stringify(this.form) :", JSON.stringify(this.form));
+    console.log("JSON.stringifys(this.form) :", JSON.stringify(this.form));
   }
 };
 </script>

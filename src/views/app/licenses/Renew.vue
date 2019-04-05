@@ -71,11 +71,11 @@
                           </v-card>
 
                           <!-- Application History -->
-                          <v-card flat v-show="window===4">
+                          <!-- <v-card flat v-show="window===4">
                             <v-container grid-list-md text-xs-left>
                               <app-history :form="form"></app-history>
                             </v-container>
-                          </v-card>
+                          </v-card> -->
                         </v-card-text>
                       </v-card>
                     </v-flex>

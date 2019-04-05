@@ -63,7 +63,8 @@ const state = {
         },
         qualified: [],
         uploaded_files: []
-      }
+      },
+      applicationForm:{}
 }
 
 const mutations = {
@@ -100,6 +101,12 @@ const mutations = {
     },
     SET_VIEW_LICENSE(state, license) {
         state.view_license = license;
+    },
+    NEW_APPLICATION(state){
+        state.applicationForm = state.init_form;
+    },
+    CONTINUE_APPLICATION(state, form){
+        state.applicationForm = form
     }
 }
 
@@ -230,6 +237,10 @@ var actions = {
     },
     EXISTING_LIC_REG(context, data){
         return new LicenseAPI(context.rootState.user_session.token).applyAccountForExistingLicense(data)
+    },
+    // Result of License Evaluation
+    GET_RESULT_BY_KEY(context, key) {
+        return new LicenseAPI().getResultByKey(key);
     }
 }
 
