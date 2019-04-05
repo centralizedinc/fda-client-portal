@@ -36,7 +36,7 @@
             <v-toolbar dark color="primary">
                 <span class="title font-weight-light">New Address</span>
                 <v-spacer></v-spacer>
-                <v-btn flat icon>
+                <v-btn flat icon @click="showDialog=false">
                     <v-icon>close</v-icon>
                 </v-btn>
             </v-toolbar>
@@ -49,7 +49,7 @@
                             v-model="address.type"
                             label="Address Type"
                         ></v-select>
-                        <v-textarea
+                        <v-textarea rows="2"
                         color="green darken-1"
                         label="Address"
                         :rules="[rules.required]"

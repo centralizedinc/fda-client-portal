@@ -60,6 +60,7 @@
                     </v-stepper> 
                 </v-tab-item>
                 <v-tab-item>
+                    <v-divider></v-divider>
                        <v-data-table
                             :headers="[{text: 'Description', sortable:false}, {text: 'Amount', sortable:false}]"
                             :items="fees"
@@ -94,7 +95,9 @@
                 </v-card-title>
                 <v-card-text>
                     <keep-alive>
+                        <!-- <transition name="slide-fade"> -->
                         <component :is="stepComponent" :form="form" :account="account" ref="curr_step" @upload="uploadFile"/>
+                        <!-- </transition> -->
                     </keep-alive>
                 </v-card-text>
                 <v-divider></v-divider>
@@ -117,6 +120,7 @@
             :show="showSummary"
             :is-final="isFinal" 
             @close="hideSummary"
+            @edit="editPage"
             @accept="submit">
         </application-summary>
         <fab-button 
@@ -125,34 +129,24 @@
             @save="saveTempFile" 
             :buttons="[{label:'Preview', icon:'search', action:'review'},{label:'Save and Continue Later', icon:'save', action:'save'}]" 
             :hide-default="true"></fab-button>       
-        <a ref="link" href="" id="a" style="display:none">click here to download your file</a> 
-
-        <v-dialog
-            v-model="dialog"
-            scrollable fullscreen 
-            persistent :overlay="false"
-            max-width="500px"
-            transition="dialog-transition"
-        >
-            
-        </v-dialog>       
+        <a ref="link" href="" id="a" style="display:none">click here to download your file</a>      
     </v-layout>
 </template>
 
 <script>
-import GeneralInfo from "@/views/app/licenses/create/tabs/GeneralInfo.vue";
-import ApplicationSummary from "@/views/registration/tabs/Summary.vue";
+import GeneralInfo from "@/views/registration/tabs/GeneralInfo.vue";
+import ApplicationSummary from "@/views/registration/Summary.vue";
 import FabButton from "@/components/FabButtons.vue"
 
 export default {
   components: {
     "step1":GeneralInfo,
     //todo: create a loading component for async components...
-    "step2":()=>({component:import('@/views/app/licenses/create/tabs/EstablishmentInfo.vue')}),
-    "step3":()=>import('@/views/app/licenses/create/tabs/OfficeAddress.vue'),
-    "step4":()=>import('@/views/app/licenses/create/tabs/AuthorizedOfficerDetails.vue'),
-    "step5":()=>import('@/views/app/licenses/create/tabs/QualifiedPersonnel.vue'),
-    "step6":()=>import('@/views/app/licenses/create/tabs/DocumentsUpload.vue'),
+    "step2":()=>({component:import('@/views/registration/tabs/EstablishmentInfo.vue')}),
+    "step3":()=>import('@/views/registration/tabs/OfficeAddress.vue'),
+    "step4":()=>import('@/views/registration/tabs/AuthorizedOfficerDetails.vue'),
+    "step5":()=>import('@/views/registration/tabs/QualifiedPersonnel.vue'),
+    "step6":()=>import('@/views/registration/tabs/DocumentsUpload.vue'),
     "step7":()=>import("@/views/registration/tabs/Account.vue"),
     PaymentSummary:()=>import('@/views/app/payment/PaymentSummary.vue'),
     ApplicationSummary,
@@ -196,10 +190,14 @@ export default {
       }              
     },
     back(){
-        this.e1--;
-        if(this.e1 ==0){
-            this.$router.push('/')
+        var step = this.e1-1
+        if(step==0){
+            confirm('You are about to exit the registration process.')
+                && this.$router.push('/')
+        }else{
+            this.e1--
         }
+        this.tab=0;
     }, 
     next(){
         this.loading = true;
@@ -256,6 +254,11 @@ export default {
     hideSummary(){
         this.showSummary = false;
     },
+    editPage(page){
+        this.e1 = page
+        this.showSummary = false;
+        this.$notify({color:'primary', message:'You may now edit the details for Step '+this.e1+' - ' + this.headers[this.e1-1]})
+    },
     uploadFile(data) {
       this.formData = data.upload;
       this.uploadedFiles = data.uploadedFiles;
@@ -293,10 +296,12 @@ export default {
                 this.$store.commit('NEW_APPLICATION')
                 this.$router.push('/registration/pay')
             } else {
+                this.showSummary = false;
                 this.$notifyError(result.errors);
             }
         })
         .catch(err => {
+            this.showSummary=false;
             this.loading = false;
             this.$notifyError(err);
         });
@@ -321,4 +326,15 @@ export default {
 </script>
 
 <style>
+.slide-fade-enter-active {
+  transition: all .1s ease;
+}
+.slide-fade-leave-active {
+  transition: all .1s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
 </style>

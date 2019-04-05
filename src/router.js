@@ -66,12 +66,6 @@ var router = new Router({
           name: 'Preface',
           component: () => import('@/views/Preface.vue'),
           beforeEnter: isAuthenticated
-        },
-        {
-          path: 'login',
-          name: 'Login',
-          component: () => import('@/views/Login.vue'),
-          beforeEnter: isAuthenticated
         }, {
           path: '/registration/new',
           name: 'Registration',
@@ -85,7 +79,7 @@ var router = new Router({
         {
           path: '/registration/existing',
           name: 'Registration with Existing License',
-          component: () => import('@/views/registration/existing/Validate.vue')
+          component: () => import('@/views/registration/Existing.vue')
         },        
         {
           path: '/confirmation',
@@ -124,12 +118,6 @@ var router = new Router({
           path: 'licenses',
           name: 'License to Operate',
           component: () => import('@/views/app/licenses/Licenses.vue'),
-          // beforeEnter: isAuthorized
-        },
-        {
-          path: 'licenses/apply',
-          name: 'New License Application',
-          component: () => import('@/views/app/licenses/Create.vue'),
           // beforeEnter: isAuthorized
         },
         {

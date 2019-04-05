@@ -249,9 +249,6 @@
 
 <script>
 export default {
-  components: {
-    QualifiedPersonnelList: () => import("./AddToListDialog.vue")
-  },
   props: ["form"],
   data: () => ({
     index:null,

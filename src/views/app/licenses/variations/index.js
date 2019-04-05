@@ -8,7 +8,7 @@ export default {
     ProductLine: () =>
         import('./tabs/ProductLine.vue'),
     ConfirmToReviewApp: () =>
-        import("../create/tabs/ConfirmDialog.vue"),
+        import("./tabs/ConfirmDialog.vue"),
     PaymentSummary: () =>
         import("../../payment/PaymentSummary.vue"),
     QualifiedPersonnel: () =>
