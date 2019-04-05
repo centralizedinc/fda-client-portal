@@ -9,44 +9,121 @@
     </v-toolbar>
     <v-card flat>
         <v-card-text>
-            <v-layout row wrap>
-                <v-flex xs12 md4 pa-2>
-                    <v-text-field color="green darken-1" label="Last Name" :rules="[rules.required]" v-model="form.auth_officer.lastname"></v-text-field>
-                </v-flex>
-                <v-flex xs12 md4 pa-2>
-                    <v-text-field color="green darken-1" label="First Name" :rules="[rules.required]" v-model="form.auth_officer.firstname"></v-text-field>
-                </v-flex>
-                <v-flex xs12 md4 pa-2>
-                    <v-text-field color="green darken-1" label="Middle Name" :rules="[rules.required]" v-model="form.auth_officer.middlename"></v-text-field>
-                </v-flex>
-                <v-flex xs12 md4 pa-2>
-                    <v-autocomplete color="green darken-1" :rules="[rules.required]" v-model="form.auth_officer.designation" :items="designation" item-text="name" item-value="_id" hide-no-data hide-selected label="Designation"></v-autocomplete>
-                </v-flex>
-                <v-flex xs12 md4 pa-2>
-                    <v-text-field color="green darken-1" label="Email Address" :rules="[rules.required]" v-model="form.auth_officer.email"></v-text-field>
-                </v-flex>
-                <v-flex xs12 md4 pa-2>
-                    <v-text-field color="green darken-1" label="TIN" hint="Tax Identification Number" :rules="[rules.required]" :mask="tin" v-model="form.auth_officer.tin"></v-text-field>
-                </v-flex>
-                <v-flex xs12 md4 pa-1>
-                    <v-autocomplete color="green darken-1" :rules="[rules.required]" v-model="form.auth_officer.id_type" :items="id_type" hide-no-data hide-selected label="ID Type"></v-autocomplete>
-                </v-flex>
-                <v-flex xs12 md4 pa-1>
-                    <v-text-field color="green darken-1" label="ID Number" :rules="[rules.required]" v-model="form.auth_officer.id_no"></v-text-field>
-                </v-flex>
-                <v-flex xs12 md4 pa-1>
-                    <v-menu ref="menu" :close-on-content-click="false" v-model="menu" :nudge-right="40" lazy transition="scale-transition" offset-y full-width min-width="290px">
-                        <v-text-field color="green darken-1" slot="activator" :rules="[rules.required]" v-model="form.auth_officer.id_expiry" label="Expiry" append-icon="event" readonly></v-text-field>
-                        <v-date-picker color="green darken-1" v-model="form.auth_officer.id_expiry" no-title scrollable>
-                            <v-spacer></v-spacer>
-                            <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
-                            <v-btn flat color="primary" @click="$refs.menu.save(form.auth_officer.id_expiry)">OK</v-btn>
-                        </v-date-picker>
-                    </v-menu>
-                </v-flex>
-            </v-layout>
-        </v-card-text>
-    </v-card>
+          
+                    
+        <v-layout row wrap>              
+          <v-flex xs12 md4 pa-2>
+            <v-text-field
+              color="green darken-1"
+              label="Last Name"
+              :rules="[rules.required]"
+              v-model="form.auth_officer.lastname"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs12 md4 pa-2>
+            <v-text-field
+              color="green darken-1"
+              label="First Name"
+              :rules="[rules.required]"
+              v-model="form.auth_officer.firstname"
+            ></v-text-field>
+            </v-flex>
+            <v-flex xs12 md4 pa-2>
+              <v-text-field
+                color="green darken-1"
+                label="Middle Name"
+                :rules="[rules.required]"
+                v-model="form.auth_officer.middlename"
+              ></v-text-field>      
+          </v-flex>
+          <v-flex xs12 md4 pa-2>
+            <v-autocomplete
+              color="green darken-1"
+              :rules="[rules.required]"
+              v-model="form.auth_officer.designation"
+              :items="designations"
+              item-text="name"
+              item-value="_id"
+              hide-no-data
+              hide-selected
+              label="Designation"
+            ></v-autocomplete>
+          </v-flex>
+          <v-flex xs12 md4 pa-2>
+            <v-text-field
+              color="green darken-1"
+              label="Email Address"
+              :rules="[rules.required]"
+              v-model="form.auth_officer.email"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs12 md4 pa-2>
+            <v-text-field
+              color="green darken-1"
+              label="TIN"
+              hint="Tax Identification Number"
+              :rules="[rules.required]"
+              :mask="tin"
+              v-model="form.auth_officer.tin"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs12 md4 pa-1>
+        <v-autocomplete
+          color="green darken-1"
+          :rules="[rules.required]"
+          v-model="form.auth_officer.id_type"
+          :items="id_types"
+          item-text="name"
+          item-value="_id"
+          hide-no-data
+          hide-selected
+          label="ID Type"
+        ></v-autocomplete>
+      </v-flex>
+      <v-flex xs12 md4 pa-1>
+        <v-text-field
+          color="green darken-1"
+          label="ID Number"
+          :rules="[rules.required]"
+          v-model="form.auth_officer.id_no"
+        ></v-text-field>
+      </v-flex>
+      <v-flex xs12 md4 pa-1>
+        <v-menu
+          ref="menu"
+          :close-on-content-click="false"
+          v-model="menu"
+          :nudge-right="40"
+          lazy
+          transition="scale-transition"
+          offset-y
+          full-width
+          min-width="290px"
+        >
+          <v-text-field
+            color="green darken-1"
+            slot="activator"
+            :rules="[rules.required]"
+            v-model="form.auth_officer.id_expiry"
+            label="Expiry"
+            append-icon="event"
+            readonly
+          ></v-text-field>
+          <v-date-picker
+            color="green darken-1"
+            v-model="form.auth_officer.id_expiry"
+            no-title
+            scrollable
+          >
+            <v-spacer></v-spacer>
+            <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
+            <v-btn flat color="primary" @click="$refs.menu.save(form.auth_officer.id_expiry)">OK</v-btn>
+          </v-date-picker>
+        </v-menu>
+      </v-flex>
+        </v-layout>
+        </v-card-text> 
+        </v-card>
     <!-- </v-expansion-panel-content>
     <v-expansion-panel-content class="ma-3 pa-3">
       <div slot="header" class="title font-weight-light primary--text">Address Details</div> -->
@@ -151,106 +228,103 @@
 
 <script>
 export default {
-    props: ["form", "account"],
-    data: () => ({
-        panels: [true, false],
-        isValid: true,
-        menu: null,
-        menu2: null,
-        designation: [
-            "Owner (for sole proprietorships)",
-            "CEO/ President/ General Manager",
-            "Head, Quality Assurance/ Control",
-            "Head, Regulatory Affairs",
-            "Head, Production"
-        ],
-        id_type: ["PRC", "TIN"],
-        regions: [],
-        provinces: [],
-        cities: [],
-        zipcodes: [],
-        tin: "###-###-###-###",
-        rules: {
-            required: value => !!value || "This field is required"
-        }
-    }),
-    created() {
-        this.init();
-    },
-    watch: {
-        menu2(val) {
-            val && this.$nextTick(() => (this.$refs.picker2.activePicker = "YEAR"));
-        }
-    },
-    methods: {
-        init() {
-            // this.$store.dispatch("GET_REGION").then(result => {
-            //   this.regions = this.$store.state.places.regions;
-            // });
-            this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
-                if (locations) {
-                    this.regions = locations.regions;
-                    this.provinces = locations.provinces;
-                    this.cities = locations.provinces;
-                }
-            });
-        },
-        validate() {
-            this.$refs.vform.validate();
-            if (!this.isValid) {
-                this.panels = [true, true]
-            } else {
-                this.account.name.first = this.form.auth_officer.firstname
-                this.account.name.last = this.form.auth_officer.lastname
-                this.account.name.middle = this.form.auth_officer.middlename
-                this.account.email = this.form.auth_officer.email
-            }
-            console.log('ACCOUNT: ' + JSON.stringify(this.account))
-            return this.isValid;
-        }
-        // getProvinces() {
-        //   this.$store
-        //     .dispatch("GET_PROVINCE", this.form.auth_officer.mail_add.region)
-        //     .then(result => {
-        //       this.provinces = this.$store.state.places.provinces;
-        //       return this.$store.dispatch("GET_REGION");
-        //     })
-        //     .then(result => {
-        //       // GET region data
-        //       this.regions = this.$store.state.places.regions;
-        //     });
-        // },
-        // getCities() {
-        //   this.$store
-        //     .dispatch("GET_CITY", this.form.auth_officer.mail_add.city)
-        //     .then(result => {
-        //       this.cities = this.$store.state.places.city;
-        //       return this.$store.dispatch("GET_PROVINCE");
-        //     })
-        //     .then(result => {
-        //       // GET CITIES data
-        //       this.provinces = this.$store.state.places.provinces;
-        //     });
-        // }
-    },
-    computed: {
-        filtered_provinces() {
-            return this.findProvinces(this.form.auth_officer.mail_add.region);
-        },
-        filtered_cities() {
-            return this.findCities(this.form.auth_officer.mail_add.province);
-        }
-    },
-    computed: {
-        filtered_provinces() {
-            // this.form.addresses.office.province = null;
-            return this.findProvinces(this.form.auth_officer.mail_add.region);
-        },
-        filtered_cities() {
-            //  this.form.addresses.office.city = null;
-            return this.findCities(this.form.auth_officer.mail_add.province);
-        }
+  props: ["form", "account"],
+  data: () => ({
+    panels: [true, false],
+    isValid: true,
+    menu: null,
+    menu2: null,
+    regions: [],
+    provinces: [],
+    cities: [],
+    zipcodes: [],
+    tin: "###-###-###-###",
+    rules: {
+      required: value => !!value || "This field is required"
     }
+  }),
+  created() {
+    this.init();
+  },
+  watch: {
+    menu2(val) {
+      val && this.$nextTick(() => (this.$refs.picker2.activePicker = "YEAR"));
+    }
+  },
+  methods: {
+    init() {
+      // this.$store.dispatch("GET_REGION").then(result => {
+      //   this.regions = this.$store.state.places.regions;
+      // });
+      this.$store
+        .dispatch("GET_PLACES_REFERENCE")
+        .then(locations => {
+          if (locations) {
+            this.regions = locations.regions;
+            this.provinces = locations.provinces;
+            this.cities = locations.provinces;
+          }
+          // load ID TYPES and DESIGNATIONS
+          return this.$store.dispatch("GET_REFERENCES");
+        })
+        .catch(err => {
+          this.$notifyError(err);
+        });
+    },
+    validate() {
+      this.$refs.vform.validate();
+      if (!this.isValid) {
+        this.panels = [true, true];
+      } else {
+        this.account.name.first = this.form.auth_officer.firstname;
+        this.account.name.last = this.form.auth_officer.lastname;
+        this.account.name.middle = this.form.auth_officer.middlename;
+        this.account.email = this.form.auth_officer.email;
+      }
+      console.log("ACCOUNT: " + JSON.stringify(this.account));
+      return this.isValid;
+    }
+    // getProvinces() {
+    //   this.$store
+    //     .dispatch("GET_PROVINCE", this.form.auth_officer.mail_add.region)
+    //     .then(result => {
+    //       this.provinces = this.$store.state.places.provinces;
+    //       return this.$store.dispatch("GET_REGION");
+    //     })
+    //     .then(result => {
+    //       // GET region data
+    //       this.regions = this.$store.state.places.regions;
+    //     });
+    // },
+    // getCities() {
+    //   this.$store
+    //     .dispatch("GET_CITY", this.form.auth_officer.mail_add.city)
+    //     .then(result => {
+    //       this.cities = this.$store.state.places.city;
+    //       return this.$store.dispatch("GET_PROVINCE");
+    //     })
+    //     .then(result => {
+    //       // GET CITIES data
+    //       this.provinces = this.$store.state.places.provinces;
+    //     });
+    // }
+  },
+  computed: {
+    filtered_provinces() {
+      return this.findProvinces(this.form.auth_officer.mail_add.region);
+    },
+    filtered_cities() {
+      return this.findCities(this.form.auth_officer.mail_add.province);
+    },
+    id_types() {
+      return this.$store.state.references.id_types;
+    },
+    designations() {
+      var datas = this.$store.state.references.designations;
+      if (datas) return datas.filter(x => x.type === 0);
+      else return [];
+    }
+}
 };
 </script>
 

@@ -86,7 +86,7 @@ var actions = {
           if (res.isConfirmed && res.isMatch) {
             context.commit('LOGIN', res);
             context.dispatch('GET_PRODUCT_REFERENCE')
-          }          
+          }
           resolve(res)
         } else {
           console.log(JSON.stringify(err));

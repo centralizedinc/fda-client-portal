@@ -73,7 +73,7 @@
 export default {
   props: ["form"],
   data: () => ({
-    isValid:true,
+    isValid: true,
     rules: {
       required: value => !!value || "This field is required",
       declare: () =>
@@ -88,8 +88,8 @@ export default {
       this.form.general_info.addtl_activity = "";
       this.form.general_info.declared_capital = "";
     },
-    "form.general_info.product_type": function(val){
-      console.log(this.form.general_info.addtl_activity)
+    "form.general_info.product_type": function(val) {
+      console.log(this.form.general_info.addtl_activity);
     }
   },
   computed: {
@@ -134,12 +134,12 @@ export default {
       );
     }
   },
-  created(){
+  created() {
     this.init();
   },
   methods: {
-    init(){
-      this.$store.dispatch("GET_PRODUCT_REFERENCE")
+    init() {
+      this.$store.dispatch("GET_PRODUCT_REFERENCE");
     },
     getItems(arr1, arr2) {
       var items = [];
@@ -153,7 +153,7 @@ export default {
       }
       return items;
     },
-    validate(){
+    validate() {
       this.$refs.vform.validate();
       return this.isValid;
     }

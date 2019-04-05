@@ -124,63 +124,57 @@
             @save="saveTempFile" 
             :buttons="[{label:'Preview', icon:'search', action:'review'},{label:'Save and Continue Later', icon:'save', action:'save'}]" 
             :hide-default="true"></fab-button>       
-        <a ref="link" href="" id="a" style="display:none">click here to download your file</a> 
-
-        <v-dialog
-            v-model="dialog"
-            scrollable fullscreen 
-            persistent :overlay="false"
-            max-width="500px"
-            transition="dialog-transition"
-        >
-            
-        </v-dialog>       
+        <a ref="link" href="" id="a" style="display:none">click here to download your file</a>       
     </v-layout>
 </template>
 
 <script>
 import GeneralInfo from "@/views/app/licenses/create/tabs/GeneralInfo.vue";
 import ApplicationSummary from "@/views/registration/tabs/Summary.vue";
-import FabButton from "@/components/FabButtons.vue"
+import FabButton from "@/components/FabButtons.vue";
 
 export default {
   components: {
-    "step1":GeneralInfo,
+    step1: GeneralInfo,
     //todo: create a loading component for async components...
-    "step2":()=>({component:import('@/views/app/licenses/create/tabs/EstablishmentInfo.vue')}),
-    "step3":()=>import('@/views/app/licenses/create/tabs/OfficeAddress.vue'),
-    "step4":()=>import('@/views/app/licenses/create/tabs/AuthorizedOfficerDetails.vue'),
-    "step5":()=>import('@/views/app/licenses/create/tabs/QualifiedPersonnel.vue'),
-    "step6":()=>import('@/views/app/licenses/create/tabs/DocumentsUpload.vue'),
-    "step7":()=>import("@/views/registration/tabs/Account.vue"),
-    PaymentSummary:()=>import('@/views/app/payment/PaymentSummary.vue'),
+    step2: () => ({
+      component: import("@/views/app/licenses/create/tabs/EstablishmentInfo.vue")
+    }),
+    step3: () => import("@/views/app/licenses/create/tabs/OfficeAddress.vue"),
+    step4: () =>
+      import("@/views/app/licenses/create/tabs/AuthorizedOfficerDetails.vue"),
+    step5: () =>
+      import("@/views/app/licenses/create/tabs/QualifiedPersonnel.vue"),
+    step6: () => import("@/views/app/licenses/create/tabs/DocumentsUpload.vue"),
+    step7: () => import("@/views/registration/tabs/Account.vue"),
+    PaymentSummary: () => import("@/views/app/payment/PaymentSummary.vue"),
     ApplicationSummary,
     FabButton
   },
   data() {
-    return { 
-        loading:false,
-        total_amount:0,        
-        fees:[],
-        charges:null,
-        tab:null,    
+    return {
+      loading: false,
+      total_amount: 0,
+      fees: [],
+      charges: null,
+      tab: null,
       form: {},
-      account:{
-          name:{}
+      account: {
+        name: {}
       },
       e1: 1,
       nav: true,
-      showSummary:false,
-      headers:[
-          'General Information',
-           'Establishment Details',
-           'Establishment Address',
-           'Authorized Officer',
-           'Qualified Personnel',
-           'Document Upload',
-           'Account Credentials'
-        ],
-    uploadedFiles:[]
+      showSummary: false,
+      headers: [
+        "General Information",
+        "Establishment Details",
+        "Establishment Address",
+        "Authorized Officer",
+        "Qualified Personnel",
+        "Document Upload",
+        "Account Credentials"
+      ],
+      uploadedFiles: []
     };
   },
   created() {
@@ -188,131 +182,156 @@ export default {
   },
   methods: {
     init() {
-      this.form = JSON.parse(JSON.stringify(this.$store.state.licenses.applicationForm)); 
-      if(this.form.current_step){
-          this.e1 = this.form.current_step;          
-      }              
+      this.form = JSON.parse(
+        JSON.stringify(this.$store.state.licenses.applicationForm)
+      );
+      if (this.form.current_step) {
+        this.e1 = this.form.current_step;
+      }
     },
-    back(){
-        this.e1--;
-        if(this.e1 ==0){
-            this.$router.push('/')
+    back() {
+      this.e1--;
+      if (this.e1 == 0) {
+        this.$router.push("/");
+      }
+    },
+    next() {
+      this.loading = true;
+      var valid = this.$refs.curr_step.validate();
+      valid = true;
+      if (valid && this.e1 < 7) {
+        this.tab = 0;
+        if (this.e1 == 1) {
+          //compute for Fees
+          var details = {
+            productType: this.form.general_info.product_type,
+            primaryActivity: this.form.general_info.primary_activity,
+            declaredCapital: this.form.general_info.declared_capital,
+            appType: this.form.application_type
+          };
+          this.$store.dispatch("GET_FEES", details).then(result => {
+            console.log("GETTING FEES:" + JSON.stringify(result));
+            this.charges = result;
+            this.fees = [];
+            this.fees.push({
+              description: "Application Fee",
+              amount: result.fee
+            });
+            this.fees.push({
+              description: "LRF",
+              amount: result.lrf
+            });
+            this.fees.push({
+              description: "Interest",
+              amount: result.interest
+            }),
+              this.fees.push({
+                description: "Surcharge",
+                amount: result.surcharge
+              });
+            this.tab = 1;
+            this.total_amount = result.total;
+            this.$notify({
+              color: "primary",
+              message:
+                "Registration fee computed! For this application you will have to pay the amount of  ₱ " +
+                this.numberWithCommas(this.total_amount)
+            });
+          });
         }
-    }, 
-    next(){
-        this.loading = true;
-        var valid = this.$refs.curr_step.validate()
-        valid = true;
-        if(valid && this.e1<7){
-            this.tab =0;
-            if(this.e1==1){
-                //compute for Fees
-                var details = {
-                    productType: this.form.general_info.product_type,
-                    primaryActivity: this.form.general_info.primary_activity,
-                    declaredCapital: this.form.general_info.declared_capital,
-                    appType: this.form.application_type
-                };
-                this.$store.dispatch("GET_FEES", details).then(result => {
-                    console.log('GETTING FEES:' + JSON.stringify(result));
-                    this.charges = result;
-                    this.fees=[];
-                    this.fees.push({
-                        description: 'Application Fee',
-                        amount: result.fee
-                    })
-                    this.fees.push({
-                        description: 'LRF',
-                        amount: result.lrf
-                    })
-                    this.fees.push({
-                        description: 'Interest',
-                        amount: result.interest
-                    }),
-                    this.fees.push({
-                        description: 'Surcharge',
-                        amount: result.surcharge
-                    })
-                    this.tab = 1;
-                    this.total_amount = result.total
-                    this.$notify({color:'primary',message:'Registration fee computed! For this application you will have to pay the amount of  ₱ ' + this.numberWithCommas(this.total_amount)})
-                });
-            }
-            this.e1++;
-            this.$vuetify.goTo(0)
-            this.loading = false;
-        }else if(valid && this.e1==7){
-            this.tab =1;
-            this.showSummary = true
-            this.$notify({message: 'This is the last step of the application process. Review your application details and make sure you have entered all values correctly. Once you clicked Submit, you won\'t be able to modify any of the data you have entered.', color:'primary'})
-            this.loading = false;
-        }else{
-            this.$notifyError([{message:"Fill-up required fields."}])
-            this.loading = false;
-        }                              
+        this.e1++;
+        this.$vuetify.goTo(0);
+        this.loading = false;
+      } else if (valid && this.e1 == 7) {
+        this.tab = 1;
+        this.showSummary = true;
+        this.$notify({
+          message:
+            "This is the last step of the application process. Review your application details and make sure you have entered all values correctly. Once you clicked Submit, you won't be able to modify any of the data you have entered.",
+          color: "primary"
+        });
+        this.loading = false;
+      } else {
+        this.$notifyError([{ message: "Fill-up required fields." }]);
+        this.loading = false;
+      }
     },
-    hideSummary(){
-        this.showSummary = false;
+    hideSummary() {
+      this.showSummary = false;
     },
     uploadFile(data) {
       this.formData = data.upload;
       this.uploadedFiles = data.uploadedFiles;
-      
     },
-    saveTempFile(){
-        this.form.current_step = this.e1;
-        var content = new Buffer(JSON.stringify(this.form)).toString('base64')
-        this.$refs.link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
-        this.$refs.link.setAttribute('download', this.form.estab_details.establishment_name+"_"+(new Date()).getTime()+".fdav3");
-        this.$refs.link.click();
-        this.$notify({message: 'Download started.', color: 'primary'})        
+    saveTempFile() {
+      this.form.current_step = this.e1;
+      var content = new Buffer(JSON.stringify(this.form)).toString("base64");
+      this.$refs.link.setAttribute(
+        "href",
+        "data:text/plain;charset=utf-8," + encodeURIComponent(content)
+      );
+      this.$refs.link.setAttribute(
+        "download",
+        this.form.estab_details.establishment_name +
+          "_" +
+          new Date().getTime() +
+          ".fdav3"
+      );
+      this.$refs.link.click();
+      this.$notify({ message: "Download started.", color: "primary" });
     },
-    submit(){
-        this.loading = true;
-        this.$store.dispatch("SAVE_NEW_LICENSE", {upload: this.formData, license: this.form, account: this.account})
+    submit() {
+      this.loading = true;
+      this.$store
+        .dispatch("SAVE_NEW_LICENSE", {
+          upload: this.formData,
+          license: this.form,
+          account: this.account
+        })
         .then(result => {
-            this.loading = false;
-            if (result.success) {
-                var message = "You have successfully applied a new license. In order for your application to be processed you have to pay the amount of ₱ " 
-                            + this.numberWithCommas(this.charges.total)
-                            + ". Kindly choose from one of our payment options available."
-                this.$notify({
-                message: message,
-                color: "primary",
-                icon: "check_circle"
-                });  
-                if(!this.charges){
-                    this.$store.dispatch("GET_FEES", details).then(result => {
-                        this.charges = result
-                    })
-                }              
-                this.$store.commit('FEES', this.charges);
-                this.$store.commit('NEW_APPLICATION')
-                this.$router.push('/registration/pay')
-            } else {
-                this.$notifyError(result.errors);
+          this.loading = false;
+          if (result.success) {
+            var message =
+              "You have successfully applied a new license. In order for your application to be processed you have to pay the amount of ₱ " +
+              this.numberWithCommas(this.charges.total) +
+              ". Kindly choose from one of our payment options available.";
+            this.$notify({
+              message: message,
+              color: "primary",
+              icon: "check_circle"
+            });
+            if (!this.charges) {
+              this.$store.dispatch("GET_FEES", details).then(result => {
+                this.charges = result;
+              });
             }
+            this.$store.commit("FEES", this.charges);
+            this.$store.commit("NEW_APPLICATION");
+            this.$router.push("/registration/pay");
+          } else {
+            this.$notifyError(result.errors);
+          }
         })
         .catch(err => {
-            this.loading = false;
-            this.$notifyError(err);
+          this.loading = false;
+          this.$notifyError(err);
         });
     }
   },
-  watch:{
-      e1(){
-          if(!this.nav){
-              this.nav = true;
-          }
+  watch: {
+    e1() {
+      if (!this.nav) {
+        this.nav = true;
       }
+    }
   },
-  computed:{
-      completion(){
-          return parseInt(((this.e1-1)/7)*100)
-      },
-      stepComponent(){
-          return "step" +this.e1
-      }
+  computed: {
+    completion() {
+      return parseInt((this.e1 - 1) / 7 * 100);
+    },
+    stepComponent() {
+      return "step" + this.e1;
+    }
   }
 };
 </script>
