@@ -49,72 +49,72 @@ var actions = {
         var products = {};
         return new Promise((resolve, reject) => {
             //check if it is already loaded
-            if(!refresh &&
-                context.state.productType && context.state.productType.length >0
-                && context.state.primaryActivity && context.state.primaryActivity.length >0
-                && context.state.additional && context.state.additional.length >0
-                && context.state.declared && context.state.declared.length >0
-                && context.state.prod_line && context.state.prod_line.length >0){
-                    resolve({
-                        product_type:context.state.productType,
-                        primary:context.state.primaryActivity,
-                        additional:context.state.additional,
-                        declared:context.state.declared,
-                        prod_line:context.state.prod_line
-                    })
-            }else{
+            if (!refresh &&
+                context.state.productType && context.state.productType.length > 0 &&
+                context.state.primaryActivity && context.state.primaryActivity.length > 0 &&
+                context.state.additional && context.state.additional.length > 0 &&
+                context.state.declared && context.state.declared.length > 0 &&
+                context.state.prod_line && context.state.prod_line.length > 0) {
+                resolve({
+                    product_type: context.state.productType,
+                    primary: context.state.primaryActivity,
+                    additional: context.state.additional,
+                    declared: context.state.declared,
+                    prod_line: context.state.prod_line
+                })
+            } else {
                 ProductAPI.getProductType()
-                .then((result) => {
-                    if (result.data.success) {
-                        products.product_type = result.data.model;
-                        context.commit("SET_PRODUCT_TYPE", result.data.model);
-                        return ProductAPI.getPrimary()
-                    } else {
-                        reject(result.data.errors);
-                    }
-                })
-                .then((result) => {
-                    if (result.data.success) {
-                        products.primary = result.data.model;
-                        context.commit("SET_PRIMARY_ACTIVITY", result.data.model);
-                        return ProductAPI.getAdditional()
-                    } else {
-                        reject(result.data.errors);
-                    }
-                })
-                .then((result) => {
-                    if (result.data.success) {
-                        products.additional = result.data.model;
-                        context.commit("SET_ADDITIONAL", result.data.model);
-                        return ProductAPI.getDeclaredCapital()
-                    } else {
-                        reject(result.data.errors);
-                    }
-                })
-                .then((result) => {
-                    if (result.data.success) {
-                        products.declared = result.data.model;
-                        context.commit("SET_DECLARED", result.data.model);
-                        return ProductAPI.getProductLine()
-                    } else {
-                        reject(result.data.errors);
-                    }
-                })
-                .then((result) => {
-                    if (result.data.success) {
-                        products.prod_line = result.data.model;
-                        context.commit("SET_PROD_LINE", result.data.model);
-                        console.log('products :', products);
-                        resolve(products)
-                    } else {
-                        reject(result.data.errors);
-                    }
-                })
-                .catch((err) => {
-                    console.log('err in getting products references :', err);
-                    reject(err);
-                });
-            }            
+                    .then((result) => {
+                        if (result.data.success) {
+                            products.product_type = result.data.model;
+                            context.commit("SET_PRODUCT_TYPE", result.data.model);
+                            return ProductAPI.getPrimary()
+                        } else {
+                            reject(result.data.errors);
+                        }
+                    })
+                    .then((result) => {
+                        if (result.data.success) {
+                            products.primary = result.data.model;
+                            context.commit("SET_PRIMARY_ACTIVITY", result.data.model);
+                            return ProductAPI.getAdditional()
+                        } else {
+                            reject(result.data.errors);
+                        }
+                    })
+                    .then((result) => {
+                        if (result.data.success) {
+                            products.additional = result.data.model;
+                            context.commit("SET_ADDITIONAL", result.data.model);
+                            return ProductAPI.getDeclaredCapital()
+                        } else {
+                            reject(result.data.errors);
+                        }
+                    })
+                    .then((result) => {
+                        if (result.data.success) {
+                            products.declared = result.data.model;
+                            context.commit("SET_DECLARED", result.data.model);
+                            return ProductAPI.getProductLine()
+                        } else {
+                            reject(result.data.errors);
+                        }
+                    })
+                    .then((result) => {
+                        if (result.data.success) {
+                            products.prod_line = result.data.model;
+                            context.commit("SET_PROD_LINE", result.data.model);
+                            console.log('products :', products);
+                            resolve(products)
+                        } else {
+                            reject(result.data.errors);
+                        }
+                    })
+                    .catch((err) => {
+                        console.log('err in getting products references :', err);
+                        reject(err);
+                    });
+            }
         })
     },
     GET_PRODUCT_TYPE(context) {

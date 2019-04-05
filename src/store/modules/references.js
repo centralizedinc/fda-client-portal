@@ -24,11 +24,43 @@ const mutations = {
 }
 
 var actions = {
-    GET_ID_TYPES(context) {
-        return ReferenceAPI.getIdTypes()
-    },
-    GET_DESIGNATIONS(context) {
-        return ReferenceAPI.getDesignations()
+    GET_REFERENCES(context, refresh) {
+        context.commit('INITIALIZE', context.rootState.user_session.token)
+        return new Promise((resolve, reject) => {
+            if (!refresh &&
+                context.state.id_types && context.state.id_types.length > 0 &&
+                context.state.designations && context.state.designations.length > 0) {
+                resolve({
+                    id_types: context.state.id_types,
+                    designations: context.state.designations
+                })
+            } else {
+                var references = {};
+                ReferenceAPI.getIdTypes()
+                    .then((result) => {
+                        if (result.data.success) {
+                            context.commit('SET_ID_TYPES', result.data.model)
+                            references.id_types = result.data.model;
+                            return ReferenceAPI.getDesignations()
+                        } else {
+                            reject(result.data.errors)
+                        }
+                    })
+                    .then((result) => {
+                        if (result.data.success) {
+                            context.commit('SET_DESIGNATIONS', result.data.model)
+                            references.designations = result.data.model;
+                            resolve(references)
+                        } else {
+                            reject(result.data.errors)
+                        }
+                    })
+                    .catch((err) => {
+                        reject(err)
+                    });
+
+            }
+        })
     }
 }
 

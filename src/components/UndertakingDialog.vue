@@ -4,6 +4,7 @@
       v-model="show"
       scrollable
       :overlay="false"
+      persistent
       max-width="800px"
       transition="dialog-transition"
     >

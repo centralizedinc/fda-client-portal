@@ -49,9 +49,9 @@
               color="green darken-1"
               :rules="[rules.required]"
               v-model="form.auth_officer.designation"
-              :items="designation"
-               item-text="name"
-               item-value="_id"
+              :items="designations"
+              item-text="name"
+              item-value="_id"
               hide-no-data
               hide-selected
               label="Designation"
@@ -80,7 +80,9 @@
           color="green darken-1"
           :rules="[rules.required]"
           v-model="form.auth_officer.id_type"
-          :items="id_type"
+          :items="id_types"
+          item-text="name"
+          item-value="_id"
           hide-no-data
           hide-selected
           label="ID Type"
@@ -287,18 +289,10 @@
 export default {
   props: ["form", "account"],
   data: () => ({
-    panels:[true, false],
-    isValid:true,
+    panels: [true, false],
+    isValid: true,
     menu: null,
     menu2: null,
-    designation: [
-      "Owner (for sole proprietorships)",
-      "CEO/ President/ General Manager",
-      "Head, Quality Assurance/ Control",
-      "Head, Regulatory Affairs",
-      "Head, Production"
-    ],
-    id_type: ["PRC", "TIN"],
     regions: [],
     provinces: [],
     cities: [],
@@ -311,7 +305,7 @@ export default {
   created() {
     this.init();
   },
-  watch: {    
+  watch: {
     menu2(val) {
       val && this.$nextTick(() => (this.$refs.picker2.activePicker = "YEAR"));
     }
@@ -321,25 +315,32 @@ export default {
       // this.$store.dispatch("GET_REGION").then(result => {
       //   this.regions = this.$store.state.places.regions;
       // });
-      this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
-        if (locations) {
-          this.regions = locations.regions;
-          this.provinces = locations.provinces;
-          this.cities = locations.provinces;
-        }
-      });
+      this.$store
+        .dispatch("GET_PLACES_REFERENCE")
+        .then(locations => {
+          if (locations) {
+            this.regions = locations.regions;
+            this.provinces = locations.provinces;
+            this.cities = locations.provinces;
+          }
+          // load ID TYPES and DESIGNATIONS
+          return this.$store.dispatch("GET_REFERENCES");
+        })
+        .catch(err => {
+          this.$notifyError(err);
+        });
     },
-    validate(){
+    validate() {
       this.$refs.vform.validate();
-      if(!this.isValid){
-        this.panels=[true, true]        
-      }else{
-        this.account.name.first = this.form.auth_officer.firstname
-        this.account.name.last = this.form.auth_officer.lastname
-        this.account.name.middle = this.form.auth_officer.middlename
-        this.account.email = this.form.auth_officer.email
+      if (!this.isValid) {
+        this.panels = [true, true];
+      } else {
+        this.account.name.first = this.form.auth_officer.firstname;
+        this.account.name.last = this.form.auth_officer.lastname;
+        this.account.name.middle = this.form.auth_officer.middlename;
+        this.account.email = this.form.auth_officer.email;
       }
-      console.log('ACCOUNT: ' + JSON.stringify(this.account))
+      console.log("ACCOUNT: " + JSON.stringify(this.account));
       return this.isValid;
     }
     // getProvinces() {
@@ -373,16 +374,14 @@ export default {
     },
     filtered_cities() {
       return this.findCities(this.form.auth_officer.mail_add.province);
-    }
-  },
-  computed: {
-    filtered_provinces() {
-      // this.form.addresses.office.province = null;
-      return this.findProvinces(this.form.auth_officer.mail_add.region);
     },
-    filtered_cities() {
-      //  this.form.addresses.office.city = null;
-      return this.findCities(this.form.auth_officer.mail_add.province);
+    id_types() {
+      return this.$store.state.references.id_types;
+    },
+    designations() {
+      var datas = this.$store.state.references.designations;
+      if (datas) return datas.filter(x => x.type === 0);
+      else return [];
     }
   }
 };

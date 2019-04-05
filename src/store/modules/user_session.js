@@ -86,7 +86,6 @@ var actions = {
           if (res.isConfirmed && res.isMatch) {
             context.commit('LOGIN', res);
             context.dispatch('GET_PRODUCT_REFERENCE')
-            context.commit('INITIALIZE', res.token)
           }
           resolve(res)
         } else {
