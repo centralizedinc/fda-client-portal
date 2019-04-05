@@ -69,6 +69,10 @@ export default class PaymentAPI {
         })
     }
 
+    getPayments(user_id){
+        return axios.get('payments/client/'+user_id)
+    }
+
 
 
 }

@@ -59,12 +59,10 @@ export default {
           return final
         },
         getTask(task_id) {
-          if (this.$store.state.tasks.tasks) {
-            console.log('task_id :', task_id + " ::: " + JSON.stringify(this.$store.state.tasks.tasks));
+          if (this.$store.state.tasks.tasks) {            
             var task = this.$store.state.tasks.tasks.find(x => {
               return x._id.toString() === task_id;
             });
-            console.log("returned task: " + JSON.stringify(task))
             return task ? task : {};
           } else {
             return null;
@@ -91,6 +89,20 @@ export default {
           } else {
             return ''
           }
+        },
+        getAdditionalActivies(activities){
+          
+          var add_acts = '';
+          if(activities){
+            activities.forEach(activity =>{
+              var additional_activity = this.$store.state.products.additional.find(x=>{
+                return x._id === activity 
+              })
+              add_acts = additional_activity?add_acts  + additional_activity.name + "/":add_acts;
+            })
+          }
+          return add_acts;
+          
         },
         getDeclared(declared_id) {
           if (this.$store.state.products.declared) {
@@ -175,51 +187,25 @@ export default {
           var validate = false;
           var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
           validate = this.isEmpty(email) || !re.test(email);
-          console.log('test: ', email, !validate);
           return !validate;
         },
         getRegionName(id) {
-          var found = false;
-          for (var i = 0; i < this.$store.state.places.regions.length; i++) {
-            var region = this.$store.state.places.regions[i]
-            if (region._id === id) {
-              console.log('###################region :', region);
-              return region.name
-            } else {
-              found = true
-            }
-          }
-          if (found) {
-            return "";
-          }
+          var region = this.$store.state.places.regions.find(x => {
+            return x._id === id;
+          })
+          return region&&region.name?region.name:""
         },
         getProvinceName(id) {
-          var found = false;
-          for (var i = 0; i < this.$store.state.places.provinces.length; i++) {
-            var province = this.$store.state.places.provinces[i]
-            if (province._id === id) {
-              return province.name
-            } else {
-              found = true
-            }
-          }
-          if (found) {
-            return "";
-          }
+          var province = this.$store.state.places.provinces.find(x => {
+            return x._id === id;
+          })
+          return province&&province.name?province.name:""
         },
         getCityName(id) {
-          var found = false;
-          for (var i = 0; i < this.$store.state.places.city.length; i++) {
-            var city = this.$store.state.places.city[i]
-            if (city._id === id) {
-              return city.name
-            } else {
-              found = true
-            }
-          }
-          if (found) {
-            return "";
-          }
+          var city = this.$store.state.places.city.find(x => {
+            return x._id === id;
+          })
+          return city&&city.name?city.name:""          
         },
         findProvinces(region) {
           var provinces = [];
@@ -247,6 +233,10 @@ export default {
             })
             return prod_line ? prod_line : {}
           }
+        },
+        getModeOfPayment(mode){
+          var mode_of_payment = ["Online Payment (Creditcard)", "Cash", "Credit Card (Cashier)", "Check", "Online Payment (EC)"]
+          return mode_of_payment[mode]
         },
         deepCopy(obj) {
           return JSON.parse(JSON.stringify(obj));

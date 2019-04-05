@@ -1,4 +1,5 @@
 <template>
+<v-form v-model="isValid" ref="vform">
   <v-layout row wrap>
     <v-flex xs12>
       <v-text-field
@@ -9,7 +10,7 @@
         v-model="form.estab_details.establishment_name"
       ></v-text-field>
     </v-flex>
-    <v-flex xs6>
+    <v-flex xs12>
       <v-text-field
         color="green darken-1"
         label="Establishment Owner"
@@ -18,7 +19,7 @@
         v-model="form.estab_details.establishment_owner"
       ></v-text-field>
     </v-flex>
-    <v-flex ml-5>
+    <v-flex xs12>
       <v-text-field
         color="green darken-1"
         label="TIN"
@@ -29,7 +30,7 @@
         v-model="form.estab_details.tin"
       ></v-text-field>
     </v-flex>
-    <ul>
+    <!-- <ul>
       <li
         class="text-danger"
       >For single proprietorship reflect the name of the person indicated in the DTI registration certificate.</li>
@@ -39,23 +40,23 @@
       <li
         class="text-danger"
       >For government owned or controlled corporation reflect the name of the agency as indicated in the charter.</li>
-    </ul>
+    </ul> -->
 
     <v-sheet
       dark
       class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
       color="fdaGreen"
-      height="35"
-      width="calc(100% - 30px)"
+      height="40"
+      width="calc(100% - 10px)"
       style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
     >
       Contact Information
-      <v-tooltip top>
+      <!-- <v-tooltip top>
         <v-btn slot="activator" flat icon small color="error">
           <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
         </v-btn>Note: Please indicate "N/A" for Not Applicable
         <br>Email must be valid. Contact numbers should be active
-      </v-tooltip>
+      </v-tooltip> -->
     </v-sheet>
     <!-- <p class="category ml-5">Note: Please indicate "N/A" for Not Applicable</p> -->
     <v-layout row wrap>
@@ -94,7 +95,6 @@
       </v-flex>
       <v-flex xs5 ml-5>
         <v-text-field
-          color="green darken-1"
           :rules="[rules.required]"
           label="4. Mobile Number"
           :mask="mobile"
@@ -110,23 +110,25 @@
       dark
       class="font-weight-normal elevation-2 pl-3 mb-3 mt-3 subheading"
       color="fdaGreen"
-      height="35"
-      width="calc(100% - 30px)"
+      height="40"
+      width="calc(100% - 10px)"
       style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
     >
       Product Line
-      <v-tooltip top>
+      <!-- <v-tooltip top>
         <v-btn slot="activator" flat icon small color="error">
           <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
         </v-btn>Please add all applicable product line
-      </v-tooltip>
+      </v-tooltip> -->
+      <!-- <v-btn outline icon >
+        <v-icon>add</v-icon>
+      </v-btn> -->
     </v-sheet>
 
     <v-layout row wrap>
       <template v-for="(item, index) in form.estab_details.products">
-        <v-flex xs5 ml-5 :key="index">
-          <v-autocomplete
-            color="green darken-1"
+        <v-flex xs4 :key="item._id" pa-2>
+          <v-autocomplete pa-2
             v-model="item.prod_line"
             :items="prod_lines"
             item-text="name"
@@ -137,23 +139,32 @@
             label="Product Line"
           ></v-autocomplete>
         </v-flex>
-        <v-flex xs5 ml-2 :key="index">
+        <v-flex xs8 :key="index" pa-2>
           <v-text-field
-            color="green darken-1"
+            color="primary"
             :rules="[rules.required]"
             label="Remarks"
             v-model="item.remarks"
+            :append-outer-icon="index == form.estab_details.products.length-1?'far fa-plus-square':''"
+            :append-icon="index != form.estab_details.products.length-1?'fas fa-backspace':''"
+            @click:append-outer="addItem"
+            @click:append="removeItem(index)"
           ></v-text-field>
         </v-flex>
-        <v-flex xs1 mt-3 :key="index" v-if="index > 0">
-          <v-btn flat small icon @click="removeItem(index)">
-            <v-icon color="error">fas fa-trash-alt fa-lg</v-icon>
-          </v-btn>
-        </v-flex>
+         
+        <!-- <v-flex xs2 :key="index" >
+              <v-btn flat small icon @click="addItem" v-if="index == form.estab_details.products.length-1">
+                <v-icon color="primary">add</v-icon>
+              </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn flat small icon @click="removeItem(index)" v-if="index > 0">
+                <v-icon color="primary">fas fa-trash-alt fa-lg</v-icon>
+              </v-btn>          
+        </v-flex> -->
       </template>
     </v-layout>
     <!-- add button -->
-    <v-flex xs12>
+    <!-- <v-flex xs12>
       <v-tooltip top>
         <v-btn
           color="transparent"
@@ -167,14 +178,16 @@
           <v-icon color="success">fas fa-plus fa-3x</v-icon>
         </v-btn>Add new
       </v-tooltip>
-    </v-flex>
+    </v-flex> -->
   </v-layout>
+  </v-form>
 </template>
 
 <script>
 export default {
   props: ["form"],
   data: () => ({
+    isValid:true,
     phone: "(##) #### - ####",
     mobile: "(####) - ### - ####",
     tin: "###-###-###-###",
@@ -216,6 +229,10 @@ export default {
     removeItem(index) {
       console.log(index);
       this.form.estab_details.products.splice(index, 1);
+    },
+    validate(){
+      this.$refs.vform.validate();      
+      return this.isValid;
     }
   }
 };

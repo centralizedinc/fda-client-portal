@@ -17,13 +17,16 @@ export default {
     },
     data(){
         return {
-            
+            uploads:false
         }
     },
     methods:{
-        upload(formData){
-            console.log('uploading files: ' + formData)
-            this.$emit('upload', formData)
+        upload(data){
+            this.$emit('upload', data)
+            this.uploads = true;
+        },
+        validate(){
+            return this.uploads
         }
     }
 

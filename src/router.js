@@ -28,8 +28,6 @@ function isAuthorized(to, from, next) {
 }
 
 function isAuthenticated(to, from, next) {
-  console.log('isAuth: ' + store.state.user_session.isAuthenticated);
-
   if (store.state.user_session.isAuthenticated) {
     next('/app');
   } else {
@@ -62,7 +60,6 @@ function dropBreadcrumbs(to, from, next) {
 var router = new Router({
   routes: [{
       path: '/',
-      name: 'Main',
       component: MainLayout,
       children: [{
           path: '',
@@ -77,19 +74,19 @@ var router = new Router({
           beforeEnter: isAuthenticated
         }, {
           path: '/registration/new',
-          name: 'Registrations',
-          component: () => import('@/views/registration/Create.vue')
+          name: 'Registration',
+          component: () => import('@/views/registration/Register.vue')
         },
         {
-          path: '/signup',
-          name: 'Registration',
-          component: () => import('@/views/Registration.vue')
-        },
+        path: '/registration/pay',
+        name: 'Payment',
+        component: () => import('@/views/app/payment/PaymentSummary.vue')
+      },
         {
           path: '/registration/existing',
-          name: 'Registration of Existing License',
+          name: 'Registration with Existing License',
           component: () => import('@/views/registration/existing/Validate.vue')
-        },
+        },        
         {
           path: '/confirmation',
           name: 'Confirmation',

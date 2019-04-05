@@ -12,7 +12,59 @@ const state = {
     details: {},
     form: null,
     uploaded: null,
-    existingLicense: null
+    existingLicense: null,
+    init_form: {
+        current_task: "",
+        user: "",
+        action: "",
+        created_by: "",
+        date_created: "",
+        application_type: "0",
+        general_info: {
+          product_type: "",
+          primary_activity: "",
+          declared_capital: "",
+          addtl_activity: ""
+        },
+        estab_details: {
+          establishment_name: "",
+          establishment_owner: "",
+          tin: "",
+          email: "",
+          landline: "",
+          fax: "",
+          mobile: "",
+          products: [
+            {
+              prod_line: "",
+              remarks: ""
+            }
+          ]
+        },
+        address_list:[],
+        auth_officer: {
+          mail_add: {
+            address: "",
+            region: "",
+            province: "",
+            city: "",
+            zipcode: ""
+          },
+          lastname: "",
+          firstname: "",
+          middlename: "",
+          designation: "",
+          email: "",
+          tin: "",
+          birthday: "",
+          id_type: "",
+          id_no: "",
+          id_expiry: ""
+        },
+        qualified: [],
+        uploaded_files: []
+      },
+      applicationForm:{}
 }
 
 const mutations = {
@@ -49,6 +101,12 @@ const mutations = {
     },
     SET_VIEW_LICENSE(state, license) {
         state.view_license = license;
+    },
+    NEW_APPLICATION(state){
+        state.applicationForm = state.init_form;
+    },
+    CONTINUE_APPLICATION(state, form){
+        state.applicationForm = form
     }
 }
 
@@ -100,19 +158,7 @@ var actions = {
         })
     },
     VERIFY_LICENSES(context, license) {
-        return new Promise((resolve, reject) => {
-            console.log("verify licenses entering action: " + JSON.stringify(license))
-            new LicenseAPI(context.rootState.user_session.token).verifyExistingLicenses(license, (verifiedLicense, err) => {
-                if (!err) {
-                    console.log("verify licenses call back: " + JSON.stringify(verifiedLicense))
-                    context.commit('VERIFIED_LICENSES', verifiedLicense)
-                    resolve(verifiedLicense)
-                } else {
-                    console.log("verify licenses error: " + JSON.stringify(err))
-                    reject(err)
-                }
-            })
-        })
+        return new LicenseAPI(context.rootState.user_session.token).verifyExistingLicenses(license)
     },
     GET_LICENSE_BY_ID(context, app_id) {
         return new LicenseAPI(context.rootState.user_session.token).getLicenseByID(app_id)
@@ -189,7 +235,9 @@ var actions = {
     SAVE_NEW_LICENSE(context, data) {
         return new LicenseAPI(context.rootState.user_session.token).applyLicenseWithAccount(data);
     },
-
+    EXISTING_LIC_REG(context, data){
+        return new LicenseAPI(context.rootState.user_session.token).applyAccountForExistingLicense(data)
+    },
     // Result of License Evaluation
     GET_RESULT_BY_KEY(context, key) {
         return new LicenseAPI().getResultByKey(key);

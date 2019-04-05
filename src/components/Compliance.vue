@@ -82,7 +82,7 @@
         <v-card-text>
           <v-layout row wrap>
             <v-flex xs12 mt-3>
-              <v-text-field box multi-line label="User Remarks" v-model="remarks"></v-text-field>
+              <v-textarea box  label="User Remarks" v-model="remarks"></v-textarea>
             </v-flex>
             <v-flex xs12>
               <span class="error--text">*</span><i class="font-weight-bold">Note: Only PDF files are accepted.</i>

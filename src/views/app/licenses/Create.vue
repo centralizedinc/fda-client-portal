@@ -235,14 +235,16 @@ export default {
   // },
   methods: {
     init() {
-      this.$store
-        .dispatch("GET_PRODUCT_REFERENCE")
-        .then(result => {
-          this.form.application_type = 0;
-        })
-        .catch(err => {
-          console.log("loading products error: " + err);
-        });
+      this.form.application_type = 0;
+      //abalita - removed since product reference is already called during login
+      // this.$store
+      //   .dispatch("GET_PRODUCT_REFERENCE")
+      //   .then(result => {
+      //     this.form.application_type = 0;
+      //   })
+      //   .catch(err => {
+      //     console.log("loading products error: " + err);
+      //   });
     },
     load_primaries(product_id) {
       this.$store.dispatch("GET_PRIMARY_ACTIVITY", product_id);

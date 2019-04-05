@@ -1,54 +1,36 @@
 <template>
   <v-layout row wrap>
+    <v-toolbar dark flat color="primary">
+            <span class="title font-weight-light">Personnel List</span>
+            <v-spacer></v-spacer>
+            <v-btn @click="addItem" outline icon >
+                <v-icon>edit</v-icon>
+            </v-btn>
+        </v-toolbar>
     <v-flex xs12>
-      <v-tooltip top>
-        <v-btn
-          class="mt-0"
-          color="transparent"
-          slot="activator"
-          large
-          block
-          @click="addItem()"
-          style="box-shadow: none !important"
-        >
-          <v-icon color="success">fas fa-plus fa-3x</v-icon>
-        </v-btn>Add Qualified Person to List
-      </v-tooltip>
     </v-flex>
 
-    <qualified-personnel-list
-      :show="addToListDialog"
-      @submit="submit"
-      @cancel="addToListDialog=false"
-      title="Qualified Personnel"
+    <v-dialog
+      v-model="addToListDialog" 
+      scrollable 
+            persistent
+            max-width="600px"
+            transition="dialog-transition"
     >
-      <template slot="content">
-        <v-layout row wrap>
-          <v-flex xs12>
-            <v-text-field
-              color="green darken-1"
-              label="Last Name"
-              :rules="[rules.required]"
-              v-model="qualified.lastname"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs12>
-            <v-text-field
-              color="green darken-1"
-              label="First Name"
-              :rules="[rules.required]"
-              v-model="qualified.firstname"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs12>
-            <v-text-field
-              color="green darken-1"
-              label="Middle Name"
-              :rules="[rules.required]"
-              v-model="qualified.middlename"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs12>
+    
+     <v-card>
+      <v-toolbar dark color="primary">
+        <span class="title font-weight-light">New Personnel</span>
+        <v-spacer></v-spacer>
+        <v-btn flat icon @click="addToListDialog=false">
+          <v-icon>close</v-icon>
+        </v-btn>
+      </v-toolbar>
+     
+        <v-card-text>
+          <v-form ref="vform" v-model="isValid">
+            <v-layout row wrap>
+              <v-flex xs12 pa-2>
             <v-autocomplete
               color="green darken-1"
               :rules="[rules.required]"
@@ -59,7 +41,49 @@
               label="Designation"
             ></v-autocomplete>
           </v-flex>
-          <v-flex xs12>
+            <v-flex xs12 md4 pa-2>
+              <v-text-field
+                color="green darken-1"
+                label="Last Name"
+                :rules="[rules.required]"
+                v-model="qualified.lastname"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12 md4 pa-2>
+              <v-text-field
+                color="green darken-1"
+                label="First Name"
+                :rules="[rules.required]"
+                v-model="qualified.firstname"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs12 md4 pa-2>
+              <v-text-field
+                color="green darken-1"
+                label="Middle Name"
+                :rules="[rules.required]"
+                v-model="qualified.middlename"
+              ></v-text-field>
+            </v-flex>
+           
+          <v-flex xs12 md4 pa-2>
+            <v-text-field
+              color="green darken-1"
+              label="Email"
+              :rules="[rules.required]"
+              v-model="qualified.email"
+            ></v-text-field>
+          </v-flex>         
+          <v-flex xs12 md4 pa-2>
+            <v-text-field
+              color="green darken-1"
+              label="TIN"
+              :rules="[rules.required]"
+              v-model="qualified.tin"
+              :mask="tin"
+            ></v-text-field>
+          </v-flex>
+          <v-flex xs12 md4 pa-2>
             <v-menu
               ref="menu"
               :close-on-content-click="false"
@@ -69,14 +93,13 @@
               transition="scale-transition"
               offset-y
               full-width
-              min-width="290px"
-            >
+              min-width="290px">
               <v-text-field
                 color="green darken-1"
                 slot="activator"
                 v-model="qualified.birthday"
                 label="Birthday"
-                prepend-icon="event"
+                append-icon="event"
                 readonly
               ></v-text-field>
               <v-date-picker
@@ -88,21 +111,12 @@
               ></v-date-picker>
             </v-menu>
           </v-flex>
-          <v-flex xs12>
-            <v-text-field
-              color="green darken-1"
-              label="Tax Identification Number"
-              :rules="[rules.required]"
-              v-model="qualified.tin"
-              :mask="tin"
-            ></v-text-field>
-          </v-flex>
 
           <!-- Government Issued Identification -->
-          <v-flex xs12>
+          <!-- <v-flex xs12>
             <v-card-title primary-title class="headline">Government Issued Identification</v-card-title>
-          </v-flex>
-          <v-flex xs12>
+          </v-flex> -->
+          <v-flex xs12 md4 pa-2>
             <v-autocomplete
               color="green darken-1"
               :rules="[rules.required]"
@@ -113,7 +127,7 @@
               label="ID Type"
             ></v-autocomplete>
           </v-flex>
-          <v-flex xs12>
+          <v-flex xs12 md4 pa-2>
             <v-text-field
               color="green darken-1"
               label="ID Number"
@@ -121,7 +135,7 @@
               v-model="qualified.id_no"
             ></v-text-field>
           </v-flex>
-          <v-flex xs12>
+          <v-flex xs12 md4 pa-2>
             <v-menu
               ref="menu2"
               :close-on-content-click="false"
@@ -134,29 +148,49 @@
               min-width="290px"
             >
               <v-text-field
-                color="green darken-1"
+                color="primary"
                 slot="activator"
                 v-model="qualified.id_expiry"
                 :rules="[rules.required]"
                 label="Expiry"
-                prepend-icon="event"
+                append-icon="event"
                 readonly
               ></v-text-field>
               <v-date-picker
                 no-title
                 scrollable
-                color="green darken-1"
+                color="primary"
                 v-model="qualified.id_expiry"
               >
                 <v-spacer></v-spacer>
-                <v-btn flat color="secondary" outline @click="menu2 = false">Cancel</v-btn>
-                <v-btn flat color="primary" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
+                <v-btn  color="primary" outline @click="menu2 = false">Cancel</v-btn>
+                <v-btn  color="primary" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
               </v-date-picker>
             </v-menu>
           </v-flex>
         </v-layout>
+          </v-form>
+          
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn outline color="primary" @click="addToListDialog=false">Cancel</v-btn>
+          <v-btn color="primary" @click="submit">Add</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
+    <!-- <qualified-personnel-list
+      :show="addToListDialog"
+      @submit="submit"
+      @cancel="addToListDialog=false"
+      title="Qualified Personnel"
+    >
+      <template slot="content">
+        
       </template>
-    </qualified-personnel-list>
+    </qualified-personnel-list> -->
 
     <v-layout row wrap>
       <v-flex xs12>
@@ -170,7 +204,7 @@
             <td>{{props.item.id_no}}</td>
             <td>
               <v-layout row wrap>
-                <v-flex xs4>
+                <v-flex xs6 pa-1>
                   <v-tooltip top>
                     <v-btn
                       slot="activator"
@@ -179,11 +213,11 @@
                       color="primary"
                       @click="editItem(props.item, props.index)"
                     >
-                      <v-icon color="success" small>edit</v-icon>
+                      <v-icon color="primary" small>edit</v-icon>
                     </v-btn>Edit item
                   </v-tooltip>
                 </v-flex>
-                <v-flex xs4>
+                <v-flex xs6 pa-1>
                   <v-tooltip top>
                     <v-btn
                       slot="activator"
@@ -192,7 +226,7 @@
                       color="primary"
                       @click="deleteItem(props.index)"
                     >
-                      <v-icon color="error" small>fas fa-trash-alt</v-icon>
+                      <v-icon color="primary" small>fas fa-trash-alt</v-icon>
                     </v-btn>Delete item
                   </v-tooltip>
                 </v-flex>
@@ -212,6 +246,7 @@ export default {
   },
   props: ["form"],
   data: () => ({
+    isValid:true,
     mode: 0,
     addToListDialog: false,
     menu: null,
@@ -291,14 +326,19 @@ export default {
   },
   methods: {
     submit() {
-      if (this.mode === 0) {
-        //CREATE
-        this.form.qualified.push(this.qualified);
-      } else if (this.mode === 1) {
-        //EDIT
-        this.form.qualified[this.selected_index] = this.qualified;
+      this.$refs.vform.validate();
+      if(this.isValid){
+        if (this.mode === 0) {
+          //CREATE        
+          this.form.qualified.push(this.qualified);
+        } else if (this.mode === 1) {
+          //EDIT
+          this.form.qualified[this.selected_index] = this.qualified;
+        }
+        this.clearForm();
+      }else{
+        this.$notifyError([{message:'Fill-up required fields'}])
       }
-      this.clearForm();
     },
     clearForm() {
       this.selected_index = -1;
@@ -328,7 +368,11 @@ export default {
     addItem() {
       this.mode = 0;
       this.qualified = {};
+      this.isValid = true;
       this.addToListDialog = true;
+    },
+    validate(){
+      return (this.form.qualified && this.form.qualified.length>0)
     }
   }
 };

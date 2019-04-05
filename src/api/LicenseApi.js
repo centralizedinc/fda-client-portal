@@ -98,6 +98,13 @@ export default class LicenseAPI {
         })
     }
 
+    applyAccountForExistingLicense(data){
+        return axios.post('public/accounts/register/legacy', {
+            license: data.license,
+            account: data.account
+        })
+    }
+
     applyLicenseWithAccount(lic_data) {
         var saved_license = {};
         var lic_case = {}
@@ -155,13 +162,8 @@ export default class LicenseAPI {
     }
 
 
-    verifyExistingLicenses(licenses, cb) {
-        console.log("api existing licenses: " + JSON.stringify(licenses))
-        axios.get('lto-api/verify/existing/license', licenses).then((result) => {
-            cb(result.data.model)
-        }).catch(err => {
-            cb(err)
-        })
+    verifyExistingLicenses(licenses) {
+        return axios.post('lto-api/verify/license', licenses)
     }
 
     applicationStatusLicenses(cb) {

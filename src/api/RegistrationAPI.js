@@ -28,9 +28,9 @@ export default class RegistrationAPI {
    * @param {String} key 
    * @param {Function} cb 
    */
-  static confirm(key, cb) {
+  static confirm(data, cb) {
     axios
-      .get("public/accounts/register/confirm?key=" + key)
+      .get("public/accounts/register/confirm?key=" + data.key+(data.params?"&params=" +data.params :""))
       .then(result => {
         if (result.data.success) {
           cb(result.data.model)
