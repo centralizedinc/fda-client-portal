@@ -3,6 +3,7 @@
     <v-dialog
       v-model="show"
       scrollable
+      persistent
       :overlay="false"
       max-width="800px"
       transition="dialog-transition"

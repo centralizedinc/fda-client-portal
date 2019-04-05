@@ -1,12 +1,15 @@
 <template>
     <v-layout row wrap>
-        <v-toolbar dark flat color="primary">
+        <v-toolbar dark flat color="primary" class="elevation-5">
             <span class="title font-weight-light">Address List</span>
             <v-spacer></v-spacer>
             <!-- <v-btn outline @click="addAddress">Add</v-btn> -->
-            <v-btn @click="addAddress" outline icon >
-                <v-icon>edit</v-icon>
-            </v-btn>
+            <v-tooltip top>
+                <v-btn slot="activator" @click="addAddress" fab outline small icon >
+                <v-icon>edit</v-icon> 
+            </v-btn>Add Address
+            </v-tooltip>
+            
         </v-toolbar>
         <v-flex xs12>                                     
             <v-data-table
@@ -20,9 +23,17 @@
                      <td>{{getRegionName(props.item.region)}}</td>
                     <td>{{props.item.zipcode}}</td>
                     <td>
-                        <v-btn flat icon color="primary" >
-                            <v-icon>close</v-icon>
-                        </v-btn>
+                        <v-tooltip top>
+                      <v-btn
+                        slot="activator"
+                        flat
+                        icon
+                        color="primary"
+                        @click="deleteAddress(props.index)"
+                      >
+                        <v-icon color="error" small>fas fa-trash-alt</v-icon>
+                      </v-btn>Delete item
+                    </v-tooltip>
                     </td>
                 </template>            
             </v-data-table>
@@ -35,12 +46,14 @@
             transition="dialog-transition"
         >
         <v-card>
-            <v-toolbar dark color="primary">
+            <v-toolbar dark color="primary" class="tStyle">
                 <span class="title font-weight-light">New Address</span>
                 <v-spacer></v-spacer>
-                <v-btn flat icon>
-                    <v-icon>close</v-icon>
-                </v-btn>
+                <v-tooltip top>
+            <v-btn slot="activator" flat icon color="black" @click="showDialog = false">
+              <v-icon>fas fa-times-circle fa-1x</v-icon>
+            </v-btn>Close
+          </v-tooltip>
             </v-toolbar>
             <v-card-text>
                 <v-form v-model="isValid" ref="vform">
@@ -97,6 +110,7 @@
                         color="green darken-1"
                         v-model="address.zipcode"
                         label="Zip Code"
+                        mask="####"
                         :rules="[rules.required]"
                         ></v-text-field>
                     </v-flex>
@@ -111,10 +125,11 @@
                 </v-layout>
                 </v-form>
             </v-card-text>
+            <v-divider></v-divider>
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn outline color="primary" @click="showDialog=false">Cancel</v-btn>
-                <v-btn color="primary" @click="submit">Add</v-btn>
+                <v-btn color="success" @click="submit">Add</v-btn>
             </v-card-actions>
         </v-card>
             
@@ -209,6 +224,10 @@ export default {
             }else{
                 this.$notifyError([{message: 'Fill-up required fields.'}])
             }            
+        },
+        deleteAddress(item){
+             confirm("Are you sure you want to delete this item?") &&
+            this.address_list.splice(item, 1);
         }
     },
     computed:{
@@ -224,5 +243,7 @@ export default {
 </script>
 
 <style>
-
+.tStyle {
+    background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%);
+}
 </style>

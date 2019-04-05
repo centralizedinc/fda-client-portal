@@ -116,6 +116,7 @@
               class="font-weight-light"
               outline
               name="zip"
+              mask="####"
               label="Zip Code"
               v-model="account.company.address.zipCode"
               id="zip"

@@ -235,7 +235,7 @@ export default {
           }
         },
         getModeOfPayment(mode){
-          var mode_of_payment = ["Online Payment (Creditcard)", "Cash", "Credit Card (Cashier)", "Check", "Online Payment (EC)"]
+          var mode_of_payment = ["Online Payment (Credit Card)", "Cash", "Credit Card (Cashier)", "Check", "Online Payment (ECPay)"]
           return mode_of_payment[mode]
         },
         deepCopy(obj) {
