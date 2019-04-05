@@ -10,20 +10,18 @@
         </v-toolbar>
         <v-flex xs12>                                     
             <v-data-table
+                hide-actions
                 :headers="headers"
                 :items="address_list">
                 <template slot="items" slot-scope="props">
-                    <td>{{props.item.type}}</td>
-                    <td>{{props.item.address}}</td>
-                    <td>{{getCityName(props.item.city)}}</td>
-                    <td>{{getProvinceName(props.item.province)}}</td>
-                     <td>{{getRegionName(props.item.region)}}</td>
-                    <td>{{props.item.zipcode}}</td>
-                    <td>
-                        <v-btn flat icon color="primary" >
-                            <v-icon>close</v-icon>
-                        </v-btn>
-                    </td>
+                    <tr @click="viewItem(props.item, props.index)">
+                        <td>{{props.item.type}}</td>
+                        <td>{{props.item.address}}</td>
+                        <td>{{getCityName(props.item.city)}}</td>
+                        <td>{{getProvinceName(props.item.province)}}</td>
+                        <td>{{getRegionName(props.item.region)}}</td>
+                        <td>{{props.item.zipcode}}</td>                        
+                    </tr>
                 </template>            
             </v-data-table>
         </v-flex> 
@@ -111,10 +109,16 @@
                 </v-layout>
                 </v-form>
             </v-card-text>
-            <v-card-actions>
+            <v-divider></v-divider>
+            <v-card-actions v-if="isAdd">
                 <v-spacer></v-spacer>
                 <v-btn outline color="primary" @click="showDialog=false">Cancel</v-btn>
                 <v-btn color="primary" @click="submit">Add</v-btn>
+            </v-card-actions>
+            <v-card-actions v-else>
+                <v-spacer></v-spacer>
+                <v-btn outline color="error" @click="deleteItem()">Delete</v-btn>
+                <v-btn color="primary" @click="showDialog=false">Edit</v-btn>
             </v-card-actions>
         </v-card>
             
@@ -130,6 +134,8 @@ export default {
     props: ["form"],
     data(){
         return {
+            isAdd:true,
+            index:null,
             isValid:true,
             address:{},
             address_list:[],
@@ -156,18 +162,13 @@ export default {
                     value: "province"
                 },
                 {
-                    text: "Zip Code",
-                    value: "zipCode"
-                },
-                ,
-                {
                     text: "Regions",
                     value: "region",
                     sortable: false
                 },
                 {
-                    text: "Actions",
-                    value: "actions"
+                    text: "Zip Code",
+                    value: "zipCode"
                 }
             ]
         }
@@ -187,6 +188,7 @@ export default {
             });
         },
         addAddress(){
+            this.isAdd=true;
             this.address={};
             this.showDialog = true;
         },
@@ -209,6 +211,19 @@ export default {
             }else{
                 this.$notifyError([{message: 'Fill-up required fields.'}])
             }            
+        },
+        viewItem(item, indx){
+            this.index = indx;
+            this.isAdd=false;
+            this.address=item;
+            this.showDialog = true;
+        },
+        deleteItem() {
+            if(confirm("Are you sure you want to delete this item?")){
+                this.address_list.splice(this.index, 1)
+                this.showDialog = false;
+            } 
+             
         }
     },
     computed:{

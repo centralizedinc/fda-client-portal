@@ -473,10 +473,10 @@
                     </v-layout>
                 </v-card-text>
                 <v-divider></v-divider>
-                <v-card-actions>
+                <v-card-actions v-if="isFinal">
                     <v-spacer></v-spacer>
                     <v-btn outline color="primary" @click="close()">Cancel</v-btn>
-                    <v-btn color="primary" @click="accept">Accept & Submit</v-btn>
+                    <v-btn color="primary" @click="accept" :loading="loading">Accept & Submit</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -485,7 +485,12 @@
 
 <script>
 export default {
-    props:["show", "form", "account", "uploadedFiles"],
+    props:["show", "form", "account", "uploadedFiles", "isFinal"],
+    data(){
+        return{
+            loading:false,
+        }        
+    },
     methods:{       
         prettify(name) {
             if (name.length > 15) {
@@ -498,6 +503,7 @@ export default {
             this.$emit('close')
         },
         accept(){
+            this.loading = true;
             this.$emit('accept')
         }
     }

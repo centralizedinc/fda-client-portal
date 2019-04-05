@@ -173,7 +173,13 @@
           
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions>
+        
+        <v-card-actions v-if="mode">
+          <v-spacer></v-spacer>
+          <v-btn outline color="error" @click="deleteItem()">DELETE</v-btn>
+          <v-btn color="primary" @click="addToListDialog=false">EDIT</v-btn>
+        </v-card-actions>
+        <v-card-actions v-else>
           <v-spacer></v-spacer>
           <v-btn outline color="primary" @click="addToListDialog=false">Cancel</v-btn>
           <v-btn color="primary" @click="submit">Add</v-btn>
@@ -194,15 +200,17 @@
 
     <v-layout row wrap>
       <v-flex xs12>
-        <v-data-table :headers="headers" :items="form.qualified" class="elevation-1">
+        <v-data-table :headers="headers" :items="form.qualified" hide-actions class="elevation-1">
           <template slot="items" slot-scope="props">
-            <td>{{props.item.firstname + " " + props.item.lastname}}</td>
-            <td>{{props.item.designation}}</td>
-            <td>{{props.item.birthday}}</td>
-            <td>{{props.item.tin}}</td>
-            <td>{{props.item.id_type}}</td>
-            <td>{{props.item.id_no}}</td>
-            <td>
+            <tr @click="editItem(props.item, props.index)">
+              <td>{{props.item.firstname + " " + props.item.lastname}}</td>
+              <td>{{props.item.designation}}</td>
+              <td>{{props.item.birthday}}</td>
+              <td>{{props.item.tin}}</td>
+              <td>{{props.item.id_type}}</td>
+              <td>{{props.item.id_no}}</td>
+            </tr>
+            <!-- <td>
               <v-layout row wrap>
                 <v-flex xs6 pa-1>
                   <v-tooltip top>
@@ -231,7 +239,7 @@
                   </v-tooltip>
                 </v-flex>
               </v-layout>
-            </td>
+            </td> -->
           </template>
         </v-data-table>
       </v-flex>
@@ -246,6 +254,7 @@ export default {
   },
   props: ["form"],
   data: () => ({
+    index:null,
     isValid:true,
     mode: 0,
     addToListDialog: false,
@@ -299,11 +308,6 @@ export default {
         text: "ID Number",
         value: "",
         sortable: false
-      },
-      {
-        text: "Actions",
-        value: "",
-        sortable: false
       }
     ],
     addedPersonnel: [],
@@ -355,12 +359,15 @@ export default {
       };
       this.addToListDialog = false;
     },
-    deleteItem(item) {
-      confirm("Are you sure you want to delete this item?") &&
-        this.form.qualified.splice(item, 1);
+    deleteItem() {
+      if(confirm("Are you sure you want to delete this item?")){
+        this.form.qualified.splice(this.selected_index, 1);         
+      }
+      this.addToListDialog = false;
+        
     },
     editItem(item, index) {
-      this.mode = 1;
+      this.mode = 1;      
       this.selected_index = index;
       this.qualified = item;
       this.addToListDialog = true;

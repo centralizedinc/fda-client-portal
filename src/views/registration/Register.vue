@@ -114,12 +114,13 @@
             :account="account" 
             :form="form" 
             :uploadedFiles="uploadedFiles"
-            :show="showSummary" 
+            :show="showSummary"
+            :is-final="isFinal" 
             @close="hideSummary"
             @accept="submit">
         </application-summary>
         <fab-button 
-            @review="showSummary=true" 
+            @review="isFinal=false;showSummary=true" 
             @upload="$refs.file.click()"
             @save="saveTempFile" 
             :buttons="[{label:'Preview', icon:'search', action:'review'},{label:'Save and Continue Later', icon:'save', action:'save'}]" 
@@ -171,6 +172,7 @@ export default {
       e1: 1,
       nav: true,
       showSummary:false,
+      isFinal:false,
       headers:[
           'General Information',
            'Establishment Details',
@@ -202,7 +204,6 @@ export default {
     next(){
         this.loading = true;
         var valid = this.$refs.curr_step.validate()
-        valid = true;
         if(valid && this.e1<7){
             this.tab =0;
             if(this.e1==1){
@@ -243,6 +244,7 @@ export default {
             this.loading = false;
         }else if(valid && this.e1==7){
             this.tab =1;
+            this.isFinal=true;
             this.showSummary = true
             this.$notify({message: 'This is the last step of the application process. Review your application details and make sure you have entered all values correctly. Once you clicked Submit, you won\'t be able to modify any of the data you have entered.', color:'primary'})
             this.loading = false;
@@ -261,11 +263,12 @@ export default {
     },
     saveTempFile(){
         this.form.current_step = this.e1;
+        var filename =  this.form.estab_details.establishment_name+"_"+(new Date()).getTime()+".fda";
         var content = new Buffer(JSON.stringify(this.form)).toString('base64')
         this.$refs.link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
-        this.$refs.link.setAttribute('download', this.form.estab_details.establishment_name+"_"+(new Date()).getTime()+".fdav3");
+        this.$refs.link.setAttribute('download', filename);
         this.$refs.link.click();
-        this.$notify({message: 'Download started.', color: 'primary'})        
+        this.$notify({message: 'Saving your Application Details - ' + filename, color: 'primary'})        
     },
     submit(){
         this.loading = true;
