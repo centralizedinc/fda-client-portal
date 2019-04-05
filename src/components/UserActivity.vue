@@ -23,7 +23,7 @@
               {{getAppType(item.application_type)}} {{getCaseType(item.case_type)}}
               <span
                 style="text-transform: uppercase ; text-decoration: underline"
-              >{{getActStatus(item.status)}}</span>
+              >{{getActStatus(item.status, getTask(item.recommend_to).name)}}</span>
             </v-list-tile-title>
           </v-list-tile-content>
           <!-- <v-list-tile-content>
