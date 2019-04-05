@@ -84,8 +84,11 @@ var actions = {
     return new Promise((resolve, reject) => {
       UserAPI.login(credentials, (res, err) => {
         if (!err) {
-          if (res.isConfirmed) context.commit('LOGIN', res);
-          context.dispatch('GET_PRODUCT_REFERENCE')
+          if (res.isConfirmed) {
+            context.commit('LOGIN', res);
+            context.dispatch('GET_PRODUCT_REFERENCE');
+            context.commit('INITIALIZE', res.token)
+          }
           resolve(res)
         } else {
           console.log(JSON.stringify(err));
