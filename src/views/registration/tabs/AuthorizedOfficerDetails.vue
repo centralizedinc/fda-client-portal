@@ -1,21 +1,13 @@
 <template>
 <v-form ref="vform" v-model="isValid">
 
-  <!-- <v-expansion-panel v-model="panels">
+    <!-- <v-expansion-panel v-model="panels">
     <v-expansion-panel-content class="ma-3 pa-3">
       <div slot="header" class="title font-weight-light primary--text">Personal Details</div> -->
-      
-      <v-card> 
-        <v-sheet
-            dark
-            class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
-            color="fdaGreen"
-            height="40"
-      width="calc(100% - 10px)"
-            style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
-          >
-            Personal Information
-          </v-sheet>
+    <v-toolbar dark class="sheetStyle  elevation-10 mt-3 mb-1  subheading" color="fdaGreen" height="30" width="calc(100% - 10px)">
+        Personal Information
+    </v-toolbar>
+    <v-card flat>
         <v-card-text>
           
                     
@@ -49,9 +41,9 @@
               color="green darken-1"
               :rules="[rules.required]"
               v-model="form.auth_officer.designation"
-              :items="designation"
-               item-text="name"
-               item-value="_id"
+              :items="designations"
+              item-text="name"
+              item-value="_id"
               hide-no-data
               hide-selected
               label="Designation"
@@ -80,7 +72,9 @@
           color="green darken-1"
           :rules="[rules.required]"
           v-model="form.auth_officer.id_type"
-          :items="id_type"
+          :items="id_types"
+          item-text="name"
+          item-value="_id"
           hide-no-data
           hide-selected
           label="ID Type"
@@ -133,83 +127,33 @@
     <!-- </v-expansion-panel-content>
     <v-expansion-panel-content class="ma-3 pa-3">
       <div slot="header" class="title font-weight-light primary--text">Address Details</div> -->
-      <v-card>
-       <v-sheet
-      dark
-      class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
-      color="fdaGreen"
-     height="40"
-      width="calc(100% - 10px)"
-      style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
-    >
-      Address Details
-    </v-sheet>
-     <v-card-text>       
-        <v-layout row wrap>
-          <v-flex xs12>
-            <v-textarea rows='2'
-              color="green darken-1"
-              label="Address"
-              :rules="[rules.required]"
-              v-model="form.auth_officer.mail_add.address"
-            ></v-textarea>
-          </v-flex>
-          <v-flex xs12 md6 pa-2>
-            <v-autocomplete
-              color="green darken-1"
-              :rules="[rules.required]"
-              v-model="form.auth_officer.mail_add.region"
-              :items="regions"
-              item-text="name"
-              item-value="_id"
-              hide-no-data
-              hide-selected
-              label="Region"
-            ></v-autocomplete>            
-          </v-flex>
-          <v-flex xs12 md6 pa-2>
-            <v-autocomplete
-              color="green darken-1"
-              :rules="[rules.required]"
-              v-model="form.auth_officer.mail_add.province"
-              :items="filtered_provinces"
-              item-text="name"
-              item-value="_id"
-              hide-no-data
-              hide-selected
-              label="Province"
-            ></v-autocomplete>
-          </v-flex>
-          <v-flex xs12  md6 pa-2>
-            <v-autocomplete
-              color="green darken-1"
-              :rules="[rules.required]"
-              v-model="form.auth_officer.mail_add.city"
-              :items="filtered_cities"
-              item-text="name"
-              item-value="_id"
-              hide-no-data
-              hide-selected
-              label="City / Town"
-            ></v-autocomplete>
-          </v-flex>
-          <v-flex xs12  md6 pa-2>
-            <v-text-field
-              color="green darken-1"
-              :rules="[rules.required]"
-              v-model="form.auth_officer.mail_add.zipcode"
-              label="Zip Code"
-            ></v-text-field>
-          </v-flex>
-        </v-layout>
+    <v-toolbar dark class="sheetStyle  elevation-10 mt-3 mb-1  subheading" color="fdaGreen" height="30" width="calc(100% - 10px)">
+        Address Details
+    </v-toolbar>
+    <v-card flat>
+        <v-card-text>
+            <v-layout row wrap>
+                <v-flex xs12>
+                    <v-textarea rows='2' color="green darken-1" label="Address" :rules="[rules.required]" v-model="form.auth_officer.mail_add.address"></v-textarea>
+                </v-flex>
+                <v-flex xs12 md6 pa-2>
+                    <v-autocomplete color="green darken-1" :rules="[rules.required]" v-model="form.auth_officer.mail_add.region" :items="regions" item-text="name" item-value="_id" hide-no-data hide-selected label="Region"></v-autocomplete>
+                </v-flex>
+                <v-flex xs12 md6 pa-2>
+                    <v-autocomplete color="green darken-1" :rules="[rules.required]" v-model="form.auth_officer.mail_add.province" :items="filtered_provinces" item-text="name" item-value="_id" hide-no-data hide-selected label="Province"></v-autocomplete>
+                </v-flex>
+                <v-flex xs12 md6 pa-2>
+                    <v-autocomplete color="green darken-1" :rules="[rules.required]" v-model="form.auth_officer.mail_add.city" :items="filtered_cities" item-text="name" item-value="_id" hide-no-data hide-selected label="City / Town"></v-autocomplete>
+                </v-flex>
+                <v-flex xs12 md6 pa-2>
+                    <v-text-field color="green darken-1" mask="####" :rules="[rules.required]" v-model="form.auth_officer.mail_add.zipcode" label="Zip Code"></v-text-field>
+                </v-flex>
+            </v-layout>
         </v-card-text>
-      </v-card>        
+    </v-card>
     <!-- </v-expansion-panel-content>
   </v-expansion-panel> -->
 
-
-
-  
     <!-- <v-flex xs12 md4 pa-2>
       <v-menu
         ref="menu2"
@@ -240,7 +184,6 @@
       </v-menu>
     </v-flex> -->
 
-    
     <!-- <v-flex xs12 >
       <v-sheet
         dark
@@ -278,27 +221,19 @@
       </v-sheet>
       
     </v-flex> -->
-    
-  <!-- </v-layout> -->
-  </v-form>
+
+    <!-- </v-layout> -->
+</v-form>
 </template>
 
 <script>
 export default {
   props: ["form", "account"],
   data: () => ({
-    panels:[true, false],
-    isValid:true,
+    panels: [true, false],
+    isValid: true,
     menu: null,
     menu2: null,
-    designation: [
-      "Owner (for sole proprietorships)",
-      "CEO/ President/ General Manager",
-      "Head, Quality Assurance/ Control",
-      "Head, Regulatory Affairs",
-      "Head, Production"
-    ],
-    id_type: ["PRC", "TIN"],
     regions: [],
     provinces: [],
     cities: [],
@@ -311,7 +246,7 @@ export default {
   created() {
     this.init();
   },
-  watch: {    
+  watch: {
     menu2(val) {
       val && this.$nextTick(() => (this.$refs.picker2.activePicker = "YEAR"));
     }
@@ -321,25 +256,32 @@ export default {
       // this.$store.dispatch("GET_REGION").then(result => {
       //   this.regions = this.$store.state.places.regions;
       // });
-      this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
-        if (locations) {
-          this.regions = locations.regions;
-          this.provinces = locations.provinces;
-          this.cities = locations.provinces;
-        }
-      });
+      this.$store
+        .dispatch("GET_PLACES_REFERENCE")
+        .then(locations => {
+          if (locations) {
+            this.regions = locations.regions;
+            this.provinces = locations.provinces;
+            this.cities = locations.provinces;
+          }
+          // load ID TYPES and DESIGNATIONS
+          return this.$store.dispatch("GET_REFERENCES");
+        })
+        .catch(err => {
+          this.$notifyError(err);
+        });
     },
-    validate(){
+    validate() {
       this.$refs.vform.validate();
-      if(!this.isValid){
-        this.panels=[true, true]        
-      }else{
-        this.account.name.first = this.form.auth_officer.firstname
-        this.account.name.last = this.form.auth_officer.lastname
-        this.account.name.middle = this.form.auth_officer.middlename
-        this.account.email = this.form.auth_officer.email
+      if (!this.isValid) {
+        this.panels = [true, true];
+      } else {
+        this.account.name.first = this.form.auth_officer.firstname;
+        this.account.name.last = this.form.auth_officer.lastname;
+        this.account.name.middle = this.form.auth_officer.middlename;
+        this.account.email = this.form.auth_officer.email;
       }
-      console.log('ACCOUNT: ' + JSON.stringify(this.account))
+      console.log("ACCOUNT: " + JSON.stringify(this.account));
       return this.isValid;
     }
     // getProvinces() {
@@ -373,20 +315,23 @@ export default {
     },
     filtered_cities() {
       return this.findCities(this.form.auth_officer.mail_add.province);
-    }
-  },
-  computed: {
-    filtered_provinces() {
-      // this.form.addresses.office.province = null;
-      return this.findProvinces(this.form.auth_officer.mail_add.region);
     },
-    filtered_cities() {
-      //  this.form.addresses.office.city = null;
-      return this.findCities(this.form.auth_officer.mail_add.province);
+    id_types() {
+      return this.$store.state.references.id_types;
+    },
+    designations() {
+      var datas = this.$store.state.references.designations;
+      if (datas) return datas.filter(x => x.type === 0);
+      else return [];
     }
-  }
+}
 };
 </script>
 
 <style>
+.sheetStyle {
+    /* border-radius: 0px 0px 12px 12px !important;  */
+    text-transform: uppercase;
+    font-weight: 400
+}
 </style>

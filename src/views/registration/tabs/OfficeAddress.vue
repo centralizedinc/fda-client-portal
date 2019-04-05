@@ -1,12 +1,15 @@
 <template>
     <v-layout row wrap>
-        <v-toolbar dark flat color="primary">
+        <v-toolbar dark flat color="primary" class="elevation-5">
             <span class="title font-weight-light">Address List</span>
             <v-spacer></v-spacer>
             <!-- <v-btn outline @click="addAddress">Add</v-btn> -->
-            <v-btn @click="addAddress" outline icon >
-                <v-icon>edit</v-icon>
-            </v-btn>
+            <v-tooltip top>
+                <v-btn slot="activator" @click="addAddress" fab outline small icon >
+                <v-icon>edit</v-icon> 
+            </v-btn>Add Address
+            </v-tooltip>
+            
         </v-toolbar>
         <v-flex xs12>                                     
             <v-data-table
@@ -33,7 +36,7 @@
             transition="dialog-transition"
         >
         <v-card>
-            <v-toolbar dark color="primary">
+            <v-toolbar dark color="primary" class="tStyle">
                 <span class="title font-weight-light">New Address</span>
                 <v-spacer></v-spacer>
                 <v-btn flat icon @click="showDialog=false">
@@ -95,6 +98,7 @@
                         color="green darken-1"
                         v-model="address.zipcode"
                         label="Zip Code"
+                        mask="####"
                         :rules="[rules.required]"
                         ></v-text-field>
                     </v-flex>
@@ -113,7 +117,7 @@
             <v-card-actions v-if="isAdd">
                 <v-spacer></v-spacer>
                 <v-btn outline color="primary" @click="showDialog=false">Cancel</v-btn>
-                <v-btn color="primary" @click="submit">Add</v-btn>
+                <v-btn color="success" @click="submit">Add</v-btn>
             </v-card-actions>
             <v-card-actions v-else>
                 <v-spacer></v-spacer>
@@ -239,5 +243,7 @@ export default {
 </script>
 
 <style>
-
+.tStyle {
+    background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%);
+}
 </style>

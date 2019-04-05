@@ -3,7 +3,6 @@
     <v-flex xs12 >
       <v-card >
         <!-- <v-card-title primary-title class="headline">Upload files</v-card-title> -->
-
         <form enctype="multipart/form-data" novalidate>
           <!-- <h1>Upload images</h1> -->
           <div class="dropbox">
@@ -26,44 +25,47 @@
       </v-card>
     </v-flex>
     <v-flex v-show="isSuccess" xs12>
-      <!--SUCCESS-->
-      <v-card>
-        <v-toolbar class="title font-weight-light" style="text-transform: uppercase">Preview
-          <v-spacer></v-spacer>
+      <!--SUCCESS-->    
+        <v-toolbar dark flat color="primary" class="elevation-5">
+            <span class="title font-weight-light">Preview</span>
+            <v-spacer></v-spacer>
            <v-tooltip top>
-            <v-btn slot="activator" outline icon color="primary" @click="$refs.image.click()">
-              <v-icon>add</v-icon>
+            <v-btn slot="activator"  fab small icon color="fdaMed" @click="$refs.image.click()">
+              <v-icon>fas fa-plus</v-icon>
             </v-btn>Upload More Files
            </v-tooltip>
           <v-tooltip top>
             <v-btn
               class="elevation-2"
               slot="activator"
-              outline
-              
+              small
+              fab
               icon
-              color="primary"
+              color="fdaOrange"
               @click="reset"
             >
               <v-icon>fas fa-redo-alt</v-icon>
             </v-btn>Reset
           </v-tooltip>
         </v-toolbar>
+        <v-card>
         <v-container grid-list-sm fluid>
           <v-layout row wrap>
             <v-flex v-for="item in uploadedFiles" :key="item.name" xs3 d-flex>
-              <v-card>
-                <v-toolbar
+              <v-card class="elevation-5" >
+                <v-card-title primary-title>
+                   {{prettify(item.name)}}
+                </v-card-title>
+                <!-- <v-toolbar height="40px"
                   dark
-                  color="fdaGreen"
-                  style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+                  flat
                 >
-                  {{prettify(item.name)}}
+                  {{prettify(item.name)}} -->
                   <!-- <v-spacer></v-spacer>
                     <v-btn dark flat icon>
                         <v-icon>close</v-icon>
                   </v-btn>-->
-                </v-toolbar>
+                <!-- </v-toolbar> -->
                 <v-card-text>
                   <v-img
                     v-if="item.type !== 'application/pdf'"
@@ -180,8 +182,8 @@ export default {
 .dropbox {
   outline: 1px dashed grey; /* the dash box */
   outline-offset: -5px;
-  background: #A7CA56;
-  color: dimgray;
+  background: #e6e6e6;
+  color: black;
   padding: 10px 10px;
   min-height: 200px; /* minimum height */
   position: relative;
@@ -197,7 +199,7 @@ export default {
 }
 
 .dropbox:hover {
-  background: #689E48; /* when mouse over to the drop zone, change color */
+  background: #cad0a0; /* when mouse over to the drop zone, change color */
 }
 
 .dropbox p {

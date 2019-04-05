@@ -451,14 +451,20 @@
                                             readonly
                                             name="name"
                                             label="Last Name"                                            
-                                            :value="account.last_name"
+                                            :value="account.name.last"
                                         ></v-text-field>
                                     <v-text-field
                                             readonly
                                             name="name"
-                                            label="Id Expiration"                                            
-                                            :value="account.first_name"
+                                            label="First Name"                                            
+                                            :value="account.name.first"
                                         ></v-text-field>
+                                    <v-text-field
+                                        readonly
+                                        name="name"
+                                        label="Middle Name"                                            
+                                        :value="account.name.middle"
+                                    ></v-text-field>
                                     <v-text-field
                                             readonly
                                             name="name"
@@ -490,6 +496,11 @@ export default {
         return{
             loading:false,
         }        
+    },
+    watch:{
+        show(){
+            this.show?this.loading=false:null
+        }
     },
     methods:{       
         prettify(name) {

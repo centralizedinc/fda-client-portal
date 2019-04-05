@@ -13,6 +13,10 @@ export default {
                 errors.forEach(element => {
                     messages = messages + element.message + " <br/>"
                 });
+            }else if(errors.message){
+                message = message +" <br/>" + errors.message
+            }else{
+                message = message +" <br/>" + errors
             }
 
 

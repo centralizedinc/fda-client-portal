@@ -140,7 +140,7 @@ import FabButton from "@/components/FabButtons.vue"
 
 export default {
   components: {
-    "step1":GeneralInfo,
+    step1: GeneralInfo,
     //todo: create a loading component for async components...
     "step2":()=>({component:import('@/views/registration/tabs/EstablishmentInfo.vue')}),
     "step3":()=>import('@/views/registration/tabs/OfficeAddress.vue'),
@@ -153,15 +153,15 @@ export default {
     FabButton
   },
   data() {
-    return { 
-        loading:false,
-        total_amount:0,        
-        fees:[],
-        charges:null,
-        tab:null,    
+    return {
+      loading: false,
+      total_amount: 0,
+      fees: [],
+      charges: null,
+      tab: null,
       form: {},
-      account:{
-          name:{}
+      account: {
+        name: {}
       },
       e1: 1,
       nav: true,
@@ -184,10 +184,18 @@ export default {
   },
   methods: {
     init() {
-      this.form = JSON.parse(JSON.stringify(this.$store.state.licenses.applicationForm)); 
-      if(this.form.current_step){
-          this.e1 = this.form.current_step;          
-      }              
+      this.form = JSON.parse(
+        JSON.stringify(this.$store.state.licenses.applicationForm)
+      );
+      if (this.form.current_step) {
+        this.e1 = this.form.current_step;
+      }
+    },
+    back() {
+      this.e1--;
+      if (this.e1 == 0) {
+        this.$router.push("/");
+      }
     },
     back(){
         var step = this.e1-1
@@ -251,8 +259,8 @@ export default {
             this.loading = false;
         }                              
     },
-    hideSummary(){
-        this.showSummary = false;
+    hideSummary() {
+      this.showSummary = false;
     },
     editPage(page){
         this.e1 = page
@@ -262,7 +270,6 @@ export default {
     uploadFile(data) {
       this.formData = data.upload;
       this.uploadedFiles = data.uploadedFiles;
-      
     },
     saveTempFile(){
         this.form.current_step = this.e1;
@@ -273,54 +280,85 @@ export default {
         this.$refs.link.click();
         this.$notify({message: 'Saving your Application Details - ' + filename, color: 'primary'})        
     },
-    submit(){
-        this.loading = true;
-        this.$store.dispatch("SAVE_NEW_LICENSE", {upload: this.formData, license: this.form, account: this.account})
+    submit() {
+      this.loading = true;
+      this.$store
+        .dispatch("SAVE_NEW_LICENSE", {
+          upload: this.formData,
+          license: this.form,
+          account: this.account
+        })
         .then(result => {
             this.loading = false;
             if (result.success) {
-                var message = "You have successfully applied a new license. In order for your application to be processed you have to pay the amount of ₱ " 
+                var reg_form = result.application.license
+                console.log('RESULT: ' + JSON.stringify(result))
+                  
+                if(!this.charges){
+                    var details = {
+                        productType: this.form.general_info.product_type,
+                        primaryActivity: this.form.general_info.primary_activity,
+                        declaredCapital: this.form.general_info.declared_capital,
+                        appType: this.form.application_type
+                    };
+                    this.$store.dispatch("GET_FEES", details)
+                    .then(result => {
+                        this.charges = result
+                        this.$store.commit('SET_FORM', reg_form)             
+                        this.$store.commit('FEES', this.charges);
+                        this.$store.commit('NEW_APPLICATION')
+                        this.$router.push('/registration/pay')
+                        var message = "You have successfully applied for a new license. In order for your application to be processed you have to pay the amount of ₱ " 
                             + this.numberWithCommas(this.charges.total)
                             + ". Kindly choose from one of our payment options available."
-                this.$notify({
-                message: message,
-                color: "primary",
-                icon: "check_circle"
-                });  
-                if(!this.charges){
-                    this.$store.dispatch("GET_FEES", details).then(result => {
-                        this.charges = result
+                        this.$notify({
+                            message: message,
+                            color: "primary",
+                            icon: "check_circle"
+                            });
                     })
-                }              
-                this.$store.commit('FEES', this.charges);
-                this.$store.commit('NEW_APPLICATION')
-                this.$router.push('/registration/pay')
+                } else{
+                    this.$store.commit('SET_FORM', reg_form)             
+                    this.$store.commit('FEES', this.charges);
+                    this.$store.commit('NEW_APPLICATION')
+                    this.$router.push('/registration/pay')
+                    var message = "You have successfully applied for a new license. In order for your application to be processed you have to pay the amount of ₱ " 
+                            + this.numberWithCommas(this.charges.total)
+                            + ". Kindly choose from one of our payment options available."
+                    this.$notify({
+                        message: message,
+                        color: "primary",
+                        icon: "check_circle"
+                        });
+                }
+                
             } else {
                 this.showSummary = false;
                 this.$notifyError(result.errors);
             }
         })
         .catch(err => {
+            console.log(err)
             this.showSummary=false;
             this.loading = false;
             this.$notifyError(err);
         });
     }
   },
-  watch:{
-      e1(){
-          if(!this.nav){
-              this.nav = true;
-          }
+  watch: {
+    e1() {
+      if (!this.nav) {
+        this.nav = true;
       }
+    }
   },
-  computed:{
-      completion(){
-          return parseInt(((this.e1-1)/7)*100)
-      },
-      stepComponent(){
-          return "step" +this.e1
-      }
+  computed: {
+    completion() {
+      return parseInt((this.e1 - 1) / 7 * 100);
+    },
+    stepComponent() {
+      return "step" + this.e1;
+    }
   }
 };
 </script>

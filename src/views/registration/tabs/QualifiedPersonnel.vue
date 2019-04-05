@@ -1,11 +1,13 @@
 <template>
   <v-layout row wrap>
-    <v-toolbar dark flat color="primary">
-            <span class="title font-weight-light">Personnel List</span>
+ <v-toolbar dark flat color="primary" class="elevation-5">            <span class="title font-weight-light">Personnel List</span>
             <v-spacer></v-spacer>
-            <v-btn @click="addItem" outline icon >
-                <v-icon>edit</v-icon>
-            </v-btn>
+            <v-tooltip top>
+                <v-btn slot="activator" @click="addItem" fab outline small icon >
+                <v-icon>edit</v-icon> 
+            </v-btn>Add Personnel
+            </v-tooltip>
+           
         </v-toolbar>
     <v-flex xs12>
     </v-flex>
@@ -35,7 +37,7 @@
               color="green darken-1"
               :rules="[rules.required]"
               v-model="qualified.designation"
-              :items="designation"
+              :items="designations"
               hide-no-data
               hide-selected
               label="Designation"
@@ -121,7 +123,7 @@
               color="green darken-1"
               :rules="[rules.required]"
               v-model="qualified.id_type"
-              :items="id_type"
+              :items="id_types"
               hide-no-data
               hide-selected
               label="ID Type"
@@ -164,7 +166,7 @@
               >
                 <v-spacer></v-spacer>
                 <v-btn  color="primary" outline @click="menu2 = false">Cancel</v-btn>
-                <v-btn  color="primary" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
+                <v-btn  color="success" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
               </v-date-picker>
             </v-menu>
           </v-flex>
@@ -182,7 +184,7 @@
         <v-card-actions v-else>
           <v-spacer></v-spacer>
           <v-btn outline color="primary" @click="addToListDialog=false">Cancel</v-btn>
-          <v-btn color="primary" @click="submit">Add</v-btn>
+          <v-btn color="success" @click="submit">Add</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -258,21 +260,6 @@ export default {
     menu: null,
     menu2: null,
     tin: "###-###-###-###",
-    designation: [
-      "Company Pharmacist",
-      "Pharmacy Assistant",
-      "Production Manager/Head",
-      "Quality Assurance Manager/Head"
-    ],
-    id_type: [
-      "Professional Regulatory Commission",
-      "Social Security System",
-      "Government Service Insurance System (GSIS)",
-      "Commission on Elections (Voter's)",
-      "Land Transportation Office (Driver's)",
-      "Philippine Passport",
-      "Bureau of Immigration (Alien Registration)"
-    ],
     selected_index: -1,
     qualified: {},
     headers: [
@@ -325,20 +312,37 @@ export default {
       if (!val) this.qualified = {};
     }
   },
+  created() {
+    this.init();
+  },
+  computed: {
+    id_types() {
+      return this.$store.state.references.id_types;
+    },
+    designations() {
+      var datas = this.$store.state.references.designations;
+      if (datas) return datas.filter(x => x.type === 1);
+      else return [];
+    }
+  },
   methods: {
+    init() {
+      // load ID TYPES and DESIGNATIONS
+      this.$store.dispatch("GET_REFERENCES");
+    },
     submit() {
       this.$refs.vform.validate();
-      if(this.isValid){
+      if (this.isValid) {
         if (this.mode === 0) {
-          //CREATE        
+          //CREATE
           this.form.qualified.push(this.qualified);
         } else if (this.mode === 1) {
           //EDIT
           this.form.qualified[this.selected_index] = this.qualified;
         }
         this.clearForm();
-      }else{
-        this.$notifyError([{message:'Fill-up required fields'}])
+      } else {
+        this.$notifyError([{ message: "Fill-up required fields" }]);
       }
     },
     clearForm() {
@@ -375,12 +379,15 @@ export default {
       this.isValid = true;
       this.addToListDialog = true;
     },
-    validate(){
-      return (this.form.qualified && this.form.qualified.length>0)
+    validate() {
+      return this.form.qualified && this.form.qualified.length > 0;
     }
   }
 };
 </script>
 
 <style>
+.tStyle {
+    background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%);
+}
 </style>
