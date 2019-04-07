@@ -35,7 +35,11 @@ const mutations = {
         state.payment_history = payments
     },
     SHOW_CC_DIALOG(state, payment_details) {
-        state.payment_details = payment_details
+        // clear details first
+        state.payment_details = {
+            summary: []
+        };
+        state.payment_details = payment_details;
         state.showCCDialog = true;
     },
     HIDE_CC_DIALOG(state) {
