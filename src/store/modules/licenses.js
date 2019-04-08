@@ -241,7 +241,10 @@ var actions = {
     // Result of License Evaluation
     GET_RESULT_BY_KEY(context, key) {
         return new LicenseAPI().getResultByKey(key);
-    }
+    },
+    DOWNLOAD_PDF(context, url) {
+        return new LicenseAPI(context.rootState.user_session.token).getDocument(url)
+    },
 }
 
 export default {
