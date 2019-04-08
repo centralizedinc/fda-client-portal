@@ -19,7 +19,7 @@
              <v-text-field :rules="[rules.required]" label="First Name" v-model="account.name.first"></v-text-field>
            </v-flex> 
            <v-flex xs12 md4 pa-1>
-             <v-text-field :rules="[rules.required]" label="Middle Name" v-model="account.middle"></v-text-field>
+             <v-text-field :rules="[rules.required]" label="Middle Name" v-model="account.name.middle"></v-text-field>
            </v-flex>         
           <v-flex xs12 pa-1>                        
             <v-text-field 
@@ -91,16 +91,12 @@ export default {
     validate(){
       this.$refs.vform.validate()
       return this.isValid
-    },
-    // randomColor(){
-    //   return '#' + ('00000' + (Math.random() * 16777216 << 0).toString(16)).substr(-6);
-    // }
+    }
   },
   computed:{
     alias(){
-      if(this.account.first_name && this.account.last_name){
-        console.log(this.account.first_name.substring(0,1) + this.account.last_name.substring(0,1))
-        return this.account.first_name.substring(0,1).toUpperCase() + this.account.last_name.substring(0,1).toUpperCase()
+      if(this.account.name && this.account.name.first && this.account.name.last){
+        return this.account.name.first.substring(0,1).toUpperCase() + this.account.name.last.substring(0,1).toUpperCase()
       }else{
         return ""
       }

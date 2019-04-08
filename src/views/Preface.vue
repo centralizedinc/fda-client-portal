@@ -217,7 +217,7 @@
                   >Continue your Application</span>
                   <h1
                     class="caption"
-                  >Upload your *.fda file to continue you license application</h1>
+                  >Upload your <b>*.fda</b> file to continue your license application</h1>
                 </v-flex>
               </v-card-text>
               <!-- <existing-user :show="validationDialog" @close="validationDialog=false"></existing-user> -->
@@ -234,7 +234,7 @@
                 ref="file"
               type="file"
               @change="onFilePicked"
-              accept=".fdav3"
+              accept=".fda"
             >
   </div>
 </template>

@@ -47,13 +47,13 @@
       </v-flex>
 
       <!-- NEW LICENSE -->
-      <v-layout column class="fab-container">
+      <!-- <v-layout column class="fab-container">
         <v-tooltip top>
           <v-btn slot="activator" fab color="fdaLight" @click="newLicense">
             <v-icon large color="fdaSilver">add</v-icon>
           </v-btn>Apply New
         </v-tooltip>
-      </v-layout>
+      </v-layout> -->
 
       <!-- DIALOGS -->
       <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="dialog = false"></undertaking-dialog>

@@ -1,8 +1,9 @@
 <template>
   <v-app>
     <notification></notification>
+    <credit-card></credit-card>
     <v-toolbar scroll-off-screen app dark style="background: linear-gradient(45deg, #104b2a 0%, #b5c25a 100%)">
-      <span class="body-1">FDA Portal v3.0</span>  
+      <!-- <span class="body-1">FDA Portal v3.0</span>   -->
       <v-spacer></v-spacer>
       <v-btn flat @click="$router.push('/')">HOME</v-btn>  
       <v-btn flat @click="$router.push('/')">LOGIN</v-btn>
@@ -21,8 +22,9 @@
 
 <script>
 import notification from "@/components/Notification";
+import creditCard from "@/components/CreditCardDialog"
 export default {
-  components: { notification },
+  components: { notification,creditCard },
   data() {
     return {
       title: ""

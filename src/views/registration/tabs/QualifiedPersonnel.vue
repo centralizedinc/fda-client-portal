@@ -1,11 +1,13 @@
 <template>
   <v-layout row wrap>
-    <v-toolbar dark flat color="primary">
-            <span class="title font-weight-light">Personnel List</span>
+ <v-toolbar dark flat color="primary" class="elevation-5">            <span class="title font-weight-light">Personnel List</span>
             <v-spacer></v-spacer>
-            <v-btn @click="addItem" outline icon >
-                <v-icon>edit</v-icon>
-            </v-btn>
+            <v-tooltip top>
+                <v-btn slot="activator" @click="addItem" fab outline small icon >
+                <v-icon>edit</v-icon> 
+            </v-btn>Add Personnel
+            </v-tooltip>
+           
         </v-toolbar>
     <v-flex xs12>
     </v-flex>
@@ -164,7 +166,7 @@
               >
                 <v-spacer></v-spacer>
                 <v-btn  color="primary" outline @click="menu2 = false">Cancel</v-btn>
-                <v-btn  color="primary" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
+                <v-btn  color="success" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
               </v-date-picker>
             </v-menu>
           </v-flex>
@@ -173,10 +175,16 @@
           
         </v-card-text>
         <v-divider></v-divider>
-        <v-card-actions>
+        
+        <v-card-actions v-if="mode">
+          <v-spacer></v-spacer>
+          <v-btn outline color="error" @click="deleteItem()">DELETE</v-btn>
+          <v-btn color="primary" @click="addToListDialog=false">EDIT</v-btn>
+        </v-card-actions>
+        <v-card-actions v-else>
           <v-spacer></v-spacer>
           <v-btn outline color="primary" @click="addToListDialog=false">Cancel</v-btn>
-          <v-btn color="primary" @click="submit">Add</v-btn>
+          <v-btn color="success" @click="submit">Add</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -194,15 +202,17 @@
 
     <v-layout row wrap>
       <v-flex xs12>
-        <v-data-table :headers="headers" :items="form.qualified" class="elevation-1">
+        <v-data-table :headers="headers" :items="form.qualified" hide-actions class="elevation-1">
           <template slot="items" slot-scope="props">
-            <td>{{props.item.firstname + " " + props.item.lastname}}</td>
-            <td>{{props.item.designation}}</td>
-            <td>{{props.item.birthday}}</td>
-            <td>{{props.item.tin}}</td>
-            <td>{{props.item.id_type}}</td>
-            <td>{{props.item.id_no}}</td>
-            <td>
+            <tr @click="editItem(props.item, props.index)">
+              <td>{{props.item.firstname + " " + props.item.lastname}}</td>
+              <td>{{props.item.designation}}</td>
+              <td>{{props.item.birthday}}</td>
+              <td>{{props.item.tin}}</td>
+              <td>{{props.item.id_type}}</td>
+              <td>{{props.item.id_no}}</td>
+            </tr>
+            <!-- <td>
               <v-layout row wrap>
                 <v-flex xs6 pa-1>
                   <v-tooltip top>
@@ -231,7 +241,7 @@
                   </v-tooltip>
                 </v-flex>
               </v-layout>
-            </td>
+            </td> -->
           </template>
         </v-data-table>
       </v-flex>
@@ -241,12 +251,10 @@
 
 <script>
 export default {
-  components: {
-    QualifiedPersonnelList: () => import("./AddToListDialog.vue")
-  },
   props: ["form"],
   data: () => ({
-    isValid: true,
+    index:null,
+    isValid:true,
     mode: 0,
     addToListDialog: false,
     menu: null,
@@ -282,11 +290,6 @@ export default {
       },
       {
         text: "ID Number",
-        value: "",
-        sortable: false
-      },
-      {
-        text: "Actions",
         value: "",
         sortable: false
       }
@@ -357,12 +360,15 @@ export default {
       };
       this.addToListDialog = false;
     },
-    deleteItem(item) {
-      confirm("Are you sure you want to delete this item?") &&
-        this.form.qualified.splice(item, 1);
+    deleteItem() {
+      if(confirm("Are you sure you want to delete this item?")){
+        this.form.qualified.splice(this.selected_index, 1);         
+      }
+      this.addToListDialog = false;
+        
     },
     editItem(item, index) {
-      this.mode = 1;
+      this.mode = 1;      
       this.selected_index = index;
       this.qualified = item;
       this.addToListDialog = true;
@@ -381,4 +387,7 @@ export default {
 </script>
 
 <style>
+.tStyle {
+    background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%);
+}
 </style>

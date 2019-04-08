@@ -121,13 +121,21 @@
 
 <script>
 import appOverviewTabs from "./appoverview/tabs";
-import createTabs from "./create/tabs";
+
 
 const tabsComponents = Object.assign(
   {
-    PaymentSummary: () => import("../payment/PaymentSummary.vue")
+    PaymentSummary: () => import("../payment/PaymentSummary.vue"),
+    // AddToListDialog: () => import('@/views/registration/tabs/AddToListDialog.vue'),
+    AuthorizedOfficerDetails: () => import('@/views/registration/tabs/AuthorizedOfficerDetails.vue'),
+    // ConfirmDialog: () => import('@/view/registration/tabs/ConfirmDialog.vue'),
+    DocumentsUpload: () => import('@/views/registration/tabs/DocumentsUpload.vue'),
+    EstablishmentInfo: () => import('@/views/registration/tabs/EstablishmentInfo.vue'),
+    GeneralInfo: () => import('@/views/registration/tabs/GeneralInfo.vue'),
+    OfficeAddress: () => import('@/views/registration/tabs/OfficeAddress.vue'),
+    QualifiedPersonnel: () => import('@/views/registration/tabs/QualifiedPersonnel.vue')
   },
-  Object.assign(createTabs, appOverviewTabs)
+  Object.assign(appOverviewTabs)
 );
 
 export default {

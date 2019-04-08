@@ -24,7 +24,7 @@
                                 <v-card-title primary-title>
                                     <div class="subheading primary--text">General Information</div>
                                     <v-spacer></v-spacer>
-                                    <v-btn flat icon color="primary">
+                                    <v-btn v-if="isFinal" @click="goTo(1)" outline icon color="primary">
                                         <v-icon>edit</v-icon>
                                     </v-btn>                                     
                                 </v-card-title>
@@ -68,7 +68,7 @@
                                 <v-card-title primary-title>
                                     <div class="subheading primary--text">Establishment Information</div>
                                     <v-spacer></v-spacer>
-                                    <v-btn flat icon color="primary">
+                                    <v-btn v-if="isFinal" @click="goTo(2)" outline icon color="primary">
                                         <v-icon>edit</v-icon>
                                     </v-btn>                                     
                                 </v-card-title>
@@ -133,7 +133,7 @@
                                 <v-card-title primary-title>
                                     <div class="subheading primary--text">Product Line</div>
                                     <v-spacer></v-spacer>
-                                    <v-btn flat icon color="primary">
+                                    <v-btn v-if="isFinal" @click="goTo(2)" outline icon color="primary">
                                         <v-icon>edit</v-icon>
                                     </v-btn>                                     
                                 </v-card-title>
@@ -167,7 +167,7 @@
                                 <v-card-title primary-title>
                                     <div class="subheading primary--text">Establishment Address</div>
                                     <v-spacer></v-spacer>
-                                    <v-btn flat icon color="primary">
+                                    <v-btn v-if="isFinal" @click="goTo(3)" outline icon color="primary">
                                         <v-icon>edit</v-icon>
                                     </v-btn>                                     
                                 </v-card-title>
@@ -224,7 +224,7 @@
                                 <v-card-title primary-title>
                                     <div class="subheading primary--text">Authorized Officer</div>
                                     <v-spacer></v-spacer>
-                                    <v-btn outline icon color="primary">
+                                    <v-btn v-if="isFinal" @click="goTo(4)" outline icon color="primary">
                                         <v-icon>edit</v-icon>
                                     </v-btn>                                     
                                 </v-card-title>
@@ -312,7 +312,7 @@
                                 <v-card-title primary-title>
                                     <div class="subheading primary--text">Qualified Personnel</div>
                                     <v-spacer></v-spacer>
-                                    <v-btn flat icon color="primary">
+                                    <v-btn v-if="isFinal" outline @click="goTo(5)" icon>
                                         <v-icon>edit</v-icon>
                                     </v-btn>                                     
                                 </v-card-title>
@@ -392,7 +392,7 @@
                                 <v-card-title primary-title>
                                     <div class="subheading primary--text">Documents</div>
                                     <v-spacer></v-spacer>
-                                    <v-btn flat icon color="primary">
+                                    <v-btn v-if="isFinal" @click="goTo(6)" icon outline>
                                         <v-icon>edit</v-icon>
                                     </v-btn>                                     
                                 </v-card-title>
@@ -441,7 +441,7 @@
                                 <v-card-title primary-title>
                                     <div class="subheading primary--text">Account Credentials</div>
                                     <v-spacer></v-spacer>
-                                    <v-btn flat icon color="primary">
+                                    <v-btn v-if="isFinal" @click="goTo(7)" icon outline>
                                         <v-icon>edit</v-icon>
                                     </v-btn>                                     
                                 </v-card-title>
@@ -451,14 +451,20 @@
                                             readonly
                                             name="name"
                                             label="Last Name"                                            
-                                            :value="account.last_name"
+                                            :value="account.name.last"
                                         ></v-text-field>
                                     <v-text-field
                                             readonly
                                             name="name"
-                                            label="Id Expiration"                                            
-                                            :value="account.first_name"
+                                            label="First Name"                                            
+                                            :value="account.name.first"
                                         ></v-text-field>
+                                    <v-text-field
+                                        readonly
+                                        name="name"
+                                        label="Middle Name"                                            
+                                        :value="account.name.middle"
+                                    ></v-text-field>
                                     <v-text-field
                                             readonly
                                             name="name"
@@ -473,10 +479,10 @@
                     </v-layout>
                 </v-card-text>
                 <v-divider></v-divider>
-                <v-card-actions>
+                <v-card-actions v-if="isFinal">
                     <v-spacer></v-spacer>
                     <v-btn outline color="primary" @click="close()">Cancel</v-btn>
-                    <v-btn color="primary" @click="accept">Accept & Submit</v-btn>
+                    <v-btn color="primary" @click="accept" :loading="loading">Accept & Submit</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -485,7 +491,17 @@
 
 <script>
 export default {
-    props:["show", "form", "account", "uploadedFiles"],
+    props:["show", "form", "account", "uploadedFiles", "isFinal"],
+    data(){
+        return{
+            loading:false,
+        }        
+    },
+    watch:{
+        show(){
+            this.show?this.loading=false:null
+        }
+    },
     methods:{       
         prettify(name) {
             if (name.length > 15) {
@@ -497,7 +513,11 @@ export default {
          close(){
             this.$emit('close')
         },
+        goTo(page){
+            this.$emit('edit', page)
+        },
         accept(){
+            this.loading = true;
             this.$emit('accept')
         }
     }

@@ -3,8 +3,8 @@
     <v-dialog
       v-model="show"
       scrollable
-      :overlay="false"
       persistent
+      :overlay="false"
       max-width="800px"
       transition="dialog-transition"
     >

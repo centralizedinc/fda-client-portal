@@ -42,13 +42,12 @@
       >For government owned or controlled corporation reflect the name of the agency as indicated in the charter.</li>
     </ul> -->
 
-    <v-sheet
+    <v-toolbar
       dark
-      class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
+      class="sheetStyle  elevation-10 mt-3 mb-4 subheading"
       color="fdaGreen"
-      height="40"
+      height="30"
       width="calc(100% - 10px)"
-      style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
     >
       Contact Information
       <!-- <v-tooltip top>
@@ -57,7 +56,7 @@
         </v-btn>Note: Please indicate "N/A" for Not Applicable
         <br>Email must be valid. Contact numbers should be active
       </v-tooltip> -->
-    </v-sheet>
+    </v-toolbar>
     <!-- <p class="category ml-5">Note: Please indicate "N/A" for Not Applicable</p> -->
     <v-layout row wrap>
       <v-flex xs5 ml-5>
@@ -106,15 +105,14 @@
       </v-flex>
     </v-layout>
 
-    <v-sheet
+     <v-toolbar
       dark
-      class="font-weight-normal elevation-2 pl-3 mb-3 mt-3 subheading"
+      class="sheetStyle elevation-10 mt-3 mb-4 subheading"
       color="fdaGreen"
-      height="40"
+      height="30"
       width="calc(100% - 10px)"
-      style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
     >
-      Product Line
+      Product Lines
       <!-- <v-tooltip top>
         <v-btn slot="activator" flat icon small color="error">
           <v-icon small class="pb-1">fas fa-question fa-move</v-icon>
@@ -123,7 +121,7 @@
       <!-- <v-btn outline icon >
         <v-icon>add</v-icon>
       </v-btn> -->
-    </v-sheet>
+    </v-toolbar>
 
     <v-layout row wrap>
       <template v-for="(item, index) in form.estab_details.products">
@@ -239,4 +237,9 @@ export default {
 </script>
 
 <style>
+.sheetStyle {
+  /* border-radius: 0px 0px 12px 12px !important;  */
+  text-transform: uppercase;
+  font-weight: 400
+}
 </style>

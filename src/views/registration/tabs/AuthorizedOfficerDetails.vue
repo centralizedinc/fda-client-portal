@@ -1,21 +1,13 @@
 <template>
 <v-form ref="vform" v-model="isValid">
 
-  <!-- <v-expansion-panel v-model="panels">
+    <!-- <v-expansion-panel v-model="panels">
     <v-expansion-panel-content class="ma-3 pa-3">
       <div slot="header" class="title font-weight-light primary--text">Personal Details</div> -->
-      
-      <v-card> 
-        <v-sheet
-            dark
-            class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
-            color="fdaGreen"
-            height="40"
-      width="calc(100% - 10px)"
-            style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
-          >
-            Personal Information
-          </v-sheet>
+    <v-toolbar dark class="sheetStyle  elevation-10 mt-3 mb-1  subheading" color="fdaGreen" height="30" width="calc(100% - 10px)">
+        Personal Information
+    </v-toolbar>
+    <v-card flat>
         <v-card-text>
           
                     
@@ -135,83 +127,33 @@
     <!-- </v-expansion-panel-content>
     <v-expansion-panel-content class="ma-3 pa-3">
       <div slot="header" class="title font-weight-light primary--text">Address Details</div> -->
-      <v-card>
-       <v-sheet
-      dark
-      class="font-weight-normal elevation-2 pl-3 mt-3 mb-4 subheading"
-      color="fdaGreen"
-     height="40"
-      width="calc(100% - 10px)"
-      style="border-radius: 0px 0px 12px 12px !important; text-transform: uppercase"
-    >
-      Address Details
-    </v-sheet>
-     <v-card-text>       
-        <v-layout row wrap>
-          <v-flex xs12>
-            <v-textarea rows='2'
-              color="green darken-1"
-              label="Address"
-              :rules="[rules.required]"
-              v-model="form.auth_officer.mail_add.address"
-            ></v-textarea>
-          </v-flex>
-          <v-flex xs12 md6 pa-2>
-            <v-autocomplete
-              color="green darken-1"
-              :rules="[rules.required]"
-              v-model="form.auth_officer.mail_add.region"
-              :items="regions"
-              item-text="name"
-              item-value="_id"
-              hide-no-data
-              hide-selected
-              label="Region"
-            ></v-autocomplete>            
-          </v-flex>
-          <v-flex xs12 md6 pa-2>
-            <v-autocomplete
-              color="green darken-1"
-              :rules="[rules.required]"
-              v-model="form.auth_officer.mail_add.province"
-              :items="filtered_provinces"
-              item-text="name"
-              item-value="_id"
-              hide-no-data
-              hide-selected
-              label="Province"
-            ></v-autocomplete>
-          </v-flex>
-          <v-flex xs12  md6 pa-2>
-            <v-autocomplete
-              color="green darken-1"
-              :rules="[rules.required]"
-              v-model="form.auth_officer.mail_add.city"
-              :items="filtered_cities"
-              item-text="name"
-              item-value="_id"
-              hide-no-data
-              hide-selected
-              label="City / Town"
-            ></v-autocomplete>
-          </v-flex>
-          <v-flex xs12  md6 pa-2>
-            <v-text-field
-              color="green darken-1"
-              :rules="[rules.required]"
-              v-model="form.auth_officer.mail_add.zipcode"
-              label="Zip Code"
-            ></v-text-field>
-          </v-flex>
-        </v-layout>
+    <v-toolbar dark class="sheetStyle  elevation-10 mt-3 mb-1  subheading" color="fdaGreen" height="30" width="calc(100% - 10px)">
+        Address Details
+    </v-toolbar>
+    <v-card flat>
+        <v-card-text>
+            <v-layout row wrap>
+                <v-flex xs12>
+                    <v-textarea rows='2' color="green darken-1" label="Address" :rules="[rules.required]" v-model="form.auth_officer.mail_add.address"></v-textarea>
+                </v-flex>
+                <v-flex xs12 md6 pa-2>
+                    <v-autocomplete color="green darken-1" :rules="[rules.required]" v-model="form.auth_officer.mail_add.region" :items="regions" item-text="name" item-value="_id" hide-no-data hide-selected label="Region"></v-autocomplete>
+                </v-flex>
+                <v-flex xs12 md6 pa-2>
+                    <v-autocomplete color="green darken-1" :rules="[rules.required]" v-model="form.auth_officer.mail_add.province" :items="filtered_provinces" item-text="name" item-value="_id" hide-no-data hide-selected label="Province"></v-autocomplete>
+                </v-flex>
+                <v-flex xs12 md6 pa-2>
+                    <v-autocomplete color="green darken-1" :rules="[rules.required]" v-model="form.auth_officer.mail_add.city" :items="filtered_cities" item-text="name" item-value="_id" hide-no-data hide-selected label="City / Town"></v-autocomplete>
+                </v-flex>
+                <v-flex xs12 md6 pa-2>
+                    <v-text-field color="green darken-1" mask="####" :rules="[rules.required]" v-model="form.auth_officer.mail_add.zipcode" label="Zip Code"></v-text-field>
+                </v-flex>
+            </v-layout>
         </v-card-text>
-      </v-card>        
+    </v-card>
     <!-- </v-expansion-panel-content>
   </v-expansion-panel> -->
 
-
-
-  
     <!-- <v-flex xs12 md4 pa-2>
       <v-menu
         ref="menu2"
@@ -242,7 +184,6 @@
       </v-menu>
     </v-flex> -->
 
-    
     <!-- <v-flex xs12 >
       <v-sheet
         dark
@@ -280,9 +221,9 @@
       </v-sheet>
       
     </v-flex> -->
-    
-  <!-- </v-layout> -->
-  </v-form>
+
+    <!-- </v-layout> -->
+</v-form>
 </template>
 
 <script>
@@ -383,9 +324,14 @@ export default {
       if (datas) return datas.filter(x => x.type === 0);
       else return [];
     }
-  }
+}
 };
 </script>
 
 <style>
+.sheetStyle {
+    /* border-radius: 0px 0px 12px 12px !important;  */
+    text-transform: uppercase;
+    font-weight: 400
+}
 </style>
