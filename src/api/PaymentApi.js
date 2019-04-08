@@ -73,8 +73,7 @@ export default class PaymentAPI {
         console.log("details data: " + JSON.stringify(details))
         axios.post('payments/transactions/initiate',{
             payment_details: {
-                total_amount: details.fees.total,
-                mode_of_payment: details.mode_of_payment
+                total_amount: details.fees.total
             },
             transaction_details: {
                 application_type: details.fees.appType,

@@ -272,8 +272,7 @@ export default {
             var full_details = {
                 fees: this.fees_form,
                 form: this.form,
-                case: this.case_holder,
-                mode_of_payment: 4 
+                case: this.case_holder
             }
             this.$store
         .dispatch("SAVE_TRANSACTION_PROVIDER", full_details).then(result => {
@@ -292,6 +291,16 @@ export default {
 
         },
         generatePDF() {
+            var details = {
+                fees: this.fees_form,
+                form: this.form,
+                case: this.case_holder
+            }
+            this.$store
+            .dispatch("SAVE_TRANSACTION_PROVIDER", details).then(result => {
+            console.log("this is save transaction provider data: " + JSON.stringify(result))
+            
+        })  
             this.cashierPayment = true;
             var full_details = {
                 formDetails: this.app_form,
@@ -318,8 +327,10 @@ export default {
             full_details.formDetails.application_type = this.getAppType(
                 full_details.formDetails.application_type
             );
+              
+        this.$download(full_details, "PAY");
             console.log("fulldetails data: " + JSON.stringify(full_details));
-            this.$download(full_details, "PAY");
+            
             console.log("application form data: " + JSON.stringify(this.app_form));
             console.log("fees form data: " + JSON.stringify(this.fees_form));
             
