@@ -72,7 +72,7 @@
                         </v-btn>Credit Card
                     </v-tooltip>
                     <v-tooltip top class="pa-1">
-                        <v-btn slot="activator" dark @click="ecPayDialog = true" color="fdaGold">
+                        <v-btn slot="activator" dark @click="ecpay" color="fdaGold">
                             ECPay
                         </v-btn>ECPay
                     </v-tooltip>
@@ -179,6 +179,9 @@ export default {
         form: {
             type: Object
         },
+        case_holder: {
+            type: Object
+        },
         charges: {
             type: Object
         },
@@ -260,6 +263,33 @@ export default {
             // this.ecPayDialog = false;
             // this.showPayLater = true;
             // this.$router.push("/");
+        },
+        ecpay() {
+            this.ecPayDialog = true;
+            console.log("application fees: " + JSON.stringify(this.fees_form))
+            console.log("application data: " + JSON.stringify(this.form))
+            console.log("application case: " + JSON.stringify(this.case_holder))
+            var full_details = {
+                fees: this.fees_form,
+                form: this.form,
+                case: this.case_holder,
+                mode_of_payment: 4 
+            }
+            this.$store
+        .dispatch("SAVE_TRANSACTION_PROVIDER", full_details).then(result => {
+            console.log("this is save transaction provider data: " + JSON.stringify(result))
+            var ecpay_fee = 0;
+            var details = {
+                reference_number: result.third_party_ref_no,
+                status: this.getPaymentStatus(result.payment_details.status), 
+                expiration: this.formatDt(this.case_holder.date_expiry),
+                amount: this.formatCurrency(result.payment_details.total_amount),
+                con_fee: this.formatCurrency(ecpay_fee),
+                total: this.formatCurrency(result.payment_details.total_amount + ecpay_fee)
+            }
+            this.$download(details, "ECPAY");
+        })           
+
         },
         generatePDF() {
             this.cashierPayment = true;

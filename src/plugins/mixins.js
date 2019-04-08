@@ -234,6 +234,10 @@ export default {
             return prod_line ? prod_line : {}
           }
         },
+        getPaymentStatus(status){
+          var payment_status = ["Initiate","Processing","Paid"] 
+          return payment_status[status]
+        },
         getModeOfPayment(mode){
           var mode_of_payment = ["Online Payment (Credit Card)", "Cash", "Credit Card (Cashier)", "Check", "Online Payment (ECPay)"]
           return mode_of_payment[mode]

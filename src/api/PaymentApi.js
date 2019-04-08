@@ -69,6 +69,33 @@ export default class PaymentAPI {
         })
     }
 
+    saveTransaction(details, cb) {
+        console.log("details data: " + JSON.stringify(details))
+        axios.post('payments/transactions/initiate',{
+            payment_details: {
+                total_amount: details.fees.total,
+                mode_of_payment: details.mode_of_payment
+            },
+            transaction_details: {
+                application_type: details.fees.appType,
+                application: 0,
+                case_no: details.case.case_no,
+                // user_id: ,
+                order_payment: {
+                    fee: details.fees.fee,
+                    lrf: details.fees.lrf,
+                    penalty: details.fees.penalty,
+                    total_amount: details.fees.total_amount,
+                    reamrks: details.fees.reamrks
+                }
+        }
+    }).then((result) => {
+            cb(result.data.model)
+        }).catch(err => {
+            cb(null, err)
+        })
+    }
+
     getPayments(user_id){
         return axios.get('payments/client/'+user_id)
     }

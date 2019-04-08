@@ -9,7 +9,8 @@ const state = {
     payment_details: {
         summary: []
     },
-    showCCDialog: false
+    showCCDialog: false,
+    providerDetails: null
 }
 
 const mutations = {
@@ -47,6 +48,9 @@ const mutations = {
             summary: []
         }
         state.showCCDialog = false;
+    },
+    SET_PAYMENT_PROVIDER(state, details){
+        state.providerDetails = details
     }
 }
 
@@ -108,6 +112,19 @@ var actions = {
                     resolve(details)
                 } else {
                     console.log("actions save licenses error: " + JSON.stringify(err))
+                    reject(err)
+                }
+            })
+        })
+    },
+    SAVE_TRANSACTION_PROVIDER(context, details){
+        return new Promise((resolve, reject) => {
+            console.log("save transaction by provider: " + JSON.stringify(details))
+            new PaymentAPI(context.rootState.user_session.token).saveTransaction(details, (data, err) => {
+                if(!err){
+                    console.log("action save transaction")
+                    resolve(data)
+                }else{
                     reject(err)
                 }
             })
