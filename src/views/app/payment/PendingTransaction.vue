@@ -37,7 +37,7 @@
       <v-btn block color="success" @click="pay">Pay now</v-btn>
     </v-layout>
     <v-layout row wrap>
-      <payment-summary v-show="paymentDialog" :form="form" :allow_paylater="allow_paylater"></payment-summary>
+      <payment-summary v-show="paymentDialog" :form="form" :case_holder="case_holder" :allow_paylater="allow_paylater"></payment-summary>
     </v-layout>
   </v-container>
 </template>
