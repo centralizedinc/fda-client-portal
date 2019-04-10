@@ -287,7 +287,7 @@
 </template>
 
 <script>
-import VueRecaptcha from "vue-recaptcha";
+// import VueRecaptcha from "vue-recaptcha";
 // import * as schema from 'fda-data-models'
 import * as md5 from "@/plugins/md5";
 export default {

@@ -363,7 +363,7 @@
               <v-btn v-if="show_documents" flat icon  color="primary" @click="show_documents=false">
                 <v-icon>expand_less</v-icon>
               </v-btn>
-              <v-btn v-else flat icon color="primary" @click="show_documents=true">
+              <v-btn v-else flat icon color="primary" @click="show_documents=true; loaded=false">
                 <v-icon>expand_more</v-icon>
               </v-btn>
             </v-card-title>
@@ -371,14 +371,11 @@
             <v-card-text v-if="show_documents">
               <v-container grid-list-sm fluid>
           <v-layout row wrap>
-            <v-flex
-              v-for="(n, indx) in uploaded_documents"
-              :key="indx"
-              xs4
-              d-flex
-            >
+            <v-flex v-for="(n, indx) in uploaded_documents" :key="indx" xs4 d-flex>
               <v-card tile class="d-flex" @click="viewFile(n.location)" style="cursor:zoom-in">
-                <pdf :src="'https://cors-anywhere.herokuapp.com/'+n.location"></pdf>
+                <pdf v-show="loaded" @loaded="loaded=true" :src="'https://cors-anywhere.herokuapp.com/'+n.location"></pdf>
+                <!-- <v-progress-linear v-show="!loaded" :indeterminate="true"></v-progress-linear> -->
+                <v-progress-circular v-show="!loaded" indeterminate color="primary"></v-progress-circular>
               </v-card>
             </v-flex>
           </v-layout>
@@ -410,7 +407,6 @@
 
 <script>
 import pdf from 'vue-pdf'
-import  PDFJS  from 'pdfjs-dist'
 export default {
   components:{
       pdf
@@ -418,6 +414,7 @@ export default {
   data(){
     
     return{
+      loaded:false,
       show_part1:false,
       show_part2:false,
       show_part3:false,
