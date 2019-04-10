@@ -115,34 +115,39 @@ export default class LicenseAPI {
                 })
                 // Save License Application first
                 .then(result1 => {
-                    console.log("RESULT SAVING LICENSE: " + JSON.stringify(result1.data))
-                    if (result1.data.success) {
+                    if (result1.data.success && lic_data.upload) {
                         lic_case = result1.data.model;
                         saved_license = result1.data.model.application.license;
                         return axios.post('documents/uploads?account_id=' + saved_license.case_no, lic_data.upload)
-                    } else {
-                        resolve(result1.data)
+                    } else if(lic_data.upload) {
+                        reject()
+                    }else{
+                        reject(result1.data.errors)
                     }
                 })
                 // upload file attachments to AWS S3
                 .then(result2 => {
-                    console.log("RESULT UPLOADING FILES: " + JSON.stringify(result2.data))
-                    var files = result2.data.model
-                    saved_license.uploaded_files = files;
-                    if (result2.data.success) {
-                        return axios.post('lto-api/' + saved_license._id, saved_license)
-                    } else {
-                        resolve(result2.data)
-                    }
-
+                    if(result2){
+                        var files = result2.data.model
+                        saved_license.uploaded_files = files;
+                        if (result2.data.success) {
+                            return axios.post('lto-api/' + saved_license._id, saved_license)
+                        } else {
+                            resolve(result2.data)
+                        }
+                    } else{
+                        reject()
+                    }                   
                 })
                 // update license application merging uploaded files
                 .then(result3 => {
-                    console.log("RESULT UPDATING LICENSE: " + JSON.stringify(result3.data))
-                    lic_case.success = true;
-                    lic_case.application.license = result3.data.model;
-                    resolve(lic_case)
-
+                    if(result3){
+                        lic_case.success = true;
+                        lic_case.application.license = result3.data.model;
+                        resolve(lic_case)
+                    }else{
+                        reject()
+                    }                    
                 })
                 .catch(err => {
                     reject(err)

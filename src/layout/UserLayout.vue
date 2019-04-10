@@ -114,7 +114,7 @@
 
         <template v-else-if="user.status === 1">
           <v-list-tile
-            @click="goTo('/app/licenses/summary')"
+            @click="viewLicense()"
             class="ma-1"
             :style="activeRoute('License Summary')"
           >
@@ -344,6 +344,20 @@ export default {
     init() {
       this.user = this.$store.state.user_session.user;
       if (!this.user.avatar) this.user.avatar = {};
+    },
+    viewLicense(){
+      console.log('LICENSES: '+JSON.stringify(this.$store.state.licenses.licenses[0]))
+      
+      this.$store.dispatch('GET_LICENSES')
+      .then(result=>{
+        this.$store.commit('SET_VIEW_LICENSE',this.$store.state.licenses.licenses[0])
+        this.$store.commit("SET_VIEW_CASE", this.$store.state.case.cases[0]);
+        this.goTo('/app/licenses/summary')
+      })
+      .catch(err=>{
+        console.log(err);
+        this.$notifyError(err);
+      })
     },
     goTo(router) {
       this.$router.push(router);

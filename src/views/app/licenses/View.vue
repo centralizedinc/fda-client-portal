@@ -447,6 +447,7 @@ export default {
       
       this.form = this.$store.state.licenses.view_license
       this.case_details = this.$store.state.case.view_case
+      console.log(JSON.stringify(this.form))
       //get uploaded documents
       console.log(console.log('DOCUMENTS: ' + JSON.stringify(this.form.uploaded_files)))
       if(this.form.uploaded_files){

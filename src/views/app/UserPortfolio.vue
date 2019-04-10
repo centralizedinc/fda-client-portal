@@ -186,8 +186,9 @@ export default {
         .then(result => {
           this.details = result;
           console.log(
-            "details user portfolio: " + JSON.stringify(this.details.cases)
+            "details user portfolio: " + JSON.stringify(this.details)
           );
+          this.$store.commit('SET_CASES', this.details.cases)
           this.details.cases.forEach(casesData => {
             console.log("cases data foreach: " + JSON.stringify(casesData));
             casesData.activities.forEach(act => {
