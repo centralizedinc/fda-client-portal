@@ -99,6 +99,10 @@ export default class PaymentAPI {
         return axios.get('payments/client/'+user_id)
     }
 
+    getPaymentsByCaseNo(case_no){
+        return axios.get('payments/transactions/cases/'+case_no)
+    }
+
 
 
 }

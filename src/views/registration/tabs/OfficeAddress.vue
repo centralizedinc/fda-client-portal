@@ -108,6 +108,7 @@
                         :province="address.province"
                         :region="address.region"
                         :edit="true"
+                        @pin="setCoordinates"
                         ></address-map>
                     </v-flex>
                 </v-layout>
@@ -228,6 +229,9 @@ export default {
                 this.showDialog = false;
             } 
              
+        },
+        setCoordinates(coordinates){
+            this.address.location = coordinates;
         }
     },
     computed:{

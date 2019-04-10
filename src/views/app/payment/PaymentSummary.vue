@@ -172,7 +172,7 @@
 </template>
 
 <script>
-import * as OrderOfPaymentGenerator from "./OrderOfPaymentGenerator";
+// import * as OrderOfPaymentGenerator from "./OrderOfPaymentGenerator";
 
 export default {
     props: {

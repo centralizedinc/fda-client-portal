@@ -40,7 +40,7 @@
         class="text-xs-center subheading font-italic"
         mt-5
       >
-        <v-flex xs12>There is no compliance for today.</v-flex>
+        <v-flex xs12>No action needed.</v-flex>
       </v-layout>
     </v-list>
     <!-- <v-divider></v-divider> -->

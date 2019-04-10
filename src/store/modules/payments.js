@@ -58,6 +58,9 @@ var actions = {
     FIND_PAYMENTS(context, user_id){
         return new PaymentAPI(context.rootState.user_session.token).getPayments(user_id)
     },
+    FIND_PAYMENTS_BY_CASENO(context, case_no){
+        return new PaymentAPI(context.rootState.user_session.token).getPaymentsByCaseNo(case_no)
+    },
     VALIDATE_CREDIT_CARD(context, creditCard) {
         return new Promise((resolve, reject) => {
             new PaymentAPI(context.rootState.user_session.token).creditCard(creditCard, (credit, err) => {

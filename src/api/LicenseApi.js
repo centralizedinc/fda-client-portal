@@ -188,6 +188,13 @@ export default class LicenseAPI {
         return axios.get('public/license/result/' + key);
     }
 
+    getDocument(url){
+        return axios.get(url, {responseType: 'arraybuffer',
+        headers: {
+          'Accept': 'application/pdf'
+        }})
+    }
+
 }
 
 // module.exports = LicenseAPI

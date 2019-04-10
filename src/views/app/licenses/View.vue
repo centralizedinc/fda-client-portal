@@ -1,181 +1,488 @@
 <template>
-  <v-layout align-start justify-start column fill-height>
-    <v-card width="calc(100% - 0px">
-      <v-card-text>
-        <v-layout align-start justify-start row fill-height>
-          <v-flex xs3 mr-5 mt-3 pt-3 pr-5>
-            <v-item-group v-model="window" class="shrink mr-5" mandatory tag="v-flex">
-              <v-item v-for="n in title" :key="n">
-                <div class="mr-5 pr-5" left slot-scope="{ active, toggle }">
-                  <v-btn class="text-align: left" ripple flat @click="toggle">
-                    <v-icon>mdi-record</v-icon>
-                    {{n}}
-                  </v-btn>
-                </div>
-              </v-item>
-            </v-item-group>
-          </v-flex>
-          <v-layout align-start justify-start row fill-height>
-            <v-flex xs12 pl-2>
-              <v-window
-                v-model="window"
-                class="elevation-5 mt-3"
-                style="border-radius: 8px"
-                vertical
-              >
-                <v-window-item v-for="n in title" :key="n">
-                  <v-layout align-start justify-start row fill-height>
-                    <v-flex>
-                      <v-card flat>
-                        <v-card-text>
-                          <v-layout align-center justify-center fill-height mb-3>
-                            <v-avatar class="mr-3" color="grey">
-                              <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
-                            </v-avatar>
+  <v-layout row wrap>
+    <v-flex dark xs12 md6 pa-1>
+      <v-card >
+        <v-toolbar dark color="primary">
+          Application Details
+        
+        </v-toolbar>
+        <v-card-title primary-title>
+          <span class="subheading font-weight-thin primary--text">General Information</span>
+          <v-spacer></v-spacer>
+          <v-btn v-if="show_part1" flat icon color="primary"  @click="show_part1=false">
+            <v-icon>expand_less</v-icon>
+          </v-btn>
+          <v-btn v-else flat icon color="primary" @click="show_part1=true">
+            <v-icon>expand_more</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="compact-form" v-if="show_part1">
+          <v-text-field
+              readonly
+              name="name"
+              label="Product Type"
+              
+              :value="getProduct(form.general_info.product_type)"
+          ></v-text-field>
+          <v-text-field
+              readonly
+              name="name"
+              label="Primary Activity"
+              
+              :value="getPrimary(form.general_info.primary_activity)"
+          ></v-text-field>
+          <v-textarea
+              readonly
+              name="name"
+              label="Additional Activities"
+              rows="2"
+              :value="getAdditionalActivies(form.general_info.addtl_activity)"
+          ></v-textarea>
+          <v-text-field
+              readonly
+              name="name"
+              label="Declared Capital"
+              
+              :value="getDeclared(form.general_info.declared_capital)"
+          ></v-text-field> 
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-title primary-title>
+          <span class="subheading font-weight-thin primary--text">Establishment Details</span>
+          <v-spacer></v-spacer>
+          <v-btn v-if="show_part2" flat icon color="primary"  @click="show_part2=false">
+            <v-icon>expand_less</v-icon>
+          </v-btn>
+          <v-btn v-else flat icon color="primary" @click="show_part2=true">
+            <v-icon>expand_more</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="compact-form" v-if="show_part2">
+          <v-text-field
+              readonly
+              name="name"
+              label="Name of Establishment"
+              
+              :value="form.estab_details.establishment_name"
+          ></v-text-field> 
+          <v-text-field
+              readonly
+              name="name"
+              label="Establishment Owner"
+              
+              :value="form.estab_details.establishment_owner"
+          ></v-text-field> 
+          <v-text-field
+              readonly
+              name="name"
+              label="TIN"
+              
+              :value="form.estab_details.tin"
+          ></v-text-field> 
+          <v-text-field
+              readonly
+              name="Email"
+              label="Declared Capital"
+              
+              :value="form.estab_details.email"
+          ></v-text-field> 
+          <v-text-field
+              readonly
+              name="name"
+              label="Landline"
+              
+              :value="form.estab_details.landline"
+          ></v-text-field> 
+          <v-text-field
+              readonly
+              name="name"
+              label="Fax Number"
+              
+              :value="form.estab_details.fax"
+          ></v-text-field> 
+          <v-text-field
+              readonly
+              name="name"
+              label="Mobile Number"
+              
+              :value="form.estab_details.mobile"
+          ></v-text-field> 
+        </v-card-text>
 
-                            <strong class="title text-transform: uppercase">{{ n }}</strong>
-                            <v-spacer></v-spacer>
-                            <v-btn icon>
-                              <v-icon>mdi-account</v-icon>
-                            </v-btn>
-                          </v-layout>
-                          <v-divider></v-divider>
+        <v-divider></v-divider>
+        <v-card-title primary-title>
+          <span class="subheading font-weight-thin primary--text">Product Line</span>
+          <v-spacer></v-spacer>
+          <v-btn v-if="show_part3" flat icon color="primary"  @click="show_part3=false">
+            <v-icon>expand_less</v-icon>
+          </v-btn>
+          <v-btn v-else flat icon color="primary" @click="show_part3=true">
+            <v-icon>expand_more</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text v-if="show_part3">
+          <v-data-table
+            :headers="[{text:'Product Line', sortable: false,}, {text:'Remarks', sortable: false}]"
+            :items="form.estab_details.products"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{ props.item.prod_line }}</td>
+              <td>{{ props.item.remarks }}</td>
+            </template>
+            
+          </v-data-table>
+        </v-card-text>
 
-                          <!-- Summary-->
-                          <v-card flat v-show="window===0">
-                            <v-container grid-list-md text-xs-left>
-                              <app-summary :form="form" :case_holder="case_holder"></app-summary>
-                            </v-container>
-                          </v-card>
+        <v-divider></v-divider>
+        <v-card-title primary-title>
+          <span class="subheading font-weight-thin primary--text">Establishment Address</span>
+          <v-spacer></v-spacer>
+          <v-btn v-if="show_part4" flat icon color="primary"  @click="show_part4=false">
+            <v-icon>expand_less</v-icon>
+          </v-btn>
+          <v-btn v-else flat icon color="primary" @click="show_part4=true">
+            <v-icon>expand_more</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text v-if="show_part4">
+          <v-data-table
+            :headers="[{text:'Type', sortable: false,}, 
+                        {text:'Address', sortable: false},
+                        {text:'City', sortable: false},
+                        {text:'Province', sortable: false},
+                        {text:'Region', sortable: false},
+                        {text:'Zip code', sortable: false},]"
+            :items="form.address_list"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{ props.item.prod_line }}</td>
+              <td>{{ props.item.remarks }}</td>
+            </template>
+            
+          </v-data-table>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-title primary-title>
+          <span class="subheading font-weight-thin primary--text">Authorized Officer</span>
+          <v-spacer></v-spacer>
+          <v-btn v-if="show_part5" flat icon color="primary"  @click="show_part5=false">
+            <v-icon>expand_less</v-icon>
+          </v-btn>
+          <v-btn v-else flat icon color="primary" @click="show_part5=true">
+            <v-icon>expand_more</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text class="compact-form" v-if="show_part5">
+          <v-text-field
+            readonly
+            name="name"
+            label="Last Name"                                        
+            :value="form.auth_officer.lastname"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="First Name"                                        
+            :value="form.auth_officer.firstname"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Designation"                                        
+            :value="form.auth_officer.designation"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Email"                                        
+            :value="form.auth_officer.email"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Id Type"                                        
+            :value="form.auth_officer.id_type"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Id Number"                                        
+            :value="form.auth_officer.id_no"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Id Expiry"                                        
+            :value="form.auth_officer.id_expiry"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Address"                                        
+            :value="form.auth_officer.mail_add.address"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="City"                                        
+            :value="getCityName(form.auth_officer.mail_add.city)"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Province"                                        
+            :value="getProvinceName(form.auth_officer.mail_add.province)"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Region"                                        
+            :value="getRegionName(form.auth_officer.mail_add.region)"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Zip Code"                                        
+            :value="form.auth_officer.mail_add.zipcode"
+          ></v-text-field>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-title primary-title>
+          <span class="subheading font-weight-thin primary--text">Qualified Personnel</span>
+          <v-spacer></v-spacer>
+          <v-btn v-if="show_part6" flat icon color="primary"  @click="show_part6=false">
+            <v-icon>expand_less</v-icon>
+          </v-btn>
+          <v-btn v-else flat icon color="primary" @click="show_part6=true">
+            <v-icon>expand_more</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text v-if="show_part6">
+          <v-data-table
+            :headers="[{text:'Designation', sortable: false,}, 
+                        {text:'Lastname', sortable: false},
+                        {text:'Firstname', sortable: false},
+                        {text:'Middle Name', sortable: false},
+                        {text:'Email', sortable: false},
+                        {text:'TIN', sortable: false}]"
+            :items="form.qualified"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{ props.item.prod_line }}</td>
+              <td>{{ props.item.remarks }}</td>
+            </template>
+            
+          </v-data-table>
+        </v-card-text>
+      </v-card>
+    </v-flex>
+    <v-flex dark xs12 md6 pa-1>
+      <v-layout row wrap>
+        <v-flex xs12 pa-1>
+          <v-card>
+            <v-toolbar dark color="primary">
+              Activities
+              <v-spacer></v-spacer>
+              <v-btn v-if="show_activities" flat icon   @click="show_activities=false">
+                <v-icon>expand_less</v-icon>
+              </v-btn>
+              <v-btn v-else flat icon @click="show_activities=true">
+                <v-icon>expand_more</v-icon>
+              </v-btn>
+            </v-toolbar>
+            <v-data-table v-if="show_activities"
+              :headers="[{text:'Task Name', sortable: false,}, 
+                          {text:'Date Started', sortable: false},
+                          {text:'Date Completed', sortable: false},
+                          {text:'Remarks', sortable: false}]"
+              :items="case_details.activities"
+              hide-actions
+              class="elevation-1"
+            >
+              <template slot="items" slot-scope="props">
+                <td>{{ getTask(props.item.task_id).name }}</td>
+                <td>{{ formatDate(props.item.date_started) }}</td>  
+                <td>{{ formatDate(props.item.date_completed) }}</td>
+                <td>{{ props.item.remarks }}</td>
+              </template>
+            </v-data-table>
+          </v-card>
+        </v-flex>
 
-                          <!-- Data -->
-                          <v-card flat v-show="window===1">
-                            <v-container grid-list-md text-xs-left>
-                              <app-data :form="form"></app-data>
-                            </v-container>
-                          </v-card>
+        <v-flex xs12 pa-1>
+          <v-card>
+            <v-toolbar dark color="primary">
+              Payments
+              <v-spacer></v-spacer>
+              <v-btn v-if="show_payments" flat icon   @click="show_payments=false">
+                <v-icon>expand_less</v-icon>
+              </v-btn>
+              <v-btn v-else flat icon @click="show_payments=true">
+                <v-icon>expand_more</v-icon>
+              </v-btn>
+            </v-toolbar>            
+            <v-data-table v-if="show_payments"
+            :headers="[{text:'Transaction ID', sortable: false,}, 
+                        {text:'Date', sortable: false},
+                        {text:'Amount', sortable: false},
+                        {text:'Mode', sortable: false}]"
+            :items="payments"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{ props.item.transaction_id }}</td>
+              <td>{{ formatDate(props.item.date_created) }}</td>
+              <td>{{ formatCurrency(props.item.payment_details.total_amount) }}</td>
+              <td>{{ getModeOfPayment(props.item.payment_details.mode_of_payment) }}</td>
+            </template>
+              </v-data-table>
+          </v-card>
+        </v-flex>
 
-                          <!-- Uploaded Documents -->
-                          <v-card flat v-show="window===2">
-                            <v-container grid-list-md text-xs-left>
-                              <files :form="form"></files>
-                            </v-container>
-                          </v-card>
-
-                          <!-- Output Documents -->
-                          <v-card flat v-show="window===3">
-                            <v-container grid-list-md text-xs-left>
-                              <output-docs :form="form"></output-docs>
-                            </v-container>
-                          </v-card>
-
-                          <!-- Application History -->
-                          <v-card flat v-show="window===4">
-                            <v-container grid-list-md text-xs-left>
-                              <app-history :form="form" :case_holder="case_holder"></app-history>
-                            </v-container>
-                          </v-card>
-
-                          <!-- Payment Details -->
-                          <v-card flat v-show="window===5">
-                            <!-- Display if PENDING or PAID TRANSACTION -->
-                            <paid-trans
-                              v-if="case_holder.is_paid"
-                              :form="form"
-                              :charges="charges"
-                              :case_holder="case_holder"
-                              :allow_paylater="false"
-                            ></paid-trans>
-                            <pending-trans
-                              v-else
-                              :form="form"
-                              :charges="charges"
-                              :case_holder="case_holder"
-                              :allow_paylater="false"
-                            ></pending-trans>
-                          </v-card>
-                        </v-card-text>
-                      </v-card>
-                    </v-flex>
-                  </v-layout>
-                </v-window-item>
-              </v-window>
+        <v-flex xs12 pa-1>
+          <v-card>
+            <v-toolbar dark color="primary">
+              Documents              
+            </v-toolbar>
+            <v-card-title primary-title>
+              <span class="subheading font-weight-thin primary--text">Files Uploaded</span>
+              <v-spacer></v-spacer>
+              <v-btn v-if="show_documents" flat icon  color="primary" @click="show_documents=false">
+                <v-icon>expand_less</v-icon>
+              </v-btn>
+              <v-btn v-else flat icon color="primary" @click="show_documents=true; loaded=false">
+                <v-icon>expand_more</v-icon>
+              </v-btn>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text v-if="show_documents">
+              <v-container grid-list-sm fluid>
+          <v-layout row wrap>
+            <v-flex v-for="(n, indx) in uploaded_documents" :key="indx" xs4 d-flex>
+              <v-card tile class="d-flex" @click="viewFile(n.location)" style="cursor:zoom-in">
+                <pdf v-show="loaded" @loaded="loaded=true" :src="'https://cors-anywhere.herokuapp.com/'+n.location"></pdf>
+                <!-- <v-progress-linear v-show="!loaded" :indeterminate="true"></v-progress-linear> -->
+                <v-progress-circular v-show="!loaded" indeterminate color="primary"></v-progress-circular>
+              </v-card>
             </v-flex>
           </v-layout>
-        </v-layout>
-      </v-card-text>
-      <v-card-actions>
-        <v-btn flat color="primary" @click="$router.go(-1)" block>back</v-btn>
-      </v-card-actions>
-    </v-card>
+        </v-container>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-title primary-title>
+              <span class="subheading font-weight-thin primary--text">Generated Files</span>
+              <v-spacer></v-spacer>
+              <v-btn v-if="show_generated" flat icon  color="primary" @click="show_generated=false">
+                <v-icon>expand_less</v-icon>
+              </v-btn>
+              <v-btn v-else flat icon color="primary" @click="show_generated=true">
+                <v-icon>expand_more</v-icon>
+              </v-btn>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text v-if="show_generated">
+              
+            </v-card-text>
+          </v-card>
+           
+        </v-flex>
+      </v-layout>
+      
+    </v-flex>
   </v-layout>
 </template>
 
 <script>
-import tabs from "../licenses/appoverview/tabs";
-
-const tabscomponents = Object.assign(
-  {
-    // PaymentSummary: () => import("../payment/PaymentSummary.vue"),
-    PendingTrans: () => import("../payment/PendingTransaction.vue"),
-    PaidTrans: () => import("../payment/PaidTransaction.vue")
-  },
-  tabs
-);
-
+import pdf from 'vue-pdf'
 export default {
-  // props: ["form"],
-  components: tabscomponents,
-  data() {
-    return {
-      form: {},
-      charges: {},
-      case_holder: {},
-      window: 0,
-      title: [
-        "Summary",
-        "Application Data",
-        "Uploaded Files",
-        "Output Documents",
-        "History",
-        "Payment"
-      ]
-    };
-  },
-  created() {
-    this.form = this.$store.state.licenses.view_license;
-    console.log("###########FORM  :", JSON.stringify(this.form));
+  components:{
+      pdf
+    },
+  data(){
+    
+    return{
+      loaded:false,
+      show_part1:false,
+      show_part2:false,
+      show_part3:false,
+      show_part4:false,
+      show_part5:false,
+      show_part6:false,
+      show_activities:false,
+      show_payments:false,
+      show_documents:false,
+      show_generated:false,
+      form:{
+        general_info:{},
+        estab_details:{},
+        auth_officer:{
+          mail_add:{}
+        }
+      },
+      case_details:{
 
-    if (
-      this.form.general_info.product_type !== null &&
-      this.form.general_info.primary_activity !== null &&
-      // this.form.general_info.declared_capital !== null &&
-      this.form.application_type !== null
-    ) {
-      var details = {
-        productType: this.form.general_info.product_type,
-        primaryActivity: this.form.general_info.primary_activity,
-        declaredCapital: this.form.general_info.declared_capital,
-        appType: this.form.application_type
-      };
-      console.log("load fees view: " + JSON.stringify(details));
-      this.$store
-        .dispatch("GET_FEES", details)
-        .then(result => {
-          this.charges = result;
-          console.log(
-            "charges data payment details: " + JSON.stringify(this.charges)
-          );
-          return this.$store.dispatch("GET_ONE_CASE", this.form.case_no);
+      },
+      payments:[],
+      uploaded_documents:[]
+    }
+  },
+  created(){
+    this.init()
+  },
+  methods:{
+    init(){
+      
+      this.form = this.$store.state.licenses.view_license
+      this.case_details = this.$store.state.case.view_case
+      //get uploaded documents
+      console.log(console.log('DOCUMENTS: ' + JSON.stringify(this.form.uploaded_files)))
+      if(this.form.uploaded_files){
+        this.form.uploaded_files.forEach(doc=>{
+          if(doc.location){
+            this.uploaded_documents.push({
+              file_name: doc.originalname,
+              type:doc.contentType,
+              location:doc.location
+            })
+          }
         })
-        .then(result => {
-          console.log("get onse case @ view: " + JSON.stringify(result));
-          this.case_holder = result;
-        });
+      }
+      //get payment details
+      this.$store.dispatch('FIND_PAYMENTS_BY_CASENO', this.form.case_no)
+      .then(result => {
+        if(result.data.success){
+          this.payments = result.data.model
+        }else{
+          this.$notifyError(result.data.errors)
+        }
+      })
+      .catch(err=>{
+        console.log(err)
+        this.$notifyError(err)
+      })
+    },
+    viewFile(url){
+      window.open(url, '_blank')
     }
   }
-};
+}
 </script>
 
 <style>
+.compact-form {
+    transform: scale(0.875);
+}
 </style>

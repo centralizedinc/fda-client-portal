@@ -3,6 +3,7 @@ import CaseAPI from '../../api/CaseAPI';
 const state = {
     cases: [],
     complied: [],
+    view_case:{}
     // getCase: {}
 }
 
@@ -16,6 +17,9 @@ const mutations = {
     CLEAR_DATA(state) {
         state.cases = [];
     },
+    SET_VIEW_CASE(state, case_details){
+        state.view_case = case_details
+    }
     // SET_ONE_CASE(state, cases){
     //     state.getCase = cases;
     // }

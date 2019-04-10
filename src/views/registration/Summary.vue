@@ -213,6 +213,18 @@
                                             label="Zipcode"                                        
                                             :value="item.zipcode"
                                         ></v-text-field>
+                                        <v-text-field
+                                        readonly
+                                        name="name"
+                                        label="Latitude"                                        
+                                        :value="item.location.lat"
+                                    ></v-text-field>
+                                    <v-text-field
+                                        readonly
+                                        name="name"
+                                        label="Longitude"                                        
+                                        :value="item.location.lng"
+                                    ></v-text-field>
                                     </span>
                                 </v-card-text>
                             </v-card>                           

@@ -70,7 +70,7 @@ export default {
     methods: {
         init() {
             this.$store
-                .dispatch("CONFIRM", this.$route.query.key)
+                .dispatch("CONFIRM", this.$route.query)
                 .then(res => {
                     this.account_name = res.username;
                     this.email = res.email;
