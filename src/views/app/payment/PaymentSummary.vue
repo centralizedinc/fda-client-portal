@@ -203,6 +203,7 @@ export default {
             },
             app_form: {},
             fees_form: {},
+            case_form: {},
             cashierPayment: false,
             ecPayDialog: false,
             dialogPayLater: false,
@@ -218,10 +219,10 @@ export default {
     },
     methods: {
         init() {
-            
+            this.case_form = this.case ? this.case : this.$store.state.licenses.form; 
             this.app_form = this.form ? this.form : this.$store.state.licenses.form;
             this.form = this.form ? this.form : this.$store.state.licenses.form;
-            console.log("Welcome to payment summary: " + JSON.stringify(this.$store.state.licenses.form));
+            console.log("Welcome to payment summary: " + JSON.stringify(this.case_form));
             this.fees_form = this.charges ?
                 this.charges :
                 this.$store.state.payments.fee;
@@ -301,6 +302,7 @@ export default {
             console.log("this is save transaction provider data: " + JSON.stringify(result))
             
         })  
+        console.log("this.fees_form: " + JSON.stringify(this.fees_form))
             this.cashierPayment = true;
             var full_details = {
                 formDetails: this.app_form,
