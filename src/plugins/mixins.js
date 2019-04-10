@@ -59,7 +59,7 @@ export default {
           return final
         },
         getTask(task_id) {
-          if (this.$store.state.tasks.tasks) {            
+          if (this.$store.state.tasks.tasks) {
             var task = this.$store.state.tasks.tasks.find(x => {
               return x._id.toString() === task_id;
             });
@@ -90,19 +90,19 @@ export default {
             return ''
           }
         },
-        getAdditionalActivies(activities){
-          
+        getAdditionalActivies(activities) {
+
           var add_acts = '';
-          if(activities){
-            activities.forEach(activity =>{
-              var additional_activity = this.$store.state.products.additional.find(x=>{
-                return x._id === activity 
+          if (activities) {
+            activities.forEach(activity => {
+              var additional_activity = this.$store.state.products.additional.find(x => {
+                return x._id === activity
               })
-              add_acts = additional_activity?add_acts  + additional_activity.name + "/":add_acts;
+              add_acts = additional_activity ? add_acts + additional_activity.name + "/" : add_acts;
             })
           }
           return add_acts;
-          
+
         },
         getDeclared(declared_id) {
           if (this.$store.state.products.declared) {
@@ -193,19 +193,19 @@ export default {
           var region = this.$store.state.places.regions.find(x => {
             return x._id === id;
           })
-          return region&&region.name?region.name:""
+          return region && region.name ? region.name : ""
         },
         getProvinceName(id) {
           var province = this.$store.state.places.provinces.find(x => {
             return x._id === id;
           })
-          return province&&province.name?province.name:""
+          return province && province.name ? province.name : ""
         },
         getCityName(id) {
           var city = this.$store.state.places.city.find(x => {
             return x._id === id;
           })
-          return city&&city.name?city.name:""          
+          return city && city.name ? city.name : ""
         },
         findProvinces(region) {
           var provinces = [];
@@ -234,11 +234,11 @@ export default {
             return prod_line ? prod_line : {}
           }
         },
-        getPaymentStatus(status){
-          var payment_status = ["Initiate","Processing","Paid"] 
+        getPaymentStatus(status) {
+          var payment_status = ["Initiate", "Processing", "Paid"]
           return payment_status[status]
         },
-        getModeOfPayment(mode){
+        getModeOfPayment(mode) {
           var mode_of_payment = ["Online Payment (Credit Card)", "Cash", "Credit Card (Cashier)", "Check", "Online Payment (ECPay)"]
           return mode_of_payment[mode]
         },
@@ -254,6 +254,18 @@ export default {
             "https://avatars.dicebear.com/v2/identicon/" +
             this.$store.state.user_session.user.username +
             ".svg";
+        },
+        getDesignation(id) {
+          var designations = this.$store.state.references.designations;
+          if (designations) return {}
+          var designation = designations.find(x => x._id.toString() === id)
+          return designation ? designation : {}
+        },
+        getIdType(id) {
+          var id_types = this.$store.state.references.id_types;
+          if (id_types) return {}
+          var id_type = id_types.find(x => x._id.toString() === id)
+          return id_type ? id_type : {}
         },
         logout() {
           this.$store.dispatch("LOGOUT");
