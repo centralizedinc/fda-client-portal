@@ -38,6 +38,8 @@
               :rules="[rules.required]"
               v-model="qualified.designation"
               :items="designations"
+              item-text="name"
+              item-value="_id"
               hide-no-data
               hide-selected
               label="Designation"
@@ -124,6 +126,8 @@
               :rules="[rules.required]"
               v-model="qualified.id_type"
               :items="id_types"
+              item-text="name"
+              item-value="_id"
               hide-no-data
               hide-selected
               label="ID Type"
