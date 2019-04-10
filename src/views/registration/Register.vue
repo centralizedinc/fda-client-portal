@@ -268,8 +268,8 @@ export default {
         this.$notify({color:'primary', message:'You may now edit the details for Step '+this.e1+' - ' + this.headers[this.e1-1]})
     },
     uploadFile(data) {
-      this.formData = data.upload;
-      this.uploadedFiles = data.uploadedFiles;
+        this.formData = data.formData;
+        this.uploadedFiles = data.uploadedFiles;
     },
     saveTempFile(){
         this.form.current_step = this.e1;

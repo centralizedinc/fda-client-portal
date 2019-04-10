@@ -141,7 +141,7 @@ var router = new Router({
         {
           path: 'licenses/summary',
           name: 'License Summary',
-          component: () => import('@/views/app/TempLicenseSummary.vue'),
+          component: () => import('@/views/app/licenses/View.vue'),
           // beforeEnter: isAuthorized
         },
         {
