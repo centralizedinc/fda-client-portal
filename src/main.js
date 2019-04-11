@@ -8,7 +8,6 @@ import axios from 'axios'
 import NProgress from 'nprogress';
 import notify from "@/plugins/notify";
 import creditcard from "@/plugins/creditcard";
-// import print from "@/plugins/print";
 import print from 'fda-pdf-printer-plugin'
 import mixins from "@/plugins/mixins"
 import * as VueGoogleMaps from 'vue2-google-maps'
