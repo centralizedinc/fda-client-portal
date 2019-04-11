@@ -212,7 +212,6 @@ export default {
         }
         this.tab=0;
     }, 
-
     proceed(step){
         if(this.$refs.curr_step.validate()){
             this.e1=step;
