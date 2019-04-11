@@ -156,7 +156,7 @@
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="success" class="font-weight-light" flat @click="printLicense">Ok</v-btn>
+            <v-btn color="primary" class="font-weight-light" flat @click="printLicense">Ok</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>

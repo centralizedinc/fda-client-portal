@@ -368,7 +368,7 @@ export default {
             var decoded = new Buffer(e.target.result, 'base64')
             vue.$store.commit('CONTINUE_APPLICATION', JSON.parse(decoded))
             vue.$router.push("/registration/new")
-            vue.$notify({message:'Welcome back! Let us continue where you left off.', color:'primary'})
+            vue.$notify({message:'Welcome back! Let us continue where you left off.', color:'success'})
             // console.log(JSON.stringify(this.form))
         });
 

@@ -357,7 +357,8 @@ export default {
           this.loading = false;
           this.$notify({
             message: "Registration Successful",
-            color: "primary"
+            icon: "check_circle",
+            color: "success"
           });
           this.$router.push("/");
         })
