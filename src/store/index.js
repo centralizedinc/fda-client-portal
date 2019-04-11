@@ -10,19 +10,20 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules,
   strict: process.env.NODE_ENV !== 'production',
-  plugins: [createPersistedState()]
-  // plugins: [createPersistedState({
-  //   key:'fda-client',
-  //   storage: {
-  //     getItem: key => {
-  //       console.log(key)
-  //       console.log("Cookies.getJSON(key): " + Cookies.getJSON(key))
-  //       console.log("Cookies.get(key): " + Cookies.get(key))
-  //       Cookies.getJSON(key)
-  //     } ,
-  //     setItem: (key, value) =>
-  //       Cookies.set(key, value, { expires: 3, secure: false }),
-  //     removeItem: key => Cookies.remove(key)
-  //   }
-  // })]
+  // plugins: [createPersistedState()]
+  plugins: [
+    createPersistedState({
+      key:'fda-client-reference',
+      paths:['breadcrumbs','case', 'licenses', 'notifications', 'payments', 'products','products', 'references', 'tasks']
+    }),
+  //store user session in cookiess
+  createPersistedState({
+    key:'fda-client-session',
+    paths:['user_session'],
+    storage: {
+      getItem: key =>  Cookies.get(key),
+      setItem: (key, value) => Cookies.set(key, value, {expires:1, secure:false}),
+      removeItem: key => Cookies.remove(key)
+    }
+  })]
 })

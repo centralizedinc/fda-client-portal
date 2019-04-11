@@ -15,23 +15,20 @@
         <v-layout align-center justify-center pa-3>
           <v-hover>
             <v-avatar
+              :color="random_color"
               slot-scope="{ hover }"
               class="elevation-5 chooseAvatar"
               size="150"
               @click="$refs.image.click()"
             >
-              <v-img :src="avatar || display_avatar" alt="avatar">
+              <v-img v-if="avatar" :src="avatar" alt="avatar">
                 <v-expand-transition>
-                  <div
-                    v-if="hover"
-                    class="transition-fast-in-fast-out green darken-4 body-1 v-card--reveal white--text"
-                  >
-                    <!-- <br><br><br> -->
-                    Change
-                    <br>Avatar
+                  <div v-if="hover" class="transition-fast-in-fast-out green darken-4 body-1 v-card--reveal white--text">                    
+                    Change<br>Avatar
                   </div>
                 </v-expand-transition>
               </v-img>
+              <span v-else class="white--text display-1">{{alias}}</span>              
               <input
                 type="file"
                 name="avatar"
@@ -134,13 +131,17 @@
       </v-tooltip>
     </v-layout>
     <v-dialog v-model="dialog" max-width="300px" transition="dialog-transition">
-      <v-card class="title">
+      <v-card>
+         <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
+                <span class="title font-weight-light">Confirmation</span>
+            </v-toolbar>
         <v-card-text>Do you want to save any changes ?</v-card-text>
+        <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="error" flat @click="dialog=false">Cancel</v-btn>
+          <v-btn color="secondary" outline flat @click="dialog=false">Cancel</v-btn>
           <v-btn
-            color="success"
+            color="primary"
             @click="save()"
             :loading="avatar_loading"
             :disabled="avatar_loading"
@@ -154,6 +155,7 @@
 <script>
 export default {
   data: () => ({
+    random_color:'#' + ('00000' + (Math.random() * 16777216 << 0).toString(16)).substr(-6),
     dialog: false,
     account: {
       avatar: {
@@ -213,6 +215,15 @@ export default {
           this.avatar_loading = false;
           this.$notifyError(error);
         });
+    }
+  },
+  computed:{
+    alias(){
+      if(this.account.name && this.account.name.first && this.account.name.last){
+        return this.account.name.first.substring(0,1).toUpperCase() + this.account.name.last.substring(0,1).toUpperCase()
+      }else{
+        return ""
+      }
     }
   }
 };

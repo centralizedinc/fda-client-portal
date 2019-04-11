@@ -30,7 +30,7 @@
             <span class="title font-weight-light">Preview</span>
             <v-spacer></v-spacer>
            <v-tooltip top>
-            <v-btn slot="activator"  fab small icon color="fdaMed" @click="$refs.image.click()">
+            <v-btn slot="activator"  outline small icon  @click="$refs.image.click()">
               <v-icon>fas fa-plus</v-icon>
             </v-btn>Upload More Files
            </v-tooltip>
@@ -39,9 +39,9 @@
               class="elevation-2"
               slot="activator"
               small
-              fab
+              outline
               icon
-              color="fdaOrange"
+              
               @click="reset"
             >
               <v-icon>fas fa-redo-alt</v-icon>
@@ -79,10 +79,10 @@
                       <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
                     </v-layout>
                   </v-img>
-                  <v-img
-                    v-else
-                    src="https://www.acts.co.za/shop/wp-content/uploads/2017/11/filetype_pdf-278.png"
-                  ></v-img>
+                  <div v-else>
+                  <pdf  v-show="loaded" @loaded="loaded=true" :src="item.url"></pdf>
+                  <v-progress-circular  v-show="!loaded" indeterminate color="primary"></v-progress-circular>
+                  </div>
                 </v-card-text>
               </v-card>
             </v-flex>
@@ -94,14 +94,17 @@
 </template>
 
 <script>
+import pdf from 'vue-pdf'
 const STATUS_INITIAL = 0,
   STATUS_SAVING = 1,
   STATUS_SUCCESS = 2,
   STATUS_FAILED = 3;
 
 export default {
+  components:{pdf},
   data() {
     return {
+      loaded:false,
       uploadedFiles: [],
       uploadError: null,
       currentStatus: null,
@@ -161,7 +164,6 @@ export default {
       });
 
       this.currentStatus = STATUS_SUCCESS;
-      console.log("formData :", this.formData);
       this.$emit("upload", {formData:this.formData, uploadedFiles:this.uploadedFiles});
     },
     prettify(name) {

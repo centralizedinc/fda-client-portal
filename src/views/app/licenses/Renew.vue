@@ -111,7 +111,7 @@
           <v-card-actions>
             <v-btn flat color="secondary" outline @click="confirmDialog=false">Cancel</v-btn>
             <v-spacer></v-spacer>
-            <v-btn flat color="success" @click="apply">Submit</v-btn>
+            <v-btn flat color="primary" @click="apply">Submit</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -191,7 +191,8 @@ export default {
               message:
                 "Successfully applied a Renewal License with Case No.: " +
                 result.model.case_details.case_no,
-              color: "primary"
+              color: "success",
+              icon: "check_circle"
             });
             this.$store.commit("SET_FORM", result.model);
             this.confirmDialog = false; 

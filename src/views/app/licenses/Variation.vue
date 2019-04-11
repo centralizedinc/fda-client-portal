@@ -53,7 +53,7 @@
                 <v-card-actions>
                   <v-btn color="secondary" flat outline @click="page=1">Back</v-btn>
                   <v-spacer></v-spacer>
-                  <v-btn color="success" @click="confirmDialog=true">Submit Changes</v-btn>
+                  <v-btn color="primary" @click="confirmDialog=true">Submit Changes</v-btn>
                 </v-card-actions>
             </v-card>
         </v-layout>
@@ -240,7 +240,8 @@ export default {
               message:
                 "Successfully applied a Variation of License with Case No.: " +
                 result.model.case_details.case_no,
-              color: "primary"
+              color: "success",
+              icon: "check_circle"
             });
             this.$store.commit("SET_FORM", result.model);
             this.confirmDialog = false;

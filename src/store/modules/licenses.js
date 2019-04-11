@@ -64,7 +64,8 @@ const state = {
         qualified: [],
         uploaded_files: []
       },
-      applicationForm:{}
+      applicationForm:{},
+      applicationAccount:{}
 }
 
 const mutations = {
@@ -104,9 +105,11 @@ const mutations = {
     },
     NEW_APPLICATION(state){
         state.applicationForm = state.init_form;
+        state.applicationAccount = {name:{}}
     },
-    CONTINUE_APPLICATION(state, form){
-        state.applicationForm = form
+    CONTINUE_APPLICATION(state, data){
+        state.applicationForm = data.form
+        state.applicationAccount = data.account
     }
 }
 
@@ -241,7 +244,10 @@ var actions = {
     // Result of License Evaluation
     GET_RESULT_BY_KEY(context, key) {
         return new LicenseAPI().getResultByKey(key);
-    }
+    },
+    DOWNLOAD_PDF(context, url) {
+        return new LicenseAPI(context.rootState.user_session.token).getDocument(url)
+    },
 }
 
 export default {

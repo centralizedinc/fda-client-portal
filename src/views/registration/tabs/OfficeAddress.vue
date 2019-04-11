@@ -5,7 +5,7 @@
             <v-spacer></v-spacer>
             <!-- <v-btn outline @click="addAddress">Add</v-btn> -->
             <v-tooltip top>
-                <v-btn slot="activator" @click="addAddress" fab outline small icon >
+                <v-btn slot="activator" @click="addAddress" outline small icon >
                 <v-icon>edit</v-icon> 
             </v-btn>Add Address
             </v-tooltip>
@@ -108,6 +108,7 @@
                         :province="address.province"
                         :region="address.region"
                         :edit="true"
+                        @pin="setCoordinates"
                         ></address-map>
                     </v-flex>
                 </v-layout>
@@ -117,7 +118,7 @@
             <v-card-actions v-if="isAdd">
                 <v-spacer></v-spacer>
                 <v-btn outline color="primary" @click="showDialog=false">Cancel</v-btn>
-                <v-btn color="success" @click="submit">Add</v-btn>
+                <v-btn color="primary" @click="submit">Add</v-btn>
             </v-card-actions>
             <v-card-actions v-else>
                 <v-spacer></v-spacer>
@@ -228,6 +229,9 @@ export default {
                 this.showDialog = false;
             } 
              
+        },
+        setCoordinates(coordinates){
+            this.address.location = coordinates;
         }
     },
     computed:{

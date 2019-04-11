@@ -213,6 +213,18 @@
                                             label="Zipcode"                                        
                                             :value="item.zipcode"
                                         ></v-text-field>
+                                        <v-text-field
+                                        readonly
+                                        name="name"
+                                        label="Latitude"                                        
+                                        :value="item.location.lat"
+                                    ></v-text-field>
+                                    <v-text-field
+                                        readonly
+                                        name="name"
+                                        label="Longitude"                                        
+                                        :value="item.location.lng"
+                                    ></v-text-field>
                                     </span>
                                 </v-card-text>
                             </v-card>                           
@@ -400,7 +412,7 @@
                                 <v-card-text>
                                     <v-layout row wrap>
                                         <v-flex v-for="item in uploadedFiles" :key="item.name" xs12 md4 pa-2 d-flex>
-                                            <v-card>
+                                            <v-card  @click="viewFile(item.url)" style="cursor:zoom-in">
                                             <v-toolbar
                                                 dark
                                                 color="fdaGreen"
@@ -422,7 +434,10 @@
                                                             <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
                                                         </v-layout>
                                                     </v-img>
-                                                    <v-img v-else src="https://www.acts.co.za/shop/wp-content/uploads/2017/11/filetype_pdf-278.png"></v-img>
+                                                    <div v-else>
+                                                        <pdf   :src="item.url"></pdf>
+                                                        <!-- <v-progress-circular  v-show="!loaded" indeterminate color="primary"></v-progress-circular> -->
+                                                    </div>
                                                 </v-layout>
                                                 
                                                 
@@ -481,7 +496,7 @@
                 <v-divider></v-divider>
                 <v-card-actions v-if="isFinal">
                     <v-spacer></v-spacer>
-                    <v-btn outline color="primary" @click="close()">Cancel</v-btn>
+                    <v-btn :disabled="loading" outline color="primary" @click="close()">Cancel</v-btn>
                     <v-btn color="primary" @click="accept" :loading="loading">Accept & Submit</v-btn>
                 </v-card-actions>
             </v-card>
@@ -490,10 +505,14 @@
 </template>
 
 <script>
+import pdf from 'vue-pdf'
+
 export default {
+    components:{pdf},
     props:["show", "form", "account", "uploadedFiles", "isFinal"],
     data(){
         return{
+            loaded:false,
             loading:false,
         }        
     },
@@ -519,6 +538,9 @@ export default {
         accept(){
             this.loading = true;
             this.$emit('accept')
+        },
+        viewFile(url){
+            window.open(url, '_blank')
         }
     }
 

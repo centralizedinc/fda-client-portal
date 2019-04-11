@@ -3,7 +3,7 @@
  <v-toolbar dark flat color="primary" class="elevation-5">            <span class="title font-weight-light">Personnel List</span>
             <v-spacer></v-spacer>
             <v-tooltip top>
-                <v-btn slot="activator" @click="addItem" fab outline small icon >
+                <v-btn slot="activator" @click="addItem"  outline small icon >
                 <v-icon>edit</v-icon> 
             </v-btn>Add Personnel
             </v-tooltip>
@@ -22,7 +22,7 @@
     
      <v-card>
       <v-toolbar dark color="primary">
-        <span class="title font-weight-light">New Personnel</span>
+        <span class="title font-weight-thin">New Personnel</span>
         <v-spacer></v-spacer>
         <v-btn flat icon @click="addToListDialog=false">
           <v-icon>close</v-icon>
@@ -38,6 +38,8 @@
               :rules="[rules.required]"
               v-model="qualified.designation"
               :items="designations"
+              item-text="name"
+              item-value="_id"
               hide-no-data
               hide-selected
               label="Designation"
@@ -124,6 +126,8 @@
               :rules="[rules.required]"
               v-model="qualified.id_type"
               :items="id_types"
+              item-text="name"
+              item-value="_id"
               hide-no-data
               hide-selected
               label="ID Type"
@@ -165,8 +169,8 @@
                 v-model="qualified.id_expiry"
               >
                 <v-spacer></v-spacer>
-                <v-btn  color="primary" outline @click="menu2 = false">Cancel</v-btn>
-                <v-btn  color="success" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
+                <v-btn  color="secondary" outline @click="menu2 = false">Cancel</v-btn>
+                <v-btn  color="primary" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
               </v-date-picker>
             </v-menu>
           </v-flex>
@@ -183,8 +187,8 @@
         </v-card-actions>
         <v-card-actions v-else>
           <v-spacer></v-spacer>
-          <v-btn outline color="primary" @click="addToListDialog=false">Cancel</v-btn>
-          <v-btn color="success" @click="submit">Add</v-btn>
+          <v-btn outline color="secondary" @click="addToListDialog=false">Cancel</v-btn>
+          <v-btn color="primary" @click="submit">Add</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -206,10 +210,10 @@
           <template slot="items" slot-scope="props">
             <tr @click="editItem(props.item, props.index)">
               <td>{{props.item.firstname + " " + props.item.lastname}}</td>
-              <td>{{props.item.designation}}</td>
+              <td>{{getDesignation(props.item.designation).name}}</td>
               <td>{{props.item.birthday}}</td>
               <td>{{props.item.tin}}</td>
-              <td>{{props.item.id_type}}</td>
+              <td>{{getIdType(props.item.id_type).name}}</td>
               <td>{{props.item.id_no}}</td>
             </tr>
             <!-- <td>
@@ -253,8 +257,8 @@
 export default {
   props: ["form"],
   data: () => ({
-    index:null,
-    isValid:true,
+    index: null,
+    isValid: true,
     mode: 0,
     addToListDialog: false,
     menu: null,
@@ -361,14 +365,13 @@ export default {
       this.addToListDialog = false;
     },
     deleteItem() {
-      if(confirm("Are you sure you want to delete this item?")){
-        this.form.qualified.splice(this.selected_index, 1);         
+      if (confirm("Are you sure you want to delete this item?")) {
+        this.form.qualified.splice(this.selected_index, 1);
       }
       this.addToListDialog = false;
-        
     },
     editItem(item, index) {
-      this.mode = 1;      
+      this.mode = 1;
       this.selected_index = index;
       this.qualified = item;
       this.addToListDialog = true;
@@ -388,6 +391,6 @@ export default {
 
 <style>
 .tStyle {
-    background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%);
+  background: linear-gradient(45deg, #104b2a 0%, #b5c25a 100%);
 }
 </style>

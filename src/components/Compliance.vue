@@ -40,7 +40,7 @@
         class="text-xs-center subheading font-italic"
         mt-5
       >
-        <v-flex xs12>There is no compliance for today.</v-flex>
+        <v-flex xs12>No action needed.</v-flex>
       </v-layout>
     </v-list>
     <!-- <v-divider></v-divider> -->
@@ -92,7 +92,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn block color="success" :loading="loading" @click="submit">Submit</v-btn>
+          <v-btn block color="primary" :loading="loading" @click="submit">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
