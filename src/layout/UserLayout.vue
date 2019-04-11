@@ -283,18 +283,18 @@
           </v-toolbar>
           <v-card-text>
             <span class="font-weight-light">Are you sure you want to logout?</span>
-            <v-divider></v-divider>
           </v-card-text>
+                      <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
               class="font-weight-light"
               outline
-              color="primary"
+              color="secondary"
               dark
               @click.native="show_logout = false"
             >No</v-btn>
-            <v-btn class="font-weight-light" color="success" @click="confirmLogout()">Yes</v-btn>
+            <v-btn class="font-weight-light" color="primary" @click="confirmLogout()">Yes</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>

@@ -3,7 +3,7 @@
  <v-toolbar dark flat color="primary" class="elevation-5">            <span class="title font-weight-light">Personnel List</span>
             <v-spacer></v-spacer>
             <v-tooltip top>
-                <v-btn slot="activator" @click="addItem" fab outline small icon >
+                <v-btn slot="activator" @click="addItem"  outline small icon >
                 <v-icon>edit</v-icon> 
             </v-btn>Add Personnel
             </v-tooltip>
@@ -22,7 +22,7 @@
     
      <v-card>
       <v-toolbar dark color="primary">
-        <span class="title font-weight-light">New Personnel</span>
+        <span class="title font-weight-thin">New Personnel</span>
         <v-spacer></v-spacer>
         <v-btn flat icon @click="addToListDialog=false">
           <v-icon>close</v-icon>
@@ -169,8 +169,8 @@
                 v-model="qualified.id_expiry"
               >
                 <v-spacer></v-spacer>
-                <v-btn  color="primary" outline @click="menu2 = false">Cancel</v-btn>
-                <v-btn  color="success" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
+                <v-btn  color="secondary" outline @click="menu2 = false">Cancel</v-btn>
+                <v-btn  color="primary" @click="$refs.menu2.save(qualified.id_expiry)">OK</v-btn>
               </v-date-picker>
             </v-menu>
           </v-flex>
@@ -187,8 +187,8 @@
         </v-card-actions>
         <v-card-actions v-else>
           <v-spacer></v-spacer>
-          <v-btn outline color="primary" @click="addToListDialog=false">Cancel</v-btn>
-          <v-btn color="success" @click="submit">Add</v-btn>
+          <v-btn outline color="secondary" @click="addToListDialog=false">Cancel</v-btn>
+          <v-btn color="primary" @click="submit">Add</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

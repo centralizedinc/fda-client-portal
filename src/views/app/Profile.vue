@@ -131,13 +131,17 @@
       </v-tooltip>
     </v-layout>
     <v-dialog v-model="dialog" max-width="300px" transition="dialog-transition">
-      <v-card class="title">
+      <v-card>
+         <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
+                <span class="title font-weight-light">Confirmation</span>
+            </v-toolbar>
         <v-card-text>Do you want to save any changes ?</v-card-text>
+        <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="error" flat @click="dialog=false">Cancel</v-btn>
+          <v-btn color="secondary" outline flat @click="dialog=false">Cancel</v-btn>
           <v-btn
-            color="success"
+            color="primary"
             @click="save()"
             :loading="avatar_loading"
             :disabled="avatar_loading"

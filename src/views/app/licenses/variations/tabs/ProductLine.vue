@@ -14,7 +14,7 @@
               </v-text-field>
           </v-card-title>
           <v-tooltip bottom>
-            <v-btn slot="activator" fab right bottom small absolute icon color="success" @click="addItem">
+            <v-btn slot="activator" fab right bottom small absolute icon color="primary" @click="addItem">
                 <v-icon>add</v-icon>
             </v-btn>Add New Product
           </v-tooltip>
@@ -78,7 +78,7 @@
             <v-card-actions>
                 <v-btn flat outline color="secondary" @click="clearProduct">Close</v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="success" @click="submit">
+                <v-btn color="primary" @click="submit">
                     {{ selected_index > -1 ? "Save": "Submit"}}
                 </v-btn>
             </v-card-actions>
