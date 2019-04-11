@@ -257,14 +257,14 @@ export default {
         },
         getDesignation(id) {
           var designations = this.$store.state.references.designations;
-          if (designations) return {}
-          var designation = designations.find(x => x._id.toString() === id)
+          if (!designations) return {}
+          var designation = designations.find(x => x._id === id)
           return designation ? designation : {}
         },
         getIdType(id) {
           var id_types = this.$store.state.references.id_types;
-          if (id_types) return {}
-          var id_type = id_types.find(x => x._id.toString() === id)
+          if (!id_types) return {}
+          var id_type = id_types.find(x => x._id === id)
           return id_type ? id_type : {}
         },
         logout() {

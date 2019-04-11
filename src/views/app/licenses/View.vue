@@ -153,18 +153,18 @@
         <v-card-text v-if="show_part4">
           <v-data-table
             :headers="[{text:'Type', sortable: false,}, 
-                        {text:'Address', sortable: false},
-                        {text:'City', sortable: false},
-                        {text:'Province', sortable: false},
-                        {text:'Region', sortable: false},
-                        {text:'Zip code', sortable: false},]"
+                        {text:'Address', sortable: false},]"
             :items="form.address_list"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{ props.item.prod_line }}</td>
-              <td>{{ props.item.remarks }}</td>
+              <td>{{ props.item.type }}</td>
+              <td>{{ props.item.address }}</td>
+              <!-- <td>{{ getCityName(props.item.city) }}</td>
+              <td>{{ getProvinceName(props.item.province) }}</td>
+              <td>{{ getRegionName(props.item.region) }}</td>
+              <td>{{ props.item.zipcode }}</td> -->
             </template>
             
           </v-data-table>
@@ -271,17 +271,18 @@
           <v-data-table
             :headers="[{text:'Designation', sortable: false,}, 
                         {text:'Lastname', sortable: false},
-                        {text:'Firstname', sortable: false},
-                        {text:'Middle Name', sortable: false},
-                        {text:'Email', sortable: false},
-                        {text:'TIN', sortable: false}]"
+                        {text:'Firstname', sortable: false}]"
             :items="form.qualified"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{ props.item.prod_line }}</td>
-              <td>{{ props.item.remarks }}</td>
+              <td>{{ getDesignation(props.item.designation).name }}</td>
+              <td>{{ props.item.lastname }}</td>
+              <td>{{ props.item.firstname }}</td>
+              <!-- <td>{{ props.item.middlename }}</td>
+              <td>{{ props.item.email }}</td>
+              <td>{{ props.item.tin }}</td> -->
             </template>
             
           </v-data-table>
@@ -447,7 +448,7 @@ export default {
       
       this.form = this.$store.state.licenses.view_license
       this.case_details = this.$store.state.case.view_case
-      console.log(JSON.stringify(this.form))
+      this.$store.dispatch("GET_REFERENCES");
       //get uploaded documents
       console.log(console.log('DOCUMENTS: ' + JSON.stringify(this.form.uploaded_files)))
       if(this.form.uploaded_files){

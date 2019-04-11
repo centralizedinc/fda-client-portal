@@ -496,7 +496,7 @@
                 <v-divider></v-divider>
                 <v-card-actions v-if="isFinal">
                     <v-spacer></v-spacer>
-                    <v-btn outline color="primary" @click="close()">Cancel</v-btn>
+                    <v-btn :disabled="loading" outline color="primary" @click="close()">Cancel</v-btn>
                     <v-btn color="primary" @click="accept" :loading="loading">Accept & Submit</v-btn>
                 </v-card-actions>
             </v-card>
