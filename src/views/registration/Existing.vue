@@ -398,11 +398,11 @@ export default {
         this.isLoading=false;
         console.log('RESULT: ' + JSON.stringify(result))        
         if(result.data.model){        
-          this.$notify({message: "License details found."});
+          this.$notify({message: "License details found", color: "success", icon: "check_circle"});
           this.orig_form = result.data.model;
           return true;
         }else{
-          this.$notifyError([{message:'License not found! Please check your details.'}])
+          this.$notifyError([{message:'License not found! Please check your details', color: "warning", icon: "error_outline"}])
           return false;
         }        
       })

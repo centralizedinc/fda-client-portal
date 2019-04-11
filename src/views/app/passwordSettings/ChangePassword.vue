@@ -51,7 +51,7 @@
             <!-- <v-spacer></v-spacer> -->
             <v-btn
               block
-              color="success"
+              color="primary"
               class="font-weight-light"
               :loading="loading"
               :disabled="loading"
@@ -79,7 +79,7 @@
         <v-card-actions>
           <v-btn color="secondary" outline @click="dialog=false">Cancel</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="success" :loading="loading" :disabled="loading" @click="submit">Yes</v-btn>
+          <v-btn color="primary" :loading="loading" :disabled="loading" @click="submit">Yes</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

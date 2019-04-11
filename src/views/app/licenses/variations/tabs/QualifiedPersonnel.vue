@@ -187,7 +187,7 @@
         <v-card-actions>
           <v-btn color="error" @click="clearItem">Close</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="success" @click="submit">Save</v-btn>
+          <v-btn color="primary" @click="submit">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

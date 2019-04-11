@@ -47,7 +47,7 @@
             <v-divider></v-divider>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="success" @click="home()">Ok</v-btn>
+                <v-btn color="primary" @click="home()">Ok</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>

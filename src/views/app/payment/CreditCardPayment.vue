@@ -144,7 +144,7 @@
         <v-card-actions>
           <v-btn color="secondary" outline @click="$emit('cancel')">Cancel</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="success" @click="submit">Submit</v-btn>
+          <v-btn color="primary" @click="submit">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -246,7 +246,7 @@ export default {
             this.$notify({
               message:
                 "You entered a " + creditCard.card.type + " credit card number",
-              color: "primary",
+              color: "success",
               icon: "check_circle",
               initialMargin: 100
             });
@@ -278,7 +278,7 @@ export default {
           if (cvv.isValid) {
             this.$notify({
               message: "Valid CVC number",
-              color: "primary",
+              color: "success",
               icon: "check_circle",
               initialMargin: 100
             });
@@ -360,7 +360,7 @@ export default {
             if (result.data.model.isValid) {
               this.$notify({
                 message: "Valid Date Expiry",
-                color: "primary",
+                color: "success",
                 icon: "check_circle",
                 initialMargin: 100
               });
@@ -432,7 +432,8 @@ export default {
             this.$router.push("/");
             this.$notify({
               message: "Payment success",
-              color: "primary",
+              color: "success",
+              icon: "check_circle",
               initialMargin: 100
             });
           })

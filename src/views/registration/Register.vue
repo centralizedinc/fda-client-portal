@@ -254,7 +254,7 @@ export default {
                     })
                     this.tab = 1;
                     this.total_amount = result.total
-                    this.$notify({color:'primary',message:'Registration fee computed! For this application you will have to pay the amount of  ₱ ' + this.numberWithCommas(this.total_amount)})
+                    this.$notify({color:'success',message:'Registration fee computed! For this application you will have to pay the amount of  ₱ ' + this.numberWithCommas(this.total_amount)})
                 });
             }
             this.e1++;
@@ -264,7 +264,7 @@ export default {
             this.tab =1;
             this.isFinal=true;
             this.showSummary = true
-            this.$notify({message: 'This is the last step of the application process. Review your application details and make sure you have entered all values correctly. Once you clicked Submit, you won\'t be able to modify any of the data you have entered.', color:'primary'})
+            this.$notify({message: 'This is the last step of the application process. Review your application details and make sure you have entered all values correctly. Once you clicked Submit, you won\'t be able to modify any of the data you have entered.', color:'success'})
             this.loading = false;
         }else{
             this.$notifyError([{message:"Fill-up required fields."}])
@@ -277,7 +277,7 @@ export default {
     editPage(page){
         this.e1 = page
         this.showSummary = false;
-        this.$notify({color:'primary', message:'You may now edit the details for Step '+this.e1+' - ' + this.headers[this.e1-1]})
+        this.$notify({color:'success', message:'You may now edit the details for Step '+this.e1+' - ' + this.headers[this.e1-1]})
     },
     uploadFile(data) {
         this.formData = data.formData;
@@ -290,7 +290,7 @@ export default {
         this.$refs.link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
         this.$refs.link.setAttribute('download', filename);
         this.$refs.link.click();
-        this.$notify({message: 'Saving your Application Details - ' + filename, color: 'primary'})        
+        this.$notify({message: 'Saving your Application Details - ' + filename, color: 'success'})        
     },
     submit() {
       this.loading = true;
@@ -324,7 +324,7 @@ export default {
                             + ". Kindly choose from one of our payment options available."
                         this.$notify({
                             message: message,
-                            color: "primary",
+                            color: "success",
                             icon: "check_circle"
                             });
                     })
@@ -338,7 +338,7 @@ export default {
                             + ". Kindly choose from one of our payment options available."
                     this.$notify({
                         message: message,
-                        color: "primary",
+                        color: "success",
                         icon: "check_circle"
                         });
                 }

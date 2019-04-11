@@ -209,7 +209,7 @@
                 
           <v-spacer></v-spacer>
           <v-btn color="secondary" outline @click="hide()">Cancel</v-btn>          
-          <v-btn color="success" :disabled="isLoading" :loading="isLoading" @click="submit">Submit</v-btn>
+          <v-btn color="primary" :disabled="isLoading" :loading="isLoading" @click="submit">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
@@ -477,6 +477,7 @@ export default {
                 this.full_details.card_details.email +
                 ")",
               color: "success",
+              icon: "check_circle",
               initialMargin: 100
             });
           })
