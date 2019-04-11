@@ -20,12 +20,12 @@
             <v-tabs-items v-model="tab">
                 <v-tab-item>
                     <v-stepper v-model="e1" vertical>
-                        <v-stepper-step :complete="e1 > 1" step="1">
+                        <v-stepper-step @click="proceed(1)" style="cursor:pointer" :complete="e1 > 1" step="1">
                             <span class="title font-weight-thin pa-1">General Information</span>
                             <span class="caption font-weight-thin pa-1">Enter the license number of your Establishment's LTO.</span>
                         </v-stepper-step>
                         <v-divider></v-divider>
-                        <v-stepper-step  :complete="e1 > 2" step="2">
+                        <v-stepper-step @click="proceed(2)" style="cursor:pointer" :complete="e1 > 2" step="2">
                             <span class="title font-weight-thin pa-1">Establishment Details</span>
                             <span class="caption font-weight-thin pa-1">For single proprietorship reflect the name of the person indicated in the DTI registration certificate.</span>
                             <span class="caption font-weight-thin pa-1">For corporation, partnership or cooperative reflect the name of the corporation/partnership/cooperative as indicated in the SEC/CDA registration</span>
@@ -33,27 +33,27 @@
                             
                         </v-stepper-step>
                         <v-divider></v-divider>
-                        <v-stepper-step :complete="e1 > 3" step="3">
+                        <v-stepper-step @click="proceed(3)" style="cursor:pointer" :complete="e1 > 3" step="3">
                             <span class="title font-weight-thin pa-1">Establishment Address</span>
                             <span class="caption font-weight-thin pa-1">To make sure that we can still contact the establishment, please enter the company's qualified/authorized personnel</span>
                         </v-stepper-step>
                         <v-divider></v-divider>
-                        <v-stepper-step :complete="e1 > 4" step="4">
+                        <v-stepper-step @click="proceed(4)" style="cursor:pointer" :complete="e1 > 4" step="4">
                             <span class="title font-weight-thin pa-1">Authorized Officer</span>
                             <span class="caption font-weight-thin pa-1">Please make sure that the ID number is matched to the ID selected</span>
                         </v-stepper-step>
                         <v-divider></v-divider>
-                        <v-stepper-step :complete="e1 > 5" step="5">
+                        <v-stepper-step @click="proceed(5)" style="cursor:pointer" :complete="e1 > 5" step="5">
                             <span class="title font-weight-thin pa-1">Qualified Personnel</span>
                             <span class="caption font-weight-thin pa-1">We will sent you an email with a confirmation link. Please check your email.</span>
                         </v-stepper-step>
                         <v-divider></v-divider>
-                        <v-stepper-step :complete="e1 > 6" step="6">
+                        <v-stepper-step @click="proceed(6)" style="cursor:pointer" :complete="e1 > 6" step="6">
                             <span class="title font-weight-thin pa-1">Document Upload</span>
                             <span class="caption font-weight-thin pa-1">We will sent you an email with a confirmation link. Please check your email.</span>
                         </v-stepper-step>
                         <v-divider></v-divider>
-                        <v-stepper-step :complete="e1 > 7" step="7">
+                        <v-stepper-step @click="proceed(7)" style="cursor:pointer" :complete="e1 > 7" step="7">
                             <span id="step7" class="title font-weight-thin pa-1">Account Credentials <a href="#step7">#</a></span>
                             <span class="caption font-weight-thin pa-1">We will sent you an email with a confirmation link. Please check your email.</span>
                         </v-stepper-step>
@@ -103,7 +103,7 @@
                 <v-divider></v-divider>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn outline color="primary" @click="back">Cancel</v-btn>
+                    <v-btn :disabled="loading" outline color="primary" @click="back">Cancel</v-btn>
                     <v-btn color="primary" @click="next" :loading="loading">Next</v-btn>
                 </v-card-actions>
             </v-card>
@@ -187,6 +187,11 @@ export default {
       this.form = JSON.parse(
         JSON.stringify(this.$store.state.licenses.applicationForm)
       );
+      
+      this.account = JSON.parse(
+        JSON.stringify(this.$store.state.licenses.applicationAccount)
+      );
+      console.log(JSON.stringify(this.account))
       if (this.form.current_step) {
         this.e1 = this.form.current_step;
       }
@@ -207,6 +212,14 @@ export default {
         }
         this.tab=0;
     }, 
+
+    proceed(step){
+        if(this.$refs.curr_step.validate()){
+            this.e1=step;
+        }else{
+            this.$notifyError([{message:"Fill-up required fields."}])
+        }
+    },
     next(){
         this.loading = true;
         var valid = this.$refs.curr_step.validate()
@@ -273,8 +286,8 @@ export default {
     },
     saveTempFile(){
         this.form.current_step = this.e1;
-        var filename =  this.form.estab_details.establishment_name+"_"+(new Date()).getTime()+".fda";
-        var content = new Buffer(JSON.stringify(this.form)).toString('base64')
+        var filename =  this.form.estab_details.establishment_name+"_"+(new Date()).getTime()+".fda";        
+        var content = new Buffer(JSON.stringify({form:this.form, account:this.account})).toString('base64')
         this.$refs.link.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
         this.$refs.link.setAttribute('download', filename);
         this.$refs.link.click();
@@ -292,7 +305,6 @@ export default {
             this.loading = false;
             if (result.success) {
                 var reg_form = result.application.license
-                console.log('RESULT: ' + JSON.stringify(result))
                   
                 if(!this.charges){
                     var details = {
@@ -333,12 +345,11 @@ export default {
                 }
                 
             } else {
-                this.showSummary = false;
+                this.showSummary = false;              
                 this.$notifyError(result.errors);
             }
         })
         .catch(err => {
-            console.log(err)
             this.showSummary=false;
             this.loading = false;
             this.$notifyError(err);

@@ -115,13 +115,15 @@ export default class LicenseAPI {
                 })
                 // Save License Application first
                 .then(result1 => {
+                    console.log('RESULT 1:' + JSON.stringify(result1))
                     if (result1.data.success && lic_data.upload) {
                         lic_case = result1.data.model;
                         saved_license = result1.data.model.application.license;
                         return axios.post('documents/uploads?account_id=' + saved_license.case_no, lic_data.upload)
-                    } else if(lic_data.upload) {
-                        reject()
+                    } else if(!lic_data.upload) {
+                        reject([{message: 'No file attachment'}])
                     }else{
+                        console.log('REJECT: ' + JSON.stringify(result1.data.errors))
                         reject(result1.data.errors)
                     }
                 })
@@ -150,6 +152,7 @@ export default class LicenseAPI {
                     }                    
                 })
                 .catch(err => {
+                    console.log(err)
                     reject(err)
                 })
         })

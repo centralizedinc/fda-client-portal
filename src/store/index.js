@@ -14,7 +14,7 @@ export default new Vuex.Store({
   plugins: [
     createPersistedState({
       key:'fda-client-reference',
-      paths:['breadcrumbs','case', 'licenses', 'notifications', 'payments', 'products','products', 'reference', 'tasks']
+      paths:['breadcrumbs','case', 'licenses', 'notifications', 'payments', 'products','products', 'references', 'tasks']
     }),
   //store user session in cookiess
   createPersistedState({

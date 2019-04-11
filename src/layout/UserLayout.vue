@@ -16,9 +16,11 @@
           >
             <v-list-tile-avatar class="mt-4">
               <v-btn fab icon slot="activator">
-                <v-avatar size="50px">
-                  <img :src="display_avatar">
+                <v-avatar  size="50px" :color="random_color">
+                  <img v-if="user.avatar.location" :src="user.avatar.location">
+                  <span v-else class="white--text title">{{userInitials}}</span>
                 </v-avatar>
+                 
                 <!-- <v-avatar class="elevation-10" dark v-else color="fdaSilver">
                   <h4 class="black--text font-weight-bold">{{userInitials}}</h4>
                 </v-avatar> -->
@@ -199,12 +201,11 @@
 
       <v-menu offset-y>
         <v-btn fab icon small flat slot="activator">
-          <v-avatar size="38px">
-            <img :src="display_avatar">
+          <v-avatar size="38px" :color="random_color">
+            <img v-if="user.avatar.location" :src="user.avatar.location" >
+            <span v-else class="white--text subheading">{{userInitials}}</span> 
           </v-avatar>
-          <!-- <v-avatar dark v-else color="fdaSilver">
-            <h4 class="primary--text font-weight-bold">{{userInitials}}</h4>
-          </v-avatar> -->
+                
         </v-btn>
         <v-list two-line subheader>
           <v-list-tile avatar @click="goTo('/app/profile')" :style="activeRoute('Profile')">
@@ -328,7 +329,8 @@ export default {
       mini: false,
       route_name: "",
       user: {},
-      show_logout: false
+      show_logout: false,
+      
     };
   },
   //#########################
@@ -401,6 +403,9 @@ export default {
     },
     isMiniView() {
       return this.$vuetify.breakpoint.smAndDown;
+    },
+    random_color(){
+      return '#' + ('00000' + (Math.random() * 16777216 << 0).toString(16)).substr(-6)
     }
   }
 };
