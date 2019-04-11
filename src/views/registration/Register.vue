@@ -218,7 +218,7 @@ export default {
         }else{
             this.$notifyError([{message:"Fill-up required fields."}])
         }
-    },
+    }, 
     next(){
         this.loading = true;
         var valid = this.$refs.curr_step.validate()
