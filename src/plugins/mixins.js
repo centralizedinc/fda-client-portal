@@ -142,7 +142,7 @@ export default {
         },
         numberWithCommas(x) {
           if (!x || isNaN(x)) return "0.00"
-          return x.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+          return parseFloat(x).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
         },
         formatDate: (date, type) => {
           if (!date) {
