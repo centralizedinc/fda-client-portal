@@ -491,7 +491,15 @@ export default {
             
           })
           .then(result=>{
-            console.log('########### result: ' + JSON.stringify(result))
+            this.$router.push("/app/payments");
+            this.$hideCC();
+            this.$notify({
+              message:
+                "Thank you! We have received your payment.",
+              color: "success",
+              icon: "check_circle",
+              initialMargin: 100
+            });
           })
           .catch(err => {
             this.isLoading = false;
