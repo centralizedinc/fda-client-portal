@@ -248,6 +248,10 @@ var actions = {
     DOWNLOAD_PDF(context, url) {
         return new LicenseAPI(context.rootState.user_session.token).getDocument(url)
     },
+
+    GENERATED_DOCUMENTS(context, data){
+        return new LicenseAPI(context.rootState.user_session.token).addDocuments(data.license, data.formData)
+    }
 }
 
 export default {
