@@ -468,14 +468,34 @@ export default {
               remaining_balance: "₱ 0.00"
             };
 
-            this.$print(details, "RCPT");
+            this.$download(details, "RCPT","fda-receipt.pdf");
+            // this.$router.push("/app/payments");
+            // this.$hideCC();
+            // this.$notify({
+            //   message:
+            //     "Payment success! The official receipt was sent to your email (" +
+            //     this.full_details.card_details.email +
+            //     ")",
+            //   color: "success",
+            //   icon: "check_circle",
+            //   initialMargin: 100
+            // });
+            return this.$upload(details, "RCPT")
+          })
+          .then(blob=>{
+            var file = new File([blob], 'fda-receipt.pdf', {type: 'application/pdf', lastModified: Date.now()});
+            var fd = new FormData(document.forms[0]);
+            fd.append("file", file );
+
+            return this.$store.dispatch('GENERATED_DOCUMENTS', {license:this.$store.state.licenses.form, formData:fd})
+            
+          })
+          .then(result=>{
             this.$router.push("/app/payments");
             this.$hideCC();
             this.$notify({
               message:
-                "Payment success! The official receipt was sent to your email (" +
-                this.full_details.card_details.email +
-                ")",
+                "Thank you! We have received your payment.",
               color: "success",
               icon: "check_circle",
               initialMargin: 100

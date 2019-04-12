@@ -131,7 +131,7 @@
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{ props.item.prod_line }}</td>
+              <td>{{ getProdLine(props.item.prod_line).name }}</td>
               <td>{{ props.item.remarks }}</td>
             </template>
             
@@ -198,7 +198,7 @@
             readonly
             name="name"
             label="Designation"                                        
-            :value="form.auth_officer.designation"
+            :value="getDesignation(form.auth_officer.designation).name"
           ></v-text-field>
           <v-text-field
             readonly
@@ -210,7 +210,7 @@
             readonly
             name="name"
             label="Id Type"                                        
-            :value="form.auth_officer.id_type"
+            :value="getIdType(form.auth_officer.id_type).name"
           ></v-text-field>
           <v-text-field
             readonly
@@ -371,16 +371,16 @@
             <v-divider></v-divider>
             <v-card-text v-if="show_documents">
               <v-container grid-list-sm fluid>
-          <v-layout row wrap>
-            <v-flex v-for="(n, indx) in uploaded_documents" :key="indx" xs4 d-flex>
-              <v-card tile class="d-flex" @click="viewFile(n.location)" style="cursor:zoom-in">
-                <pdf v-show="loaded" @loaded="loaded=true" :src="'https://cors-anywhere.herokuapp.com/'+n.location"></pdf>
-                <!-- <v-progress-linear v-show="!loaded" :indeterminate="true"></v-progress-linear> -->
-                <v-progress-circular v-show="!loaded" indeterminate color="primary"></v-progress-circular>
-              </v-card>
-            </v-flex>
-          </v-layout>
-        </v-container>
+                <v-layout row wrap>
+                  <v-flex v-for="(n, indx) in uploaded_documents" :key="indx" xs4 d-flex>
+                    <v-card tile class="d-flex" @click="viewFile(n.location)" style="cursor:zoom-in">
+                      <pdf v-show="loaded" @loaded="loaded=true" :src="'https://cors-anywhere.herokuapp.com/'+n.location"></pdf>
+                      <!-- <v-progress-linear v-show="!loaded" :indeterminate="true"></v-progress-linear> -->
+                      <v-progress-circular v-show="!loaded" indeterminate color="primary"></v-progress-circular>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+              </v-container>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-title primary-title>
@@ -395,7 +395,17 @@
             </v-card-title>
             <v-divider></v-divider>
             <v-card-text v-if="show_generated">
-              
+              <v-container grid-list-sm fluid>
+                <v-layout row wrap>
+                  <v-flex v-for="(n, indx) in output_documents" :key="indx" xs4 d-flex>
+                    <v-card tile class="d-flex" @click="viewFile(n.location)" style="cursor:zoom-in">
+                      <pdf v-show="loaded" @loaded="loaded=true" :src="'https://cors-anywhere.herokuapp.com/'+n.location"></pdf>
+                      <!-- <v-progress-linear v-show="!loaded" :indeterminate="true"></v-progress-linear> -->
+                      <v-progress-circular v-show="!loaded" indeterminate color="primary"></v-progress-circular>
+                    </v-card>
+                  </v-flex>
+                </v-layout>
+              </v-container>
             </v-card-text>
           </v-card>
            
@@ -437,7 +447,8 @@ export default {
 
       },
       payments:[],
-      uploaded_documents:[]
+      uploaded_documents:[],
+      output_documents:[],
     }
   },
   created(){
@@ -450,11 +461,22 @@ export default {
       this.case_details = this.$store.state.case.view_case
       this.$store.dispatch("GET_REFERENCES");
       //get uploaded documents
-      console.log(console.log('DOCUMENTS: ' + JSON.stringify(this.form.uploaded_files)))
       if(this.form.uploaded_files){
         this.form.uploaded_files.forEach(doc=>{
           if(doc.location){
             this.uploaded_documents.push({
+              file_name: doc.originalname,
+              type:doc.contentType,
+              location:doc.location
+            })
+          }
+        })
+      }
+      //get output documents
+      if(this.form.output_files){
+        this.form.output_files.forEach(doc=>{
+          if(doc.location){
+            this.output_documents.push({
               file_name: doc.originalname,
               type:doc.contentType,
               location:doc.location
