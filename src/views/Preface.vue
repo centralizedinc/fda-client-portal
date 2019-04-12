@@ -198,7 +198,7 @@
             
             <v-card
               class="cardButton"
-              style="background: linear-gradient(180deg, #EFF1E3, #CAD0A0)"
+              style="background: linear-gradient(180deg, #EFF1E3, #b5c25a)"
               color="fdaTan"
               hover
               ripple

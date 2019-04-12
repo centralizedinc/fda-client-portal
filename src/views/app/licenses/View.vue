@@ -131,7 +131,7 @@
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{ props.item.prod_line }}</td>
+              <td>{{ getProdLine(props.item.prod_line).name }}</td>
               <td>{{ props.item.remarks }}</td>
             </template>
             
@@ -198,7 +198,7 @@
             readonly
             name="name"
             label="Designation"                                        
-            :value="form.auth_officer.designation"
+            :value="getDesignation(form.auth_officer.designation).name"
           ></v-text-field>
           <v-text-field
             readonly
@@ -210,7 +210,7 @@
             readonly
             name="name"
             label="Id Type"                                        
-            :value="form.auth_officer.id_type"
+            :value="getIdType(form.auth_officer.id_type).name"
           ></v-text-field>
           <v-text-field
             readonly
