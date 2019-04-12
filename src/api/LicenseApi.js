@@ -203,6 +203,35 @@ export default class LicenseAPI {
         }})
     }
 
+    addDocuments(license, formData){
+        return new Promise((resolve, reject)=>{
+            axios.post('documents/uploads?account_id=' + license.case_no, formData)
+            .then(result=>{
+                console.log(JSON.stringify(result))
+                var files = result.data.model
+                license.output_files = files;
+                if (result.data.success) {
+                    return axios.post('lto-api/' + license._id, license)
+                }else{
+                    reject()
+                    return 
+                }
+            })
+            .then(updated=>{
+                console.log(JSON.stringify(updated))
+                if(updated){
+                    resolve(updated)
+                }else{
+                    reject()
+                }
+            })
+            .catch(err=>{
+                console.log(err)
+                reject(err)
+            })
+        })
+    }
+
 }
 
 // module.exports = LicenseAPI
