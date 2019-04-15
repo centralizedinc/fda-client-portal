@@ -438,10 +438,11 @@ export default {
             this.orig_form._id = null;
             this.orig_form.is_existing = true;   
             this.account.name = {
-              first:this.orig_form.auth_officer.firstname,
-              middle:this.orig_form.auth_officer.middlename,
-              last:this.orig_form.auth_officer.lastname
+              first:this.form.auth_officer.firstname,
+              middle:this.form.auth_officer.middlename,
+              last:this.form.auth_officer.lastname
             }
+            this.account.email = this.form.auth_officer.email
             var reg_details = {license: this.orig_form,account: this.account}
             console.log(JSON.stringify(reg_details))
             this.$store.dispatch("EXISTING_LIC_REG", reg_details)
