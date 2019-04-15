@@ -438,9 +438,9 @@ export default {
             this.orig_form._id = null;
             this.orig_form.is_existing = true;   
             this.account.name = {
-              first:this.form.orig_form.firstname,
-              middle:this.form.orig_form.middlename,
-              last:this.form.orig_form.lastname
+              first:this.orig_form.auth_officer.firstname,
+              middle:this.orig_form.auth_officer.middlename,
+              last:this.orig_form.auth_officer.lastname
             }
             var reg_details = {license: this.orig_form,account: this.account}
             console.log(JSON.stringify(reg_details))
