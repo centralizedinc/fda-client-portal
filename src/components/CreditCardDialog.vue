@@ -484,7 +484,7 @@ export default {
           })
           .then(blob=>{
             var file = new File([blob], 'fda-receipt.pdf', {type: 'application/pdf', lastModified: Date.now()});
-            var fd = new FormData(document.forms[0]);
+            var fd = new FormData();
             fd.append("file", file );
 
             return this.$store.dispatch('GENERATED_DOCUMENTS', {license:this.$store.state.licenses.form, formData:fd})

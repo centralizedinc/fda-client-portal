@@ -274,21 +274,35 @@ export default {
                 form: this.form,
                 case: this.case_holder
             }
-            this.$store
-        .dispatch("SAVE_TRANSACTION_PROVIDER", full_details).then(result => {
-            console.log("this is save transaction provider data: " + JSON.stringify(result))
-            var ecpay_fee = 0;
-            var details = {
-                reference_number: result.third_party_ref_no,
-                status: this.getPaymentStatus(result.payment_details.status), 
-                expiration: this.formatDt(this.case_holder.date_expiry),
-                amount: this.formatCurrency(result.payment_details.total_amount),
-                con_fee: this.formatCurrency(ecpay_fee),
-                total: this.formatCurrency(result.payment_details.total_amount + ecpay_fee)
-            }
-            this.$download(details, "ECPAY");
-        })           
-
+            this.$store.dispatch("SAVE_TRANSACTION_PROVIDER", full_details)
+            .then(result => {
+                console.log("this is save transaction provider data: " + JSON.stringify(result))
+                var ecpay_fee = 0;
+                var details = {
+                    reference_number: result.third_party_ref_no,
+                    status: this.getPaymentStatus(result.payment_details.status), 
+                    expiration: this.formatDt(this.case_holder.date_expiry),
+                    amount: this.formatCurrency(result.payment_details.total_amount),
+                    con_fee: this.formatCurrency(ecpay_fee),
+                    total: this.formatCurrency(result.payment_details.total_amount + ecpay_fee)
+                }
+                this.$download(details, "ECPAY", 'ecpay-referenceno.pdf');
+                return this.$upload(details, "ECPAY")
+            })
+            .then(blob=>{
+                var file = new File([blob], 'ecpay-referenceno.pdf', {type: 'application/pdf', lastModified: Date.now()});
+                var fd = new FormData();
+                fd.append("file", file );
+                return this.$store.dispatch('GENERATED_DOCUMENTS', {license:this.$store.state.licenses.form, formData:fd})          
+            }).then(result=>{
+                this.$router.push("/app/payments");
+                this.$notify({
+                    message:"Your ECPay Reference Number is valid for 24 hours only. Please make sure to pay on time.",
+                    color: "success",
+                    icon: "check_circle",
+                    initialMargin: 100
+                    });
+            })
         },
         generatePDF() {
             var details = {
@@ -329,15 +343,6 @@ export default {
             );
               
         this.$download(full_details, "PAY");
-            console.log("fulldetails data: " + JSON.stringify(full_details));
-            
-            console.log("application form data: " + JSON.stringify(this.app_form));
-            console.log("fees form data: " + JSON.stringify(this.fees_form));
-            
-            // OrderOfPaymentGenerator.generateOrderOfPayment(
-            //     this.app_form,
-            //     this.fees_form
-            // );
         }
     }
 };
