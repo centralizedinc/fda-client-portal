@@ -437,6 +437,11 @@ export default {
           if(this.$refs.step4.validate()){
             this.orig_form._id = null;
             this.orig_form.is_existing = true;   
+            this.account.name = {
+              first:this.form.orig_form.firstname,
+              middle:this.form.orig_form.middlename,
+              last:this.form.orig_form.lastname
+            }
             var reg_details = {license: this.orig_form,account: this.account}
             console.log(JSON.stringify(reg_details))
             this.$store.dispatch("EXISTING_LIC_REG", reg_details)
