@@ -176,6 +176,7 @@ export default {
            'Document Upload',
            'Account Credentials'
         ],
+    formData:null,
     uploadedFiles:[]
     };
   },

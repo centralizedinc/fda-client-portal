@@ -2,9 +2,7 @@
     <v-flex xs12>
         <v-card color="fdaSilver" class="elevation-5" 
           v-if="details.license_details && 
-          details.case_details && 
-          details.license_details.license_no && 
-          details.case_details.case_no">
+          details.license_details.license_no">
           <v-card-title class="active-license-title fdaSilver--text">
             <v-avatar class="mr-3" color="grey">
               <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
@@ -51,25 +49,24 @@
             <v-container grid-list-xl>
               <v-layout row wrap class="subheading">
                 <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Case No:</v-flex>
-                <v-flex xs12 md6 lg3 xl2>{{details.case_details.case_no}}</v-flex>
+                <v-flex xs12 md6 lg3 xl2>{{details.license_details.case_no}}</v-flex>
                 <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Status:</v-flex>
                 <v-flex
-                  :class="`${getAppStatusColor(details.case_details.status)}--text font-weight-bold text-uppercase` "
+                  :class="`${getAppStatusColor(details.license_details.status)}--text font-weight-bold text-uppercase` "
                   xs12 md6 lg3 xl2>
-                  {{getAppStatus(details.case_details.status)}}
+                  {{getAppStatus(details.license_details.status)}}
                 </v-flex>
                 <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">License Expiry:</v-flex>
                 <v-flex xs12 md6 lg3 xl2>
                   {{details.license_details.license_expiry ? formatDate(details.license_details.license_expiry) : "-"}}</v-flex>
                 <v-flex xs12 md6 lg3 xl2 class="font-weight-medium">Primary:</v-flex>
-                <v-flex xs12 md6 lg3 xl2>{{getPrimary(details.case_details.primary_activity)}}</v-flex>
+                <v-flex xs12 md6 lg3 xl2>{{getPrimary(details.license_details.general_info.primary_activity)}}</v-flex>
               </v-layout>
             </v-container>
           </v-card-text>
         </v-card>
         <v-card class="elevation-5 active-license-title fdaSilver--text" 
-          v-else-if="details.license_details && 
-          details.case_details">
+          v-else-if="details.license_details">
           <v-card-text>
             <i>Loading data ...</i>
           </v-card-text>
@@ -103,11 +100,7 @@ export default {
     this.$store
       .dispatch("GET_ACTIVE_LICENSE")
       .then(result => {
-        if (result.success) {
-          this.details = result.model;
-        } else {
-          console.log("GET_ACTIVE_LICENSE result.errors :", result.errors);
-        }
+        this.details.license_details = result;
       })
       .catch(err => {
         console.log("GET_ACTIVE_LICENSE err :", err);

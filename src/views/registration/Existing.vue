@@ -428,9 +428,7 @@ export default {
               this.$notifyError([{message: 'Fill-up required fields'}])
               resolve(false);
             }
-          })
-      
-      
+          })            
     },
     saveExisting() { 
       return new Promise((resolve, reject)=>{
