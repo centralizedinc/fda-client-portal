@@ -312,6 +312,7 @@ export default {
                     initialMargin: 100
                     });
             })
+            this.$router.push('/')  
         },
         generatePDF() {
             var details = {
