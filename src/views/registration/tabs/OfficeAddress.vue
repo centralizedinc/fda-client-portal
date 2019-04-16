@@ -123,7 +123,7 @@
             <v-card-actions v-else>
                 <v-spacer></v-spacer>
                 <v-btn outline color="error" @click="deleteItem()">Delete</v-btn>
-                <v-btn color="primary" @click="showDialog=false">Edit</v-btn>
+                <v-btn color="primary" @click="editItem()">Edit</v-btn>
             </v-card-actions>
         </v-card>
             
@@ -220,8 +220,12 @@ export default {
         viewItem(item, indx){
             this.index = indx;
             this.isAdd=false;
-            this.address=item;
+            this.address=JSON.parse(JSON.stringify(item));
             this.showDialog = true;
+        },
+        editItem(){
+            this.address_list.splice(this.index,1,this.address)
+            this.showDialog = false;
         },
         deleteItem() {
             if(confirm("Are you sure you want to delete this item?")){
