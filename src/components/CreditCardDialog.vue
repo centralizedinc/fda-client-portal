@@ -208,7 +208,7 @@
           </v-layout> 
                 
           <v-spacer></v-spacer>
-          <v-btn color="secondary" outline @click="hide()">Cancel</v-btn>          
+          <v-btn color="secondary" :disabled="isLoading" outline @click="hide()">Cancel</v-btn>          
           <v-btn color="primary" :disabled="isLoading" :loading="isLoading" @click="submit">Submit</v-btn>
         </v-card-actions>
       </v-card>
