@@ -203,6 +203,7 @@ export default {
             },
             app_form: {},
             fees_form: {},
+            case_form: {},
             cashierPayment: false,
             ecPayDialog: false,
             dialogPayLater: false,
@@ -218,10 +219,18 @@ export default {
     },
     methods: {
         init() {
-            
             this.app_form = this.form ? this.form : this.$store.state.licenses.form;
             this.form = this.form ? this.form : this.$store.state.licenses.form;
-            console.log("Welcome to payment summary: " + JSON.stringify(this.$store.state.licenses.form));
+            this.$store.dispatch(
+                    "GET_ONE_CASE",
+                    this.form.case_no
+                  ).then(result => {
+                  console.log(
+                    "get onse case @ view: " + JSON.stringify(result)
+                  );
+                  this.case_holder = result;
+                });
+            console.log("Welcome to payment summary: " + JSON.stringify(this.case_form));
             this.fees_form = this.charges ?
                 this.charges :
                 this.$store.state.payments.fee;
@@ -274,21 +283,35 @@ export default {
                 form: this.form,
                 case: this.case_holder
             }
-            this.$store
-        .dispatch("SAVE_TRANSACTION_PROVIDER", full_details).then(result => {
-            console.log("this is save transaction provider data: " + JSON.stringify(result))
-            var ecpay_fee = 0;
-            var details = {
-                reference_number: result.third_party_ref_no,
-                status: this.getPaymentStatus(result.payment_details.status), 
-                expiration: this.formatDt(this.case_holder.date_expiry),
-                amount: this.formatCurrency(result.payment_details.total_amount),
-                con_fee: this.formatCurrency(ecpay_fee),
-                total: this.formatCurrency(result.payment_details.total_amount + ecpay_fee)
-            }
-            this.$download(details, "ECPAY");
-        })           
-
+            this.$store.dispatch("SAVE_TRANSACTION_PROVIDER", full_details)
+            .then(result => {
+                console.log("this is save transaction provider data: " + JSON.stringify(result))
+                var ecpay_fee = 0;
+                var details = {
+                    reference_number: result.third_party_ref_no,
+                    status: this.getPaymentStatus(result.payment_details.status), 
+                    expiration: this.formatDt(this.case_holder.date_expiry),
+                    amount: this.formatCurrency(result.payment_details.total_amount),
+                    con_fee: this.formatCurrency(ecpay_fee),
+                    total: this.formatCurrency(result.payment_details.total_amount + ecpay_fee)
+                }
+                this.$download(details, "ECPAY", 'ecpay-referenceno.pdf');
+                return this.$upload(details, "ECPAY")
+            })
+            .then(blob=>{
+                var file = new File([blob], 'ecpay-referenceno.pdf', {type: 'application/pdf', lastModified: Date.now()});
+                var fd = new FormData();
+                fd.append("file", file );
+                return this.$store.dispatch('GENERATED_DOCUMENTS', {license:this.$store.state.licenses.form, formData:fd})          
+            }).then(result=>{
+                this.$router.push("/app/payments");
+                this.$notify({
+                    message:"Your ECPay Reference Number is valid for 24 hours only. Please make sure to pay on time.",
+                    color: "success",
+                    icon: "check_circle",
+                    initialMargin: 100
+                    });
+            })
         },
         generatePDF() {
             var details = {
@@ -301,6 +324,7 @@ export default {
             console.log("this is save transaction provider data: " + JSON.stringify(result))
             
         })  
+        console.log("this.fees_form: " + JSON.stringify(this.fees_form))
             this.cashierPayment = true;
             var full_details = {
                 formDetails: this.app_form,
@@ -329,15 +353,6 @@ export default {
             );
               
         this.$download(full_details, "PAY");
-            console.log("fulldetails data: " + JSON.stringify(full_details));
-            
-            console.log("application form data: " + JSON.stringify(this.app_form));
-            console.log("fees form data: " + JSON.stringify(this.fees_form));
-            
-            // OrderOfPaymentGenerator.generateOrderOfPayment(
-            //     this.app_form,
-            //     this.fees_form
-            // );
         }
     }
 };

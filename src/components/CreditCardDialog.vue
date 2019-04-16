@@ -484,14 +484,22 @@ export default {
           })
           .then(blob=>{
             var file = new File([blob], 'fda-receipt.pdf', {type: 'application/pdf', lastModified: Date.now()});
-            var fd = new FormData(document.forms[0]);
+            var fd = new FormData();
             fd.append("file", file );
 
             return this.$store.dispatch('GENERATED_DOCUMENTS', {license:this.$store.state.licenses.form, formData:fd})
             
           })
           .then(result=>{
-            console.log('########### result: ' + JSON.stringify(result))
+            this.$router.push("/app/payments");
+            this.$hideCC();
+            this.$notify({
+              message:
+                "Thank you! We have received your payment.",
+              color: "success",
+              icon: "check_circle",
+              initialMargin: 100
+            });
           })
           .catch(err => {
             this.isLoading = false;

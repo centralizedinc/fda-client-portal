@@ -174,6 +174,7 @@ export default {
     init() {
       this.account = this.deepCopy(this.$store.state.user_session.user);
       if (!this.account.avatar) this.account.avatar = {};
+      this.avatar = this.account.avatar.location;
     },
     onFilePicked(event) {
       console.log(event.target.files[0]);
