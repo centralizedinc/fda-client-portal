@@ -10,10 +10,10 @@
             <v-card-text>
               <v-layout row wrap>
                 <v-flex xs9>
-                  <span class="title white--text font-weight-bold">L1234567890</span>
-                  <div class="caption  white--text  mt-2">Expiry: </div>
-                  <div class="caption  white--text ">Status: </div>
-                  <div class="caption  white--text ">Case No: </div>
+                  <span class="title white--text font-weight-light">{{this.active_lic.license_no}}</span>
+                  <div class="caption  white--text font-weight-bold">Expiry: <span class="caption  white--text">{{formatDate(this.active_lic.license_expiry)}}</span></div>
+                  <div class="caption  white--text font-weight-bold">Status: <span class="caption  white--text">{{getAppStatus(this.active_lic.status)}}</span></div>
+                  <div class="caption  white--text font-weight-bold">Name: <span class="caption  white--text">{{this.active_lic.estab_details?this.active_lic.estab_details.establishment_name:""}}</span></div>
                 </v-flex>
                 <v-flex xs3 align-center justify-center d-flex>
                   <v-icon style="font-size:60px; color:rgba(0,0,0,.15)">fas fa-file-signature</v-icon>
@@ -126,6 +126,7 @@ export default {
     ActiveLicense: () => import("@/components/ActiveLicense.vue")
   },
   data: () => ({
+    active_lic:{},
     details: {},
     complyDetails: null,
     complyActivities: [],
@@ -180,43 +181,48 @@ export default {
   methods: {
     init() {
       this.user = this.$store.state.user_session.user;
-      this.details = this.$store.state.licenses.details;
-      this.$store
-        .dispatch("GET_ACTIVE_AND_CASES")
-        .then(result => {
-          this.details = result;
-          console.log(
-            "details user portfolio: " + JSON.stringify(this.details)
-          );
-          this.$store.commit('SET_CASES', this.details.cases)
-          this.details.cases.forEach(casesData => {
-            console.log("cases data foreach: " + JSON.stringify(casesData));
-            casesData.activities.forEach(act => {
-              console.log("activities data from act: " + JSON.stringify(act));
-              if (act != null) {
-                (act.case_no = casesData.case_no),
-                  (act.application_type = casesData.application_type),
-                  (act.case_type = casesData.case_type);
-                this.activities.push(act);
-              }
-            });
-          });
-          console.log("data pushit: " + JSON.stringify(this.activities));
-          // for(var x = result.case_details.activities.length;x>=0;x--){
-          //   console.log("for user portfolio: " + JSON.stringify(result.case_details.activities[x]))
-          // }
-          // this.activities = result.case_details.activities
-          this.activities.sort(function(a, b) {
-            var dateA = new Date(a.date_completed),
-              dateB = new Date(b.date_completed);
-            return dateB - dateA;
-          });
-          return this.$store.dispatch("GET_TASKS");
-        })
-        .then(result => {})
-        .catch(err => {
-          console.log("err :", err);
-        });
+      this.$store.dispatch('GET_ACTIVE_LICENSE')
+      .then(result=>{
+        console.log('GET_ACTIVE_LICENSE: '+JSON.stringify(result))
+        this.active_lic = result;
+      })
+      // this.details = this.$store.state.licenses.details;
+      // this.$store
+      //   .dispatch("GET_ACTIVE_AND_CASES")
+      //   .then(result => {
+      //     this.details = result;
+      //     console.log(
+      //       "details user portfolio: " + JSON.stringify(this.details)
+      //     );
+      //     this.$store.commit('SET_CASES', this.details.cases)
+      //     this.details.cases.forEach(casesData => {
+      //       console.log("cases data foreach: " + JSON.stringify(casesData));
+      //       casesData.activities.forEach(act => {
+      //         console.log("activities data from act: " + JSON.stringify(act));
+      //         if (act != null) {
+      //           (act.case_no = casesData.case_no),
+      //             (act.application_type = casesData.application_type),
+      //             (act.case_type = casesData.case_type);
+      //           this.activities.push(act);
+      //         }
+      //       });
+      //     });
+      //     console.log("data pushit: " + JSON.stringify(this.activities));
+      //     // for(var x = result.case_details.activities.length;x>=0;x--){
+      //     //   console.log("for user portfolio: " + JSON.stringify(result.case_details.activities[x]))
+      //     // }
+      //     // this.activities = result.case_details.activities
+      //     this.activities.sort(function(a, b) {
+      //       var dateA = new Date(a.date_completed),
+      //         dateB = new Date(b.date_completed);
+      //       return dateB - dateA;
+      //     });
+      //     return this.$store.dispatch("GET_TASKS");
+      //   })
+      //   .then(result => {})
+      //   .catch(err => {
+      //     console.log("err :", err);
+      //   });
     },
     functionEvents(date) {
       const [, , day] = date.split("-");

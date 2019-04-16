@@ -219,8 +219,9 @@ export default {
     },
     methods: {
         init() {
-            this.app_form = this.form ? this.form : this.$store.state.licenses.form;
-            this.form = this.form ? this.form : this.$store.state.licenses.form;
+            console.log('FORM: '+ JSON.stringify(this.$store.state.licenses.form));
+            this.app_form = this.$store.state.licenses.form;
+            this.form = this.$store.state.licenses.form;
             this.$store.dispatch(
                     "GET_ONE_CASE",
                     this.form.case_no
@@ -230,7 +231,6 @@ export default {
                   );
                   this.case_holder = result;
                 });
-            console.log("Welcome to payment summary: " + JSON.stringify(this.case_form));
             this.fees_form = this.charges ?
                 this.charges :
                 this.$store.state.payments.fee;

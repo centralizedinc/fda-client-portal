@@ -208,7 +208,7 @@
           </v-layout> 
                 
           <v-spacer></v-spacer>
-          <v-btn color="secondary" outline @click="hide()">Cancel</v-btn>          
+          <v-btn color="secondary" :disabled="isLoading" outline @click="hide()">Cancel</v-btn>          
           <v-btn color="primary" :disabled="isLoading" :loading="isLoading" @click="submit">Submit</v-btn>
         </v-card-actions>
       </v-card>
@@ -457,15 +457,15 @@ export default {
             this.isLoading = false;
             var details = {
               case_no: this.$store.state.payments.payment_details.case_no,
-              fee: `₱ ${this.numberWithCommas(paymentFee.fee)}`,
-              lrf: `₱ ${this.numberWithCommas(paymentFee.lrf)}`,
-              penalty: `₱ ${this.numberWithCommas(
+              fee: this.numberWithCommas(paymentFee.fee),
+              lrf: this.numberWithCommas(paymentFee.lrf),
+              penalty: this.numberWithCommas(
                 parseFloat(paymentFee.surcharge) +
                   parseFloat(paymentFee.interest)
-              )}`,
-              total: `₱ ${this.numberWithCommas(paymentFee.total)}`,
-              amount: `₱ ${this.numberWithCommas(paymentFee.total)}`,
-              remaining_balance: "₱ 0.00"
+              ),
+              total: this.numberWithCommas(paymentFee.total),
+              amount: this.numberWithCommas(paymentFee.total),
+              remaining_balance: "0.00"
             };
 
             this.$download(details, "RCPT","fda-receipt.pdf");

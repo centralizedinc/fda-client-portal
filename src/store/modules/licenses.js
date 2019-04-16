@@ -5,6 +5,7 @@ import CaseAPI from '../../api/CaseAPI';
 import RegistrationAPI from "../../api/RegistrationAPI";
 
 const state = {
+    active_license:{},
     licenses: [],
     view_license: {},
     renewal_license: {},
@@ -110,6 +111,9 @@ const mutations = {
     CONTINUE_APPLICATION(state, data){
         state.applicationForm = data.form
         state.applicationAccount = data.account
+    },
+    SET_ACTIVE_LICENSE(state, data){
+        state.active_license = data
     }
 }
 
@@ -227,11 +231,17 @@ var actions = {
         var token = context.rootState.user_session.token;
         if (token) {
             return new Promise((resolve, reject) => {
-                new LicenseAPI(token).getActiveLicense().then((result) => {
-                    resolve(result.data)
-                }).catch((err) => {
-                    reject(err)
-                });
+                if(!context.state.active_license.license_no){
+                    new LicenseAPI(token).getActiveLicense().then((result) => {
+                        this.commit('SET_ACTIVE_LICENSE', result.data.model.license_details)
+                        resolve(result.data.model.license_details)
+                    }).catch((err) => {
+                        reject(err)
+                    });
+                }else{
+                    resolve(context.state.active_license)
+                }
+                
             })
         }
     },

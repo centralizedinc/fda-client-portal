@@ -183,7 +183,7 @@
         <v-card-actions v-if="mode">
           <v-spacer></v-spacer>
           <v-btn outline color="error" @click="deleteItem()">DELETE</v-btn>
-          <v-btn color="primary" @click="addToListDialog=false">EDIT & SAVE</v-btn>
+          <v-btn color="primary" @click="applyChanges()">EDIT & SAVE</v-btn>
         </v-card-actions>
         <v-card-actions v-else>
           <v-spacer></v-spacer>
@@ -373,8 +373,12 @@ export default {
     editItem(item, index) {
       this.mode = 1;
       this.selected_index = index;
-      this.qualified = item;
+      this.qualified = JSON.parse(JSON.stringify(item));
       this.addToListDialog = true;
+    },
+    applyChanges(){
+      this.form.qualified.splice(this.selected_index,1,this.qualified)
+      this.addToListDialog = false;
     },
     addItem() {
       this.mode = 0;
