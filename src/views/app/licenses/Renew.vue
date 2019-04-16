@@ -104,14 +104,14 @@
             color="fdaGreen"
             style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
           >
-            <span class="font-weight-light title">Note</span>
+            <span class="font-weight-light title">Confirmation</span>
           </v-toolbar>
           <v-card-text>Once you clicked Submit, you won't be able to modify any of the data you have entered.</v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
             <v-btn flat color="secondary" outline @click="confirmDialog=false">Cancel</v-btn>
             <v-spacer></v-spacer>
-            <v-btn flat color="primary" @click="apply">Submit</v-btn>
+            <v-btn  color="primary" @click="apply">Submit</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
