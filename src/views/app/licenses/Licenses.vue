@@ -156,7 +156,7 @@
                 <b>UNOFFICIAL</b> and for reference purposes only
               </li>
               <li>This is not your Official Electronic License</li>
-              <li>This license cannot be Display in Public View</li>
+              <li>This license cannot be Displayed in Public View</li>
             </ol>
           </v-card-text>
           <v-divider></v-divider>
