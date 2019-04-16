@@ -22,14 +22,12 @@
               readonly
               name="name"
               label="Product Type"
-              
               :value="getProduct(form.general_info.product_type)"
           ></v-text-field>
           <v-text-field
               readonly
               name="name"
               label="Primary Activity"
-              
               :value="getPrimary(form.general_info.primary_activity)"
           ></v-text-field>
           <v-textarea
@@ -43,7 +41,6 @@
               readonly
               name="name"
               label="Declared Capital"
-              
               :value="getDeclared(form.general_info.declared_capital)"
           ></v-text-field> 
         </v-card-text>
@@ -64,49 +61,46 @@
               readonly
               name="name"
               label="Name of Establishment"
-              
               :value="form.estab_details.establishment_name"
           ></v-text-field> 
           <v-text-field
               readonly
               name="name"
               label="Establishment Owner"
-              
               :value="form.estab_details.establishment_owner"
           ></v-text-field> 
           <v-text-field
               readonly
               name="name"
               label="TIN"
-              
+              mask="###-###-###-###"
               :value="form.estab_details.tin"
           ></v-text-field> 
           <v-text-field
               readonly
               name="Email"
               label="Declared Capital"
-              
               :value="form.estab_details.email"
           ></v-text-field> 
           <v-text-field
               readonly
               name="name"
               label="Landline"
-              
+              mask="(##) ####-####"
               :value="form.estab_details.landline"
           ></v-text-field> 
           <v-text-field
               readonly
               name="name"
               label="Fax Number"
-              
+              mask="(##) ####-####"
               :value="form.estab_details.fax"
           ></v-text-field> 
           <v-text-field
               readonly
               name="name"
               label="Mobile Number"
-              
+              mask="(##) ####-####"
               :value="form.estab_details.mobile"
           ></v-text-field> 
         </v-card-text>

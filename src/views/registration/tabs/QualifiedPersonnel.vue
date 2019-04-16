@@ -183,7 +183,7 @@
         <v-card-actions v-if="mode">
           <v-spacer></v-spacer>
           <v-btn outline color="error" @click="deleteItem()">DELETE</v-btn>
-          <v-btn color="primary" @click="addToListDialog=false">EDIT</v-btn>
+          <v-btn color="primary" @click="addToListDialog=false">EDIT & SAVE</v-btn>
         </v-card-actions>
         <v-card-actions v-else>
           <v-spacer></v-spacer>

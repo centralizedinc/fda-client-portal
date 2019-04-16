@@ -156,7 +156,7 @@
                 <b>UNOFFICIAL</b> and for reference purposes only
               </li>
               <li>This is not your Official Electronic License</li>
-              <li>This license cannot be Display in Public View</li>
+              <li>This license cannot be Displayed in Public View</li>
             </ol>
           </v-card-text>
           <v-divider></v-divider>
@@ -309,6 +309,15 @@ export default {
             );
             app.application_type = this.getAppType(app.application_type);
             app.license_expiry = this.formatDate(app.license_expiry);
+
+            app.officeAddress = app.address_list.find(x => {
+              return x.type === 'Head Office'
+            })
+            if(!app.officeAddress){
+              app.officeAddress = {
+                address:""
+              }
+            }
             this.$print(app, "LIC");
             this.printDialog = false;
           }

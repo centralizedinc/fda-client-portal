@@ -476,9 +476,7 @@ export default {
             this.formData = data.formData;
             this.uploadedFiles = data.uploadedFiles;
         }
-    },
-    
-
+    },    
 }
 </script>
 

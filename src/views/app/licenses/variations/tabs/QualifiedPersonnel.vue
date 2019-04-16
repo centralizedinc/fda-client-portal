@@ -21,7 +21,7 @@
         >
           <template slot="items" slot-scope="props">
             <td>{{props.item.firstname + " " + props.item.lastname}}</td>
-            <td>{{props.item.designation}}</td>
+            <td>{{getDesignation(props.item.designation).name}}</td>
             <td>{{props.item.birthday}}</td>
             <td>{{props.item.tin}}</td>
             <td>{{props.item.id_type}}</td>
