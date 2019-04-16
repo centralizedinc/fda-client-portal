@@ -77,9 +77,9 @@
                         </v-btn>ECPay
                     </v-tooltip>
                     <!-- pay later -->
-                    <v-tooltip top class="pa-1">
+                    <!-- <v-tooltip top class="pa-1">
                         <v-btn dark slot="activator" height="50px" class="font-weight-bold" color="fdaMed" @click="payLater" v-if="allow_paylater">Pay Later</v-btn> Pay Later
-                    </v-tooltip>
+                    </v-tooltip> -->
                 </v-speed-dial>
                 <v-spacer></v-spacer>
             </v-card-actions>
@@ -87,7 +87,7 @@
     </v-flex>
 
     <!-- PayLater Dialog -->
-    <v-dialog v-model="dialogPayLater" max-width="300px" transition="dialog-transition">
+    <!-- <v-dialog v-model="dialogPayLater" max-width="300px" transition="dialog-transition">
         <v-card>
             <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
                 <span class="title font-weight-light">Confirmation</span>
@@ -101,7 +101,7 @@
                 <v-btn color="primary" flat @click="$router.push('/')">Ok!</v-btn>
             </v-card-actions>
         </v-card>
-    </v-dialog>
+    </v-dialog> -->
 
     <!-- FDAC Dialog -->
     <v-dialog v-model="cashierPayment" scrollable persistent transition="dialog-transition" max-width="500">
@@ -322,14 +322,18 @@ export default {
             this.$store
             .dispatch("SAVE_TRANSACTION_PROVIDER", details).then(result => {
             console.log("this is save transaction provider data: " + JSON.stringify(result))
-            
-        })  
-        console.log("this.fees_form: " + JSON.stringify(this.fees_form))
+
+             console.log("this.fees_form: " + JSON.stringify(this.fees_form))
+             console.log("this.app_form: " + JSON.stringify(this.app_form))
             this.cashierPayment = true;
             var full_details = {
                 formDetails: this.app_form,
-                paymentDetails: this.fees_form
+                paymentDetails: this.fees_form,
+                officeAddress: this.app_form.address_list.find(data =>{
+                    return data.type === "Head Office"
+                })
             };
+            
             full_details.formDetails.general_info.product_type = this.getProduct(
                 full_details.formDetails.general_info.product_type
             );
@@ -339,20 +343,36 @@ export default {
             full_details.formDetails.general_info.declared_capital = this.getDeclared(
                 full_details.formDetails.general_info.declared_capital
             );
-            full_details.formDetails.addresses.region = this.getRegionName(
-                full_details.formDetails.addresses.region
+            full_details.formDetails.auth_officer.mail_add.region = this.getRegionName(
+                full_details.formDetails.auth_officer.mail_add.region
             );
-            full_details.formDetails.addresses.province = this.getProvinceName(
-                full_details.formDetails.addresses.province
+            full_details.formDetails.auth_officer.mail_add.province = this.getProvinceName(
+                full_details.formDetails.auth_officer.mail_add.province
             );
-            full_details.formDetails.addresses.city = this.getCityName(
-                full_details.formDetails.addresses.city
+            full_details.formDetails.auth_officer.mail_add.city = this.getCityName(
+                full_details.formDetails.auth_officer.mail_add.city
+            );
+            full_details.officeAddress.region = this.getRegionName(
+                full_details.officeAddress.region
+            );
+            full_details.officeAddress.province = this.getProvinceName(
+                full_details.officeAddress.province
+            );
+            full_details.officeAddress.city = this.getCityName(
+                full_details.officeAddress.city
             );
             full_details.formDetails.application_type = this.getAppType(
                 full_details.formDetails.application_type
             );
-              
-        this.$download(full_details, "PAY");
+              console.log("fulldetails data: " + JSON.stringify(full_details));
+        this.$download(full_details, "PAY", 'FDAC.pdf');
+            
+            
+            console.log("application form data: " + JSON.stringify(this.app_form));
+            console.log("fees form data: " + JSON.stringify(this.fees_form));  
+                    
+        })  
+        this.$router.push('/')  
         }
     }
 };

@@ -21,6 +21,12 @@
           <v-text-field
               readonly
               name="name"
+              label="Case Number"
+              :value="form.case_no"
+          ></v-text-field>
+          <v-text-field
+              readonly
+              name="name"
               label="Product Type"
               :value="getProduct(form.general_info.product_type)"
           ></v-text-field>
@@ -344,6 +350,9 @@
               <td>{{ getModeOfPayment(props.item.payment_details.mode_of_payment) }}</td>
             </template>
               </v-data-table>
+              <v-footer height="auto" v-if="show_payments">
+                remaining balance: 
+              </v-footer>
           </v-card>
         </v-flex>
 
