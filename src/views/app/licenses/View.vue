@@ -350,6 +350,9 @@
               <td>{{ getModeOfPayment(props.item.payment_details.mode_of_payment) }}</td>
             </template>
               </v-data-table>
+              <v-footer height="auto" v-if="show_payments">
+                remaining balance: 
+              </v-footer>
           </v-card>
         </v-flex>
 
