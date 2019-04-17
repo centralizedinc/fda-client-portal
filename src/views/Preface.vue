@@ -111,7 +111,7 @@
               @click.native="dialog =false"
             >Cancel</v-btn>
             <v-btn
-              color="success"
+              color="primary"
               class="caption font-weight-light"
               :disabled="loading2"
               :loading="loading2"

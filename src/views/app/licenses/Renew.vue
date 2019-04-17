@@ -355,7 +355,7 @@
                         </v-list-tile-content>
                         <v-spacer></v-spacer>
                         <v-list-tile-action class="mr-2">
-                            <v-btn :disabled="isLoading" outline color="primary">Cancel</v-btn>
+                            <v-btn :disabled="isLoading" outline color="primary" @click="cancelDialog=true">Cancel</v-btn>
                         </v-list-tile-action>
                         <v-list-tile-action >
                             <v-btn v-show="curr_step==1" color="primary" @click="curr_step=2">Next</v-btn>
@@ -365,6 +365,41 @@
                 </v-list>
             </v-card>
          </v-bottom-sheet>
+         <v-dialog v-model="cancelDialog" persistent max-width="400px" transition="dialog-transition">
+           <v-card>
+          <v-toolbar
+            dark
+            color="fdaGreen"
+            style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+          >
+            <span class="font-weight-light headline">Confirmation</span>
+            <v-spacer></v-spacer>
+            <v-btn flat icon @click.native="dialog=false">
+              <v-icon>fas fa-times-circle fa-1x</v-icon>
+            </v-btn>
+          </v-toolbar>
+          <v-card-text>
+            <span
+              class="subheading font-weight-thin"
+            >Are you sure you want to cancel License Renewal?</span>
+          </v-card-text>
+                      <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              outline
+              color="secondary"
+              class="caption font-weight-light"
+              @click.native="cancelDialog =false"
+            >Cancel</v-btn>
+            <v-btn
+              color="primary"
+              class="caption font-weight-light"
+              @click="exit"
+            >Ok</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
     </v-layout>
 </template>
 
@@ -375,6 +410,7 @@ export default {
     },
     data(){
         return{
+            cancelDialog: false,
             form:{},
             charges:{},
             fees:[],
@@ -475,6 +511,9 @@ export default {
         uploadFile(data) {
             this.formData = data.formData;
             this.uploadedFiles = data.uploadedFiles;
+        },
+        exit() {
+          this.$router.push('/app/licenses')
         }
     },    
 }
@@ -483,5 +522,10 @@ export default {
 <style>
 .compact-form {
     transform: scale(0.875);
+}
+.sheetStyle {
+    /* border-radius: 0px 0px 12px 12px !important;  */
+    text-transform: uppercase;
+    font-weight: 400
 }
 </style>
