@@ -350,9 +350,11 @@
               <td>{{ getModeOfPayment(props.item.payment_details.mode_of_payment) }}</td>
             </template>
               </v-data-table>
+              
               <v-footer height="auto" v-if="show_payments">
-                remaining balance: 
+                <v-btn color="success" disabled="show_payment_summary" >remaining balance: ₱{{formatCurrency(remainingBalance())}}</v-btn>
               </v-footer>
+
           </v-card>
         </v-flex>
 
@@ -439,6 +441,8 @@ export default {
       show_payments:false,
       show_documents:false,
       show_generated:false,
+      show_payment_summary: false,
+      remaining_balance: 0.00,
       form:{
         general_info:{},
         estab_details:{},
@@ -503,6 +507,21 @@ export default {
     },
     viewFile(url){
       window.open(url, '_blank')
+    },
+    remainingBalance(){
+      console.log("case details: " + JSON.stringify(this.case_details))
+      console.log("form details: " + JSON.stringify(this.form))
+      console.log("payment details: " + JSON.stringify(this.payments))
+      var credit = 0
+      var debit = 0
+      this.payments.forEach(compute => {
+        debit = compute.transaction_details.order_payment.total_amount
+        credit += compute.payment_details.total_amount
+      })
+      if(debit - credit === 0)
+        this.show_payment_summary = true
+
+      return debit - credit
     }
   }
 }

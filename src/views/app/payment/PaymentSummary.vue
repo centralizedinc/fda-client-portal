@@ -316,6 +316,7 @@ export default {
             .catch(error=>{
                 this.$notifyError(err)
             })
+            this.$router.push('/')  
         },
         generatePDF() {
             var details = {
