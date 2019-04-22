@@ -260,6 +260,7 @@ export default {
                 description: 'Surcharge',
                 amount: this.fees_form.surcharge
             })
+            console.log('FORM: ' + JSON.stringify( this.form))
             this.$showCC({
                 summary,
                 case_no: this.form.case_no,
@@ -311,6 +312,9 @@ export default {
                     icon: "check_circle",
                     initialMargin: 100
                     });
+            })
+            .catch(error=>{
+                this.$notifyError(err)
             })
         },
         generatePDF() {

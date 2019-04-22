@@ -503,6 +503,7 @@ export default {
           })
           .catch(err => {
             this.isLoading = false;
+            this.$hideCC();
             console.log("ERROR: " + err);
             this.$notifyError(err);
           });

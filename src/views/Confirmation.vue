@@ -1,4 +1,10 @@
 <template>
+<div v-if="!loaded">
+    <v-layout justify-center align-center fill-height>
+        <v-progress-circular indeterminate color="primary"></v-progress-circular>
+    </v-layout>
+</div>
+<div v-else>
 <v-layout row wrap v-if="success_confirm" justify-center align-center>
     <v-flex xs8 mt-5>
       <v-flex xs8 pa-4>
@@ -31,9 +37,9 @@
         class="headline font-weight-thin"
       >Could not verify your account. It's seems that the confirmation email is already expired.</span>
         </v-flex>
-        <v-flex xs12 pa-4>
+        <!-- <v-flex xs12 pa-4>
             <v-btn class="font-weight-light" color="primary" @click="resend">Re-send Confirmation</v-btn>
-        </v-flex>
+        </v-flex> -->
     </v-flex>
 
     <v-dialog v-model="dialog" persistent max-width="400px" transition="dialog-transition">
@@ -52,6 +58,7 @@
         </v-card>
     </v-dialog>
 </v-layout>
+</div>
 </template>
 
 <script>
@@ -61,7 +68,8 @@ export default {
             dialog: false,
             success_confirm: false,
             account_name: "",
-            email: ""
+            email: "", 
+            loaded:false,
         };
     },
     created() {
@@ -72,11 +80,13 @@ export default {
             this.$store
                 .dispatch("CONFIRM", this.$route.query)
                 .then(res => {
+                    this.loaded = true;
                     this.account_name = res.username;
                     this.email = res.email;
                     this.success_confirm = true;
                 })
                 .catch(err => {
+                    this.loaded = true;
                     console.log(err);
                     this.success_false = false;
                 });
