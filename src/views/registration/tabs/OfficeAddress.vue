@@ -48,8 +48,10 @@
                 <v-layout row wrap>
                     <v-flex xs12>
                         <v-select
-                            :items="['Head Office', 'Branch', 'Warehouse', 'Plant']"
+                            :items="address_types"
                             v-model="address.type"
+                            item-text="name"
+                            item-value="code"
                             label="Address Type"
                         ></v-select>
                         <v-textarea rows="2"
@@ -175,7 +177,20 @@ export default {
                     text: "Zip Code",
                     value: "zipCode"
                 }
-            ]
+            ],
+            address_types: [{
+                name: 'Head Office',
+                code: 0
+            }, {
+                name: 'Branch',
+                code: 1
+            }, {
+                name: 'Warehouse',
+                code: 2
+            }, {
+                name: 'Plant',
+                code: 3
+            }]
         }
     },
     created(){
@@ -200,7 +215,7 @@ export default {
         validate(){
             var valid = false;
             for(var i=0; i<this.address_list.length; i++){
-                if(this.address_list[i].type==='Head Office'){
+                if(this.address_list[i].type===0){
                     valid=true;
                     this.form.address_list = this.address_list;
                     break;
