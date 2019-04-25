@@ -111,7 +111,8 @@ export default {
       remarks: null,
       form_data: null,
       selected: {},
-      loading: false
+      loading: false,
+      uploadedFiles: []
     };
   },
   created() {
@@ -149,12 +150,19 @@ export default {
       this.selected = item;
       this.complyDialog = true;
     },
-    upload(file) {
-      this.form_data = file;
+    upload(data) {
+      this.form_data = data.formData;
+      this.uploadedFiles = data.uploadedFiles;
     },
     submit() {
       this.loading = true;
       if (this.remarks != null) {
+        console.log("saving comply :", {
+          case_id: this.selected.case_id,
+          case_no: this.selected.case_no,
+          remarks: this.remarks,
+          form_data: this.form_data
+        });
         this.$store
           .dispatch("SAVE_COMPLY", {
             case_id: this.selected.case_id,
@@ -171,7 +179,7 @@ export default {
               icon: "check_circle"
             });
             this.init();
-            return this.$store.dispatch("GET_ACTIVITIES");
+            return this.$store.dispatch("GET_ACTIVITIES", true);
           })
           .catch(err => {
             this.loading = false;

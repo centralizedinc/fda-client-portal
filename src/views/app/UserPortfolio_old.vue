@@ -129,52 +129,6 @@ export default {
         .catch(err => {
           console.log("err :", err);
         });
-    },
-    functionEvents(date) {
-      const [, , day] = date.split("-");
-      if ([12, 17, 28].includes(parseInt(day, 10))) return true;
-      if ([1, 19, 22].includes(parseInt(day, 10))) return ["red", "#00f"];
-      return false;
-    },
-    create() {
-      this.tasks.push({
-        done: false,
-        text: this.task
-      });
-      this.task = null;
-    },
-    comply(data) {
-      console.log("JSON.stringify(data) :", JSON.stringify(data));
-      this.complyData = data;
-      this.complyDialog = true;
-    },
-    upload(formData) {
-      // this.$emit("upload", formData);
-      console.log("upload data: " + formData);
-      this.files = formData;
-    },
-    submit() {
-      var filesData = this.files;
-      const formData = new FormData();
-      for (let i = 0; i < filesData.length; i++) {
-        if (filesData[i].file) {
-          formData.append("lto", filesData[i].file, filesData[i].file["name"]);
-        }
-      }
-      var complied = {
-        case_id: this.complyData.case_id,
-        case_no: this.complyData.case_no,
-        remarks: this.remarks,
-        form_data: this.files
-      };
-      this.$store
-        .dispatch("SAVE_COMPLY", complied)
-        .then(result => {
-          console.log("#result :", result);
-        })
-        .catch(err => {
-          console.log("err :", err);
-        });
     }
   }
 };
