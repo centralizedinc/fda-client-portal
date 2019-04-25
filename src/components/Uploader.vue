@@ -30,7 +30,7 @@
             <span class="title font-weight-light">Preview</span>
             <v-spacer></v-spacer>
            <v-tooltip top>
-            <v-btn slot="activator"  fab small icon color="fdaMed" @click="$refs.image.click()">
+            <v-btn slot="activator"  outline small icon  @click="$refs.image.click()">
               <v-icon>fas fa-plus</v-icon>
             </v-btn>Upload More Files
            </v-tooltip>
@@ -39,9 +39,9 @@
               class="elevation-2"
               slot="activator"
               small
-              fab
+              outline
               icon
-              color="fdaOrange"
+              
               @click="reset"
             >
               <v-icon>fas fa-redo-alt</v-icon>

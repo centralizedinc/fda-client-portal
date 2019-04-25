@@ -142,7 +142,7 @@ export default {
         },
         numberWithCommas(x) {
           if (!x || isNaN(x)) return "0.00"
-          return x.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+          return parseFloat(x).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
         },
         formatDate: (date, type) => {
           if (!date) {
@@ -170,11 +170,8 @@ export default {
         //   return newDT
         // },
         formatCurrency: amount => {
-          var parts = amount.toString().split(".");
-          return (
-            parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-            (parts[1] ? "." + parts[1] : "")
-          );
+          if (!amount || isNaN(amount)) return "0.00"
+          return parseFloat(amount).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
         },
         isEmpty(str) {
           return !str || str === null || str === "";

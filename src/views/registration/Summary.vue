@@ -92,7 +92,7 @@
                                         readonly
                                         name="name"
                                         label="TIN"
-                                        
+                                        mask="###-###-###-###"
                                         :value="form.estab_details.tin"
                                     ></v-text-field> 
                                     <v-text-field
@@ -106,21 +106,21 @@
                                         readonly
                                         name="name"
                                         label="Landline"
-                                        
+                                        mask="(##) ####-####"
                                         :value="form.estab_details.landline"
                                     ></v-text-field> 
                                     <v-text-field
                                         readonly
                                         name="name"
                                         label="Fax Number"
-                                        
+                                        mask="(##) ####-####"
                                         :value="form.estab_details.fax"
                                     ></v-text-field> 
                                     <v-text-field
                                         readonly
                                         name="name"
                                         label="Mobile Number"
-                                        
+                                        mask="(##) ####-####"
                                         :value="form.estab_details.mobile"
                                     ></v-text-field> 
                                 </v-card-text>
@@ -258,7 +258,7 @@
                                         readonly
                                         name="name"
                                         label="Designation"                                        
-                                        :value="form.auth_officer.designation"
+                                        :value="getDesignation(form.auth_officer.designation).name"
                                     ></v-text-field>
                                     <v-text-field
                                         readonly
@@ -270,7 +270,7 @@
                                         readonly
                                         name="name"
                                         label="Id Type"                                        
-                                        :value="form.auth_officer.id_type"
+                                        :value="getIdType(form.auth_officer.id_type).name"
                                     ></v-text-field>
                                     <v-text-field
                                         readonly
@@ -361,7 +361,7 @@
                                             readonly
                                             name="name"
                                             label="Designation"                                            
-                                            :value="item.designation"
+                                            :value="getDesignation(item.designation).name"
                                         ></v-text-field>
                                         <v-text-field
                                             readonly
@@ -372,14 +372,15 @@
                                         <v-text-field
                                             readonly
                                             name="name"
-                                            label="TIN"                                            
+                                            label="TIN" 
+                                            mask="###-###-###-###"                                           
                                             :value="item.tin"
                                         ></v-text-field>
                                         <v-text-field
                                             readonly
                                             name="name"
                                             label="Id Type"                                            
-                                            :value="item.id_type"
+                                            :value="getIdType(item.id_type).name"
                                         ></v-text-field>
                                         <v-text-field
                                             readonly

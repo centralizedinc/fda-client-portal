@@ -49,6 +49,7 @@
               <span class="caption">{{completion}}%</span>
             </v-progress-circular>
           </v-card-title>
+          <!-- <v-progress-linear style="margin:0" height="1px" :indeterminate="true"></v-progress-linear> -->
           <v-card-text>                      
             <v-stepper v-model="e1">
               <v-stepper-items>
@@ -363,13 +364,23 @@ export default {
           this.isLoading = false;
           break;
         case 3:
-          this.$refs.step3.validate()&&this.validateExisting()?
-          this.e1++:null
-          break;
+          this.validateExisting()
+          .then(result=>{
+            if(result){
+              this.e1++
+            }
+          }) 
+          break;                   
         case 4:
-          this.$refs.step3.validate()&&this.saveExisting()?this.e1++:null
+          this.saveExisting()
+          .then(result=>{
+            if(result){
+              this.e1++
+            }
+          })
+          break;
         case 5:
-          $router.push('/')
+          this.$router.push('/')
       }     
       this.$vuetify.goTo(0) 
     },
@@ -392,53 +403,74 @@ export default {
       }
     },
     validateExisting() {
-      this.form.auth_officer.fullname =this.form.auth_officer.lastname +"," +this.form.auth_officer.firstname +" " +this.form.auth_officer.middlename;      
-      this.$store.dispatch("VERIFY_LICENSES", this.form)
-      .then(result => {
-        this.isLoading=false;
-        console.log('RESULT: ' + JSON.stringify(result))        
-        if(result.data.model){        
-          this.$notify({message: "License details found."});
-          this.orig_form = result.data.model;
-          return true;
-        }else{
-          this.$notifyError([{message:'License not found! Please check your details.'}])
-          return false;
-        }        
-      })
-      .catch(err=>{
-        this.isLoading=false;
-        this.$notifyError(err)
-        return true;
-      })
+      return new Promise((resolve, reject)=>{
+        if(this.$refs.step3.validate()){       
+          this.form.auth_officer.fullname =this.form.auth_officer.lastname +", " +this.form.auth_officer.firstname +" " +this.form.auth_officer.middlename;      
+          this.$store.dispatch("VERIFY_LICENSES", this.form)
+            .then(result => {
+              console.log(JSON.stringify(result))
+              this.isLoading=false;     
+                if(result.data.model){        
+                  this.$notify({message: "License details found", color: "success", icon: "check_circle"});
+                  this.orig_form = result.data.model;
+                  resolve(true);
+                }else{
+                  this.$notifyError([{message:'License not found! Please check your details', color: "warning", icon: "error_outline"}])
+                  resolve(false);
+                }        
+              })
+              .catch(err=>{
+                this.isLoading=false;
+                this.$notifyError(err)
+                resolve(false);
+              })
+            }else{
+              this.$notifyError([{message: 'Fill-up required fields'}])
+              resolve(false);
+            }
+          })            
     },
     saveExisting() { 
-      this.orig_form.auth_officer.email = "abalita@centralizedinc.com"  
-      this.orig_form._id = null;
-      this.orig_form.is_existing = true;   
-      var reg_details = {license: this.orig_form,account: this.account}
-      console.log(JSON.stringify(reg_details))
-      this.$store.dispatch("EXISTING_LIC_REG", reg_details)
-          .then(result => {
-            this.isLoading=false;
-            if(result.data.success){
-              this.$notify({
-                message: "Account Registration completed.",
-                color: "success",
-                icon: "check_circle"
-              });
-              return true
-            }else{
-              return false
-              this.$notifyError(result.data.errors)
+      return new Promise((resolve, reject)=>{
+          if(this.$refs.step4.validate()){
+            this.orig_form._id = null;
+            this.orig_form.is_existing = true;   
+            this.account.name = {
+              first:this.form.auth_officer.firstname,
+              middle:this.form.auth_officer.middlename,
+              last:this.form.auth_officer.lastname
             }
-          
-        })
-        .catch(err => {
-          console.log("error in uploading files: " + err);
-          this.isLoading=false;
-          return false          
-        });
+            this.account.email = this.form.auth_officer.email
+            var reg_details = {license: this.orig_form,account: this.account}
+            console.log(JSON.stringify(reg_details))
+            this.$store.dispatch("EXISTING_LIC_REG", reg_details)
+                .then(result => {
+                  this.isLoading=false;
+                  if(result.data.success){
+                    this.$notify({
+                      message: "Account Registration completed.",
+                      color: "success",
+                      icon: "check_circle"
+                    });
+                    resolve(true)
+                  }else{                    
+                    this.$notifyError(result.data.errors)
+                    resolve(false)
+                  }
+                
+              })
+              .catch(err => {
+                console.log("error in uploading files: " + err);
+                this.isLoading=false;
+                resolve(false)        
+              });
+          }else{
+            this.$notifyError([{message: "Fill-up required fields"}])
+            resolve(false)
+          }
+      })
+      // this.orig_form.auth_officer.email = "abalita@centralizedinc.com"  
+      
     }
   }
 };

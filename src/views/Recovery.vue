@@ -65,7 +65,7 @@
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="success" type="submit" :disabled="loading" :loading="loading">Submit</v-btn>
+              <v-btn color="primary" type="submit" :disabled="loading" :loading="loading">Submit</v-btn>
             </v-card-actions>
           </v-card>
         </v-form>

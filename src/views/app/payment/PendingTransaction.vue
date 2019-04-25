@@ -34,7 +34,7 @@
       <v-flex xs12>
         <v-divider></v-divider>
       </v-flex>
-      <v-btn block color="success" @click="pay">Pay now</v-btn>
+      <v-btn block color="primary" @click="pay">Pay now</v-btn>
     </v-layout>
     <v-layout row wrap>
       <payment-summary v-show="paymentDialog" :form="form" :case_holder="case_holder" :allow_paylater="allow_paylater"></payment-summary>

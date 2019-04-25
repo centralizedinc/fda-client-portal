@@ -24,43 +24,49 @@
                   name="name"
                   label="Reference Number"
                   id="id"
+                  readonly
                   :value="preview_item.case_no"
                 ></v-text-field>
                 <v-text-field
                   name="name"
                   label="Application Type"
                   id="id"
+                  readonly
                   :value="getAppType(preview_item.application_type)"
                 ></v-text-field>
                 <v-text-field
                   name="name"
                   label="Date Applied"
                   id="id"
+                  readonly
                   :value="formatDate (preview_item.date_created)"
                 ></v-text-field>
                 <v-text-field
                   name="name"
                   label="Status"
                   id="id"
+                  readonly
                   :value="getAppStatus(preview_item.status)"
                 ></v-text-field>
                 <v-text-field
                   name="name"
                   label="Current Tasks"
                   id="id"
+                  readonly
                   :value="getTask(preview_item.current_task).name"
                 ></v-text-field>                                 
                 <v-textarea rows="2"
                   name="name"
                   label="Remarks"
                   id="id"
+                  readonly
                   :value="preview_item.remarks"
                 ></v-textarea>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn :disabled="isLoading" outline color="primary" @click="overview=false">Close</v-btn>
+              <v-btn :disabled="isLoading" outline color="secondary" @click="overview=false">Close</v-btn>
               <v-btn :loading="isLoading" color="primary" @click="loadForm(preview_item.application_id)">View</v-btn>
             </v-card-actions>
           </v-card>
@@ -150,13 +156,13 @@
                 <b>UNOFFICIAL</b> and for reference purposes only
               </li>
               <li>This is not your Official Electronic License</li>
-              <li>This license cannot be Display in Public View</li>
+              <li>This license cannot be Displayed in Public View</li>
             </ol>
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn color="success" class="font-weight-light" flat @click="printLicense">Ok</v-btn>
+            <v-btn color="primary" class="font-weight-light" flat @click="printLicense">Ok</v-btn>
             <v-spacer></v-spacer>
           </v-card-actions>
         </v-card>
@@ -303,6 +309,15 @@ export default {
             );
             app.application_type = this.getAppType(app.application_type);
             app.license_expiry = this.formatDate(app.license_expiry);
+
+            app.officeAddress = app.address_list.find(x => {
+              return x.type === 'Head Office'
+            })
+            if(!app.officeAddress){
+              app.officeAddress = {
+                address:""
+              }
+            }
             this.$print(app, "LIC");
             this.printDialog = false;
           }

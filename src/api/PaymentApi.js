@@ -73,7 +73,8 @@ export default class PaymentAPI {
         console.log("details data: " + JSON.stringify(details))
         axios.post('payments/transactions/initiate',{
             payment_details: {
-                total_amount: details.fees.total
+                status: 0, //Initiate
+                mode_of_payment: details.mode_of_payment
             },
             transaction_details: {
                 application_type: details.fees.appType,
@@ -84,8 +85,10 @@ export default class PaymentAPI {
                     fee: details.fees.fee,
                     lrf: details.fees.lrf,
                     penalty: details.fees.penalty,
-                    total_amount: details.fees.total_amount,
-                    reamrks: details.fees.reamrks
+                    surcharge: details.fees.surcharge,
+                    interest: details.fees.interest,
+                    total_amount: details.fees.total,
+                    remarks: details.fees.remarks
                 }
         }
     }).then((result) => {

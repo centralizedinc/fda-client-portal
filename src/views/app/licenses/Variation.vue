@@ -1,275 +1,320 @@
 <template>
-    <v-container grid-list-md>
-        <v-layout row wrap v-if="page === 1 && !paymentDialog">
-            <v-card>
+    <v-layout row wrap>
+       <v-flex xs12 md8 pa-1 v-if="curr_step==1">
+           <v-card v-for="(item, index) in variations" :key="index" class="ma-1" >
+               <v-toolbar dark color="primary">
+                   {{item.title}}
+               </v-toolbar>
+               <v-card-text>
+                   <v-checkbox 
+                        color="primary"
+                        v-for="(field, i) in item.items" 
+                        :key="i" 
+                        :label="field.description" 
+                        v-model="selected_variations" 
+                        :disabled="field.disabled"
+                        :value="field.code">
+                    </v-checkbox>
+               </v-card-text>
+           </v-card>            
+       </v-flex>
+       <v-flex xs12 md8 pa-1 v-else>
+           <v-card class="ma-1" v-if="show_section('MN1')">
+                <v-toolbar dark color="primary">
+                  {{variations[0].items[0].description}}
+               </v-toolbar>
+               <v-card-text>
+                   <product-line :form="form"></product-line>
+               </v-card-text>
+            </v-card>
+
+            <v-card class="ma-1" v-if="show_section('MN4')">
+                <v-toolbar dark color="primary">
+                  {{variations[0].items[3].description}}
+               </v-toolbar>
+               <v-card-text>
+                   <v-text-field
+                        color="green darken-1"
+                        :rules="[rules.required]"
+                        required
+                        label="Name of Establishment"
+                        v-model="form.estab_details.establishment_name"
+                    ></v-text-field>
+               </v-card-text>
+            </v-card>
+
+            <v-card class="ma-1"  v-if="show_section('MN5')">
+                <v-toolbar dark color="primary">
+                  {{variations[0].items[4].description}}
+               </v-toolbar>
+               <v-card-text>
+                   <qualified-personnel :form="form"></qualified-personnel>
+               </v-card-text>
+            </v-card>
+
+            <v-card class="ma-1"  v-if="show_section('MJ1')">
+                <v-toolbar dark color="primary">
+                  {{variations[1].items[0].description}}
+               </v-toolbar>
+               <v-card-text>
+                   <v-text-field
+                        color="green darken-1"
+                        :rules="[rules.required]"
+                        required
+                        label="Name of Establishment"
+                        v-model="form.estab_details.establishment_name"
+                    ></v-text-field>
+               </v-card-text>
+            </v-card>
+
+            <v-card class="ma-1" v-if="show_section('MJ2')">
+                <v-toolbar dark color="primary">
+                  {{variations[1].items[1].description}}
+               </v-toolbar>
+               <v-card-text>
+                    <v-text-field
+                        color="green darken-1"
+                        label="Establishment Owner"
+                        :rules="[rules.required]"
+                        required
+                        v-model="form.estab_details.establishment_owner"
+                    ></v-text-field>
+               </v-card-text>
+            </v-card>
+
+            <v-card class="ma-1" v-if="show_section('MJ3')">
+                <v-toolbar dark color="primary">
+                  {{variations[1].items[2].description}}
+               </v-toolbar>
+               <v-card-text>
+                   <office-address :form="form"></office-address>
+               </v-card-text>
+            </v-card>
+       </v-flex>
+
+       <v-flex xs12 md4 pa-1>
+           <v-card >
+                <v-toolbar dark color="primary">
+                    Variation Fee
+                </v-toolbar>
                 <v-card-text>
-                    <v-flex xs12 v-for="(item, index) in variations" :key="index" mb-3>
-                        <span class="title">{{item.title}}</span>
-                        <v-checkbox 
-                        color="primary"
-                            v-for="(field, i) in item.items" 
-                            :key="i" 
-                            :label="field.description" 
-                            v-model="selected_variations" 
-                            :disabled="field.disabled"
-                            :value="field.code">
-                        </v-checkbox>
-                        <v-divider></v-divider>
-                    </v-flex>
-                    <v-btn 
-                        color="primary"
-                        @click="page=2"
-                        :disabled="selected_variations.length===0" 
-                        block>Continue
-                    </v-btn>
+                    <v-data-table
+                        :headers="[{text: 'Description', sortable:false}, {text: 'Amount', sortable:false}]"
+                        :items="fees"
+                        hide-actions
+                    >
+                        <template slot="items" slot-scope="props">
+                            <td>{{ props.item.description }}</td>
+                            <td>₱ {{ numberWithCommas (props.item.amount) }}</td>
+                            </template>
+                            <template slot="footer">
+                            <td >Total</td>
+                            <td class="font-weight-bold" >₱ {{ numberWithCommas(total_amount) }}</td> 
+                        </template>
+                    </v-data-table>                     
                 </v-card-text>
             </v-card>
-        </v-layout>
-        <v-layout row wrap v-else-if="page === 2 && !paymentDialog">
-            <v-card>
-                <v-card-text>
-                    <v-flex xs12 v-if="checkVariation(['MN1'])">
-                        <product-line 
-                            :existingForm="existingForm" 
-                            :updatedForm="updatedForm">
-                        </product-line>
-                        <v-divider></v-divider>
-                    </v-flex>
-                    <v-flex xs12 v-if="checkVariation(['MN5'])">
-                      <qualified-personnel 
-                          :existingForm="existingForm" 
-                          :updatedForm="updatedForm">
-                      </qualified-personnel>
-                      <v-divider></v-divider>
-                    </v-flex>
-                    <v-flex xs12 mt-2 mb-4>
-                      <change-form 
-                        :variations="selected_variations"
-                        :existingForm="existingForm" 
-                        :updatedForm="updatedForm">
-                      </change-form>
-                    </v-flex>
-                </v-card-text>
-                <v-card-actions>
-                  <v-btn color="secondary" flat outline @click="page=1">Back</v-btn>
-                  <v-spacer></v-spacer>
-                  <v-btn color="success" @click="confirmDialog=true">Submit Changes</v-btn>
-                </v-card-actions>
+       </v-flex>
+       <v-bottom-sheet dark persistent hide-overlay :value="true">
+             <v-card dark color="success">
+                <v-list>
+                    <v-list-tile>
+                        <v-list-tile-content>
+                        <v-list-tile-title>License Variation</v-list-tile-title>
+                        <v-list-tile-sub-title v-if="curr_step == 1">Step 1 - Select variation category then click next</v-list-tile-sub-title>
+                        <v-list-tile-sub-title v-else>Step 2 - Update License Details</v-list-tile-sub-title>
+                        </v-list-tile-content>
+                        <v-spacer></v-spacer>
+                        <v-list-tile-action class="mr-2">
+                            <v-btn :disabled="isLoading" outline @click="curr_step=1">Cancel</v-btn>
+                        </v-list-tile-action>
+                        <v-list-tile-action >
+                            <v-btn v-show="curr_step==1" color="primary" @click="next()">Next</v-btn>
+                            <v-btn :loading="isLoading" v-show="curr_step==2" color="primary" @click="submit()">Accept</v-btn>
+                        </v-list-tile-action>                       
+                    </v-list-tile>
+                </v-list>
             </v-card>
-        </v-layout>
-        <payment-summary
-        v-else-if="paymentDialog"
-        @close="confirmDialog=false"
-        :form="updatedForm"
-        :charges="charges"
-        ></payment-summary>
-        <confirm-to-review-app
-            :show="confirmDialog"
-            @close="confirmDialog=false"
-            @overview="confirmDialog=false;showAppOverview=true"
-            @submit="submit">
-        </confirm-to-review-app>
-        <application-overview :show="showAppOverview" @close="showAppOverview=false;confirmDialog=true;">
-            <app-summary slot="appsummary" :form="updatedForm"></app-summary>
-            <app-data slot="appdata" :form="updatedForm"></app-data>
-            <uploaded-files slot="uploadedfiles" :form="updatedForm"></uploaded-files>
-            <output-docs slot="outputdocs" :form="updatedForm"></output-docs>
-            <!-- <app-history slot="apphistory" :form="updatedForm"></app-history> -->
-            <payment slot="paymentdetails" :form="updatedForm" :charges="charges"></payment>
-        </application-overview>
-    </v-container>
+         </v-bottom-sheet>
+    </v-layout>    
 </template>
 
 <script>
 import variations from "./variations/variations.json";
-import tabs from "./variations";
 
 export default {
-  components: tabs,
-  data() {
-    return {
-      page: 1,
-      variations: variations,
-      selected_variations: [],
-      existingForm: {
-        general_info: {},
-        estab_details: {
-          products: []
-        },
-        addresses: {
-          office: {},
-          warehouse: [],
-          plant: {}
-        },
-        auth_officer: {
-          mail_add: {}
-        },
-        qualified: [],
-        uploaded_files: []
-      },
-      updatedForm: {
-        general_info: {},
-        estab_details: {
-          products: []
-        },
-        addresses: {
-          office: {},
-          warehouse: [],
-          plant: {}
-        },
-        auth_officer: {
-          mail_add: {}
-        },
-        qualified: [],
-        uploaded_files: []
-      },
-      charges: {},
-      paymentDialog: false,
-      confirmDialog: false,
-      showAppOverview: false
-    };
-  },
-  computed: {
-    variation_items() {
-      return this.variations[0].items.concat(this.variations[1].items);
+    components:{
+        ProductLine:() => import('@/views/app/licenses/variations/sections/ProductLine.vue'),
+        QualifiedPersonnel:() => import('@/views/app/licenses/variations/sections/QualifiedPersonnel.vue'),
+        OfficeAddress:() => import('@/views/app/licenses/variations/sections/OfficeAddress.vue'),
     },
-    variations_data() {
-      var items = [];
-      this.selected_variations.forEach(variation => {
-        var item = this.deepCopy(this.variation_items).find(
-          x => x.code === variation
-        );
-        item.fields = undefined;
-        items.push(item);
-      });
-      return items;
-    }
-  },
-  created() {
-    this.init();
-  },
-  methods: {
-    init() {
-      this.existingForm = this.$store.state.licenses.variation_license;
-      this.updatedForm = this.deepCopy({
-        application_type: 1,
-        general_info: this.existingForm.general_info,
-        estab_details: this.existingForm.estab_details,
-        addresses: this.existingForm.addresses,
-        auth_officer: this.existingForm.auth_officer,
-        qualified: this.existingForm.qualified,
-        uploaded_files: this.existingForm.uploaded_files
-      });
-      this.updatedForm.estab_details.products = [];
-      this.existingForm.estab_details.products.forEach(product => {
-        product.read_only = true;
-        this.updatedForm.estab_details.products.push(this.deepCopy(product));
-      });
-    },
-    checkCode(code) {
-      if (code === "MN4") {
-        if (
-          this.selected_variations.indexOf("MJ1") > -1 &&
-          this.selected_variations.indexOf("MJ3") > -1
-        ) {
-          var i = this.selected_variations.indexOf("MN4");
-          if (i > -1) {
-            this.selected_variations.splice(i, 1);
-          }
-          return false;
+    data(){
+        return {
+            charges:{},
+            fees:[],
+            total_amount:0,
+            variations: variations,
+            curr_step:1,
+            isLoading:false,
+            selected_variations:[],
+            form:{},
+            base_form:{},
+            rules: {
+                required: value => !!value || "This field is required",
+                email: value => {
+                    const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    return pattern.test(value) || "Invalid e-mail.";
+                }
+            }
         }
-        return true;
-      }
-      return true;
     },
-    checkVariation(codes) {
-      for (let i = 0; i < codes.length; i++) {
-        if (this.selected_variations.indexOf(codes[i]) > -1) {
-          return true;
-        }
-      }
-      return false;
+    created(){
+        this.init()
     },
-    getVariationValues(code) {
-      var item = this.variation_items.find(x => x.code === code);
-      var items = [];
-      if (item && item.fields) {
-        item.fields.forEach(field => {
-          var old_value = this.getValue(this.existingForm, field),
-            new_value = this.getValue(this.updatedForm, field);
-          if (old_value !== new_value) items.push({ old_value, new_value });
-        });
-      }
-      return items;
-    },
-    getValue(arr, item_key) {
-      var keys = item_key.split("."),
-        value = null;
-      keys.forEach(key => {
-        value = value ? value[key] : arr[key];
-      });
-      var output =
-        typeof value === "string"
-          ? value
-          : this.replaceAll(JSON.stringify(value), '"', "'");
-      return JSON.parse(
-        '{ "' + keys[keys.length - 1] + '" : "' + output + '" }'
-      );
-    },
-    submit() {
-      var variations = this.variations_data;
-      var variated_values = [];
-      this.selected_variations.forEach(code => {
-        variated_values = variated_values.concat(this.getVariationValues(code));
-      });
-      console.log("this.updatedForm :", this.updatedForm);
-      console.log("variations :", variations);
-      console.log("variated_values :", JSON.stringify(variated_values));
-      this.$store
-        .dispatch("VARIATE_LICENSE", {
-          license: this.updatedForm,
-          variation: {
-            variations,
-            variated_values
-          }
-        })
-        .then(result => {
-          console.log("Saving variation result :", result);
-          if (result.success) {
-            this.$notify({
-              message:
-                "Successfully applied a Variation of License with Case No.: " +
-                result.model.case_details.case_no,
-              color: "primary"
-            });
-            this.$store.commit("SET_FORM", result.model);
-            this.confirmDialog = false;
-            
-            //find fees
+    methods:{
+        init(){
+            this.base_form = this.$store.state.licenses.variation_license
+            this.form = this.deepCopy(this.$store.state.licenses.variation_license)
+            this.form.application_type = 1;
+            this.form.base_license= this.form.license_no
+            //clear fields
+            delete this.form._id
+            delete this.form.auto_id
+            delete this.form.license_no
+            delete this.form.created_by
+            delete this.form.date_created
+            delete this.form.date_modified
+            delete this.form.status
+            delete this.form.is_existing
+            delete this.output_files
+        },
+        show_section(code){
+            return this.selected_variations.indexOf(code)>-1?true:false
+        },
+        next(){
+            /**
+             * TODOs:
+             * computation of fees not correct!!!
+             * computation should include if the variation type
+             */
             var details = {
-                productType: this.updatedForm.general_info.product_type,
-                primaryActivity: this.updatedForm.general_info.primary_activity,
-                declaredCapital: this.updatedForm.general_info.declared_capital,
-                appType: this.updatedForm.application_type
-              };
-            return this.$store.dispatch("GET_FEES", details)
-                
-          } else {
-            this.$notifyError(result.errors);
-          }
-        })
-        .then(payment_fees =>{
-          this.charges = payment_fees;
-          this.paymentDialog = true;
-        })
-        .catch(err => {
-          console.log("Saving variation err :", err);
-          this.$notifyError(err);
-        });
+                productType: this.form.general_info.product_type,
+                primaryActivity: this.form.general_info.primary_activity,
+                declaredCapital: this.form.general_info.declared_capital,
+                appType: this.form.application_type
+            };
+            this.$store.dispatch("GET_FEES", details).then(result => {
+                this.charges = result;
+                this.fees=[];
+                this.fees.push({
+                    description: 'Application Fee',
+                    amount: result.fee
+                })
+                this.fees.push({
+                    description: 'LRF',
+                    amount: result.lrf
+                })
+                this.fees.push({
+                    description: 'Interest',
+                    amount: result.interest
+                }),
+                this.fees.push({
+                    description: 'Surcharge',
+                    amount: result.surcharge
+                })
+                this.curr_step = 2;
+                this.total_amount = result.total
+                this.$notify({color:'success',message:'Registration fee computed! For this application you will have to pay the amount of  ₱ ' + this.numberWithCommas(this.total_amount)})
+            });
+           
+        },
+        submit(){
+            var variated_values = [];
+            this.selected_variations.forEach(element=>{
+                console.log(element)
+               
+                switch(element){
+                    case 'MN1':
+                        variated_values.push({
+                            code: element,
+                            old_value: this.base_form.estab_details.products,
+                            new_value: this.form.estab_details.products
+                        })
+                        break;
+                    case 'MN4':
+                        variated_values.push({
+                            code: element,
+                            old_value: this.base_form.estab_details.establishment_name,
+                            new_value: this.form.estab_details.establishment_name
+                        })
+                        break;
+                    case 'MN5':
+                        variated_values.push({
+                            code: element,
+                            old_value: this.base_form.qualified,
+                            new_value: this.form.qualified
+                        })
+                        break;
+                    case 'MJ1':
+                        variated_values.push({
+                            code: element,
+                            old_value: this.base_form.estab_details.establishment_name,
+                            new_value: this.form.estab_details.establishment_name
+                        })
+                        break;
+                    case 'MJ2':
+                        variated_values.push({
+                            code: element,
+                            old_value: this.base_form.estab_details.establishment_owner,
+                            new_value: this.form.estab_details.establishment_owner
+                        })
+                        break;
+                    case 'MJ3':
+                        variated_values.push({
+                            code: element,
+                            old_value: this.base_form.address_list,
+                            new_value: this.form.address_list
+                        })
+                        break;                    
+                }                
+            })
+            console.log(JSON.stringify(variated_values))
+
+            this.$store.dispatch("VARIATE_LICENSE", {
+                license: this.form,
+                variation: {
+                    variations:[],
+                    variated_values
+                }
+            })
+            .then(result => {
+                console.log("Saving variation result :", result);
+                if (result.success) {
+                    this.$notify({
+                    message:
+                        "Successfully applied for License Variation with Case No.: " +
+                        result.model.case_details.case_no,
+                    color: "success",
+                    icon: "check_circle"
+                    });
+                    this.$store.commit("SET_FORM", result.model.license);
+                    this.$store.commit('FEES', this.charges);
+                    this.$router.push('/app/licenses/pay');
+                        
+                } else {
+                    this.$notifyError(result.errors);
+                }
+            })
+            .catch(err => {
+            console.log("Saving variation err :", err);
+            this.$notifyError(err);
+            });
+        }
+
     }
-  }
-};
+}
 </script>
 
 <style>
+
 </style>

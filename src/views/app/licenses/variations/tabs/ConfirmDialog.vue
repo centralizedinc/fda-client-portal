@@ -19,7 +19,7 @@
         Before you proceed on to the next step, kindly review your application and make sure you have entered all values correctly. Once you clicked Submit, you won't be able to modify any of the data you have entered.
         <div></div>
         <v-spacer></v-spacer>
-        <v-btn block color="success" @click="$emit('overview')">Review your Application</v-btn>
+        <v-btn block color="primary" @click="$emit('overview')">Review your Application</v-btn>
         <v-spacer></v-spacer>
       </v-card-text>
       <v-divider></v-divider>

@@ -24,6 +24,7 @@ const mutations = {
         state.expiry = form
     },
     FEES(state, charges) {
+        console.log("fees mutations data charges: " + JSON.stringify(charges))
         state.fee = charges
     },
     CLEAR_DATA(state) {

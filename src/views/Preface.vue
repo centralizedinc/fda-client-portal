@@ -111,7 +111,7 @@
               @click.native="dialog =false"
             >Cancel</v-btn>
             <v-btn
-              color="success"
+              color="primary"
               class="caption font-weight-light"
               :disabled="loading2"
               :loading="loading2"
@@ -198,7 +198,7 @@
             
             <v-card
               class="cardButton"
-              style="background: linear-gradient(180deg, #EFF1E3, #CAD0A0)"
+              style="background: linear-gradient(180deg, #EFF1E3, #b5c25a)"
               color="fdaTan"
               hover
               ripple
@@ -368,7 +368,7 @@ export default {
             var decoded = new Buffer(e.target.result, 'base64')
             vue.$store.commit('CONTINUE_APPLICATION', JSON.parse(decoded))
             vue.$router.push("/registration/new")
-            vue.$notify({message:'Welcome back! Let us continue where you left off.', color:'primary'})
+            vue.$notify({message:'Welcome back! Let us continue where you left off.', color:'success'})
             // console.log(JSON.stringify(this.form))
         });
 

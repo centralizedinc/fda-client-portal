@@ -1,220 +1,138 @@
-<template>  
+<template>
   <v-layout row justify-center>
-    <v-dialog scrollable
-    v-model="show"     
-    persistent
-    max-width="60%"
-    transition="dialog-transition"
->
+    <v-dialog scrollable v-model="show" persistent max-width="60%" transition="dialog-transition">
       <v-card>
-          <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
-             <span class="font-weight-light headline">Payment via Credit Card</span>
-          </v-toolbar>
-          <v-card-text> 
-            <v-layout row wrap>
-              <v-flex xs12 md4>
-                <v-layout row wrap>
-                  <v-flex xs12>
-                    <span class="font-weight-thin">Payment Summary</span>
+        <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
+          <span class="font-weight-light headline">Payment via Credit Card</span>
+        </v-toolbar>
+        <v-card-text>
+          <v-layout row wrap>
+            <v-flex xs12 md4>
+              <v-layout row wrap>
+                <v-flex xs12>
+                  <span class="font-weight-thin">Payment Summary</span>
                   <v-divider></v-divider>
-                  </v-flex>
-                  <v-data-table
-                    :headers="[{text: 'Description', sortable:false}, {text: 'Amount', sortable:false}]"
-                    :items="payment_summary"
-                    hide-actions
-                  >
-                    <template slot="items" slot-scope="props">
-                    <td>{{ props.item.description }}</td>
-                    <td>₱ {{ numberWithCommas (props.item.amount) }}</td>
-                    </template>
-                    <template slot="footer">
-                    <td >Total</td>
-                    <td class="font-weight-bold" >₱ {{ numberWithCommas(total_amount) }}</td> 
-                  </template>
-                  </v-data-table> 
-                  <span class="pt-5 mt-5 caption primary--text">Note: For credit card transactions, an additional Php20.00 will be charged for convenience fee.</span>                 
-                </v-layout>                                      
-              </v-flex>
-              <v-flex xs1 pl-4>
-                <v-divider vertical></v-divider>
-              </v-flex>
-              <v-flex xs12 md7>
-                <v-form ref="form" v-model="valid">                      
-                  <v-layout row wrap>
-                    <v-flex xs12>
-                      <span class="font-weight-thin">Card Details</span>
-                      <v-divider></v-divider>
-                    </v-flex>            
-                    <v-flex xs12 md8 pa-1>
-                      <v-text-field
-                        label="*Credit Card Number"
-                        mask="####-####-####-####"
-                        v-model="full_details.card_details.number"
-                        outline
-                        :rules="[rules.required, rules.card_validity]"
-                      >
-                        <v-fade-transition slot="append">
-                          <v-progress-circular v-if="loading_cc" size="24" color="info" indeterminate></v-progress-circular>
-                          <img v-else :src="card_logo" alt>
+                </v-flex>
+                <v-data-table :headers="[{text: 'Description', sortable:false}, {text: 'Amount', sortable:false}]" :items="payment_summary" hide-actions>
+                  <template slot="items" slot-scope="props">
+                                        <td>{{ props.item.description }}</td>
+                                        <td>₱ {{ numberWithCommas (props.item.amount) }}</td>
+</template>
+
+<template slot="footer">
+  <td>
+    Total</td>
+  <td class="font-weight-bold">₱ {{ numberWithCommas(total_amount) }}</td>
+</template>
+                            </v-data-table>
+                            <span class="pt-5 mt-5 caption primary--text">Note: For credit card transactions, an additional Php20.00 will be charged for convenience fee.</span>
+                        </v-layout>
+                    </v-flex>
+                    <v-flex xs1 pl-4>
+                        <v-divider vertical></v-divider>
+                    </v-flex>
+                    <v-flex xs12 md7>
+                        <v-form ref="form" v-model="valid">
+                            <v-layout row wrap>
+                                <v-flex xs12>
+                                    <span class="font-weight-thin">Card Details</span>
+                                    <v-divider></v-divider>
+                                </v-flex>
+                                <v-flex xs12 md8 pa-1>
+                                    <v-text-field label="*Credit Card Number" mask="####-####-####-####" v-model="full_details.card_details.number" outline :rules="[rules.required, rules.card_validity]">
+                                        <v-fade-transition slot="append">
+                                            <v-progress-circular v-if="loading_cc" size="24" color="info" indeterminate></v-progress-circular>
+                                            <img v-else :src="card_logo" alt>
                         </v-fade-transition>
-                      </v-text-field>
-                    </v-flex>
-                    <v-flex xs12 md4 pa-1>
-                      <v-text-field outline
-                        label="*CVC"
-                        v-model="full_details.card_details.cvc"
-                        mask="###"
-                        :loading="loading_cvc"
-                        :rules="[rules.required, rules.cvc_validity]"
-                      ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 md6 pa-1>
-                      <v-text-field outline
-                        label="*Cardholder"
-                        v-model="full_details.card_details.name"
-                        :rules="[rules.required]"
-                      ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 md6 pa-1>
-                      <v-menu 
-                        v-model="expiry_menu"
-                        :close-on-content-click="false"
-                        :nudge-right="40"
-                        lazy
-                        transition="scale-transition"
-                        offset-y
-                        full-width
-                        min-width="290px">
-                        <template v-slot:activator="{ on }">
-                          <v-text-field outline
-                            v-model="expiry_date"
-                            label="Date Expiry"
-                            append-icon="event"
-                            color="green darken-1"
-                            :rules="[rules.required]"
-                            readonly
-                            v-on="on">
-                          </v-text-field>
-                        </template>
-                        <v-date-picker 
-                          v-model="dateFormatted"
-                          color="green darken-1"
-                          type="month"
-                          no-title
-                          scrollable
-                          @input="expiry_menu=false"
-                          :min="new Date().toISOString().substr(0, 10)">
-                        </v-date-picker>
-                      </v-menu>
-                    </v-flex>
-                    <v-flex xs12>
-                      <span class="font-weight-thin">Contact Details</span>
-                      <v-divider></v-divider>
-                    </v-flex>            
-                    <v-flex xs12 pa-1>
-                      <v-text-field
-                      outline
-                        label="*Email Address"
-                        v-model="full_details.card_details.email"
-                        :rules="[rules.required, rules.email]"
-                      ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 pa-1>
-                      <v-textarea outline
-                        label="*Address"
-                        v-model="full_details.card_details.address_line1"
-                        :rules="[rules.required]"
-                      ></v-textarea>
-                    </v-flex>
-                    <!-- <v-flex xs12>
+                                    </v-text-field>
+                                </v-flex>
+                                <v-flex xs12 md4 pa-1>
+                                    <v-text-field outline label="*CVC" v-model="full_details.card_details.cvc" mask="###" :loading="loading_cvc" :rules="[rules.required, rules.cvc_validity]"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 md6 pa-1>
+                                    <v-text-field outline label="*Cardholder" v-model="full_details.card_details.name" :rules="[rules.required]"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 md6 pa-1>
+                                    <v-menu v-model="expiry_menu" :close-on-content-click="false" :nudge-right="40" lazy transition="scale-transition" offset-y full-width min-width="290px">
+<template v-slot:activator="{ on }">
+  <v-text-field outline v-model="expiry_date" label="Date Expiry" append-icon="event" color="green darken-1" :rules="[rules.required]" readonly v-on="on">
+  </v-text-field>
+</template>
+                                        <v-date-picker v-model="dateFormatted" color="green darken-1" type="month" no-title scrollable @input="expiry_menu=false" :min="new Date().toISOString().substr(0, 10)">
+                                        </v-date-picker>
+                                    </v-menu>
+                                </v-flex>
+                                <v-flex xs12>
+                                    <span class="font-weight-thin">Contact Details</span>
+                                    <v-divider></v-divider>
+                                </v-flex>
+                                <v-flex xs12 pa-1>
+                                    <v-text-field outline label="*Email Address" v-model="full_details.card_details.email" :rules="[rules.required, rules.email]"></v-text-field>
+                                </v-flex>
+                                <v-flex xs12 pa-1>
+                                    <v-textarea outline label="*Address" v-model="full_details.card_details.address_line1" :rules="[rules.required]"></v-textarea>
+                                </v-flex>
+                                <!-- <v-flex xs12>
                       <v-text-field
                         label="Address Line 2"
                         v-model="full_details.card_details.address_line2"
                       ></v-text-field>
                     </v-flex> -->
-                    <v-flex xs12 pa-1>
-                      <v-autocomplete
-                        outline
-                        color="green darken-1"
-                        v-model="full_details.card_details.region"
-                        :items="regions"
-                        item-text="name"
-                        item-value="_id"
-                        hide-no-data
-                        hide-selected
-                        label="Region"
-                        :rules="[rules.required]"
-                      ></v-autocomplete>
+                                <v-flex xs12 pa-1>
+                                    <v-autocomplete outline color="green darken-1" v-model="full_details.card_details.region" :items="regions" item-text="name" item-value="_id" hide-no-data hide-selected label="Region" :rules="[rules.required]"></v-autocomplete>
+                                </v-flex>
+                                <v-flex xs12 pa-1>
+                                    <v-autocomplete outline color="green darken-1" v-model="full_details.card_details.province" :items="getProvinces" item-text="name" item-value="_id" :disabled="!full_details.card_details.region" hide-no-data hide-selected label="Province" :rules="[rules.required]"></v-autocomplete>
+                                </v-flex>
+                                <v-flex xs12 pa-1>
+                                    <v-autocomplete outline color="green darken-1" v-model="full_details.card_details.city" :items="getCities" item-text="name" item-value="_id" :disabled="!full_details.card_details.province" hide-no-data hide-selected label="City / Town" :rules="[rules.required]"></v-autocomplete>
+                                </v-flex>
+                                <v-flex xs12 pa-1>
+                                    <v-text-field outline label="*Zip Code" v-model="full_details.card_details.zip" mask="####" :rules="[rules.required]"></v-text-field>
+                                </v-flex>
+
+                            </v-layout>
+                        </v-form>
                     </v-flex>
-                    <v-flex xs12 pa-1>
-                      <v-autocomplete
-                        outline
-                        color="green darken-1"
-                        v-model="full_details.card_details.province"
-                        :items="getProvinces"
-                        item-text="name"
-                        item-value="_id"
-                        :disabled="!full_details.card_details.region"
-                        hide-no-data
-                        hide-selected
-                        label="Province"
-                        :rules="[rules.required]"
-                      ></v-autocomplete>
+                </v-layout>
+
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+                <v-layout row wrap>
+                    <v-flex xs12>
+                        <span class="caption">Powered by:</span>
+
                     </v-flex>
-                    <v-flex xs12 pa-1>
-                      <v-autocomplete
-                      outline
-                        color="green darken-1"
-                        v-model="full_details.card_details.city"
-                        :items="getCities"
-                        item-text="name"
-                        item-value="_id"
-                        :disabled="!full_details.card_details.province"
-                        hide-no-data
-                        hide-selected
-                        label="City / Town"
-                        :rules="[rules.required]"
-                      ></v-autocomplete>
+                    <v-flex xs12>
+                        <a href="https://magpie.im/" target="_blank"><v-img position="left left" contain height="30" src="https://magpie.im/assets/images/magpie-logo-outlines.svg"></v-img></a>
+                        <a href="https://magpie.im/" target="_blank" class="caption font-weight-bold">Magpie.IM Pte. Ltd.</a>
+
                     </v-flex>
-                    <v-flex xs12 pa-1>
-                      <v-text-field
-                      outline
-                        label="*Zip Code"
-                        v-model="full_details.card_details.zip"
-                        mask="####"
-                        :rules="[rules.required]"
-                      ></v-text-field>
-                    </v-flex>
-                    
-                  </v-layout>
-                  </v-form>
-              </v-flex>
-            </v-layout>                     
-          
-        </v-card-text>
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-layout row wrap>
-            <v-flex xs12>
-              <span class="caption">Powered by:</span>
-              
-            </v-flex>
-            <v-flex xs12>
-              <a href="https://magpie.im/" target="_blank"><v-img position="left left" contain height="30" src="https://magpie.im/assets/images/magpie-logo-outlines.svg"></v-img></a>
-              <a href="https://magpie.im/" target="_blank" class="caption font-weight-bold">Magpie.IM Pte. Ltd.</a>
-              
-              
-            </v-flex>
-          </v-layout> 
-                
-          <v-spacer></v-spacer>
-          <v-btn color="secondary" outline @click="hide()">Cancel</v-btn>          
-          <v-btn color="success" :disabled="isLoading" :loading="isLoading" @click="submit">Submit</v-btn>
-        </v-card-actions>
-      </v-card>
+                </v-layout>
+
+                <v-spacer></v-spacer>
+                <v-btn color="secondary" :disabled="isLoading" outline @click="hide()">Cancel</v-btn>
+                <v-btn color="primary" :disabled="isLoading" :loading="isLoading" @click="submitDialog=true">Pay</v-btn>
+            </v-card-actions>
+        </v-card>
     </v-dialog>
-  </v-layout>
-  
+    <v-dialog v-model="submitDialog" persistent max-width="400px" transition="dialog-transition">
+        <v-card>
+            <v-card-text>
+                <span
+              class="subheading font-weight-thin"
+            >You are almost done! Your account will be charged once you submit your payment. Please take note that you cannot cancel this transaction</span>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn outline color="secondary" class="caption font-weight-light" :disabled="isLoading" @click.native="submitDialog=false">Back</v-btn>
+                <v-btn color="primary" :loading="isLoading" :disabled="isLoading" class="caption font-weight-light" @click="submit">Submit</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+</v-layout>
 </template>
 
 <script>
@@ -223,6 +141,7 @@ export default {
   props: ["form"],
   data() {
     return {
+      submitDialog: false,
       isLoading: false,
       total_amount: 0,
       valid: true,
@@ -407,7 +326,10 @@ export default {
     },
     checkExpiry(month, year) {
       this.loading_expiry = true;
-      var expiry = { month, year };
+      var expiry = {
+        month,
+        year
+      };
       this.$store
         .dispatch("VALIDATE_EXPIRATION_DATE", expiry)
         .then(result => {
@@ -434,6 +356,9 @@ export default {
           }
         })
         .catch(err => {
+          this.isLoading = false;
+          this.$hideCC();
+          console.log("ERROR: " + err);
           this.$notifyError(err);
           this.loading_expiry = false;
         });
@@ -467,18 +392,42 @@ export default {
               amount: this.numberWithCommas(paymentFee.total),
               remaining_balance: "0.00"
             };
-
-            this.$print(details, "RCPT");
+            this.$download(details, "RCPT", "fda-receipt.pdf");
+            // this.$router.push("/app/payments");
+            // this.$hideCC();
+            // this.$notify({
+            //   message:
+            //     "Payment success! The official receipt was sent to your email (" +
+            //     this.full_details.card_details.email +
+            //     ")",
+            //   color: "success",
+            //   icon: "check_circle",
+            //   initialMargin: 100
+            // });
+            return this.$upload(details, "RCPT");
+          })
+          .then(blob => {
+            var file = new File([blob], "fda-receipt.pdf", {
+              type: "application/pdf",
+              lastModified: Date.now()
+            });
+            var fd = new FormData();
+            fd.append("file", file);
+            return this.$store.dispatch("GENERATED_DOCUMENTS", {
+              license: this.$store.state.licenses.form,
+              formData: fd
+            });
+          })
+          .then(result => {
             this.$router.push("/app/payments");
             this.$hideCC();
             this.$notify({
-              message:
-                "Payment success! The official receipt was sent to your email (" +
-                this.full_details.card_details.email +
-                ")",
+              message: "Thank you! We have received your payment.",
               color: "success",
+              icon: "check_circle",
               initialMargin: 100
             });
+            this.submitDialog = false;
           })
           .catch(err => {
             this.isLoading = false;
@@ -489,7 +438,7 @@ export default {
       } else {
         this.isLoading = false;
         this.$notify({
-          message: "Please enter all fields & correctly",
+          message: "Please enter all fields correctly",
           color: "warning",
           initialMargin: 100
         });

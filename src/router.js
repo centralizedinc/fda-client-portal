@@ -139,6 +139,18 @@ var router = new Router({
           // beforeEnter: isAuthorized
         },
         {
+          path: 'licenses/variation/old',
+          name: 'Variate License Application',
+          component: () => import('@/views/app/licenses/Variation_old.vue'),
+          // beforeEnter: isAuthorized
+        },
+        {
+          path: 'licenses/pay',
+          name: 'Pay License',
+          component: () => import('@/views/app/payment/PaymentSummary.vue'),
+          // beforeEnter: isAuthorized
+        },
+        {
           path: 'licenses/summary',
           name: 'License Summary',
           component: () => import('@/views/app/licenses/View.vue'),

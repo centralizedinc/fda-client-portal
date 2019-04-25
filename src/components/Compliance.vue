@@ -92,7 +92,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
-          <v-btn block color="success" :loading="loading" @click="submit">Submit</v-btn>
+          <v-btn block color="primary" :loading="loading" @click="submit">Submit</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

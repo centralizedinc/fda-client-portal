@@ -21,7 +21,7 @@
         >
           <template slot="items" slot-scope="props">
             <td>{{props.item.firstname + " " + props.item.lastname}}</td>
-            <td>{{props.item.designation}}</td>
+            <td>{{getDesignation(props.item.designation).name}}</td>
             <td>{{props.item.birthday}}</td>
             <td>{{props.item.tin}}</td>
             <td>{{props.item.id_type}}</td>
@@ -187,7 +187,7 @@
         <v-card-actions>
           <v-btn color="error" @click="clearItem">Close</v-btn>
           <v-spacer></v-spacer>
-          <v-btn color="success" @click="submit">Save</v-btn>
+          <v-btn color="primary" @click="submit">Save</v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
