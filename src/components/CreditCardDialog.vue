@@ -136,57 +136,43 @@
 </template>
 
 <script>
-  import images from "./cards.js";
-  export default {
-    props: ["form"],
-    data() {
-      return {
-        submitDialog: false,
-        isLoading: false,
-        total_amount: 0,
-        valid: true,
-        card_logo: "",
-        loading_cc: false,
-        loading_cvc: false,
-        date: new Date().toISOString().substr(0, 7),
-        menu1: false,
-        expiry: "",
-        expiry_menu: false,
-        regions: [],
-        provinces: [],
-        cities: [],
-        full_details: {
-          card_details: {
-            number: "",
-            exp_month: "",
-            exp_year: "",
-            cvc: "",
-            name: "",
-            email: "",
-            address_line1: "",
-            address_line2: "",
-            region: "",
-            province: "",
-            city: "",
-            zip: ""
-          },
-          payment_details: {
-            amount: 0,
-            mode_of_payment: 0,
-            currency: "₱",
-            description: "",
-            statement_descriptor: "",
-            capture: true
-          },
-          transaction_details: {
-            application_type: "",
-            application: 0,
-            case_no: "",
-            order_payment: {}
-          }
+import images from "./cards.js";
+export default {
+  props: ["form"],
+  data() {
+    return {
+      submitDialog: false,
+      isLoading: false,
+      total_amount: 0,
+      valid: true,
+      card_logo: "",
+      loading_cc: false,
+      loading_cvc: false,
+      date: new Date().toISOString().substr(0, 7),
+      menu1: false,
+      expiry: "",
+      expiry_menu: false,
+      regions: [],
+      provinces: [],
+      cities: [],
+      full_details: {
+        card_details: {
+          number: "",
+          exp_month: "",
+          exp_year: "",
+          cvc: "",
+          name: "",
+          email: "",
+          address_line1: "",
+          address_line2: "",
+          region: "",
+          province: "",
+          city: "",
+          zip: ""
         },
         payment_details: {
           amount: 0,
+          mode_of_payment: 0,
           currency: "₱",
           description: "",
           statement_descriptor: "",
@@ -197,257 +183,270 @@
           application: 0,
           case_no: "",
           order_payment: {}
-        },
-        rules: {
-          required: value => !!value || "This is a required field",
-          card_validity: v => v.length > 12 || "Invalid Card Number",
-          expiry_validity: v => true || "Invalid Expiration Date",
-          cvc_validity: v => v.length === 3 || "Invalid CVV",
-          email: value => this.checkEmail(value) || "Invalid email"
-        },
-        gaps: [],
-        cvc_max: 3,
-        code_name: "CVC",
-        dateFormatted: null,
-        expiry_date: null,
-        loading_expiry: false
-      };
-    },
-    watch: {
-      dateFormatted(val) {
-        this.expiry_date = this.parseDate(val);
-      },
-      "full_details.card_details.number": function(val) {
-        this.loading_cc = true;
-        this.card_logo = null;
-        this.$store.state.payments.credit_card = "";
-        this.rules.card_validity = val.length > 12 || "Invalid Card Number";
-        if (val !== "" && val.length > 12) {
-          this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result => {
-            var creditCard = this.$store.state.payments.credit_card;
-            this.rules.card_validity =
-              creditCard.isValid || "Invalid Card Number";
-            if (creditCard.isValid) {
-              this.card_logo = images[creditCard.card.type];
-              this.$notify({
-                message: "You entered a " + creditCard.card.type + " credit card number",
-                color: "success",
-                icon: "check_circle",
-                initialMargin: 100
-              });
-              this.loading_cc = false;
-              this.gaps = creditCard.card.gaps;
-              this.cvc_max = creditCard.card.code.size;
-              this.code_name = creditCard.card.code.name;
-            } else {
-              this.loading_cc = false;
-              this.$notify({
-                message: "Enter valid credit card number",
-                color: "warning",
-                initialMargin: 100
-              });
-            }
-          });
-        } else {
-          this.loading_cc = false;
         }
       },
-      "full_details.card_details.cvc": function(val) {
-        this.loading_cvc = true;
-        this.$store.state.payments.cvv = "";
-        this.rules.cvc_validity = val.length === 3 || "Invalid CVC";
-        if (val !== "" && val.length == 3) {
-          this.$store.dispatch("VALIDATE_CVV", val).then(result => {
-            var cvv = this.$store.state.payments.cvv;
-            this.rules.cvc_validity = cvv.isValid || "Invalid CVC";
-            if (cvv.isValid) {
-              this.$notify({
-                message: "Valid CVC number",
-                color: "success",
-                icon: "check_circle",
-                initialMargin: 100
-              });
-            } else {
-              this.$notify({
-                message: "Enter valid CVC number",
-                color: "warning",
-                initialMargin: 100
-              });
-            }
-            this.loading_cvc = false;
-          });
-        } else {
+      payment_details: {
+        amount: 0,
+        currency: "₱",
+        description: "",
+        statement_descriptor: "",
+        capture: true
+      },
+      transaction_details: {
+        application_type: "",
+        application: 0,
+        case_no: "",
+        order_payment: {}
+      },
+      rules: {
+        required: value => !!value || "This is a required field",
+        card_validity: v => v.length > 12 || "Invalid Card Number",
+        expiry_validity: v => true || "Invalid Expiration Date",
+        cvc_validity: v => v.length === 3 || "Invalid CVV",
+        email: value => this.checkEmail(value) || "Invalid email"
+      },
+      gaps: [],
+      cvc_max: 3,
+      code_name: "CVC",
+      dateFormatted: null,
+      expiry_date: null,
+      loading_expiry: false
+    };
+  },
+  watch: {
+    dateFormatted(val) {
+      this.expiry_date = this.parseDate(val);
+    },
+    "full_details.card_details.number": function(val) {
+      this.loading_cc = true;
+      this.card_logo = null;
+      this.$store.state.payments.credit_card = "";
+      this.rules.card_validity = val.length > 12 || "Invalid Card Number";
+      if (val !== "" && val.length > 12) {
+        this.$store.dispatch("VALIDATE_CREDIT_CARD", val).then(result => {
+          var creditCard = this.$store.state.payments.credit_card;
+          this.rules.card_validity =
+            creditCard.isValid || "Invalid Card Number";
+          if (creditCard.isValid) {
+            this.card_logo = images[creditCard.card.type];
+            this.$notify({
+              message:
+                "You entered a " + creditCard.card.type + " credit card number",
+              color: "success",
+              icon: "check_circle",
+              initialMargin: 100
+            });
+            this.loading_cc = false;
+            this.gaps = creditCard.card.gaps;
+            this.cvc_max = creditCard.card.code.size;
+            this.code_name = creditCard.card.code.name;
+          } else {
+            this.loading_cc = false;
+            this.$notify({
+              message: "Enter valid credit card number",
+              color: "warning",
+              initialMargin: 100
+            });
+          }
+        });
+      } else {
+        this.loading_cc = false;
+      }
+    },
+    "full_details.card_details.cvc": function(val) {
+      this.loading_cvc = true;
+      this.$store.state.payments.cvv = "";
+      this.rules.cvc_validity = val.length === 3 || "Invalid CVC";
+      if (val !== "" && val.length == 3) {
+        this.$store.dispatch("VALIDATE_CVV", val).then(result => {
+          var cvv = this.$store.state.payments.cvv;
+          this.rules.cvc_validity = cvv.isValid || "Invalid CVC";
+          if (cvv.isValid) {
+            this.$notify({
+              message: "Valid CVC number",
+              color: "success",
+              icon: "check_circle",
+              initialMargin: 100
+            });
+          } else {
+            this.$notify({
+              message: "Enter valid CVC number",
+              color: "warning",
+              initialMargin: 100
+            });
+          }
           this.loading_cvc = false;
-        }
+        });
+      } else {
+        this.loading_cvc = false;
       }
-    },
-    created() {
-      //initial
-      this.full_details.card_details.email = this.$store.state.user_session.user.email;
-      this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
-        if (locations) {
-          this.regions = locations.regions;
-          this.provinces = locations.provinces;
-          this.cities = locations.cities;
-        }
-      });
-    },
-    computed: {
-      getProvinces() {
-        return this.findProvinces(this.full_details.card_details.region);
-      },
-      getCities() {
-        return this.findCities(this.full_details.card_details.province);
-      },
-      show() {
-        return this.$store.state.payments.showCCDialog;
-      },
-      payment_summary() {
-        var details = this.$store.state.payments.payment_details.summary;
-        this.total_amount = 0;
-        for (var i = 0; i < details.length; i++) {
-          this.total_amount = this.total_amount + details[i].amount;
-        }
-        return details;
+    }
+  },
+  created() {
+    //initial
+    this.full_details.card_details.email = this.$store.state.user_session.user.email;
+    this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
+      if (locations) {
+        this.regions = locations.regions;
+        this.provinces = locations.provinces;
+        this.cities = locations.cities;
       }
+    });
+  },
+  computed: {
+    getProvinces() {
+      return this.findProvinces(this.full_details.card_details.region);
     },
-    methods: {
-      hide() {
-        this.$hideCC();
-      },
-      parseDate(date) {
-        if (!date) return null;
-        const [year, month] = date.split("-");
-        this.full_details.card_details.exp_month = `${month}`;
-        this.full_details.card_details.exp_year = `${year}`;
-        this.checkExpiry(month, year);
-        return `${month}/${year}`;
-      },
-      checkExpiry(month, year) {
-        this.loading_expiry = true;
-        var expiry = {
-          month,
-          year
-        };
-        this.$store
-          .dispatch("VALIDATE_EXPIRATION_DATE", expiry)
-          .then(result => {
-            this.loading_expiry = false;
-            if (result.data.success) {
-              this.rules.expiry_validity =
-                result.data.model.isValid || "Invalid Date Expiry";
-              if (result.data.model.isValid) {
-                this.$notify({
-                  message: "Valid Date Expiry",
-                  color: "success",
-                  icon: "check_circle",
-                  initialMargin: 100
-                });
-              } else {
-                this.$notify({
-                  message: "Enter valid date expiry",
-                  color: "warning",
-                  initialMargin: 100
-                });
-              }
+    getCities() {
+      return this.findCities(this.full_details.card_details.province);
+    },
+    show() {
+      return this.$store.state.payments.showCCDialog;
+    },
+    payment_summary() {
+      var details = this.$store.state.payments.payment_details.summary;
+      this.total_amount = 0;
+      for (var i = 0; i < details.length; i++) {
+        this.total_amount = this.total_amount + details[i].amount;
+      }
+      return details;
+    }
+  },
+  methods: {
+    hide() {
+      this.$hideCC();
+    },
+    parseDate(date) {
+      if (!date) return null;
+      const [year, month] = date.split("-");
+      this.full_details.card_details.exp_month = `${month}`;
+      this.full_details.card_details.exp_year = `${year}`;
+      this.checkExpiry(month, year);
+      return `${month}/${year}`;
+    },
+    checkExpiry(month, year) {
+      this.loading_expiry = true;
+      var expiry = {
+        month,
+        year
+      };
+      this.$store
+        .dispatch("VALIDATE_EXPIRATION_DATE", expiry)
+        .then(result => {
+          this.loading_expiry = false;
+          if (result.data.success) {
+            this.rules.expiry_validity =
+              result.data.model.isValid || "Invalid Date Expiry";
+            if (result.data.model.isValid) {
+              this.$notify({
+                message: "Valid Date Expiry",
+                color: "success",
+                icon: "check_circle",
+                initialMargin: 100
+              });
             } else {
-              this.$notifyError(result.data.errors);
+              this.$notify({
+                message: "Enter valid date expiry",
+                color: "warning",
+                initialMargin: 100
+              });
             }
+          } else {
+            this.$notifyError(result.data.errors);
+          }
+        })
+        .catch(err => {
+          this.isLoading = false;
+          this.$hideCC();
+          console.log("ERROR: " + err);
+          this.$notifyError(err);
+          this.loading_expiry = false;
+        });
+    },
+    submit() {
+      //validate form
+      this.$refs.form.validate();
+      if (this.valid) {
+        this.isLoading = true;
+        var paymentFee = this.$store.state.payments.fee;
+        this.full_details.payment_details.amount = paymentFee.total;
+        this.full_details.payment_details.description = paymentFee.description;
+        this.full_details.transaction_details.application_type = this.$store.state.payments.payment_details.application_type;
+        this.full_details.transaction_details.case_no = this.$store.state.payments.payment_details.case_no;
+        this.full_details.transaction_details.user_id = this.$store.state.user_session.user._id;
+        this.full_details.transaction_details.order_payment.penalty =
+          paymentFee.surcharge;
+        this.$store
+          .dispatch("SAVE_PAYMENT", this.full_details)
+          .then(result => {
+            this.isLoading = false;
+            var details = {
+              case_no: this.$store.state.payments.payment_details.case_no,
+              fee: this.numberWithCommas(paymentFee.fee),
+              lrf: this.numberWithCommas(paymentFee.lrf),
+              penalty: this.numberWithCommas(
+                parseFloat(paymentFee.surcharge) +
+                  parseFloat(paymentFee.interest)
+              ),
+              total: this.numberWithCommas(paymentFee.total),
+              amount: this.numberWithCommas(paymentFee.total),
+              remaining_balance: "0.00"
+            };
+            this.$download(details, "RCPT", "fda-receipt.pdf");
+            // this.$router.push("/app/payments");
+            // this.$hideCC();
+            // this.$notify({
+            //   message:
+            //     "Payment success! The official receipt was sent to your email (" +
+            //     this.full_details.card_details.email +
+            //     ")",
+            //   color: "success",
+            //   icon: "check_circle",
+            //   initialMargin: 100
+            // });
+            return this.$upload(details, "RCPT");
+          })
+          .then(blob => {
+            var file = new File([blob], "fda-receipt.pdf", {
+              type: "application/pdf",
+              lastModified: Date.now()
+            });
+            var fd = new FormData();
+            fd.append("file", file);
+            return this.$store.dispatch("GENERATED_DOCUMENTS", {
+              license: this.$store.state.licenses.form,
+              formData: fd
+            });
+          })
+          .then(result => {
+            this.$router.push("/app/payments");
+            this.$hideCC();
+            this.$notify({
+              message: "Thank you! We have received your payment.",
+              color: "success",
+              icon: "check_circle",
+              initialMargin: 100
+            });
+            this.submitDialog = false;
           })
           .catch(err => {
             this.isLoading = false;
-            this.$hideCC();
             console.log("ERROR: " + err);
             this.$notifyError(err);
-            this.loading_expiry = false;
           });
-      },
-      submit() {
-        //validate form
-        this.$refs.form.validate();
-        if (this.valid) {
-          this.isLoading = true;
-          var paymentFee = this.$store.state.payments.fee;
-          this.full_details.payment_details.amount = paymentFee.total;
-          this.full_details.payment_details.description = paymentFee.description;
-          this.full_details.transaction_details.application_type = this.$store.state.payments.payment_details.application_type;
-          this.full_details.transaction_details.case_no = this.$store.state.payments.payment_details.case_no;
-          this.full_details.transaction_details.user_id = this.$store.state.user_session.user._id;
-          this.full_details.transaction_details.order_payment.penalty =
-            paymentFee.surcharge;
-          this.$store
-            .dispatch("SAVE_PAYMENT", this.full_details)
-            .then(result => {
-              this.isLoading = false;
-              var details = {
-                case_no: this.$store.state.payments.payment_details.case_no,
-                fee: this.numberWithCommas(paymentFee.fee),
-                lrf: this.numberWithCommas(paymentFee.lrf),
-                penalty: this.numberWithCommas(
-                  parseFloat(paymentFee.surcharge) +
-                  parseFloat(paymentFee.interest)
-                ),
-                total: this.numberWithCommas(paymentFee.total),
-                amount: this.numberWithCommas(paymentFee.total),
-                remaining_balance: "0.00"
-              };
-              this.$download(details, "RCPT", "fda-receipt.pdf");
-              // this.$router.push("/app/payments");
-              // this.$hideCC();
-              // this.$notify({
-              //   message:
-              //     "Payment success! The official receipt was sent to your email (" +
-              //     this.full_details.card_details.email +
-              //     ")",
-              //   color: "success",
-              //   icon: "check_circle",
-              //   initialMargin: 100
-              // });
-              return this.$upload(details, "RCPT")
-            })
-            .then(blob => {
-              var file = new File([blob], 'fda-receipt.pdf', {
-                type: 'application/pdf',
-                lastModified: Date.now()
-              });
-              var fd = new FormData();
-              fd.append("file", file);
-              return this.$store.dispatch('GENERATED_DOCUMENTS', {
-                license: this.$store.state.licenses.form,
-                formData: fd
-              })
-            })
-            .then(result => {
-              this.$router.push("/app/payments");
-              this.$hideCC();
-              this.$notify({
-                message: "Thank you! We have received your payment.",
-                color: "success",
-                icon: "check_circle",
-                initialMargin: 100
-              });
-              this.submitDialog = false
-            })
-            .catch(err => {
-              this.$hideCC();
-              this.isLoading = false;
-              console.log("ERROR: " + err);
-              this.$notifyError(err);
-            });
-          // this.$router.push("/app/payments/summary");
-        } else {
-          this.isLoading = false;
-          this.$notify({
-            message: "Please enter all fields correctly",
-            color: "warning",
-            initialMargin: 100
-          });
-        }
+        // this.$router.push("/app/payments/summary");
+      } else {
+        this.isLoading = false;
+        this.$notify({
+          message: "Please enter all fields correctly",
+          color: "warning",
+          initialMargin: 100
+        });
       }
     }
-  };
+  }
+};
 </script>
 
 <style>
-
 </style>
