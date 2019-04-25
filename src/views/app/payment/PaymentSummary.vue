@@ -178,222 +178,237 @@
 // import * as OrderOfPaymentGenerator from "./OrderOfPaymentGenerator";
 
 export default {
-    props: {
-        form: {
-            type: Object
-        },
-        case_holder: {
-            type: Object
-        },
-        charges: {
-            type: Object
-        },
-        allow_paylater: {
-            type: Boolean,
-            default: true
-        }
-
+  props: {
+    form: {
+      type: Object
     },
-    components: {
-        CreditCard: () => import("./CreditCardPayment.vue"),
-        PayLater: () => import("./PayLater.vue")
+    case_holder: {
+      type: Object
     },
-    data() {
-        return {
-            rates: {
-                fee: 5000,
-                lrf: 50
-            },
-            app_form: {},
-            fees_form: {},
-            case_form: {},
-            cashierPayment: false,
-            ecPayDialog: false,
-            dialogPayLater: false,
-            showCreditCard: false,
-            showPayLater: false,
-            dialogPayLater: false,
-            fab: false
-            // bancnetDialog: false
-        };
+    charges: {
+      type: Object
     },
-    created() {
-        this.init();
-    },
-    methods: {
-        init() {
-            console.log('FORM: '+ JSON.stringify(this.$store.state.licenses.form));
-            this.app_form = this.$store.state.licenses.form;
-            this.form = this.$store.state.licenses.form;
-            this.$store.dispatch(
-                    "GET_ONE_CASE",
-                    this.form.case_no
-                  ).then(result => {
-                  console.log(
-                    "get onse case @ view: " + JSON.stringify(result)
-                  );
-                  this.case_holder = result;
-                });
-            this.fees_form = this.charges ?
-                this.charges :
-                this.$store.state.payments.fee;
-        },
-        cancel() {
-            this.showCreditCard = false;
-            this.showPayLater = false;
-        },
-        // generatePDF() {
-        //     this.cashierPayment = true;
-        //     OrderOfPaymentGenerator.generateOrderOfPayment(
-        //         this.app_form,
-        //         this.fees_form
-        //     );
-        // },
-        creditCard() {
-            var summary = [];
-            summary.push({
-                description: 'Application Fee',
-                amount: this.fees_form.fee
-            })
-            summary.push({
-                description: 'LRF',
-                amount: this.fees_form.lrf
-            })
-            summary.push({
-                description: 'Surcharge',
-                amount: this.fees_form.surcharge
-            })
-            summary.push({
-                description: 'Remaining Balance',
-                amount: this.fees_form.total
-            })
-            console.log('FORM: ' + JSON.stringify( this.form))
-            console.log('fees form data: ' + JSON.stringify(this.fees_form))
-            console.log('summary data: ' + JSON.stringify(summary))
-            this.$showCC({
-                summary,
-                case_no: this.form.case_no,
-                application_type: this.form.application_type
-            });
-        },
-        payLater() {
-            this.dialogPayLater = true;
-            // this.cashierPayment = false;
-            // this.ecPayDialog = false;
-            // this.showPayLater = true;
-            // this.$router.push("/");
-        },
-        ecpay() {
-            this.ecPayDialog = true;
-            console.log("application fees: " + JSON.stringify(this.fees_form))
-            console.log("application data: " + JSON.stringify(this.form))
-            console.log("application case: " + JSON.stringify(this.case_holder))
-            var full_details = {
-                fees: this.fees_form,
-                form: this.form,
-                case: this.case_holder,
-                mode_of_payment: 4
-            }
-            this.$store.dispatch("SAVE_TRANSACTION_PROVIDER", full_details)
-            .then(result => {
-                console.log("this is ecpay save transaction provider data: " + JSON.stringify(result))
-                var ecpay_fee = 0;
-                var details = {
-                    reference_number: result.third_party_ref_no,
-                    status: this.getPaymentStatus(result.payment_details.status), 
-                    expiration: this.formatDt(this.case_holder.date_expiry),
-                    amount: this.formatCurrency(result.transaction_details.order_payment.total_amount),
-                    con_fee: this.formatCurrency(ecpay_fee),
-                    total: this.formatCurrency(result.transaction_details.order_payment.total_amount + ecpay_fee)
-                }
-                console.log("ecpay data details: " + JSON.stringify(details))
-                this.$download(details, "ECPAY", 'ecpay-referenceno.pdf');
-                return this.$upload(details, "ECPAY")
-            })
-            .then(blob=>{
-                console.log("upload start!!!!")
-                var file = new File([blob], 'ecpay-referenceno.pdf', {type: 'application/pdf', lastModified: Date.now()});
-                var fd = new FormData();
-                console.log("ecpay upload files: " + JSON.stringify(file))
-                fd.append("file", file );
-                return this.$store.dispatch('GENERATED_DOCUMENTS', {license:this.$store.state.licenses.form, formData:fd})          
-            }).then(result=>{
-                this.$router.push("/app/payments");
-                console.log("ecpay generated documents: ")
-                this.$notify({
-                    message:"Your ECPay Reference Number is valid for 24 hours only. Please make sure to pay on time.",
-                    color: "success",
-                    icon: "check_circle",
-                    initialMargin: 100
-                    });
-            })
-            .catch(error=>{
-                this.$notifyError(err)
-            })
-        },
-        generatePDF() {
-            var details = {
-                fees: this.fees_form,
-                form: this.form,
-                case: this.case_holder,
-                mode_of_payment: 5
-            }
-            this.$store
-            .dispatch("SAVE_TRANSACTION_PROVIDER", details).then(result => {
-            console.log("this is fdac save transaction provider data: " + JSON.stringify(result))
-
-             console.log("this.fees_form: " + JSON.stringify(this.fees_form))
-             console.log("this.app_form: " + JSON.stringify(this.app_form))
-            this.cashierPayment = true;
-            var full_details = {
-                formDetails: this.app_form,
-                paymentDetails: this.fees_form,
-                officeAddress: this.app_form.address_list.find(data =>{
-                    return data.type === "Head Office"
-                })
-            };
-            
-            full_details.formDetails.general_info.product_type = this.getProduct(
-                full_details.formDetails.general_info.product_type
-            );
-            full_details.formDetails.general_info.primary_activity = this.getPrimary(
-                full_details.formDetails.general_info.primary_activity
-            );
-            full_details.formDetails.general_info.declared_capital = this.getDeclared(
-                full_details.formDetails.general_info.declared_capital
-            );
-            full_details.formDetails.auth_officer.mail_add.region = this.getRegionName(
-                full_details.formDetails.auth_officer.mail_add.region
-            );
-            full_details.formDetails.auth_officer.mail_add.province = this.getProvinceName(
-                full_details.formDetails.auth_officer.mail_add.province
-            );
-            full_details.formDetails.auth_officer.mail_add.city = this.getCityName(
-                full_details.formDetails.auth_officer.mail_add.city
-            );
-            full_details.officeAddress.region = this.getRegionName(
-                full_details.officeAddress.region
-            );
-            full_details.officeAddress.province = this.getProvinceName(
-                full_details.officeAddress.province
-            );
-            full_details.officeAddress.city = this.getCityName(
-                full_details.officeAddress.city
-            );
-            full_details.formDetails.application_type = this.getAppType(
-                full_details.formDetails.application_type
-            );
-            full_details.
-              console.log("fulldetails data: " + JSON.stringify(full_details));
-        this.$download(full_details, "PAY", 'FDAC.pdf');
-            
-            
-            console.log("application form data: " + JSON.stringify(this.app_form));
-            console.log("fees form data: " + JSON.stringify(this.fees_form));  
-                    
-        })  
-        }
+    allow_paylater: {
+      type: Boolean,
+      default: true
     }
+  },
+  components: {
+    CreditCard: () => import("./CreditCardPayment.vue"),
+    PayLater: () => import("./PayLater.vue")
+  },
+  data() {
+    return {
+      rates: {
+        fee: 5000,
+        lrf: 50
+      },
+      app_form: {},
+      fees_form: {},
+      case_form: {},
+      cashierPayment: false,
+      ecPayDialog: false,
+      dialogPayLater: false,
+      showCreditCard: false,
+      showPayLater: false,
+      dialogPayLater: false,
+      fab: false
+      // bancnetDialog: false
+    };
+  },
+  created() {
+    this.init();
+  },
+  methods: {
+    init() {
+      console.log("FORM: " + JSON.stringify(this.$store.state.licenses.form));
+      this.app_form = this.$store.state.licenses.form;
+      this.form = this.$store.state.licenses.form;
+      this.$store.dispatch("GET_ONE_CASE", this.form.case_no).then(result => {
+        console.log("get onse case @ view: " + JSON.stringify(result));
+        this.case_holder = result;
+      });
+      this.fees_form = this.charges
+        ? this.charges
+        : this.$store.state.payments.fee;
+    },
+    cancel() {
+      this.showCreditCard = false;
+      this.showPayLater = false;
+    },
+    // generatePDF() {
+    //     this.cashierPayment = true;
+    //     OrderOfPaymentGenerator.generateOrderOfPayment(
+    //         this.app_form,
+    //         this.fees_form
+    //     );
+    // },
+    creditCard() {
+      var summary = [];
+      summary.push({
+        description: "Application Fee",
+        amount: this.fees_form.fee
+      });
+      summary.push({
+        description: "LRF",
+        amount: this.fees_form.lrf
+      });
+      summary.push({
+        description: "Surcharge",
+        amount: this.fees_form.surcharge
+      });
+      summary.push({
+        description: "Remaining Balance",
+        amount: this.fees_form.total
+      });
+      console.log("FORM: " + JSON.stringify(this.form));
+      console.log("fees form data: " + JSON.stringify(this.fees_form));
+      console.log("summary data: " + JSON.stringify(summary));
+      this.$showCC({
+        summary,
+        case_no: this.form.case_no,
+        application_type: this.form.application_type
+      });
+    },
+    payLater() {
+      this.dialogPayLater = true;
+      // this.cashierPayment = false;
+      // this.ecPayDialog = false;
+      // this.showPayLater = true;
+      // this.$router.push("/");
+    },
+    ecpay() {
+      this.ecPayDialog = true;
+      console.log("application fees: " + JSON.stringify(this.fees_form));
+      console.log("application data: " + JSON.stringify(this.form));
+      console.log("application case: " + JSON.stringify(this.case_holder));
+      var full_details = {
+        fees: this.fees_form,
+        form: this.form,
+        case: this.case_holder,
+        mode_of_payment: 4
+      };
+      this.$store
+        .dispatch("SAVE_TRANSACTION_PROVIDER", full_details)
+        .then(result => {
+          console.log(
+            "this is ecpay save transaction provider data: " +
+              JSON.stringify(result)
+          );
+          var ecpay_fee = 0;
+          var details = {
+            reference_number: result.third_party_ref_no,
+            status: this.getPaymentStatus(result.payment_details.status),
+            expiration: this.formatDt(this.case_holder.date_expiry),
+            amount: this.formatCurrency(
+              result.transaction_details.order_payment.total_amount
+            ),
+            con_fee: this.formatCurrency(ecpay_fee),
+            total: this.formatCurrency(
+              result.transaction_details.order_payment.total_amount + ecpay_fee
+            )
+          };
+          console.log("ecpay data details: " + JSON.stringify(details));
+          this.$download(details, "ECPAY", "ecpay-referenceno.pdf");
+          return this.$upload(details, "ECPAY");
+        })
+        .then(blob => {
+          console.log("upload start!!!!");
+          var file = new File([blob], "ecpay-referenceno.pdf", {
+            type: "application/pdf",
+            lastModified: Date.now()
+          });
+          var fd = new FormData();
+          console.log("ecpay upload files: " + JSON.stringify(file));
+          fd.append("file", file);
+          return this.$store.dispatch("GENERATED_DOCUMENTS", {
+            license: this.$store.state.licenses.form,
+            formData: fd
+          });
+        })
+        .then(result => {
+          this.$router.push("/app/payments");
+          console.log("ecpay generated documents: ");
+          this.$notify({
+            message:
+              "Your ECPay Reference Number is valid for 24 hours only. Please make sure to pay on time.",
+            color: "success",
+            icon: "check_circle",
+            initialMargin: 100
+          });
+        })
+        .catch(error => {
+          this.$notifyError(err);
+        });
+    },
+    generatePDF() {
+      var details = {
+        fees: this.fees_form,
+        form: this.form,
+        case: this.case_holder,
+        mode_of_payment: 5
+      };
+      this.$store
+        .dispatch("SAVE_TRANSACTION_PROVIDER", details)
+        .then(result => {
+          console.log(
+            "this is fdac save transaction provider data: " +
+              JSON.stringify(result)
+          );
+
+          console.log("this.fees_form: " + JSON.stringify(this.fees_form));
+          console.log("this.app_form: " + JSON.stringify(this.app_form));
+          this.cashierPayment = true;
+          var full_details = {
+            formDetails: this.app_form,
+            paymentDetails: this.fees_form,
+            officeAddress: this.app_form.address_list.find(data => {
+              return data.type === "Head Office";
+            })
+          };
+
+          full_details.formDetails.general_info.product_type = this.getProduct(
+            full_details.formDetails.general_info.product_type
+          );
+          full_details.formDetails.general_info.primary_activity = this.getPrimary(
+            full_details.formDetails.general_info.primary_activity
+          );
+          full_details.formDetails.general_info.declared_capital = this.getDeclared(
+            full_details.formDetails.general_info.declared_capital
+          );
+          full_details.formDetails.auth_officer.mail_add.region = this.getRegionName(
+            full_details.formDetails.auth_officer.mail_add.region
+          );
+          full_details.formDetails.auth_officer.mail_add.province = this.getProvinceName(
+            full_details.formDetails.auth_officer.mail_add.province
+          );
+          full_details.formDetails.auth_officer.mail_add.city = this.getCityName(
+            full_details.formDetails.auth_officer.mail_add.city
+          );
+          full_details.officeAddress.region = this.getRegionName(
+            full_details.officeAddress.region
+          );
+          full_details.officeAddress.province = this.getProvinceName(
+            full_details.officeAddress.province
+          );
+          full_details.officeAddress.city = this.getCityName(
+            full_details.officeAddress.city
+          );
+          full_details.formDetails.application_type = this.getAppType(
+            full_details.formDetails.application_type
+          );
+          full_details.console.log(
+            "fulldetails data: " + JSON.stringify(full_details)
+          );
+          this.$download(full_details, "PAY", "FDAC.pdf");
+
+          console.log(
+            "application form data: " + JSON.stringify(this.app_form)
+          );
+          console.log("fees form data: " + JSON.stringify(this.fees_form));
+        });
+    }
+  }
 };
 </script>
 

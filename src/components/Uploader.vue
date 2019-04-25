@@ -126,6 +126,9 @@ export default {
       return this.currentStatus === STATUS_FAILED;
     }
   },
+  created() {
+    this.reset();
+  },
   methods: {
     reset() {
       // reset form to initial state
