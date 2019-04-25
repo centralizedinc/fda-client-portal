@@ -263,8 +263,13 @@ export default {
                 description: 'Surcharge',
                 amount: this.fees_form.surcharge
             })
+            summary.push({
+                description: 'Remaining Balance',
+                amount: this.fees_form.total
+            })
             console.log('FORM: ' + JSON.stringify( this.form))
-            console.log('summary data: ' + JSON.stringify(this.fees_form))
+            console.log('fees form data: ' + JSON.stringify(this.fees_form))
+            console.log('summary data: ' + JSON.stringify(summary))
             this.$showCC({
                 summary,
                 case_no: this.form.case_no,

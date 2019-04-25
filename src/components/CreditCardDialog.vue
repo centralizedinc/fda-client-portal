@@ -429,6 +429,7 @@
               this.submitDialog = false
             })
             .catch(err => {
+              this.$hideCC();
               this.isLoading = false;
               console.log("ERROR: " + err);
               this.$notifyError(err);

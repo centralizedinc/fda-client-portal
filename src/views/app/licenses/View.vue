@@ -328,11 +328,12 @@
             <v-footer height="auto" v-if="show_payments">
               <v-btn
                 color="success"
-                v-show="show_payment_summary"
+                v-if="show_payment_summary"
                 @click="paymentSummary"
               >Payment</v-btn>
               <v-spacer></v-spacer>
               Remaining Balance: ₱ {{formatCurrency(remainingBalance())}}
+              <v-spacer></v-spacer>
             </v-footer>
           </v-card>
         </v-flex>
@@ -524,11 +525,14 @@ export default {
       console.log("this is debit: " + JSON.stringify(debit))
       console.log("this. is credit: " + JSON.stringify(credit))
       this.remaining_balance = debit - credit
-        if(this.remaining_balance != 0 && this.remaining_balance !== null){
-        this.show_payment_summary = true
+      console.log("show payment summary: " + JSON.stringify(this.remaining_balance))
+        if(this.remaining_balance === null || this.remaining_balance === undefined || this.remaining_balance === 0 ||
+         debit === null || debit === undefined || debit === 0 || debit === credit){
+        console.log("show payment summary false ")
+        this.show_payment_summary = false
         }else{
-          // console.log("show payment summary: " + JSON.stringify(remaining))
-          this.show_payment_summary = false
+          console.log("show payment summary true ")
+          this.show_payment_summary = true
         }
       
       
