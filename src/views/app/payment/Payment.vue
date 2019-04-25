@@ -73,12 +73,11 @@ export default {
   },
   data() {
     return {
-      transactions:[],
+      transactions: [],
       form: {},
       pagination: {
-        sortBy: 'date_created',
+        sortBy: "date_created",
         descending: true
-
       },
       charges: {},
       case_holder: {},
@@ -86,8 +85,8 @@ export default {
       mode: 0, // 0 - new, 1 - variation, 2 - renewal
       headers: [
         {
-          text:'Payment Transaction Id',
-          value:'transaction_id'
+          text: "Payment Transaction Id",
+          value: "transaction_id"
         },
         {
           text: "Case No",
@@ -108,38 +107,27 @@ export default {
         },
         {
           text: "Date Paid",
-          value: "date_created"        
-        },
-      ],
+          value: "date_created"
+        }
+      ]
     };
   },
   created() {
     this.init();
   },
   methods: {
-    init() {       
-      this.$store.dispatch('FIND_PAYMENTS', this.$store.state.user_session.user._id) 
-      .then(results=>{
-        if(results.data.success){
-          console.log('RESULT:' + JSON.stringify(results.data.model))
-          this.transactions = results.data.model
-        }
-      })
-      .catch(err=>{
-        console.log('ERROR: ' + err)
-      }) 
-      // this.$store
-      //   .dispatch("GET_ACTIVE_AND_CASES")
-      //   .then(result => {
-      //     this.details = result;
-      //     return this.$store.dispatch("GET_TASKS");
-      //   })
-      //   .then(result => {
-      //     console.log("result :", result);
-      //   })
-      //   .catch(err => {
-      //     console.log("err :", err);
-      //   });
+    init() {
+      this.$store
+        .dispatch("FIND_PAYMENTS", this.$store.state.user_session.user._id)
+        .then(results => {
+          if (results.data.success) {
+            console.log("RESULT:" + JSON.stringify(results.data.model));
+            this.transactions = results.data.model;
+          }
+        })
+        .catch(err => {
+          console.log("ERROR: " + err);
+        });
     },
     viewForm() {
       this.$store.commit("SET_VIEW_LICENSE", this.details.license_details);
@@ -205,14 +193,14 @@ export default {
     // }
   },
   computed: {
-    case_items(){
-      var items = []
+    case_items() {
+      var items = [];
       this.details.cases.forEach(caseDetails => {
-        if(!caseDetails.is_paid){
-          items.push(caseDetails)
+        if (!caseDetails.is_paid) {
+          items.push(caseDetails);
         }
-      })
-      return items
+      });
+      return items;
     },
     pages() {
       if (

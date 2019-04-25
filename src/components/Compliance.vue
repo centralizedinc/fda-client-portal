@@ -162,20 +162,26 @@ export default {
             remarks: this.remarks,
             form_data: this.form_data
           })
-          .then(result => this.init());
-        this.loading = false;
-        this.complyDialog = false;
-        this.$notify({
-          message: "Compliance has been submitted",
-          color: "success",
-          icon: "check_circle"
-        }).catch(err => console.log("err :", err));
-        this.loading = false;
-        this.$notify({
-          message: "Oops! Something went wrong. Please try again.",
-          color: "error",
-          icon: "error_outline"
-        });
+          .then(result => {
+            this.loading = false;
+            this.complyDialog = false;
+            this.$notify({
+              message: "Compliance has been submitted",
+              color: "success",
+              icon: "check_circle"
+            });
+            this.init();
+            return this.$store.dispatch("GET_ACTIVITIES");
+          })
+          .catch(err => {
+            this.loading = false;
+            this.$notify({
+              message: "Oops! Something went wrong. Please try again.",
+              color: "error",
+              icon: "error_outline"
+            });
+            console.log("err :", err);
+          });
       } else {
         this.loading = false;
         this.$notify({

@@ -94,22 +94,22 @@
 </template>
 
 <script>
-import pdf from 'vue-pdf'
+import pdf from "vue-pdf";
 const STATUS_INITIAL = 0,
   STATUS_SAVING = 1,
   STATUS_SUCCESS = 2,
   STATUS_FAILED = 3;
 
 export default {
-  components:{pdf},
+  components: { pdf },
   data() {
     return {
-      loaded:false,
+      loaded: false,
       uploadedFiles: [],
       uploadError: null,
       currentStatus: null,
       uploadFieldName: "file",
-      formData:new FormData()
+      formData: new FormData()
     };
   },
   computed: {
@@ -136,7 +136,6 @@ export default {
     },
     onFileChange(fieldName, fileList) {
       // handle file changes
-      
 
       if (!fileList.length) return;
 
@@ -164,7 +163,10 @@ export default {
       });
 
       this.currentStatus = STATUS_SUCCESS;
-      this.$emit("upload", {formData:this.formData, uploadedFiles:this.uploadedFiles});
+      this.$emit("upload", {
+        formData: this.formData,
+        uploadedFiles: this.uploadedFiles
+      });
     },
     prettify(name) {
       if (name.length > 15) {

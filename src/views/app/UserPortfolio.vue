@@ -126,7 +126,7 @@ export default {
     ActiveLicense: () => import("@/components/ActiveLicense.vue")
   },
   data: () => ({
-    active_lic:{},
+    active_lic: {},
     details: {},
     complyDetails: null,
     complyActivities: [],
@@ -181,48 +181,17 @@ export default {
   methods: {
     init() {
       this.user = this.$store.state.user_session.user;
-      this.$store.dispatch('GET_ACTIVE_LICENSE')
-      .then(result=>{
-        console.log('GET_ACTIVE_LICENSE: '+JSON.stringify(result))
-        this.active_lic = result;
-      })
-      // this.details = this.$store.state.licenses.details;
-      // this.$store
-      //   .dispatch("GET_ACTIVE_AND_CASES")
-      //   .then(result => {
-      //     this.details = result;
-      //     console.log(
-      //       "details user portfolio: " + JSON.stringify(this.details)
-      //     );
-      //     this.$store.commit('SET_CASES', this.details.cases)
-      //     this.details.cases.forEach(casesData => {
-      //       console.log("cases data foreach: " + JSON.stringify(casesData));
-      //       casesData.activities.forEach(act => {
-      //         console.log("activities data from act: " + JSON.stringify(act));
-      //         if (act != null) {
-      //           (act.case_no = casesData.case_no),
-      //             (act.application_type = casesData.application_type),
-      //             (act.case_type = casesData.case_type);
-      //           this.activities.push(act);
-      //         }
-      //       });
-      //     });
-      //     console.log("data pushit: " + JSON.stringify(this.activities));
-      //     // for(var x = result.case_details.activities.length;x>=0;x--){
-      //     //   console.log("for user portfolio: " + JSON.stringify(result.case_details.activities[x]))
-      //     // }
-      //     // this.activities = result.case_details.activities
-      //     this.activities.sort(function(a, b) {
-      //       var dateA = new Date(a.date_completed),
-      //         dateB = new Date(b.date_completed);
-      //       return dateB - dateA;
-      //     });
-      //     return this.$store.dispatch("GET_TASKS");
-      //   })
-      //   .then(result => {})
-      //   .catch(err => {
-      //     console.log("err :", err);
-      //   });
+      this.$store
+        .dispatch("GET_ACTIVE_LICENSE")
+        .then(result => {
+          console.log("GET_ACTIVE_LICENSE: " + JSON.stringify(result));
+          this.active_lic = result;
+          return this.$store.dispatch("GET_TASKS");
+        })
+        .then(tasks => {
+          console.log("tasks :", tasks);
+        })
+        .catch(err => {});
     },
     functionEvents(date) {
       const [, , day] = date.split("-");
