@@ -48,7 +48,7 @@
                 <v-layout row wrap>
                     <v-flex xs12>
                         <v-select
-                            :items="['Head Office', 'Branch', 'Warehouse', 'Plant']"
+                            :items="address_types"
                             v-model="address.type"
                             label="Address Type"
                         ></v-select>
@@ -174,6 +174,24 @@ export default {
         {
           text: "Zip Code",
           value: "zipCode"
+        }
+      ],
+      address_types: [
+        {
+          name: "Head Office",
+          code: 0
+        },
+        {
+          name: "Branch",
+          code: 1
+        },
+        {
+          name: "Warehouse",
+          code: 2
+        },
+        {
+          name: "Plant",
+          code: 3
         }
       ]
     };

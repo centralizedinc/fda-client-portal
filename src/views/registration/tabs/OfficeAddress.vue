@@ -135,138 +135,141 @@
 
 <script>
 export default {
-    components: {
-        AddressMap: () => import("@/components/AddressMap")
-    },
-    props: ["form"],
-    data(){
-        return {
-            isAdd:true,
-            index:null,
-            isValid:true,
-            address:{},
-            address_list:[],
-            regions:[],
-            provinces:[],
-            cities:[],
-            showDialog: false,
-            rules: {required: value => !!value || "This field is required"},
-            headers: [
-                 {
-                    text: "Address Type",
-                    value: "type"
-                },
-                {
-                    text: "Address",
-                    value: "address"
-                },
-                {
-                    text: "City/Town",
-                    value: "city"
-                },
-                {
-                    text: "Province",
-                    value: "province"
-                },
-                {
-                    text: "Regions",
-                    value: "region",
-                    sortable: false
-                },
-                {
-                    text: "Zip Code",
-                    value: "zipCode"
-                }
-            ],
-            address_types: [{
-                name: 'Head Office',
-                code: 0
-            }, {
-                name: 'Branch',
-                code: 1
-            }, {
-                name: 'Warehouse',
-                code: 2
-            }, {
-                name: 'Plant',
-                code: 3
-            }]
+  components: {
+    AddressMap: () => import("@/components/AddressMap")
+  },
+  props: ["form"],
+  data() {
+    return {
+      isAdd: true,
+      index: null,
+      isValid: true,
+      address: {},
+      address_list: [],
+      regions: [],
+      provinces: [],
+      cities: [],
+      showDialog: false,
+      rules: { required: value => !!value || "This field is required" },
+      headers: [
+        {
+          text: "Address Type",
+          value: "type"
+        },
+        {
+          text: "Address",
+          value: "address"
+        },
+        {
+          text: "City/Town",
+          value: "city"
+        },
+        {
+          text: "Province",
+          value: "province"
+        },
+        {
+          text: "Regions",
+          value: "region",
+          sortable: false
+        },
+        {
+          text: "Zip Code",
+          value: "zipCode"
         }
-    },
-    created(){
-        this.init();
-    },
-    methods:{
-        init(){
-            this.address_list = this.form.address_list?this.form.address_list:[];            
-            this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
-                if (locations) {
-                    this.regions = locations.regions;
-                    this.provinces = locations.provinces;
-                    this.cities = locations.provinces;
-                }
-            });
+      ],
+      address_types: [
+        {
+          name: "Head Office",
+          code: 0
         },
-        addAddress(){
-            this.isAdd=true;
-            this.address={};
-            this.showDialog = true;
+        {
+          name: "Branch",
+          code: 1
         },
-        validate(){
-            var valid = false;
-            for(var i=0; i<this.address_list.length; i++){
-                if(this.address_list[i].type===0){
-                    valid=true;
-                    this.form.address_list = this.address_list;
-                    break;
-                }
-            }
-            return valid;
+        {
+          name: "Warehouse",
+          code: 2
         },
-        submit(){
-            this.$refs.vform.validate()
-            if(this.isValid){
-                this.address_list.push(this.address);
-                this.showDialog = false;
-            }else{
-                this.$notifyError([{message: 'Fill-up required fields.'}])
-            }            
-        },
-        viewItem(item, indx){
-            this.index = indx;
-            this.isAdd=false;
-            this.address=JSON.parse(JSON.stringify(item));
-            this.showDialog = true;
-        },
-        editItem(){
-            this.address_list.splice(this.index,1,this.address)
-            this.showDialog = false;
-        },
-        deleteItem() {
-            if(confirm("Are you sure you want to delete this item?")){
-                this.address_list.splice(this.index, 1)
-                this.showDialog = false;
-            } 
-             
-        },
-        setCoordinates(coordinates){
-            this.address.location = coordinates;
+        {
+          name: "Plant",
+          code: 3
         }
-    },
-    computed:{
-        filtered_provinces(){
-            return this.findProvinces(this.address.region);
-        },
-        filtered_cities(){
-            return this.findCities(this.address.province);
+      ]
+    };
+  },
+  created() {
+    this.init();
+  },
+  methods: {
+    init() {
+      this.address_list = this.form.address_list ? this.form.address_list : [];
+      this.$store.dispatch("GET_PLACES_REFERENCE").then(locations => {
+        if (locations) {
+          this.regions = locations.regions;
+          this.provinces = locations.provinces;
+          this.cities = locations.provinces;
         }
+      });
+    },
+    addAddress() {
+      this.isAdd = true;
+      this.address = {};
+      this.showDialog = true;
+    },
+    validate() {
+      var valid = false;
+      for (var i = 0; i < this.address_list.length; i++) {
+        if (this.address_list[i].type === 0) {
+          valid = true;
+          this.form.address_list = this.address_list;
+          break;
+        }
+      }
+      return valid;
+    },
+    submit() {
+      this.$refs.vform.validate();
+      if (this.isValid) {
+        this.address_list.push(this.address);
+        this.showDialog = false;
+      } else {
+        this.$notifyError([{ message: "Fill-up required fields." }]);
+      }
+    },
+    viewItem(item, indx) {
+      this.index = indx;
+      this.isAdd = false;
+      this.address = JSON.parse(JSON.stringify(item));
+      this.showDialog = true;
+    },
+    editItem() {
+      this.address_list.splice(this.index, 1, this.address);
+      this.showDialog = false;
+    },
+    deleteItem() {
+      if (confirm("Are you sure you want to delete this item?")) {
+        this.address_list.splice(this.index, 1);
+        this.showDialog = false;
+      }
+    },
+    setCoordinates(coordinates) {
+      this.address.location = coordinates;
     }
-
-}
+  },
+  computed: {
+    filtered_provinces() {
+      return this.findProvinces(this.address.region);
+    },
+    filtered_cities() {
+      return this.findCities(this.address.province);
+    }
+  }
+};
 </script>
 
 <style>
 .tStyle {
-    background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%);
+  background: linear-gradient(45deg, #104b2a 0%, #b5c25a 100%);
 }
 </style>
