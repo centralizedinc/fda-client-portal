@@ -189,7 +189,7 @@ export default {
       initial: false,
       selected_case: {},
       pagination: {
-        sortBy: 'date_created',
+        sortBy: "date_created",
         descending: true
       },
       details: {
@@ -231,7 +231,7 @@ export default {
         .dispatch("GET_ACTIVE_AND_CASES")
         .then(result => {
           this.details = result;
-          console.log('##### DETAILS: '+JSON.stringify(this.details))
+          console.log("##### DETAILS: " + JSON.stringify(this.details));
           return this.$store.dispatch("GET_TASKS");
         })
         .then(result => {
@@ -271,7 +271,9 @@ export default {
             );
             this.$store.commit("SET_VIEW_LICENSE", result.data.model);
             this.$store.commit("SET_VIEW_CASE", this.preview_item);
-            console.log('CASE ACTIVITIES: '+JSON.stringify(this.preview_item))
+            console.log(
+              "CASE ACTIVITIES: " + JSON.stringify(this.preview_item)
+            );
 
             this.$router.push("/app/licenses/view");
           } else console.log("result.data.errors :", result.data.errors);
@@ -311,12 +313,12 @@ export default {
             app.license_expiry = this.formatDate(app.license_expiry);
 
             app.officeAddress = app.address_list.find(x => {
-              return x.type === 'Head Office'
-            })
-            if(!app.officeAddress){
+              return x.type === 0;
+            });
+            if (!app.officeAddress) {
               app.officeAddress = {
-                address:""
-              }
+                address: ""
+              };
             }
             this.$print(app, "LIC");
             this.printDialog = false;
@@ -326,7 +328,7 @@ export default {
           console.log("###printLicense err :", err);
         });
     },
-    preview(item){
+    preview(item) {
       this.preview_item = item;
       this.overview = true;
     }

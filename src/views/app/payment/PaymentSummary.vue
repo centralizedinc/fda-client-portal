@@ -363,7 +363,7 @@ export default {
             formDetails: this.app_form,
             paymentDetails: this.fees_form,
             officeAddress: this.app_form.address_list.find(data => {
-              return data.type === "Head Office";
+              return data.type === 0;
             })
           };
 

@@ -35,12 +35,10 @@ const state = {
       landline: "",
       fax: "",
       mobile: "",
-      products: [
-        {
-          prod_line: "",
-          remarks: ""
-        }
-      ]
+      products: [{
+        prod_line: "",
+        remarks: ""
+      }]
     },
     address_list: [],
     auth_officer: {
@@ -106,7 +104,9 @@ const mutations = {
   },
   NEW_APPLICATION(state) {
     state.applicationForm = state.init_form;
-    state.applicationAccount = { name: {} };
+    state.applicationAccount = {
+      name: {}
+    };
   },
   CONTINUE_APPLICATION(state, data) {
     state.applicationForm = data.form;
