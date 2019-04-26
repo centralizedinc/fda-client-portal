@@ -18,7 +18,7 @@
                 :items="address_list">
                 <template slot="items" slot-scope="props">
                     <tr @click="viewItem(props.item, props.index)">
-                        <td>{{props.item.type}}</td>
+                        <td>{{getEstablishmentType(props.item.type)}}</td>
                         <td>{{props.item.address}}</td>
                         <td>{{getCityName(props.item.city)}}</td>
                         <td>{{getProvinceName(props.item.province)}}</td>
@@ -250,6 +250,7 @@ export default {
              
         },
         setCoordinates(coordinates){
+            console.log("coordinates data: " + JSON.stringify(coordinates))
             this.address.location = coordinates;
         }
     },

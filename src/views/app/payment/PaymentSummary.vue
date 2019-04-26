@@ -263,10 +263,13 @@ export default {
                 description: 'Surcharge',
                 amount: this.fees_form.surcharge
             })
-            summary.push({
+            if(this.fees_form.total !=0 ){
+                summary.push({
                 description: 'Remaining Balance',
                 amount: this.fees_form.total
-            })
+                })
+            }
+            
             console.log('FORM: ' + JSON.stringify( this.form))
             console.log('fees form data: ' + JSON.stringify(this.fees_form))
             console.log('summary data: ' + JSON.stringify(summary))
@@ -299,6 +302,7 @@ export default {
                 console.log("this is ecpay save transaction provider data: " + JSON.stringify(result))
                 var ecpay_fee = 0;
                 var details = {
+                    date_issue: formatDate(result.date_created),
                     reference_number: result.third_party_ref_no,
                     status: this.getPaymentStatus(result.payment_details.status), 
                     expiration: this.formatDt(this.case_holder.date_expiry),
@@ -346,6 +350,7 @@ export default {
              console.log("this.app_form: " + JSON.stringify(this.app_form))
             this.cashierPayment = true;
             var full_details = {
+                date_issue: formatDate(result.date_created),
                 formDetails: this.app_form,
                 paymentDetails: this.fees_form,
                 officeAddress: this.app_form.address_list.find(data =>{
@@ -383,7 +388,7 @@ export default {
             full_details.formDetails.application_type = this.getAppType(
                 full_details.formDetails.application_type
             );
-            full_details.
+            // full_details.officeAddress.type
               console.log("fulldetails data: " + JSON.stringify(full_details));
         this.$download(full_details, "PAY", 'FDAC.pdf');
             

@@ -111,6 +111,7 @@ var router = new Router({
       children: [{
           path: '',
           name: 'Dashboard',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/UserPortfolio.vue'),
           // beforeEnter: isAuthorized
         },
@@ -153,6 +154,7 @@ var router = new Router({
         {
           path: 'licenses/summary',
           name: 'License Summary',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/licenses/View.vue'),
           // beforeEnter: isAuthorized
         },

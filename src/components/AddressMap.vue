@@ -44,6 +44,7 @@ export default {
     watch:{
         location_watch(val){
             if(val){
+                console.log("val here: " + JSON.stringify(val))
                 this.$http.get('https://fda-services.herokuapp.com/v1.0/core/locations?location=' + val)
                 .then(result=>{
                     if(result.data.model.candidates[0]){
