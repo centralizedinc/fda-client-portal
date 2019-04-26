@@ -98,7 +98,7 @@ export default class LicenseAPI {
         })
     }
 
-    applyAccountForExistingLicense(data){
+    applyAccountForExistingLicense(data) {
         return axios.post('public/accounts/register/legacy', {
             license: data.license,
             account: data.account
@@ -120,16 +120,18 @@ export default class LicenseAPI {
                         lic_case = result1.data.model;
                         saved_license = result1.data.model.application.license;
                         return axios.post('documents/uploads?account_id=' + saved_license.case_no, lic_data.upload)
-                    } else if(!lic_data.upload) {
-                        reject([{message: 'No file attachment'}])
-                    }else{
+                    } else if (!lic_data.upload) {
+                        reject([{
+                            message: 'No file attachment'
+                        }])
+                    } else {
                         console.log('REJECT: ' + JSON.stringify(result1.data.errors))
                         reject(result1.data.errors)
                     }
                 })
                 // upload file attachments to AWS S3
                 .then(result2 => {
-                    if(result2){
+                    if (result2) {
                         var files = result2.data.model
                         saved_license.uploaded_files = files;
                         if (result2.data.success) {
@@ -137,19 +139,19 @@ export default class LicenseAPI {
                         } else {
                             resolve(result2.data)
                         }
-                    } else{
+                    } else {
                         reject()
-                    }                   
+                    }
                 })
                 // update license application merging uploaded files
                 .then(result3 => {
-                    if(result3){
+                    if (result3) {
                         lic_case.success = true;
                         lic_case.application.license = result3.data.model;
                         resolve(lic_case)
-                    }else{
+                    } else {
                         reject()
-                    }                    
+                    }
                 })
                 .catch(err => {
                     console.log(err)
@@ -196,39 +198,41 @@ export default class LicenseAPI {
         return axios.get('public/license/result/' + key);
     }
 
-    getDocument(url){
-        return axios.get(url, {responseType: 'arraybuffer',
-        headers: {
-          'Accept': 'application/pdf'
-        }})
+    getDocument(url) {
+        return axios.get(url, {
+            responseType: 'arraybuffer',
+            headers: {
+                'Accept': 'application/pdf'
+            }
+        })
     }
 
-    addDocuments(license, formData){
-        return new Promise((resolve, reject)=>{
+    addDocuments(license, formData) {
+        return new Promise((resolve, reject) => {
             axios.post('documents/uploads?account_id=' + license.case_no, formData)
-            .then(result=>{
-                console.log(JSON.stringify(result))
-                var files = result.data.model
-                license.output_files = files;
-                if (result.data.success) {
-                    return axios.post('lto-api/' + license._id, license)
-                }else{
-                    reject()
-                    return 
-                }
-            })
-            .then(updated=>{
-                console.log(JSON.stringify(updated))
-                if(updated){
-                    resolve(updated)
-                }else{
-                    reject()
-                }
-            })
-            .catch(err=>{
-                console.log(err)
-                reject(err)
-            })
+                .then(result => {
+                    console.log(JSON.stringify(result))
+                    var files = result.data.model
+                    license.output_files = files;
+                    if (result.data.success) {
+                        return axios.post('lto-api/' + license._id, license)
+                    } else {
+                        reject()
+                        return
+                    }
+                })
+                .then(updated => {
+                    console.log(JSON.stringify(updated))
+                    if (updated) {
+                        resolve(updated)
+                    } else {
+                        reject()
+                    }
+                })
+                .catch(err => {
+                    console.log(err)
+                    reject(err)
+                })
         })
     }
 

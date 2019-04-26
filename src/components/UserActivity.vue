@@ -46,28 +46,24 @@
 
 <script>
 export default {
-  data() {
-    return {
-      activities: []
-    };
-  },
   created() {
     this.init();
+  },
+  computed: {
+    activities() {
+      return this.$store.state.case.active_case_activities;
+    }
   },
   methods: {
     init() {
       this.$store
         .dispatch("GET_ACTIVITIES")
-        .then(result => {
-          if (result.data.success) this.activities = result.data.model;
-          else
-            console.log(
-              "GET_ACTIVITIES result.data.errors :",
-              result.data.errors
-            );
+        .then(activities => {
+          console.log("activities :", activities);
         })
         .catch(err => {
           console.log("GET_ACTIVITIES err :", err);
+          this.notifyError(err);
         });
     },
     viewCase(application_id) {

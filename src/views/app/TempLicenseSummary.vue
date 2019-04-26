@@ -308,14 +308,14 @@ export default {
         subtitle:
           "<span class='text--primary'>Chz Quiocho</span> &mdash; Renewed License 0001111"
       }
-    ],
-    details: null
+    ]
   }),
   created() {
     this.init();
   },
   methods: {
     init() {
+      console.log("test");
       this.$store
         .dispatch("GET_UNAPPROVED_LICENSES")
         .then(result => {
@@ -325,18 +325,8 @@ export default {
         .catch(err => {
           console.log("loading user status error: " + err);
         });
-
-      this.details = this.$store.state.licenses.details;
       this.$store
-        .dispatch("GET_ACTIVE_AND_CASES")
-        .then(result => {
-          console.log(
-            "JSON.stringify(result) GET_ACTIVE_AND_CASES :",
-            JSON.stringify(result)
-          );
-          this.details = result;
-          return this.$store.dispatch("GET_TASKS");
-        })
+        .dispatch("GET_TASKS")
         .then(result => {
           console.log("result GET_TASKS :", JSON.stringify(result));
           if (

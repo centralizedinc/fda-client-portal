@@ -111,7 +111,8 @@ export default {
       remarks: null,
       form_data: null,
       selected: {},
-      loading: false
+      loading: false,
+      uploadedFiles: []
     };
   },
   created() {
@@ -149,12 +150,19 @@ export default {
       this.selected = item;
       this.complyDialog = true;
     },
-    upload(file) {
-      this.form_data = file;
+    upload(data) {
+      this.form_data = data.formData;
+      this.uploadedFiles = data.uploadedFiles;
     },
     submit() {
       this.loading = true;
       if (this.remarks != null) {
+        console.log("saving comply :", {
+          case_id: this.selected.case_id,
+          case_no: this.selected.case_no,
+          remarks: this.remarks,
+          form_data: this.form_data
+        });
         this.$store
           .dispatch("SAVE_COMPLY", {
             case_id: this.selected.case_id,
@@ -162,20 +170,26 @@ export default {
             remarks: this.remarks,
             form_data: this.form_data
           })
-          .then(result => this.init());
-        this.loading = false;
-        this.complyDialog = false;
-        this.$notify({
-          message: "Compliance has been submitted",
-          color: "success",
-          icon: "check_circle"
-        }).catch(err => console.log("err :", err));
-        this.loading = false;
-        this.$notify({
-          message: "Oops! Something went wrong. Please try again.",
-          color: "error",
-          icon: "error_outline"
-        });
+          .then(result => {
+            this.loading = false;
+            this.complyDialog = false;
+            this.$notify({
+              message: "Compliance has been submitted",
+              color: "success",
+              icon: "check_circle"
+            });
+            this.init();
+            return this.$store.dispatch("GET_ACTIVITIES", true);
+          })
+          .catch(err => {
+            this.loading = false;
+            this.$notify({
+              message: "Oops! Something went wrong. Please try again.",
+              color: "error",
+              icon: "error_outline"
+            });
+            console.log("err :", err);
+          });
       } else {
         this.loading = false;
         this.$notify({

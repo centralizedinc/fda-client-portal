@@ -3,7 +3,8 @@ import CaseAPI from '../../api/CaseAPI';
 const state = {
     cases: [],
     complied: [],
-    view_case:{}
+    view_case: {},
+    active_case_activities: []
     // getCase: {}
 }
 
@@ -17,8 +18,11 @@ const mutations = {
     CLEAR_DATA(state) {
         state.cases = [];
     },
-    SET_VIEW_CASE(state, case_details){
+    SET_VIEW_CASE(state, case_details) {
         state.view_case = case_details
+    },
+    SET_ACTIVE_ACTIVITIES(state, activities) {
+        state.active_case_activities = activities;
     }
     // SET_ONE_CASE(state, cases){
     //     state.getCase = cases;
@@ -43,21 +47,21 @@ var actions = {
                 });
         })
     },
-    GET_ONE_CASE(context, case_no){
+    GET_ONE_CASE(context, case_no) {
         return new Promise((resolve, reject) => {
             new CaseAPI(context.rootState.user_session.token).getCaseByCaseNumber(case_no)
-            .then((result) =>{
-                if (result.data.success) {
-                    // context.commit('SET_ONE_CASE', result.data.model);
-                    resolve(result.data.model)
-                } else {
-                    console.log('SET_ONE_CASE err :', result.data.errors)
-                    reject(result.data.errors)
-                }
-            }).catch((err) => {
-                console.log('err :', err);
-                reject(err)
-            });
+                .then((result) => {
+                    if (result.data.success) {
+                        // context.commit('SET_ONE_CASE', result.data.model);
+                        resolve(result.data.model)
+                    } else {
+                        console.log('SET_ONE_CASE err :', result.data.errors)
+                        reject(result.data.errors)
+                    }
+                }).catch((err) => {
+                    console.log('err :', err);
+                    reject(err)
+                });
         })
     },
     GET_COMPLY(context) {
@@ -93,9 +97,27 @@ var actions = {
                 });
         })
     },
-    GET_ACTIVITIES(context) {
+    GET_ACTIVITIES(context, refresh) {
         if (context.rootState.user_session.token) {
-            return new CaseAPI(context.rootState.user_session.token).getActivities();
+            return new Promise((resolve, reject) => {
+                if (refresh ||
+                    !context.state.active_case_activities ||
+                    context.state.active_case_activities.length === 0) {
+                    new CaseAPI(context.rootState.user_session.token)
+                        .getActivities()
+                        .then((result) => {
+                            if (result.data.success) {
+                                context.commit('SET_ACTIVE_ACTIVITIES', result.data.model);
+                                resolve(result.data.model)
+                            } else reject(result.data.errors)
+                        }).catch((err) => {
+                            console.log('GET_ACTIVITIES err :', err);
+                            reject(err)
+                        });
+                } else {
+                    resolve(context.state.active_case_activities)
+                }
+            })
         }
     }
 }

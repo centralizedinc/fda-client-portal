@@ -56,7 +56,7 @@ export default {
     return {
       license_details: {
         estab_details: {},
-        addresses: {}
+        address_list: []
       },
       case_details: {},
       client_details: {
@@ -92,6 +92,14 @@ export default {
         });
     },
     viewLetter() {
+      var address = "";
+
+      this.license_details.address_list.forEach(elem => {
+        if (elem.type === 0) {
+          address = elem.address;
+        }
+      });
+
       var details = {
         date_created: this.formatDate(this.director.date_completed),
         name: `${this.client_details.name.first} ${
@@ -99,10 +107,10 @@ export default {
         }`,
         establishment_name: this.license_details.estab_details
           .establishment_name,
-        establishment_address: this.license_details.addresses.office.address,
-        application_type: this.getAppType(
-          this.license_details.application_type
-        ) + " Application",
+        establishment_address: address,
+        application_type:
+          this.getAppType(this.license_details.application_type) +
+          " Application",
         case_no: this.case_details.case_no,
         reasons: this.director.remarks
       };
@@ -114,7 +122,7 @@ export default {
 
 <style>
 .disappCase {
-    background: linear-gradient(360deg, #58595B 0%, #E6E6E6 100%);
-    box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.0);
+  background: linear-gradient(360deg, #58595b 0%, #e6e6e6 100%);
+  box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0);
 }
 </style>
