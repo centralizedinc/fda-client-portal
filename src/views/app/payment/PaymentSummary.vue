@@ -363,12 +363,13 @@ export default {
           console.log("this.app_form: " + JSON.stringify(this.app_form));
           this.cashierPayment = true;
           var full_details = {
-            date_issue: formatDate(result.date_created),
+            date_issue: this.formatDate(result.date_created),
             formDetails: this.app_form,
             paymentDetails: this.fees_form,
             officeAddress: this.app_form.address_list.find(data => {
               return data.type === 0;
-            })
+            }),
+            qualified: this.app_form.qualified[0]
           };
 
           full_details.formDetails.general_info.product_type = this.getProduct(
@@ -401,9 +402,16 @@ export default {
           full_details.formDetails.application_type = this.getAppType(
             full_details.formDetails.application_type
           );
-          full_details.console.log(
-            "fulldetails data: " + JSON.stringify(full_details)
+          full_details.formDetails.auth_officer.designation = this.getDesignation(
+            full_details.formDetails.auth_officer.designation 
           );
+          full_details.qualified.designation = this.getDesignation(
+            full_details.qualified.designation 
+          );
+          full_details.qualified.id_type = this.getIdType(
+            full_details.qualified.id_type 
+          );
+          console.log("full details payment summary: " + JSON.stringify(full_details))
           this.$download(full_details, "PAY", "FDAC.pdf");
 
           console.log(
