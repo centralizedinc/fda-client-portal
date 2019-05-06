@@ -411,6 +411,18 @@ export default {
           full_details.qualified.id_type = this.getIdType(
             full_details.qualified.id_type 
           );
+          full_details.paymentDetails.total = this.numberWithCommas(
+            full_details.paymentDetails.total
+          );
+          full_details.paymentDetails.others = this.numberWithCommas(
+            full_details.paymentDetails.others
+          );
+          full_details.paymentDetails.interest = this.numberWithCommas(
+            full_details.paymentDetails.interest
+          );
+          full_details.paymentDetails.surcharge = this.numberWithCommas(
+            full_details.paymentDetails.surcharge
+          );
           console.log("full details payment summary: " + JSON.stringify(full_details))
           this.$download(full_details, "PAY", "FDAC.pdf");
 
