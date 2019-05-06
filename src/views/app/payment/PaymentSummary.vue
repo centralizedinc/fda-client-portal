@@ -411,6 +411,9 @@ export default {
           full_details.qualified.id_type = this.getIdType(
             full_details.qualified.id_type 
           );
+          full_details.qualified.tin = this.numberMask(
+            full_details.qualified.tin 
+          );
           full_details.paymentDetails.total = this.numberWithCommas(
             full_details.paymentDetails.total
           );
