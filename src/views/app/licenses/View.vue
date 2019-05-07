@@ -280,8 +280,7 @@
                           {text:'Remarks', sortable: false}]"
               :items="case_details.activities"
               hide-actions
-              class="elevation-1"
-            >
+              class="elevation-1">
               <template slot="items" slot-scope="props">
                 <td>{{ getTask(props.item.task_id).name }}</td>
                 <td>{{ formatDate(props.item.date_started) }}</td>

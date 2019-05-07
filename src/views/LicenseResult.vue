@@ -62,7 +62,7 @@ export default {
       client_details: {
         name: {}
       },
-      director: "",
+      director: {},
       loading: false
     };
   },
