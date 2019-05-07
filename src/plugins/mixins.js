@@ -186,6 +186,10 @@ export default {
           validate = this.isEmpty(email) || !re.test(email);
           return !validate;
         },
+        getEstablishmentType(type){
+         var address_types = ['Head Office','Branch','Warehouse','Plant']
+         return address_types[type]; 
+        },
         getRegionName(id) {
           var region = this.$store.state.places.regions.find(x => {
             return x._id === id;

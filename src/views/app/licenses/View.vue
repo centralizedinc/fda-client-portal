@@ -150,7 +150,7 @@
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{ props.item.type }}</td>
+              <td>{{ getEstablishmentType(props.item.type) }}</td>
               <td>{{ props.item.address }}</td>
               <!-- <td>{{ getCityName(props.item.city) }}</td>
               <td>{{ getProvinceName(props.item.province) }}</td>
@@ -528,6 +528,7 @@ export default {
         if(this.remaining_balance === null || this.remaining_balance === undefined || this.remaining_balance === 0 ||
          debit === null || debit === undefined || debit === 0 || debit === credit){
         console.log("show payment summary false ")
+        this.remaining_balance = 0.00
         this.show_payment_summary = false
         }else{
           console.log("show payment summary true ")

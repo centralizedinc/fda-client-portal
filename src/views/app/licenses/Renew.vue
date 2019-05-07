@@ -158,7 +158,7 @@
                 class="elevation-1"
             >
                 <template slot="items" slot-scope="props">
-                <td>{{ props.item.type }}</td>
+                <td>{{ getEstablishmentType(props.item.type) }}</td>
                 <td>{{ props.item.address }}</td>
                 <!-- <td>{{ getCityName(props.item.city) }}</td>
                 <td>{{ getProvinceName(props.item.province) }}</td>

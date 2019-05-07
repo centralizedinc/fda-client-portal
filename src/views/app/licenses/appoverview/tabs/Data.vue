@@ -73,7 +73,7 @@
           md8
         >{{form.auth_officer.lastname + ", " + form.auth_officer.firstname + " " + form.auth_officer.middlename }}</v-flex>
         <v-flex xs12 md4 class="subheading">Designation</v-flex>
-        <v-flex xs12 md8>{{form.auth_officer.designation}}</v-flex>
+        <v-flex xs12 md8>{{getDesignation(form.auth_officer.designation)}}</v-flex>
         <v-flex xs12 md4 class="subheading">TIN</v-flex>
         <v-flex xs12 md8>{{numberMask(form.auth_officer.tin)}}</v-flex>
         <v-flex xs12 md4 class="subheading">Birthday</v-flex>
@@ -102,7 +102,7 @@
           <v-data-table :headers="headers" :items="form.qualified" class="elevation-1">
             <template slot="items" slot-scope="props">
               <td>{{props.item.firstname + " " + props.item.lastname }}</td>
-              <td>{{props.item.designation}}</td>
+              <td>{{getDesignation(props.item.designation)}}</td>
               <td>{{props.item.birthday}}</td>
               <td>{{props.item.tin}}</td>
               <td>{{props.item.id_type + "-" + props.item.id_no}}</td>
