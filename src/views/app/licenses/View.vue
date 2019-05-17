@@ -280,8 +280,7 @@
                           {text:'Remarks', sortable: false}]"
               :items="case_details.activities"
               hide-actions
-              class="elevation-1"
-            >
+              class="elevation-1">
               <template slot="items" slot-scope="props">
                 <td>{{ getTask(props.item.task_id).name }}</td>
                 <td>{{ formatDate(props.item.date_started) }}</td>
@@ -518,8 +517,9 @@ export default {
       this.payments.forEach(compute => {
         if(compute.payment_details.status != 0){
         console.log("compute details data: " + JSON.stringify(compute))
-        debit = compute.transaction_details.order_payment.total_amount
         credit += compute.payment_details.total_amount
+        }else{
+          debit = compute.transaction_details.order_payment.total_amount
         }
       })
       console.log("this is debit: " + JSON.stringify(debit))
@@ -530,6 +530,9 @@ export default {
          debit === null || debit === undefined || debit === 0 || debit === credit){
         console.log("show payment summary false ")
         this.remaining_balance = 0.00
+        if(credit === 0){
+          this.remaining_balance = debit
+        }
         this.show_payment_summary = false
         }else{
           console.log("show payment summary true ")
