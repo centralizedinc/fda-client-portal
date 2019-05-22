@@ -32,7 +32,7 @@
               >Select the corresponding company activity/activities</span>
             </v-stepper-step>
             <v-divider></v-divider>
-            <v-stepper-step @click="proceed(3)" style="cursor:pointer" :complete="e1 > 3" step="3">
+            <!-- <v-stepper-step @click="proceed(3)" style="cursor:pointer" :complete="e1 > 3" step="3">
               <span class="title font-weight-thin pa-1">Complete List of Ingredients</span>
               <span
                 class="caption font-weight-thin pa-1"
@@ -68,10 +68,10 @@
               <span
                 class="caption font-weight-thin pa-1"
               >We will sent you an email with a confirmation link. Please check your email.</span>
-            </v-stepper-step>
+            </v-stepper-step> -->
           </v-stepper>
         </v-tab-item>
-        <v-tab-item>
+        <!-- <v-tab-item>
           <v-divider></v-divider>
           <v-data-table
             :headers="[{text: 'Description', sortable:false}, {text: 'Amount', sortable:false}]"
@@ -87,7 +87,7 @@
               <td class="font-weight-bold">₱ {{ numberWithCommas(total_amount) }}</td>
             </template>
           </v-data-table>
-        </v-tab-item>
+        </v-tab-item> -->
       </v-tabs-items>
     </v-navigation-drawer>
     <v-flex xs1 d-flex align-center align-content-center>
