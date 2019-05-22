@@ -48,6 +48,15 @@
         </v-tooltip>
       </template>
       <step-four slot="content-step-4" :form="form"></step-four>
+      <template slot="header-step-9">Input Document
+        <v-spacer></v-spacer>
+        <v-tooltip left>
+          <v-btn slot="activator" flat icon color="error">
+            <i class="fas fa-question fa-lg"></i>
+          </v-btn>Get Help
+        </v-tooltip>
+      </template>
+      <step-nine slot="content-step-9" :form="form"></step-nine>
       <template slot="header-step-10">Amendment
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -69,6 +78,7 @@ export default {
     StepTwo: () => import("./create/tabs/EstablishmentInfo.vue"),
     StepThree: () => import("./create/tabs/CompleteIngredients.vue"),
     StepFour: () => import("./create/tabs/ProductSpecs.vue"),
+    StepNine: () => import("./create/tabs/InputDocument.vue"),
     StepTen: () => import("./create/tabs/Amendment.vue")
   },
   data: () => ({
