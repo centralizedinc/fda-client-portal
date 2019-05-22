@@ -68,7 +68,7 @@
               <span
                 class="caption font-weight-thin pa-1"
               >We will sent you an email with a confirmation link. Please check your email.</span>
-            </v-stepper-step> -->
+            </v-stepper-step>-->
           </v-stepper>
         </v-tab-item>
         <!-- <v-tab-item>
@@ -87,7 +87,7 @@
               <td class="font-weight-bold">₱ {{ numberWithCommas(total_amount) }}</td>
             </template>
           </v-data-table>
-        </v-tab-item> -->
+        </v-tab-item>-->
       </v-tabs-items>
     </v-navigation-drawer>
     <v-flex xs1 d-flex align-center align-content-center>
