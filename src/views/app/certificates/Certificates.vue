@@ -85,9 +85,11 @@ export default {
   },
   methods: {
     init() {
-      this.$store.dispatch("SET_LICENSES");
+      console.log("Welcome to certificates!!!")
+      // this.$store.dispatch("SET_LICENSES");
     },
     launchAppForm() {
+      console.log("certificates launchappform")
       this.$router.push("/app/certificates/apply");
     }
   }
