@@ -72,15 +72,15 @@ var router = new Router({
           component: () => import('@/views/registration/Register.vue')
         },
         {
-        path: '/registration/pay',
-        name: 'Payment',
-        component: () => import('@/views/app/payment/PaymentSummary.vue')
-      },
+          path: '/registration/pay',
+          name: 'Payment',
+          component: () => import('@/views/app/payment/PaymentSummary.vue')
+        },
         {
           path: '/registration/existing',
           name: 'Registration with Existing License',
           component: () => import('@/views/registration/Existing.vue')
-        },        
+        },
         {
           path: '/confirmation',
           name: 'Confirmation',
@@ -167,7 +167,7 @@ var router = new Router({
         {
           path: 'certificates/apply',
           name: 'New Certificate of Product Registration',
-          component: () => import('@/views/app/certificates/Apply.vue'),
+          component: () => import('@/views/app/certificates/Create.vue'),
           // beforeEnter: isAuthorized
         },
         {
