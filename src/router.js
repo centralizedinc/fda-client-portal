@@ -167,7 +167,7 @@ var router = new Router({
         {
           path: 'certificates/apply',
           name: 'New Certificate of Product Registration',
-          component: () => import('@/views/app/certificates/Create.vue'),
+          component: () => import('@/views/app/certificates/Apply.vue'),
           // beforeEnter: isAuthorized
         },
         {

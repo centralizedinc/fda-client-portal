@@ -36,61 +36,7 @@
               <span class="title font-weight-thin pa-1">Complete List of Ingredients</span>
               <span
                 class="caption font-weight-thin pa-1"
-              >In descending order of proportion. Product formulation must be consistent with the Ingredient List on the label. Declaration of Food additives should specify its common name not the functional name only and indicate levels eg. LECITHIN (EMULSIFIER) 0.1%.</span>
-              <span class="caption font-weight-thin pa-1">
-                For multi-component ingredients declaration:
-                <ul>
-                  <li>NON DAIRY CREAMER (as follows)</li>
-                  <li>(GLUCOSE SYRUP)</li>
-                  <li>(HYDROGENATED VEGETABLE FAT)</li>
-                </ul>
-              </span>
-              <span class="caption font-weight-thin pa-1">
-                For food supplement, ingredients declaration should be in the following format:
-                <ul>
-                  <li>
-                    Specific Name of Ingredient Amount per Serving (Example: Zeaxanthin 1 mg
-                    )
-                  </li>
-                </ul>
-              </span>
-              <span class="caption font-weight-thin pa-1">
-                For Vitamins and minerals as Food Supplement, ingredients declaration should be in the following format:
-                <ul>
-                  <li>
-                    Specific Name (Form/ Chemical nature of Vitamin or Mineral) Amount per Serving
-                    Example: Vitamin A (Beta-carotene) 300 µgRE
-                  </li>
-                </ul>
-              </span>
-              <span class="caption font-weight-thin pa-1">
-                For Amino acids as Food Supplement, ingredients declaration should be in the following format:
-                <ul>
-                  <li>
-                    Specific Name Amount per Serving
-                    Example: Leucine 50 mg
-                  </li>
-                </ul>
-              </span>
-              <span class="caption font-weight-thin pa-1">
-                For Herbs and Botanicals as Food Supplement, ingredients declaration should be in the following format:
-                <ul>
-                  <li>
-                    Specific Name (Scientific name) Plant Part Used Amount per Serving
-                    Example: Guyabano (Annona muricata) Fruit 100 mg
-                  </li>
-                </ul>
-              </span>
-              <span class="caption font-weight-thin pa-1">
-                For Products with Nutritional Substances (plant or animal origin) as Food Supplement, ingredients declaration should be in the following format:
-                <ul>
-                  <li>
-                    Specific name Plant or animal source Amount per Serving
-                    Examples: Collagen from Fish 500mg
-                  </li>
-                  <li>Allicin from Garlic 100mg</li>
-                </ul>
-              </span>
+              >Please indicate one ingredient per data entry.</span>
             </v-stepper-step>
             <v-divider></v-divider>
             <v-stepper-step @click="proceed(4)" style="cursor:pointer" :complete="e1 > 4" step="4">
@@ -158,19 +104,6 @@
             <span class="caption">{{completion}}%</span>
           </v-progress-circular>
         </v-card-title>
-        <v-card-text>
-          <keep-alive>
-            <!-- <transition name="slide-fade"> -->
-            <component
-              :is="stepComponent"
-              :form="form"
-              :account="account"
-              ref="curr_step"
-              @upload="uploadFile"
-            />
-            <!-- </transition> -->
-          </keep-alive>
-        </v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
           <v-spacer></v-spacer>
@@ -188,31 +121,11 @@
 </template>
 
 <script>
-// import GeneralInfo from "@/views/registration/tabs/GeneralInfo.vue";
-import ApplicationSummary from "@/views/registration/Summary.vue";
-import FabButton from "@/components/FabButtons.vue";
-
 export default {
   components: {
-    // step1: GeneralInfo,
-    //todo: create a loading component for async components...
-    step1: () => ({
-      component: import("@/views/app/certificates/create/tabs/FoodProductAppForm.vue")
-    }),
-    step2: () => ({
-      component: import("@/views/app/certificates/create/tabs/FoodProductAppForm.vue")
-    }),
-    // step3: () =>
-    //   import("@/views/app/certificates/create/tabs/EstablishmentInfo.vue"),
-    // step4: () =>
-    //   import("@/views/registration/tabs/AuthorizedOfficerDetails.vue"),
-    // step5: () => import("@/views/registration/tabs/QualifiedPersonnel.vue"),
-    // step6: () => import("@/views/registration/tabs/DocumentsUpload.vue"),
-    // step7: () => import("@/views/registration/tabs/Account.vue"),
-    // PaymentSummary: () => import("@/views/app/payment/PaymentSummary.vue"),
-    ApplicationSummary,
-    FabButton
+    step1: () => import("./create/tabs/FoodProductAppForm")
   },
+
   data() {
     return {
       loading: false,
@@ -236,7 +149,6 @@ export default {
         "Document Upload",
         "Payment"
       ],
-      formData: null,
       uploadedFiles: []
     };
   },
