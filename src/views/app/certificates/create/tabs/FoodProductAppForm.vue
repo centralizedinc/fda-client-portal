@@ -3,7 +3,7 @@
     <v-flex xs12>
       <v-autocomplete
         color="green darken-1"
-        v-model="form.food_appform.product_type"
+        v-model="name"
         :items="types"
         hide-no-data
         hide-selected
@@ -13,7 +13,7 @@
     <v-flex xs12>
       <v-autocomplete
         color="green darken-1"
-        v-model="form.food_appform.category"
+        v-model="name"
         :items="types"
         hide-no-data
         hide-selected
@@ -21,37 +21,21 @@
       ></v-autocomplete>
     </v-flex>
     <v-flex xs12>
-      <v-text-field
-        color="green darken-1"
-        label="Brand Name"
-        v-model="form.food_appform.brand_name"
-      ></v-text-field>
+      <v-text-field color="green darken-1" label="Brand Name" v-model="name"></v-text-field>
     </v-flex>
     <v-flex xs12>
-      <v-text-field
-        color="green darken-1"
-        label="Product Name"
-        v-model="form.food_appform.product_name"
-      ></v-text-field>
+      <v-text-field color="green darken-1" label="Product Name" v-model="name"></v-text-field>
     </v-flex>
     <v-flex xs12>
-      <v-text-field
-        color="green darken-1"
-        label="Company Name (as listed in LTO)"
-        v-model="form.food_appform.company_name"
-      ></v-text-field>
+      <v-text-field color="green darken-1" label="Company Name (as listed in LTO)" v-model="name"></v-text-field>
     </v-flex>
     <v-flex xs12>
-      <v-text-field
-        color="green darken-1"
-        label="Address (as listed in LTO)"
-        v-model="form.food_appform.address"
-      ></v-text-field>
+      <v-text-field color="green darken-1" label="Address (as listed in LTO)" v-model="name"></v-text-field>
     </v-flex>
     <v-flex xs12>
       <v-autocomplete
         color="green darken-1"
-        v-model="form.food_appform.region"
+        v-model="name"
         :items="types"
         hide-no-data
         hide-selected
@@ -80,17 +64,13 @@
           color="green darken-1"
           readonly
         ></v-text-field>
-        <v-date-picker
-          v-model="form.food_appform.lto_validity"
-          @input="menu2 = false"
-          color="green darken-1"
-        ></v-date-picker>
+        <v-date-picker v-model="name" @input="menu2 = false" color="green darken-1"></v-date-picker>
       </v-menu>
     </v-flex>
     <v-flex xs12>
       <v-autocomplete
         color="green darken-1"
-        v-model="form.food_appform.no_of_years"
+        v-model="name"
         :items="types"
         hide-no-data
         hide-selected
@@ -102,32 +82,16 @@
     <v-card-text>
       <span class="error--text">Note: Please indicate "N/A" for Not Applicable</span>
       <v-flex xs12>
-        <v-text-field
-          color="green darken-1"
-          label="1. Email Address"
-          v-model="form.food_appform. contact_info.email"
-        ></v-text-field>
+        <v-text-field color="green darken-1" label="1. Email Address" v-model="name"></v-text-field>
       </v-flex>
       <v-flex xs12>
-        <v-text-field
-          color="green darken-1"
-          label="2. Landline Number"
-          v-model="form.food_appform. contact_info.landline"
-        ></v-text-field>
+        <v-text-field color="green darken-1" label="2. Landline Number" v-model="name"></v-text-field>
       </v-flex>
       <v-flex xs12>
-        <v-text-field
-          color="green darken-1"
-          label="3. Fax Number"
-          v-model="form.food_appform. contact_info.fax"
-        ></v-text-field>
+        <v-text-field color="green darken-1" label="3. Fax Number" v-model="name"></v-text-field>
       </v-flex>
       <v-flex xs12>
-        <v-text-field
-          color="green darken-1"
-          label="4. Mobile Number"
-          v-model="form.food_appform. contact_info.mobile"
-        ></v-text-field>
+        <v-text-field color="green darken-1" label="4. Mobile Number" v-model="name"></v-text-field>
       </v-flex>
     </v-card-text>
   </v-layout>
