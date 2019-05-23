@@ -6,7 +6,7 @@
     <form-layout
       v-else
       :step="e1"
-      :steps="11"
+      :steps="10"
       @prev="prev"
       @next="next"
       @changePage="changePage"
@@ -48,6 +48,15 @@
         </v-tooltip>
       </template>
       <step-four slot="content-step-4" :form="form"></step-four>
+      <template slot="header-step-8">Documentary Requirements
+        <v-spacer></v-spacer>
+        <v-tooltip left>
+          <v-btn slot="activator" flat icon color="error">
+            <i class="fas fa-question fa-lg"></i>
+          </v-btn>Get Help
+        </v-tooltip>
+      </template>
+      <step-eight slot="content-step-8" :form="form"></step-eight>
       <template slot="header-step-9">Input Document
         <v-spacer></v-spacer>
         <v-tooltip left>
@@ -78,6 +87,7 @@ export default {
     StepTwo: () => import("./create/tabs/EstablishmentInfo.vue"),
     StepThree: () => import("./create/tabs/CompleteIngredients.vue"),
     StepFour: () => import("./create/tabs/ProductSpecs.vue"),
+    StepEight: () => import("./create/tabs/DocumentaryRequirements.vue"),
     StepNine: () => import("./create/tabs/InputDocument.vue"),
     StepTen: () => import("./create/tabs/Amendment.vue")
   },

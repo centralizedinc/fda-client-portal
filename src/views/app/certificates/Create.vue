@@ -158,7 +158,7 @@ import FabButton from "@/components/FabButtons.vue";
 
 export default {
   components: {
-    step1: GeneralInfo,
+    // step1: GeneralInfo,
     //todo: create a loading component for async components...
     "step1": () => ({
       component: import("@/views/app/certificates/create/tabs/Amendment.vue")
