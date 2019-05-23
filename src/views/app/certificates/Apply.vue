@@ -6,7 +6,7 @@
     <form-layout
       v-else
       :step="e1"
-      :steps="7"
+      :steps="10"
       @prev="prev"
       @next="next"
       @changePage="changePage"
@@ -43,11 +43,17 @@
       <template slot="header-step-5">Shelf Life and Other Information</template>
       <step-five slot="content-step-5" :form="form"></step-five>
 
-      <template slot="header-step-6">Document Upload</template>
+      <template slot="header-step-6">Nutrition Information</template>
       <step-six slot="content-step-6" :form="form"></step-six>
 
-      <template slot="header-step-7">Payment</template>
+      <template slot="header-step-7">Nutrition Health Claims</template>
       <step-seven slot="content-step-7" :form="form"></step-seven>
+
+      <!-- <template slot="header-step-7">Document Upload</template>
+      <step-seven slot="content-step-7" :form="form"></step-seven>
+
+      <template slot="header-step-8">Payment</template>
+      <step-eight slot="content-step-8" :form="form"></step-eight>-->
     </form-layout>
   </div>
 </template>
@@ -61,8 +67,9 @@ export default {
     StepThree: () => import("./create/tabs/CompleteIngredients.vue"),
     StepFour: () => import("./create/tabs/ProductSpecs.vue"),
     StepFive: () => import("./create/tabs/Shelflife.vue"),
-    StepSix: () => import("./create/tabs/DocumentUpload.vue"),
-    StepSeven: () => import("./create/tabs/DocumentUpload.vue")
+    StepSix: () => import("./create/tabs/NutritionInfo.vue"),
+    StepSeven: () => import("./create/tabs/NutritionHealthClaims.vue"),
+    StepEight: () => import("./create/tabs/DocumentUpload.vue")
   },
   data: () => ({
     e1: 1,
