@@ -49,11 +49,17 @@
       <template slot="header-step-7">Nutrition Health Claims</template>
       <step-seven slot="content-step-7" :form="form"></step-seven>
 
-      <!-- <template slot="header-step-7">Document Upload</template>
-      <step-seven slot="content-step-7" :form="form"></step-seven>
+      <template slot="header-step-8">Documentary Upload</template>
+      <step-eight slot="content-step-8" :form="form"></step-eight>
 
-      <template slot="header-step-8">Payment</template>
-      <step-eight slot="content-step-8" :form="form"></step-eight>-->
+      <template slot="header-step-9">Input Document</template>
+      <step-nine slot="content-step-9" :form="form"></step-nine>
+
+      <template slot="header-step-10">Amendment</template>
+      <step-ten slot="content-step-10" :form="form"></step-ten>
+
+      <template slot="header-step-11">Payment</template>
+      <step-eleven slot="content-step-11" :form="form"></step-eleven>
     </form-layout>
   </div>
 </template>
@@ -69,7 +75,10 @@ export default {
     StepFive: () => import("./create/tabs/Shelflife.vue"),
     StepSix: () => import("./create/tabs/NutritionInfo.vue"),
     StepSeven: () => import("./create/tabs/NutritionHealthClaims.vue"),
-    StepEight: () => import("./create/tabs/DocumentUpload.vue")
+    StepEight: () => import("./create/tabs/DocumentaryRequirements.vue"),
+    StepNine: () => import("./create/tabs/InputDocument.vue"),
+    StepTen: () => import("./create/tabs/Amendment.vue"),
+    StepEleven: () => import("./create/tabs/Amendment.vue")
   },
   data: () => ({
     e1: 1,
