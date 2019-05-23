@@ -24,7 +24,7 @@
         ></v-autocomplete>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="Brand Name" v-model="name"></v-text-field>
+        <v-text-field outline color="green darken-1" label="Brand Name" v-model="form.food_product.brand_name"></v-text-field>
       </v-flex>
       <v-flex xs6>
         <v-text-field outline color="green darken-1" label="Product Name" v-model="name"></v-text-field>
@@ -61,7 +61,7 @@
           outline
           color="green darken-1"
           label="LTO Number"
-          v-model="form.food_appform.lto_no"
+          v-model="name"
         ></v-text-field>
       </v-flex>
       <v-flex xs4>

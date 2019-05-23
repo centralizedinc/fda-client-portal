@@ -10,7 +10,7 @@
       @prev="prev"
       @next="next"
       @changePage="changePage"
-      @submit="confirmDialog=true"
+      @submit="save"
     >
       <template slot="header-step-1">
         Food Product Application Form
@@ -21,7 +21,7 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-one slot="content-step-1" :form="form"></step-one>
+      <step-one slot="content-step-1" :form="cert_form"></step-one>
 
       <template slot="header-step-2">
         Establishment Information
@@ -32,34 +32,34 @@
           </v-btn>Get Help
         </v-tooltip>
       </template>
-      <step-two slot="content-step-2" :form="form"></step-two>
+      <step-two slot="content-step-2" :form="cert_form"></step-two>
 
       <template slot="header-step-3">Complete List of Ingredients</template>
-      <step-three slot="content-step-3" :form="form"></step-three>
+      <step-three slot="content-step-3" :form="cert_form"></step-three>
 
       <template slot="header-step-4">Product Specifications</template>
-      <step-four slot="content-step-4" :form="form"></step-four>
+      <step-four slot="content-step-4" :form="cert_form"></step-four>
 
       <template slot="header-step-5">Shelf Life and Other Information</template>
-      <step-five slot="content-step-5" :form="form"></step-five>
+      <step-five slot="content-step-5" :form="cert_form"></step-five>
 
       <template slot="header-step-6">Nutrition Information</template>
-      <step-six slot="content-step-6" :form="form"></step-six>
+      <step-six slot="content-step-6" :form="cert_form"></step-six>
 
       <template slot="header-step-7">Nutrition Health Claims</template>
-      <step-seven slot="content-step-7" :form="form"></step-seven>
+      <step-seven slot="content-step-7" :form="cert_form"></step-seven>
 
       <template slot="header-step-8">Documentary Upload</template>
-      <step-eight slot="content-step-8" :form="form"></step-eight>
+      <step-eight slot="content-step-8" :form="cert_form"></step-eight>
 
       <template slot="header-step-9">Input Document</template>
-      <step-nine slot="content-step-9" :form="form"></step-nine>
+      <step-nine slot="content-step-9" :form="cert_form"></step-nine>
 
       <template slot="header-step-10">Amendment</template>
-      <step-ten slot="content-step-10" :form="form"></step-ten>
+      <step-ten slot="content-step-10" :form="cert_form"></step-ten>
 
       <template slot="header-step-11">Payment</template>
-      <step-eleven slot="content-step-11" :form="form"></step-eleven>
+      <step-eleven slot="content-step-11" :form="cert_form"></step-eleven>
     </form-layout>
   </div>
 </template>
@@ -85,39 +85,19 @@ export default {
     confirmDialog: false,
     showAppOverview: false,
     invalid: false,
-    form: {
-      application_type: "",
-      food_appform: {
-        product_type: "",
-        category: "",
-        brand_name: "",
-        product_name: "",
-        company_name: "",
-        address: "",
-        region: "",
-        lto_no: "",
-        lto_validity: "",
-        no_of_yrs: "",
-        contact_info: {
-          email: "",
-          telephone: "",
-          fax: "",
-          mobile: ""
+    cert_form: {
+     food_product:{
+          type:"",
+          categorization: "",
+          brand_name: "",
+          product_name: "",
+          company: "",
+          address: {},
+          license_no: "",
+          license_validity: "",
+          years_applied: 0,
+          contacts: []
         }
-      },
-      estab_info: {
-        company_activity: "",
-        source_type: "",
-        origin_country: "",
-        source: "",
-        supplier_name: "",
-        supplier_address: "",
-        manufacturer_name: "",
-        manufacturer_address: ""
-      },
-      ingredients: {
-        name: ""
-      }
     }
   }),
   created() {
@@ -137,6 +117,11 @@ export default {
     },
     changePage(val) {
       this.e1 = val;
+    },
+    save(){
+      this.confirmDialog=true
+      console.log("submit clicked: " + JSON.stringify(this.cert_form))
+      this.$store.dispatch('SAVE_CERTIFICATE', this.cert_form)
     }
   }
 };
