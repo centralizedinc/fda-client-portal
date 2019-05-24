@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // axios.defaults.headers.common['access_token'] = store.state.user
 
-export default class LicenseAPI {
+export default class CertificateAPI {
     constructor(token) {
         axios.defaults.baseURL = process.env.VUE_APP_API_BASE_URI;
         axios.defaults.headers.common['Content-Type'] = 'application/json'
