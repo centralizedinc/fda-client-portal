@@ -33,7 +33,10 @@ if (process.env.NODE_ENV === 'production') {
     }
   })
 }
-
+/**
+ * @description check and request for notification permission
+ * @param {*} registration 
+ */
 function checkNotificationPermission(registration){
   if(!Notification.permission || Notification.permission === 'default'){ 
     Notification.requestPermission(result => {
@@ -44,7 +47,10 @@ function checkNotificationPermission(registration){
     })
   } 
 }
-
+/**
+ * @description send local notification as a confirmation of subscription
+ * @param {*} registration 
+ */
 function sendWelcomeNofitication(registration){
   registration.showNotification('FDA Portal v3.0', {
     body: 'You are now subscribed to FDA Portal Notifications',
