@@ -14,7 +14,8 @@ const mutations = {
 
 var actions = {
   SAVE_CERTIFICATE(context, certificate) {
-    return new CetificateAPI(context.rootState.user_session.token).saveLicenses(
+    console.log("action certificate data: " + JSON.stringify(certificate))
+    return new CetificateAPI(context.rootState.user_session.token).saveCertificate(
       certificate
     );
   }

@@ -9,9 +9,9 @@ export default class LicenseAPI {
         axios.defaults.headers.common['access_token'] = token;
     }
 
-    saveLicenses(data) {
+    saveCertificate(data) {
         console.log("save licenses data: " + JSON.stringify(data))
-        return axios.post('certificate/', data.certificate)
+        return axios.post('certificates/', data)
     }
 
     
