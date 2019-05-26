@@ -2,6 +2,7 @@
   <v-container grid-list-md>
     <v-layout row wrap>
       <v-flex xs12>
+        <v-progress-linear :value="completion" color="primary" background-color="primary"></v-progress-linear>
         <v-stepper v-model="e6" vertical>
           <v-stepper-step :complete="e6 > 1" step="1">
             Food Product Application
@@ -10,7 +11,7 @@
 
           <v-stepper-content step="1">
             <v-card flat class="mb-5" height="auto">
-              <step-one></step-one>
+              <step-one :form="cert_form"></step-one>
             </v-card>
             <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -22,7 +23,7 @@
           </v-stepper-step>
           <v-stepper-content step="2">
             <v-card flat class="mb-5" height="auto">
-              <step-two></step-two>
+              <step-two :form="cert_form"></step-two>
             </v-card>
             <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -108,7 +109,7 @@
             <v-card flat class="mb-5" height="auto">
               <step-nine></step-nine>
             </v-card>
-            <v-btn color="primary" @click="e6 = 9">Submit</v-btn>
+            <v-btn color="primary" @click="save">Submit</v-btn>
             <v-btn flat>Cancel</v-btn>
           </v-stepper-content>
         </v-stepper>
@@ -159,8 +160,40 @@ export default {
     })
   },
   data: () => ({
-    e6: 1
-  })
+    e6: 1,
+    confirmDialog: false,
+    cert_form: {
+      food_product: {
+        type: "",
+        categorization: "",
+        brand_name: "",
+        product_name: "",
+        company: "",
+        address: {},
+        license_no: "",
+        license_validity: "",
+        years_applied: 0,
+        contacts: []
+      }
+    }
+  }),
+  methods: {
+    save() {
+      this.confirmDialog = true;
+      console.log("submit clicked: " + JSON.stringify(this.cert_form));
+      this.$store.dispatch("SAVE_CERTIFICATE", this.cert_form);
+    }
+  },
+  computed: {
+    completion() {
+      console.log("completion this is e1: " + JSON.stringify(this.e1));
+      console.log(
+        "completion parse int: " +
+          JSON.stringify(parseInt(((this.e6 - 1) / 7) * 100))
+      );
+      return parseInt(((this.e6 - 1) / 9) * 100);
+    }
+  }
 };
 </script>
 
