@@ -153,11 +153,6 @@
         height="30"
         width="calc(100% - 10px)"
       >Vitamins</v-toolbar>
-      <v-flex xs12>
-        <span
-          class="body-1 font-weight-thin"
-        >Note: Vitamins and Minerals shall be declared as applicable to product claims</span>
-      </v-flex>
       <v-flex xs6>
         <v-text-field outline name="name" hint="Amount per Serving" label="Vitamin C (mg)" id="id"></v-text-field>
       </v-flex>

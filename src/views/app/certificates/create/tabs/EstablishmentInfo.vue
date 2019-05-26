@@ -3,7 +3,6 @@
     <v-layout row wrap>
       <v-flex xs6>
         <v-autocomplete
-          v-model="form.estab_info.company_activity"
           :items="types"
           hide-no-data
           color="green darken-1"
@@ -14,7 +13,6 @@
       </v-flex>
       <v-flex xs6>
         <v-autocomplete
-          v-model="form.estab_info.source_type"
           :items="types"
           color="green darken-1"
           outline
@@ -25,7 +23,6 @@
       </v-flex>
       <v-flex xs6>
         <v-autocomplete
-          v-model="form.estab_info.origin_country"
           :items="types"
           color="green darken-1"
           outline
@@ -36,7 +33,6 @@
       </v-flex>
       <v-flex xs6>
         <v-autocomplete
-          v-model="form.estab_info.source"
           :items="types"
           color="green darken-1"
           outline
@@ -79,36 +75,16 @@
       </v-flex>
 
       <v-flex xs6>
-        <v-text-field
-          color="green darken-1"
-          outline
-          label="Supplier's Complete Name"
-          v-model="form.estab_info.supplier_name"
-        ></v-text-field>
+        <v-text-field color="green darken-1" outline label="Supplier's Complete Name"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field
-          color="green darken-1"
-          outline
-          label="Supplier's Complete Address"
-          v-model="form.estab_info.supplier_address"
-        ></v-text-field>
+        <v-text-field color="green darken-1" outline label="Supplier's Complete Address"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field
-          color="green darken-1"
-          outline
-          label="Manufacturer's Complete Name"
-          v-model="form.estab_info.manufacturer_name"
-        ></v-text-field>
+        <v-text-field color="green darken-1" outline label="Manufacturer's Complete Name"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field
-          color="green darken-1"
-          outline
-          label="Manufacturer's Complete Address"
-          v-model="form.estab_info.manufacturer_address"
-        ></v-text-field>
+        <v-text-field color="green darken-1" outline label="Manufacturer's Complete Address"></v-text-field>
       </v-flex>
     </v-layout>
   </v-container>

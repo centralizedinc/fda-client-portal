@@ -5,7 +5,7 @@
         <v-autocomplete
           outline
           color="green darken-1"
-          v-model="name"
+          v-model="value"
           :items="types"
           hide-no-data
           hide-selected
@@ -16,7 +16,7 @@
         <v-autocomplete
           outline
           color="green darken-1"
-          v-model="name"
+          v-model="value"
           :items="types"
           hide-no-data
           hide-selected
@@ -24,17 +24,17 @@
         ></v-autocomplete>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="Brand Name" v-model="name"></v-text-field>
+        <v-text-field outline color="green darken-1" label="Brand Name" v-model="value"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="Product Name" v-model="name"></v-text-field>
+        <v-text-field outline color="green darken-1" label="Product Name" v-model="value"></v-text-field>
       </v-flex>
       <v-flex xs12>
         <v-text-field
           outline
           color="green darken-1"
           label="Company Name (as listed in LTO)"
-          v-model="name"
+          v-model="value"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -42,14 +42,14 @@
           outline
           color="green darken-1"
           label="Address (as listed in LTO)"
-          v-model="name"
+          v-model="value"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
         <v-autocomplete
           outline
           color="green darken-1"
-          v-model="name"
+          v-model="value"
           :items="types"
           hide-no-data
           hide-selected
@@ -57,12 +57,7 @@
         ></v-autocomplete>
       </v-flex>
       <v-flex xs4>
-        <v-text-field
-          outline
-          color="green darken-1"
-          label="LTO Number"
-          v-model="form.food_appform.lto_no"
-        ></v-text-field>
+        <v-text-field outline color="green darken-1" label="LTO Number" v-model="value"></v-text-field>
       </v-flex>
       <v-flex xs4>
         <v-menu
@@ -84,14 +79,14 @@
             color="green darken-1"
             readonly
           ></v-text-field>
-          <v-date-picker v-model="name" @input="menu2 = false" color="green darken-1"></v-date-picker>
+          <v-date-picker v-model="value" @input="menu2 = false" color="green darken-1"></v-date-picker>
         </v-menu>
       </v-flex>
       <v-flex xs4>
         <v-autocomplete
           outline
           color="green darken-1"
-          v-model="name"
+          v-model="value"
           :items="types"
           hide-no-data
           hide-selected
@@ -108,16 +103,16 @@
       >Contact Information</v-toolbar>
 
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="1. Email Address" v-model="name"></v-text-field>
+        <v-text-field outline color="green darken-1" label="1. Email Address" v-model="value"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="2. Landline Number" v-model="name"></v-text-field>
+        <v-text-field outline color="green darken-1" label="2. Landline Number" v-model="value"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="3. Fax Number" v-model="name"></v-text-field>
+        <v-text-field outline color="green darken-1" label="3. Fax Number" v-model="value"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="4. Mobile Number" v-model="name"></v-text-field>
+        <v-text-field outline color="green darken-1" label="4. Mobile Number" v-model="value"></v-text-field>
       </v-flex>
     </v-layout>
   </v-container>

@@ -8,7 +8,7 @@
           </v-btn>Apply New Certificate
         </v-tooltip>
 
-        <undertaking-dialog :show="dialog" @proceed="launchAppForm"></undertaking-dialog>
+        <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="closeDecDialog"></undertaking-dialog>
 
         <v-data-table :headers="headers" :items="certificates" class="elevation-1">
           <template slot="items" slot-scope="props">
@@ -36,7 +36,7 @@
                 </v-flex>
                 <v-flex xs3>
                   <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary" @click="view">
+                    <v-btn slot="activator" flat icon color="primary">
                       <v-icon small>search</v-icon>
                     </v-btn>View Application
                   </v-tooltip>
@@ -51,11 +51,11 @@
 </template>
 
 <script>
-import Undertaking from "@/components/UndertakingDialog";
+import Undertaking from "./create/tabs/UndertakingDialog";
 
 export default {
   components: {
-    UndertakingDialog: () => import("@/components/UndertakingDialog")
+    UndertakingDialog: () => import("./create/tabs/UndertakingDialog")
   },
   data() {
     return {
@@ -85,12 +85,15 @@ export default {
   },
   methods: {
     init() {
-      console.log("Welcome to certificates!!!")
+      console.log("Welcome to certificates!!!");
       // this.$store.dispatch("SET_LICENSES");
     },
     launchAppForm() {
-      console.log("certificates launchappform")
+      console.log("certificates launchappform");
       this.$router.push("/app/certificates/apply");
+    },
+    closeDecDialog() {
+      this.dialog = false;
     }
   }
 };
