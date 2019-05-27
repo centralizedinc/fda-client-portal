@@ -1,7 +1,7 @@
 <template>
   <v-layout row wrap>
-    <v-flex xs12 >
-      <v-card >
+    <v-flex xs12>
+      <v-card>
         <!-- <v-card-title primary-title class="headline">Upload files</v-card-title> -->
         <form enctype="multipart/form-data" novalidate>
           <!-- <h1>Upload images</h1> -->
@@ -16,7 +16,8 @@
               accept="image/*, application/pdf"
               class="input-file"
             >
-            <p v-if="uploadedFiles.length === 0">Drag your file(s) here to begin
+            <p v-if="uploadedFiles.length === 0">
+              Drag your file(s) here to begin
               <br>or click to browse
             </p>
             <p v-else>Uploaded {{ uploadedFiles.length }} files. Drag files here to upload more.</p>
@@ -25,46 +26,36 @@
       </v-card>
     </v-flex>
     <v-flex v-show="isSuccess" xs12>
-      <!--SUCCESS-->    
-        <v-toolbar dark flat color="primary" class="elevation-5">
-            <span class="title font-weight-light">Preview</span>
-            <v-spacer></v-spacer>
-           <v-tooltip top>
-            <v-btn slot="activator"  outline small icon  @click="$refs.image.click()">
-              <v-icon>fas fa-plus</v-icon>
-            </v-btn>Upload More Files
-           </v-tooltip>
-          <v-tooltip top>
-            <v-btn
-              class="elevation-2"
-              slot="activator"
-              small
-              outline
-              icon
-              
-              @click="reset"
-            >
-              <v-icon>fas fa-redo-alt</v-icon>
-            </v-btn>Reset
-          </v-tooltip>
-        </v-toolbar>
-        <v-card>
+      <!--SUCCESS-->
+      <v-toolbar dark flat color="primary" class="elevation-5">
+        <span class="title font-weight-light">Preview</span>
+        <v-spacer></v-spacer>
+        <v-tooltip top>
+          <v-btn slot="activator" outline small icon @click="$refs.image.click()">
+            <v-icon>fas fa-plus</v-icon>
+          </v-btn>Upload More Files
+        </v-tooltip>
+        <v-tooltip top>
+          <v-btn class="elevation-2" slot="activator" small outline icon @click="reset">
+            <v-icon>fas fa-redo-alt</v-icon>
+          </v-btn>Reset
+        </v-tooltip>
+      </v-toolbar>
+      <v-card>
         <v-container grid-list-sm fluid>
           <v-layout row wrap>
             <v-flex v-for="item in uploadedFiles" :key="item.name" xs3 d-flex>
-              <v-card class="elevation-5" >
-                <v-card-title primary-title>
-                   {{prettify(item.name)}}
-                </v-card-title>
+              <v-card class="elevation-5">
+                <v-card-title primary-title>{{prettify(item.name)}}</v-card-title>
                 <!-- <v-toolbar height="40px"
                   dark
                   flat
                 >
-                  {{prettify(item.name)}} -->
-                  <!-- <v-spacer></v-spacer>
+                {{prettify(item.name)}}-->
+                <!-- <v-spacer></v-spacer>
                     <v-btn dark flat icon>
                         <v-icon>close</v-icon>
-                  </v-btn>-->
+                </v-btn>-->
                 <!-- </v-toolbar> -->
                 <v-card-text>
                   <v-img
@@ -80,8 +71,8 @@
                     </v-layout>
                   </v-img>
                   <div v-else>
-                  <pdf  v-show="loaded" @loaded="loaded=true" :src="item.url"></pdf>
-                  <v-progress-circular  v-show="!loaded" indeterminate color="primary"></v-progress-circular>
+                    <pdf v-show="loaded" @loaded="loaded=true" :src="item.url"></pdf>
+                    <v-progress-circular v-show="!loaded" indeterminate color="primary"></v-progress-circular>
                   </div>
                 </v-card-text>
               </v-card>

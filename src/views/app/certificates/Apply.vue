@@ -4,7 +4,7 @@
       <v-flex xs12>
         <v-progress-linear :value="completion" color="primary" background-color="primary"></v-progress-linear>
         <v-stepper v-model="e6" vertical>
-          <v-stepper-step :complete="e6 > 1" step="1">
+          <v-stepper-step :complete="e6 > 1" step="1" editable>
             Food Product Application
             <small>Fill out all necessary information</small>
           </v-stepper-step>
@@ -17,7 +17,7 @@
             <v-btn flat>Cancel</v-btn>
           </v-stepper-content>
 
-          <v-stepper-step :complete="e6 > 2" step="2">
+          <v-stepper-step :complete="e6 > 2" step="2" editable>
             Establishment Information
             <small>Select the corresponding company activity/activities</small>
           </v-stepper-step>
@@ -29,7 +29,7 @@
             <v-btn flat>Cancel</v-btn>
           </v-stepper-content>
 
-          <v-stepper-step :complete="e6 > 3" step="3">
+          <v-stepper-step :complete="e6 > 3" step="3" editable>
             Complete List of Ingredients
             <small>Please indicate one ingredient per data entry.</small>
           </v-stepper-step>
@@ -41,7 +41,7 @@
             <v-btn flat>Cancel</v-btn>
           </v-stepper-content>
 
-          <v-stepper-step :complete="e6 > 4" step="4">
+          <v-stepper-step :complete="e6 > 4" step="4" editable>
             Product Specifications
             <small>Ensure the completeness and accuracy of the details for the parameters and specifications in coherence with FDA Standards (eg, Philippine National Standards, Administrative Orders, and other relevant issuances)</small>
           </v-stepper-step>
@@ -53,7 +53,7 @@
             <v-btn flat>Cancel</v-btn>
           </v-stepper-content>
 
-          <v-stepper-step :complete="e6 > 5" step="5">
+          <v-stepper-step :complete="e6 > 5" step="5" editable>
             Shelf Life and Other information
             <small>The length of time that a commodity may be stored without becoming unfit for use, consumption, or sale.</small>
           </v-stepper-step>
@@ -65,7 +65,7 @@
             <v-btn flat>Cancel</v-btn>
           </v-stepper-content>
 
-          <v-stepper-step :complete="e6 > 6" step="6">
+          <v-stepper-step :complete="e6 > 6" step="6" editable>
             Nutrition Information
             <small>Vitamins and Minerals shall be declared as applicable to product claims</small>
           </v-stepper-step>
@@ -77,7 +77,7 @@
             <v-btn flat>Cancel</v-btn>
           </v-stepper-content>
 
-          <v-stepper-step :complete="e6 > 7" step="7">
+          <v-stepper-step :complete="e6 > 7" step="7" editable>
             Nutrition Health Claims
             <small>Select which to claim. Add new if necessary.</small>
           </v-stepper-step>
@@ -89,7 +89,7 @@
             <v-btn flat>Cancel</v-btn>
           </v-stepper-content>
 
-          <v-stepper-step :complete="e6 > 8" step="8">
+          <v-stepper-step :complete="e6 > 8" step="8" editable>
             Document Upload
             <small>Please upload documents to determine conformance to the standard/s of product identity. For food supplement (if applicable), please upload safety data (e.g. LD50 toxicity tests). For the list of standards or issuances (e.g. PNS, Codex standards, FDA Issuances, local or international standards) please refer to the CFRR Product Registration Manual of Procedure/ Handbook.</small>
           </v-stepper-step>
