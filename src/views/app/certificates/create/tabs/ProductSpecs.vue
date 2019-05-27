@@ -2,16 +2,22 @@
   <v-form ref="form" v-model="valid">
     <v-container grid-list-md>
       <v-layout row wrap justify-center align-center>
-        <v-flex xs8 pl-5>
+        <v-flex xs6>
           <v-select
             outline
+            :rules="[rules.required]"
             label="Physical Specifications"
+            hint="e.g. powder, liquid, gel, etc."
+            persistent-hint
             :items="physicalSpecs"
             v-model="value"
             autocomplete
           ></v-select>
         </v-flex>
-        <v-flex xs2 mb-4 ml-3>
+        <v-flex xs5>
+          <v-text-field outline :rules="[rules.required]" name="name" label="Specification" id="id"></v-text-field>
+        </v-flex>
+        <v-flex mb-4>
           <v-tooltip top>
             <v-btn slot="activator" flat icon color="primary">
               <v-icon>far fa-plus-square</v-icon>
