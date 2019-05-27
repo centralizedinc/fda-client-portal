@@ -259,25 +259,18 @@ var actions = {
     var token = context.rootState.user_session.token;
     if (token) {
       return new Promise((resolve, reject) => {
-        if (
-          !context.state.active_license &&
-          !context.state.active_license.license_no
-        ) {
-          new LicenseAPI(token)
-            .getActiveLicense()
-            .then(result => {
-              this.commit(
-                "SET_ACTIVE_LICENSE",
-                result.data.model.license_details
-              );
-              resolve(result.data.model.license_details);
-            })
-            .catch(err => {
-              reject(err);
-            });
-        } else {
-          resolve(context.state.active_license);
-        }
+        new LicenseAPI(token)
+          .getActiveLicense()
+          .then(result => {
+            this.commit(
+              "SET_ACTIVE_LICENSE",
+              result.data.model.license_details
+            );
+            resolve(result.data.model.license_details);
+          })
+          .catch(err => {
+            reject(err);
+          });
       });
     }
   },
