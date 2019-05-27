@@ -6,7 +6,9 @@
           outline
           color="green darken-1"
           v-model="form.food_product.type"
-          :items="types"
+          :items="type"
+          item-text="name"
+          item-value="_id"
           hide-no-data
           hide-selected
           label="Food Product Type"
@@ -17,7 +19,9 @@
           outline
           color="green darken-1"
           v-model="form.food_product.categorization"
-          :items="types"
+          :items="category"
+          item-text="name"
+          item-value="_id"
           hide-no-data
           hide-selected
           label="Food Category"
@@ -97,7 +101,7 @@
           outline
           color="green darken-1"
           v-model="form.food_product.years_applied"
-          :items="types"
+          :items="years"
           hide-no-data
           hide-selected
           label="Number of Years applied for Product Registration"
@@ -114,16 +118,16 @@
       >Contact Information</v-toolbar>
       <span>atleast 3 and can be in same category</span>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="1. Email Address" v-model="email"></v-text-field>
+        <v-text-field outline color="green darken-1" label="1. Email Address" v-model="value"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="2. Landline Number" v-model="landline"></v-text-field>
+        <v-text-field outline color="green darken-1" label="2. Landline Number" v-model="value"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="3. Fax Number" v-model="fax"></v-text-field>
+        <v-text-field outline color="green darken-1" label="3. Fax Number" v-model="value"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="4. Mobile Number" v-model="mobile"></v-text-field>
+        <v-text-field outline color="green darken-1" label="4. Mobile Number" v-model="value"></v-text-field>
       </v-flex>
     </v-layout>
   </v-container>
@@ -135,13 +139,27 @@ export default {
   data() {
     return{
       validity: false,
-      dateFormatted: null
+      dateFormatted: null,
+      type: null,
+      category: null,
+      years: [1,2,3,4,5]
     }
+  },
+  created(){
+    this.init()
   },
   watch: {
     // dateFormatted(date){
     //   this.form.food_product.license_validity = this.formatDate(date)
     // }
+  },
+  methods: {
+    init(){
+      this.type = this.$store.state.foodCertificate.food_product
+      this.category = this.$store.state.foodCertificate.food_category
+      console.log("type data: " + JSON.stringify(this.type))
+      
+    }
   }
 };
 </script>

@@ -272,17 +272,20 @@ export default {
     }
   }),
   created() {
-    
-    
-    // this.init();
+    console.log("apply created")
+    this.init();
   },
 
   methods: {
     init(){
-      console.log("this.$store.state.certificate.init_form: " + JSON.stringify(this.$store.state.certificate.init_form));
-  
-this.cert_form = this.$store.state.certificate.init_form
-    console.log("created porps: " + JSON.stringify(this.cert_form));
+//       console.log("this.$store.state.certificate.init_form: " + JSON.stringify(this.$store.state.certificate.init_form));
+// this.cert_form = this.$store.state.certificate.init_form
+//     console.log("created porps: " + JSON.stringify(this.cert_form));
+    
+    console.log("apply certificates")
+      this.$store.dispatch("GET_FOOD_PRODUCT").then(result=>{
+        return this.$store.dispatch("GET_FOOD_CATEGORY")
+      })
     },
     close() {
       this.showAppOverview = false;

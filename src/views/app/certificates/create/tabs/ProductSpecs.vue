@@ -84,7 +84,7 @@
             <v-text-field outline label="Parameter" v-model="form.product_specification.microbiological.parameter"></v-text-field>
           </v-flex>
           <v-flex xs5>
-            <v-text-field outline label="Specification" v-model="form.product_specification.microbiological.parameter"></v-text-field>
+            <v-text-field outline label="Specification" v-model="form.product_specification.microbiological.specification"></v-text-field>
           </v-flex>
           <v-flex xs1 mb-4>
             <v-tooltip top>
