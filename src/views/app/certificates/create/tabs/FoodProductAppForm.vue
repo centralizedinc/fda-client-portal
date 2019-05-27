@@ -5,7 +5,7 @@
         <v-autocomplete
           outline
           color="green darken-1"
-          v-model="name"
+          v-model="form.food_product.type"
           :items="types"
           hide-no-data
           hide-selected
@@ -16,7 +16,7 @@
         <v-autocomplete
           outline
           color="green darken-1"
-          v-model="name"
+          v-model="form.food_product.categorization"
           :items="types"
           hide-no-data
           hide-selected
@@ -27,14 +27,14 @@
         <v-text-field outline color="green darken-1" label="Brand Name" v-model="form.food_product.brand_name"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="Product Name" v-model="name"></v-text-field>
+        <v-text-field outline color="green darken-1" label="Product Name" v-model="form.food_product.product_name"></v-text-field>
       </v-flex>
       <v-flex xs12>
         <v-text-field
           outline
           color="green darken-1"
           label="Company Name (as listed in LTO)"
-          v-model="name"
+          v-model="form.food_product.company"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -42,14 +42,14 @@
           outline
           color="green darken-1"
           label="Address (as listed in LTO)"
-          v-model="name"
+          v-model="form.food_product.address"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
         <v-autocomplete
           outline
           color="green darken-1"
-          v-model="name"
+          v-model="form.food_product.address"
           :items="types"
           hide-no-data
           hide-selected
@@ -61,13 +61,13 @@
           outline
           color="green darken-1"
           label="LTO Number"
-          v-model="name"
+          v-model="form.food_product.license_no"
         ></v-text-field>
       </v-flex>
       <v-flex xs4>
         <v-menu
           :close-on-content-click="false"
-          v-model="menu2"
+          v-model="validity"
           :nudge-right="40"
           lazy
           transition="scale-transition"
@@ -78,20 +78,20 @@
           <v-text-field
             outline
             slot="activator"
-            v-model="date"
+            v-model="form.food_product.license_validity"
             label="LTO Validity"
             prepend-inner-icon="event"
             color="green darken-1"
             readonly
           ></v-text-field>
-          <v-date-picker v-model="name" @input="menu2 = false" color="green darken-1"></v-date-picker>
+          <v-date-picker v-model="form.food_product.license_validity" @input="validity = false" color="green darken-1"></v-date-picker>
         </v-menu>
       </v-flex>
       <v-flex xs4>
         <v-autocomplete
           outline
           color="green darken-1"
-          v-model="name"
+          v-model="form.food_product.years_applied"
           :items="types"
           hide-no-data
           hide-selected
@@ -99,6 +99,7 @@
         ></v-autocomplete>
       </v-flex>
       <!-- Contact Information -->
+      <span>dropdown can choose same contact info type</span>
       <v-toolbar
         dark
         class="sheetStyle elevation-10 mt-3 mb-4 subheading"
@@ -106,26 +107,37 @@
         height="30"
         width="calc(100% - 10px)"
       >Contact Information</v-toolbar>
-
-      <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="1. Email Address" v-model="name"></v-text-field>
+      <!-- contact should be in dropdown -->
+      <!-- <v-flex xs6>
+        <v-text-field outline color="green darken-1" label="1. Email Address" v-model="email"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="2. Landline Number" v-model="name"></v-text-field>
+        <v-text-field outline color="green darken-1" label="2. Landline Number" v-model="landline"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="3. Fax Number" v-model="name"></v-text-field>
+        <v-text-field outline color="green darken-1" label="3. Fax Number" v-model="fax"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="4. Mobile Number" v-model="name"></v-text-field>
-      </v-flex>
+        <v-text-field outline color="green darken-1" label="4. Mobile Number" v-model="mobile"></v-text-field>
+      </v-flex> -->
     </v-layout>
   </v-container>
 </template>
 
 <script>
 export default {
-  props: ["form"]
+  props: ["form"],
+  data() {
+    return{
+      validity: false,
+      dateFormatted: null
+    }
+  },
+  watch: {
+    // dateFormatted(date){
+    //   this.form.food_product.license_validity = this.formatDate(date)
+    // }
+  }
 };
 </script>
 

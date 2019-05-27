@@ -2,21 +2,24 @@
   <v-container grid-list-md>
     <v-layout row wrap>
       <v-flex xs6>
-        <v-text-field outline label="Serving Size (grams or ml)" v-model="value"></v-text-field>
+        <v-text-field outline label="Serving Size (grams or ml)" v-model="form.nutrition_info.serving_size"></v-text-field>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline label="Number of Serving per Container/Pack" v-model="value"></v-text-field>
+        <v-text-field outline label="Number of Serving per Container/Pack" v-model="form.nutrition_info.serving_per_pack"></v-text-field>
       </v-flex>
       <v-flex xs6>
         <v-text-field outline name="name" hint="Amount per Serving" label="Calories (kcal)" id="id"></v-text-field>
       </v-flex>
       <v-flex xs6>
+        <span>all fields below doesnt have yet vmodel</span>
         <v-text-field
           outline
           name="name"
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -35,6 +38,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -47,6 +52,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -65,6 +72,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -77,6 +86,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -95,6 +106,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -107,6 +120,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -125,6 +140,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -143,6 +160,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <!-- vits -->
@@ -168,6 +187,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -180,6 +201,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -192,6 +215,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -204,6 +229,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -216,6 +243,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -228,6 +257,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -246,6 +277,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -264,6 +297,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -276,6 +311,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -288,6 +325,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -300,6 +339,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
 
@@ -320,6 +361,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -332,6 +375,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -344,6 +389,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -356,6 +403,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -368,6 +417,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -380,6 +431,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -392,6 +445,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -404,6 +459,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -416,6 +473,8 @@
           hint="% RENI, Mandatory for Locally Manufactured Products, otherwise indicate NOT APPLICABLE"
           label
           id="id"
+          v-model="value"
+          suffix="%"
         ></v-text-field>
       </v-flex>
     </v-layout>

@@ -4,6 +4,7 @@
       <v-card-text>
         <v-container grid-list-md>
           <v-layout row wrap align-center justify-center>
+            <span>cant add</span>
             <v-flex xs8 ml-5>
               <v-text-field outline label="Ingredient Name" v-model="value"></v-text-field>
             </v-flex>

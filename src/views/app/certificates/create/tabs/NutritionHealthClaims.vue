@@ -1,6 +1,7 @@
 <template>
   <v-container grid-list-md>
     <v-layout row wrap align-center justify-center>
+      <span>all fields below doesnt have vmodel and adding not yet working</span>
       <v-flex xs6>
         <v-select outline label hint :items="items" v-model="value" autocomplete></v-select>
       </v-flex>

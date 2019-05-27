@@ -11,7 +11,7 @@
                 <uploader @upload="upload"></uploader>
                 <v-select
                     :items="answer"
-                    v-model="value"
+                    v-model="form.documentary.for_export"
                     item-text="name"
                     item-value="code"
                     label="Is your product for Export"
@@ -20,7 +20,7 @@
                 <uploader @upload="upload"></uploader>
                 <v-select
                     :items="answer"
-                    v-model="value"
+                    v-model="form.documentary.has_claims"
                     item-text="name"
                     item-value="code"
                     label="Do you have Nutrient Content Claim/ Nutrient Function Claim/ Other Function Claims/ Health Claim/ Comparative Claim/ Non-addition claim/ Reduction of disease risk claim/ Other claims?"
@@ -29,7 +29,7 @@
                 <uploader @upload="upload"></uploader>
                 <v-select
                     :items="answer"
-                    v-model="value"
+                    v-model="form.documentary.has_on_label"
                     item-text="name"
                     item-value="code"
                     label="Do you have any IPO/ Trademark, or logo/ seal (e.g. Sangkap Pinoy, Organic) on your label?"
