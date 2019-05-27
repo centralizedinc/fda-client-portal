@@ -1,21 +1,15 @@
 <template>
-  <v-form v-model="form" ref="valid">
+  <v-form ref="valid">
     <v-container grid-list-md>
       <v-layout row wrap align-center justify-center>
         <v-flex xs6>
-          <v-text-field
-            outline
-            :rules="[rules.required]"
-            label="Serving Size (grams or ml)"
-            v-model="value"
-          ></v-text-field>
+          <v-text-field outline :rules="[rules.required]" label="Serving Size (grams or ml)"></v-text-field>
         </v-flex>
         <v-flex xs6>
           <v-text-field
             outline
             :rules="[rules.required]"
             label="Number of Serving per Container/Pack"
-            v-model="value"
           ></v-text-field>
         </v-flex>
         <!-- amt per serving -->
@@ -23,16 +17,15 @@
           <v-container grid-list-xs>
             <v-layout row wrap align-center justify-center>
               <v-flex xs6>
-                <v-select
+                <v-autocomplete
                   outline
                   :rules="[rules.required]"
                   hint="Please add all the fields in the list and input corresponding %RENI"
                   persistent-hint
                   label="Amount Per Serving"
                   :items="amtServing"
-                  v-model="value"
                   autocomplete
-                ></v-select>
+                ></v-autocomplete>
               </v-flex>
               <v-flex xs5>
                 <v-text-field
@@ -53,16 +46,15 @@
               </v-flex>
               <!-- vits -->
               <v-flex xs6>
-                <v-select
+                <v-autocomplete
                   :rules="[rules.required]"
                   outline
                   label="Vitamins"
                   :items="vitamins"
-                  v-model="value"
                   hint="Please add all the fields in the list and input corresponding %RENI"
                   persistent-hint
                   autocomplete
-                ></v-select>
+                ></v-autocomplete>
               </v-flex>
               <v-flex xs5>
                 <v-text-field
@@ -83,16 +75,15 @@
               </v-flex>
               <!-- minerals -->
               <v-flex xs6>
-                <v-select
+                <v-autocomplete
                   outline
                   :rules="[rules.required]"
                   label="Minerals"
                   hint="Please add all the fields in the list and input corresponding %RENI"
                   persistent-hint
                   :items="minerals"
-                  v-model="value"
                   autocomplete
-                ></v-select>
+                ></v-autocomplete>
               </v-flex>
               <v-flex xs5>
                 <v-text-field

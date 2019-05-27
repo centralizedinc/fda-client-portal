@@ -6,12 +6,7 @@
           <v-container grid-list-md>
             <v-layout row wrap align-center justify-center>
               <v-flex xs8 ml-5>
-                <v-text-field
-                  outline
-                  :rules="[rules.required]"
-                  label="Ingredient Name"
-                  v-model="value"
-                ></v-text-field>
+                <v-text-field outline :rules="[rules.required]" label="Ingredient Name"></v-text-field>
               </v-flex>
               <v-flex xs2 mb-4 ml-3>
                 <v-tooltip top>

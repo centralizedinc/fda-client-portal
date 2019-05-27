@@ -37,14 +37,13 @@
           <v-container grid-list-md>
             <v-layout row wrap justify-center>
               <v-flex xs12>
-                <v-select
+                <v-autocomplete
                   outline
                   :items="answer"
-                  v-model="value"
                   item-text="name"
                   item-value="code"
                   label="Is your product for Export"
-                ></v-select>
+                ></v-autocomplete>
               </v-flex>
               <v-flex xs3>
                 <span
@@ -64,14 +63,13 @@
           <v-container grid-list-md>
             <v-layout row wrap justify-center>
               <v-flex xs12>
-                <v-select
+                <v-autocomplete
                   outline
                   :items="answer"
-                  v-model="value"
                   item-text="name"
                   item-value="code"
                   label="Do you have Nutrient Content Claim/ Nutrient Function Claim/ Other Function Claims/ Health Claim/ Comparative Claim/ Non-addition claim/ Reduction of disease risk claim/ Other claims?"
-                ></v-select>
+                ></v-autocomplete>
               </v-flex>
               <v-flex xs3>
                 <span
@@ -91,14 +89,13 @@
           <v-container grid-list-md>
             <v-layout row wrap justify-center>
               <v-flex xs12>
-                <v-select
+                <v-autocomplete
                   outline
                   :items="answer"
-                  v-model="value"
                   item-text="name"
                   item-value="code"
                   label="Do you have any IPO/ Trademark, or logo/ seal (e.g. Sangkap Pinoy, Organic) on your label?"
-                ></v-select>
+                ></v-autocomplete>
               </v-flex>
               <v-flex xs3>
                 <span

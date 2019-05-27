@@ -3,16 +3,15 @@
     <v-container grid-list-md>
       <v-layout row wrap justify-center align-center>
         <v-flex xs6>
-          <v-select
+          <v-autocomplete
             outline
             :rules="[rules.required]"
             label="Physical Specifications"
             hint="e.g. powder, liquid, gel, etc."
             persistent-hint
             :items="physicalSpecs"
-            v-model="value"
             autocomplete
-          ></v-select>
+          ></v-autocomplete>
         </v-flex>
         <v-flex xs5>
           <v-text-field outline :rules="[rules.required]" name="name" label="Specification" id="id"></v-text-field>
@@ -32,10 +31,10 @@
           width="calc(100% - 10px)"
         >Chemical (e.g. Moisture Content, Water Activity, pH, etc)</v-toolbar>
         <v-flex xs5>
-          <v-text-field :rules="[rules.required]" outline label="Parameter" v-model="value"></v-text-field>
+          <v-text-field :rules="[rules.required]" outline label="Parameter"></v-text-field>
         </v-flex>
         <v-flex xs5>
-          <v-text-field :rules="[rules.required]" outline label="Specification" v-model="value"></v-text-field>
+          <v-text-field :rules="[rules.required]" outline label="Specification"></v-text-field>
         </v-flex>
         <v-flex xs1 mb-4>
           <v-tooltip top>
@@ -59,10 +58,10 @@
           width="calc(100% - 10px)"
         >Microbiological (e.g. Coliforms)</v-toolbar>
         <v-flex xs5>
-          <v-text-field outline :rules="[rules.required]" label="Parameter" v-model="value"></v-text-field>
+          <v-text-field outline :rules="[rules.required]" label="Parameter"></v-text-field>
         </v-flex>
         <v-flex xs5>
-          <v-text-field outline :rules="[rules.required]" label="Specification" v-model="value"></v-text-field>
+          <v-text-field outline :rules="[rules.required]" label="Specification"></v-text-field>
         </v-flex>
         <v-flex xs1 mb-4>
           <v-tooltip top>

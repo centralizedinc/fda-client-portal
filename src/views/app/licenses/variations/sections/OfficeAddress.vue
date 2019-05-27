@@ -1,134 +1,126 @@
 <template>
-    <v-layout row wrap>
-        <v-toolbar dark flat color="primary" class="elevation-5">
-            <span class="title font-weight-light">Address List</span>
-            <v-spacer></v-spacer>
-            <!-- <v-btn outline @click="addAddress">Add</v-btn> -->
-            <v-tooltip top>
-                <v-btn slot="activator" @click="addAddress" outline small icon >
-                <v-icon>edit</v-icon> 
-            </v-btn>Add Address
-            </v-tooltip>
-            
+  <v-layout row wrap>
+    <v-toolbar dark flat color="primary" class="elevation-5">
+      <span class="title font-weight-light">Address List</span>
+      <v-spacer></v-spacer>
+      <!-- <v-btn outline @click="addAddress">Add</v-btn> -->
+      <v-tooltip top>
+        <v-btn slot="activator" @click="addAddress" outline small icon>
+          <v-icon>edit</v-icon>
+        </v-btn>Add Address
+      </v-tooltip>
+    </v-toolbar>
+    <v-flex xs12>
+      <v-data-table hide-actions :headers="headers" :items="address_list">
+        <template slot="items" slot-scope="props">
+          <tr @click="viewItem(props.item, props.index)">
+            <td>{{getEstablishmentType(props.item.type)}}</td>
+            <td>{{props.item.address}}</td>
+            <td>{{getCityName(props.item.city)}}</td>
+            <td>{{getProvinceName(props.item.province)}}</td>
+            <td>{{getRegionName(props.item.region)}}</td>
+            <td>{{props.item.zipcode}}</td>
+          </tr>
+        </template>
+      </v-data-table>
+    </v-flex>
+    <v-dialog
+      v-model="showDialog"
+      scrollable
+      persistent
+      max-width="600px"
+      transition="dialog-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="primary" class="tStyle">
+          <span class="title font-weight-light">New Address</span>
+          <v-spacer></v-spacer>
+          <v-btn flat icon @click="showDialog=false">
+            <v-icon>close</v-icon>
+          </v-btn>
         </v-toolbar>
-        <v-flex xs12>                                     
-            <v-data-table
-                hide-actions
-                :headers="headers"
-                :items="address_list">
-                <template slot="items" slot-scope="props">
-                    <tr @click="viewItem(props.item, props.index)">
-                        <td>{{getEstablishmentType(props.item.type)}}</td>
-                        <td>{{props.item.address}}</td>
-                        <td>{{getCityName(props.item.city)}}</td>
-                        <td>{{getProvinceName(props.item.province)}}</td>
-                        <td>{{getRegionName(props.item.region)}}</td>
-                        <td>{{props.item.zipcode}}</td>                        
-                    </tr>
-                </template>            
-            </v-data-table>
-        </v-flex> 
-        <v-dialog
-            v-model="showDialog"
-            scrollable 
-            persistent
-            max-width="600px"
-            transition="dialog-transition"
-        >
-        <v-card>
-            <v-toolbar dark color="primary" class="tStyle">
-                <span class="title font-weight-light">New Address</span>
-                <v-spacer></v-spacer>
-                <v-btn flat icon @click="showDialog=false">
-                    <v-icon>close</v-icon>
-                </v-btn>
-            </v-toolbar>
-            <v-card-text>
-                <v-form v-model="isValid" ref="vform">
-                <v-layout row wrap>
-                    <v-flex xs12>
-                        <v-select
-                            :items="address_types"
-                            v-model="address.type"
-                            label="Address Type"
-                        ></v-select>
-                        <v-textarea rows="2"
-                        color="green darken-1"
-                        label="Address"
-                        :rules="[rules.required]"
-                        v-model="address.address"
-                        hint="Unit Number, Floor, Building, Lot, Block, Phase, Street"
-                        ></v-textarea>
-                    </v-flex>
-                    <v-flex xs12 md6 pa-2>
-                        <v-autocomplete
-                        color="green darken-1"
-                        v-model="address.region"
-                        :items="regions"
-                        item-text="name"
-                        item-value="_id"
-                        hide-no-data
-                        hide-selected
-                        label="Region"
-                        :rules="[rules.required]"
-                        ></v-autocomplete>
-                        <v-autocomplete
-                        color="green darken-1"
-                        v-model="address.province"
-                        :items="filtered_provinces"
-                        item-text="name"
-                        item-value="_id"
-                        hide-no-data
-                        hide-selected
-                        label="Province"
-                        :rules="[rules.required]"
-                        ></v-autocomplete>
-                        <v-autocomplete
-                        color="green darken-1"
-                        v-model="address.city"
-                        :items="filtered_cities"
-                        item-text="name"
-                        item-value="_id"
-                        hide-no-data
-                        hide-selected
-                        label="City / Town"
-                        :rules="[rules.required]"
-                        ></v-autocomplete>
-                        <v-text-field
-                        color="green darken-1"
-                        v-model="address.zipcode"
-                        label="Zip Code"
-                        mask="####"
-                        :rules="[rules.required]"
-                        ></v-text-field>
-                    </v-flex>
-                    <v-flex xs12 md6 pa-2>
-                        <address-map
-                        :city="address.city"
-                        :province="address.province"
-                        :region="address.region"
-                        :edit="true"
-                        @pin="setCoordinates"
-                        ></address-map>
-                    </v-flex>
-                </v-layout>
-                </v-form>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions v-if="isAdd">
-                <v-spacer></v-spacer>
-                <v-btn outline color="primary" @click="showDialog=false">Cancel</v-btn>
-                <v-btn color="primary" @click="submit">Add</v-btn>
-            </v-card-actions>
-            <v-card-actions v-else>
-                <v-spacer></v-spacer>
-                <v-btn outline color="error" @click="deleteItem()">Delete</v-btn>
-                <v-btn color="primary" @click="editItem()">Edit</v-btn>
-            </v-card-actions>
-        </v-card>
-            
-        </v-dialog>
-    </v-layout>
+        <v-card-text>
+          <v-form v-model="isValid" ref="vform">
+            <v-layout row wrap>
+              <v-flex xs12>
+                <v-autocomplete :items="address_types" v-model="address.type" label="Address Type"></v-autocomplete>
+                <v-textarea
+                  rows="2"
+                  color="green darken-1"
+                  label="Address"
+                  :rules="[rules.required]"
+                  v-model="address.address"
+                  hint="Unit Number, Floor, Building, Lot, Block, Phase, Street"
+                ></v-textarea>
+              </v-flex>
+              <v-flex xs12 md6 pa-2>
+                <v-autocomplete
+                  color="green darken-1"
+                  v-model="address.region"
+                  :items="regions"
+                  item-text="name"
+                  item-value="_id"
+                  hide-no-data
+                  hide-selected
+                  label="Region"
+                  :rules="[rules.required]"
+                ></v-autocomplete>
+                <v-autocomplete
+                  color="green darken-1"
+                  v-model="address.province"
+                  :items="filtered_provinces"
+                  item-text="name"
+                  item-value="_id"
+                  hide-no-data
+                  hide-selected
+                  label="Province"
+                  :rules="[rules.required]"
+                ></v-autocomplete>
+                <v-autocomplete
+                  color="green darken-1"
+                  v-model="address.city"
+                  :items="filtered_cities"
+                  item-text="name"
+                  item-value="_id"
+                  hide-no-data
+                  hide-selected
+                  label="City / Town"
+                  :rules="[rules.required]"
+                ></v-autocomplete>
+                <v-text-field
+                  color="green darken-1"
+                  v-model="address.zipcode"
+                  label="Zip Code"
+                  mask="####"
+                  :rules="[rules.required]"
+                ></v-text-field>
+              </v-flex>
+              <v-flex xs12 md6 pa-2>
+                <address-map
+                  :city="address.city"
+                  :province="address.province"
+                  :region="address.region"
+                  :edit="true"
+                  @pin="setCoordinates"
+                ></address-map>
+              </v-flex>
+            </v-layout>
+          </v-form>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions v-if="isAdd">
+          <v-spacer></v-spacer>
+          <v-btn outline color="primary" @click="showDialog=false">Cancel</v-btn>
+          <v-btn color="primary" @click="submit">Add</v-btn>
+        </v-card-actions>
+        <v-card-actions v-else>
+          <v-spacer></v-spacer>
+          <v-btn outline color="error" @click="deleteItem()">Delete</v-btn>
+          <v-btn color="primary" @click="editItem()">Edit</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+  </v-layout>
 </template>
 
 <script>

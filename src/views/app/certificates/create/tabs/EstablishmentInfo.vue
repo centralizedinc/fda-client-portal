@@ -4,7 +4,6 @@
       <v-layout row wrap>
         <v-flex xs6>
           <v-autocomplete
-            :items="types"
             :rules="[rules.required]"
             hide-no-data
             color="green darken-1"
@@ -15,7 +14,6 @@
         </v-flex>
         <v-flex xs6>
           <v-autocomplete
-            :items="types"
             color="green darken-1"
             :rules="[rules.required]"
             outline
@@ -26,7 +24,6 @@
         </v-flex>
         <v-flex xs6>
           <v-autocomplete
-            :items="types"
             :rules="[rules.required]"
             color="green darken-1"
             outline
@@ -37,7 +34,6 @@
         </v-flex>
         <v-flex xs6>
           <v-autocomplete
-            :items="types"
             :rules="[rules.required]"
             color="green darken-1"
             outline
@@ -57,7 +53,7 @@
           >Documents Upload</v-toolbar>
         </v-flex>
         <v-flex xs6 class="pt-5 mt-3">
-          <uploader height="100px" @upload="upload"></uploader>
+          <uploader @upload="upload"></uploader>
         </v-flex>
         <v-flex xs6>
           <span
@@ -132,6 +128,7 @@ export default {
   },
   props: ["form"],
   data: () => ({
+    uploads: false,
     valid: true,
     rules: {
       required: value => !!value || "This field is required"
@@ -163,6 +160,13 @@ export default {
         color: "warning",
         initialMargin: 100
       });
+    },
+    upload(data) {
+      this.$emit("upload", data);
+      this.uploads = true;
+    },
+    validate() {
+      return this.uploads;
     }
   }
 };

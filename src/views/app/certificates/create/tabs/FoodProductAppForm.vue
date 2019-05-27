@@ -8,8 +8,6 @@
             :rules="[rules.required]"
             required
             color="green darken-1"
-            v-model="value"
-            :items="types"
             hide-no-data
             hide-selected
             label="Food Product Type"
@@ -21,8 +19,6 @@
             :rules="[rules.required]"
             required
             color="green darken-1"
-            v-model="value"
-            :items="types"
             hide-no-data
             hide-selected
             label="Food Category"
@@ -45,7 +41,6 @@
             required
             color="green darken-1"
             label="Product Name"
-            v-model="value"
           ></v-text-field>
         </v-flex>
         <v-flex xs12>
@@ -55,7 +50,6 @@
             required
             color="green darken-1"
             label="Company Name (as listed in LTO)"
-            v-model="value"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -65,7 +59,6 @@
             required
             color="green darken-1"
             label="Address (as listed in LTO)"
-            v-model="value"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -74,8 +67,6 @@
             :rules="[rules.required]"
             required
             color="green darken-1"
-            v-model="value"
-            :items="types"
             hide-no-data
             hide-selected
             label="Region"
@@ -88,7 +79,6 @@
             required
             color="green darken-1"
             label="LTO Number"
-            v-model="value"
           ></v-text-field>
         </v-flex>
         <v-flex xs4>
@@ -107,13 +97,12 @@
               outline
               color="green darken-1"
               slot="activator"
-              v-model="value"
               :rules="[rules.required]"
               label="LTO Validity"
               append-icon="event"
               readonly
             ></v-text-field>
-            <v-date-picker color="green darken-1" v-model="value" no-title scrollable>
+            <v-date-picker color="green darken-1" no-title scrollable>
               <v-spacer></v-spacer>
               <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
               <v-btn flat color="primary" @click="$refs.menu.save(form.auth_officer.id_expiry)">OK</v-btn>
@@ -126,8 +115,6 @@
             :rules="[rules.required]"
             required
             color="green darken-1"
-            v-model="value"
-            :items="types"
             hide-no-data
             hide-selected
             label="Number of Years applied for Product Registration"
@@ -149,7 +136,6 @@
             required
             color="green darken-1"
             label="1. Email Address"
-            v-model="value"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -160,7 +146,6 @@
             mask="(##)-####-####"
             color="green darken-1"
             label="2. Landline Number"
-            v-model="value"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -171,7 +156,6 @@
             mask="(##)-####-####"
             color="green darken-1"
             label="3. Fax Number"
-            v-model="value"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -182,7 +166,6 @@
             mask="(####)-###-####"
             color="green darken-1"
             label="4. Mobile Number"
-            v-model="value"
           ></v-text-field>
         </v-flex>
       </v-layout>
