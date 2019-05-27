@@ -47,35 +47,44 @@
       </v-flex>
       <!-- Documents Upload -->
       <v-flex xs12>
-        <v-card-title primary-title class="headline">
-          Documents Upload
-          <v-spacer></v-spacer>
-          <v-tooltip top>
-            <v-btn slot="activator" flat icon right color="error">
-              <i class="fas fa-question fa-lg"></i>
-            </v-btn>Get Help
-          </v-tooltip>
-        </v-card-title>
-        <v-card-text>
-          <v-flex :key="index">
-            <upload-btn
-              label="1. Choose File"
-              :index="index"
-              @getFile="getFile"
-              mimetype="application/pdf"
-              @onError="uploadError"
-            ></upload-btn>
-          </v-flex>
-          <v-flex :key="index">
-            <upload-btn
-              label="2. Choose File"
-              :index="index"
-              @getFile="getFile"
-              mimetype="application/pdf"
-              @onError="uploadError"
-            ></upload-btn>
-          </v-flex>
-        </v-card-text>
+        <v-toolbar
+          dark
+          class="sheetStyle elevation-10 mt-3 mb-4 subheading"
+          color="fdaGreen"
+          height="30"
+          width="calc(100% - 10px)"
+        >Documents Upload</v-toolbar>
+      </v-flex>
+      <v-flex xs6 class="pt-5 mt-3">
+        <uploader height="100px" @upload="upload"></uploader>
+      </v-flex>
+      <v-flex xs6>
+        <span
+          class="caption font-weight-light"
+        >Documentary Requirements/ Substantiation of Claims/ Product Label (Maximum upload file size 2MB)</span>
+        <span class="caption font-weight-light">
+          For products sourced from supplier, upload ANY of the following scanned copy of the original documents:
+          <ul>
+            <li>Foreign Agency Agreement, or</li>
+            <li>Certificate of Distributorship, or</li>
+            <li>Appointment Letter, or</li>
+            <li>Proforma Invoice, or</li>
+            <li>Memorandum of Agreement from each supplier</li>
+          </ul>
+        </span>
+        <br>
+        <span class="caption font-weight-light">
+          AND ANY of the following documents issued by the Regulatory/ Health Authority/ Attested by recognized Association or duly authenticated by the Philippine Consulate from the country of origin:
+          <ul>
+            <li>Certificate of Registration with GMP Compliance or its equivalent,</li>
+            <li>Valid Sanitary Phyto-Sanitary Certificate, or</li>
+            <li>Health Certificate, or</li>
+            <li>ISO 22000 Certificate, or</li>
+            <li>FSSC 22000, or</li>
+            <li>HACCP Certificate, or</li>
+            <li>Certificate of Free Sale issued by the Manufacturer</li>
+          </ul>
+        </span>
       </v-flex>
 
       <v-flex xs6>
@@ -117,7 +126,7 @@
 <script>
 export default {
   components: {
-    UploadBtn: () => import("@/components/UploadBtn")
+    Uploader: () => import("@/components/Uploader")
   },
   props: ["form"],
   watch: {

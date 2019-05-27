@@ -24,7 +24,12 @@
         ></v-autocomplete>
       </v-flex>
       <v-flex xs6>
-        <v-text-field outline color="green darken-1" label="Brand Name" v-model="form.food_product.brand_name"></v-text-field>
+        <v-text-field
+          outline
+          color="green darken-1"
+          label="Brand Name"
+          v-model="form.food_product.brand_name"
+        ></v-text-field>
       </v-flex>
       <v-flex xs6>
         <v-text-field outline color="green darken-1" label="Product Name" v-model="form.food_product.product_name"></v-text-field>
@@ -107,8 +112,8 @@
         height="30"
         width="calc(100% - 10px)"
       >Contact Information</v-toolbar>
-      <!-- contact should be in dropdown -->
-      <!-- <v-flex xs6>
+      <span>atleast 3 and can be in same category</span>
+      <v-flex xs6>
         <v-text-field outline color="green darken-1" label="1. Email Address" v-model="email"></v-text-field>
       </v-flex>
       <v-flex xs6>
@@ -119,7 +124,7 @@
       </v-flex>
       <v-flex xs6>
         <v-text-field outline color="green darken-1" label="4. Mobile Number" v-model="mobile"></v-text-field>
-      </v-flex> -->
+      </v-flex>
     </v-layout>
   </v-container>
 </template>

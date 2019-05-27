@@ -1,5 +1,11 @@
 <template>
-    <v-layout row wrap>
+  <v-container grid-list-md>
+    <v-layout row wrap justify-center>
+      <v-flex xs12>
+        <span class="caption font-weight-light">Upload the Image of the product label</span>
+        <uploader @upload="upload"></uploader>
+        <br>
+        <v-divider></v-divider>
         <v-flex xs12>
             <v-card>
                 <v-card-title primary-title>
@@ -38,7 +44,61 @@
                 <uploader @upload="upload"></uploader>
             </v-card>
         </v-flex>
+        <uploader @upload="upload"></uploader>
+        <br>
+        <v-divider></v-divider>
+        <br>
+        <v-flex xs12>
+          <v-select
+            outline
+            :items="answer"
+            v-model="value"
+            item-text="name"
+            item-value="code"
+            label="Is your product for Export"
+          ></v-select>
+          <span
+            class="caption font-weight-light"
+          >Upload any of the following, Purchase Order, Request for Quotation, or valid notarized agreement signed by Importing and Exporting parties of the Importing Company</span>
+        </v-flex>
+        <uploader @upload="upload"></uploader>
+        <br>
+        <v-divider></v-divider>
+        <br>
+        <v-flex xs12>
+          <v-select
+            outline
+            :items="answer"
+            v-model="value"
+            item-text="name"
+            item-value="code"
+            label="Do you have Nutrient Content Claim/ Nutrient Function Claim/ Other Function Claims/ Health Claim/ Comparative Claim/ Non-addition claim/ Reduction of disease risk claim/ Other claims?"
+          ></v-select>
+          <span
+            class="caption font-weight-light"
+          >Upload documents to substantiate claims, such as technical, nutritional, or health studies or reports, market-research studies, Certificate of Analysis, quantitative analysis and computations, scientific report or studies published in peer-reviewed scientific journals, certificates or certification in compliance with current labelling regulations</span>
+        </v-flex>
+        <uploader @upload="upload"></uploader>
+        <br>
+        <v-divider></v-divider>
+        <br>
+        <v-flex xs12>
+          <v-select
+            outline
+            :items="answer"
+            v-model="value"
+            item-text="name"
+            item-value="code"
+            label="Do you have any IPO/ Trademark, or logo/ seal (e.g. Sangkap Pinoy, Organic) on your label?"
+          ></v-select>
+          <span
+            class="caption font-weight-light"
+          >Upload the document to substantiate use of logo/seal/ certification</span>
+        </v-flex>
+        <uploader @upload="upload"></uploader>
+      </v-flex>
     </v-layout>
+  </v-container>
 </template>
 <script>
 import Uploader from "@/components/Uploader";
@@ -50,14 +110,15 @@ export default {
   data() {
     return {
       uploads: false,
-      answer: [{
+      answer: [
+        {
           name: "No",
           code: 0
-      },
-      {
+        },
+        {
           name: "Yes",
           code: 1
-      }
+        }
       ]
     };
   },
@@ -74,5 +135,4 @@ export default {
 </script>
 
 <style>
-
 </style>
