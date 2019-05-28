@@ -2,7 +2,7 @@
   <v-container grid-list-md>
     <v-layout row wrap justify-center>
       <v-flex xs6>
-        <v-card height="300px">
+        <v-card height="350px">
           <v-container grid-list-md>
             <v-layout row wrap justify-center>
               <v-flex xs3>
@@ -16,7 +16,7 @@
         </v-card>
       </v-flex>
       <v-flex xs6>
-        <v-card height="300px">
+        <v-card height="350px">
           <v-container grid-list-md>
             <v-layout row wrap justify-center>
               <v-flex xs3>

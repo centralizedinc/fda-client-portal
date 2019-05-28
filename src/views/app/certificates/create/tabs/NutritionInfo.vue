@@ -13,98 +13,95 @@
           ></v-text-field>
         </v-flex>
         <!-- amt per serving -->
-        <v-card flat>
-          <v-container grid-list-xs>
-            <v-layout row wrap align-center justify-center>
-              <v-flex xs6>
-                <v-autocomplete
-                  outline
-                  :rules="[rules.required]"
-                  hint="Please add all the fields in the list and input corresponding %RENI"
-                  persistent-hint
-                  label="Amount Per Serving"
-                  :items="amtServing"
-                  autocomplete
-                ></v-autocomplete>
-              </v-flex>
-              <v-flex xs5>
-                <v-text-field
-                  outline
-                  :rules="[rules.required]"
-                  name="name"
-                  hint="N/A if not applicable"
-                  label="%RENI, for Locally Manufactured Products "
-                  id="id"
-                ></v-text-field>
-              </v-flex>
-              <v-flex mb-4>
-                <v-tooltip top>
-                  <v-btn slot="activator" flat icon color="primary">
-                    <v-icon>far fa-plus-square</v-icon>
-                  </v-btn>Add New
-                </v-tooltip>
-              </v-flex>
-              <!-- vits -->
-              <v-flex xs6>
-                <v-autocomplete
-                  :rules="[rules.required]"
-                  outline
-                  label="Vitamins"
-                  :items="vitamins"
-                  hint="Please add all the fields in the list and input corresponding %RENI"
-                  persistent-hint
-                  autocomplete
-                ></v-autocomplete>
-              </v-flex>
-              <v-flex xs5>
-                <v-text-field
-                  outline
-                  :rules="[rules.required]"
-                  name="name"
-                  hint="N/A if not applicable"
-                  label="%RENI, for Locally Manufactured Products "
-                  id="id"
-                ></v-text-field>
-              </v-flex>
-              <v-flex mb-4>
-                <v-tooltip top>
-                  <v-btn slot="activator" flat icon color="primary">
-                    <v-icon>far fa-plus-square</v-icon>
-                  </v-btn>Add New
-                </v-tooltip>
-              </v-flex>
-              <!-- minerals -->
-              <v-flex xs6>
-                <v-autocomplete
-                  outline
-                  :rules="[rules.required]"
-                  label="Minerals"
-                  hint="Please add all the fields in the list and input corresponding %RENI"
-                  persistent-hint
-                  :items="minerals"
-                  autocomplete
-                ></v-autocomplete>
-              </v-flex>
-              <v-flex xs5>
-                <v-text-field
-                  outline
-                  :rules="[rules.required]"
-                  name="name"
-                  hint="N/A if not applicable"
-                  label="%RENI, for Locally Manufactured Products "
-                  id="id"
-                ></v-text-field>
-              </v-flex>
-              <v-flex mb-4>
-                <v-tooltip top>
-                  <v-btn slot="activator" flat icon small color="primary">
-                    <v-icon>far fa-plus-square</v-icon>
-                  </v-btn>Add New
-                </v-tooltip>
-              </v-flex>
-            </v-layout>
-          </v-container>
-        </v-card>
+
+        <v-flex xs6>
+          <v-autocomplete
+            outline
+            :rules="[rules.required]"
+            hint="Please add all the fields in the list and input corresponding %RENI"
+            persistent-hint
+            label="1. Amount Per Serving"
+            :items="amtServing"
+            autocomplete
+          ></v-autocomplete>
+        </v-flex>
+        <v-flex xs5>
+          <v-text-field
+            outline
+            :rules="[rules.required]"
+            name="name"
+            hint="N/A if not applicable"
+            label="%RENI, for Locally Manufactured Products "
+            id="id"
+          ></v-text-field>
+        </v-flex>
+        <v-flex mb-4>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="primary">
+              <v-icon>far fa-plus-square</v-icon>
+            </v-btn>Add New
+          </v-tooltip>
+        </v-flex>
+
+        <!-- vits -->
+        <v-flex xs6>
+          <v-autocomplete
+            :rules="[rules.required]"
+            outline
+            label="2. Vitamins"
+            :items="vitamins"
+            hint="Please add all the fields in the list and input corresponding %RENI"
+            persistent-hint
+            autocomplete
+          ></v-autocomplete>
+        </v-flex>
+        <v-flex xs5>
+          <v-text-field
+            outline
+            :rules="[rules.required]"
+            name="name"
+            hint="N/A if not applicable"
+            label="%RENI, for Locally Manufactured Products "
+            id="id"
+          ></v-text-field>
+        </v-flex>
+        <v-flex mb-4>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="primary">
+              <v-icon>far fa-plus-square</v-icon>
+            </v-btn>Add New
+          </v-tooltip>
+        </v-flex>
+
+        <!-- minerals -->
+        <v-flex xs6>
+          <v-autocomplete
+            outline
+            :rules="[rules.required]"
+            label="3. Minerals"
+            hint="Please add all the fields in the list and input corresponding %RENI"
+            persistent-hint
+            :items="minerals"
+            autocomplete
+          ></v-autocomplete>
+        </v-flex>
+        <v-flex xs5>
+          <v-text-field
+            outline
+            :rules="[rules.required]"
+            name="name"
+            hint="N/A if not applicable"
+            label="%RENI, for Locally Manufactured Products "
+            id="id"
+          ></v-text-field>
+        </v-flex>
+        <v-flex mb-4>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon small color="primary">
+              <v-icon>far fa-plus-square</v-icon>
+            </v-btn>Add New
+          </v-tooltip>
+        </v-flex>
       </v-layout>
     </v-container>
   </v-form>
