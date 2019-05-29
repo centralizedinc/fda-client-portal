@@ -8,6 +8,10 @@
             :rules="[rules.required]"
             required
             color="green darken-1"
+            v-model="form.food_product.type"
+            :items="product_type"
+            item-text="name"
+            item-value="_id"
             hide-no-data
             hide-selected
             label="Food Product Type"
@@ -21,6 +25,10 @@
             color="green darken-1"
             hide-no-data
             hide-selected
+            v-model="form.food_product.categorization"
+            :items="category"
+            item-text="name"
+            item-value="_id"
             label="Food Category"
           ></v-autocomplete>
         </v-flex>
@@ -41,6 +49,7 @@
             required
             color="green darken-1"
             label="Product Name"
+            v-model="form.food_product.product_name"
           ></v-text-field>
         </v-flex>
         <v-flex xs12>
@@ -50,6 +59,7 @@
             required
             color="green darken-1"
             label="Company Name (as listed in LTO)"
+            v-model="form.food_product.company"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -59,6 +69,7 @@
             required
             color="green darken-1"
             label="Address (as listed in LTO)"
+            
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -70,6 +81,10 @@
             hide-no-data
             hide-selected
             label="Region"
+            item-text="name"
+            item-value="_id"
+            v-model="form.food_product.address"
+            :items="regions"
           ></v-autocomplete>
         </v-flex>
         <v-flex xs4>
@@ -79,13 +94,14 @@
             required
             color="green darken-1"
             label="LTO Number"
+            v-model="form.food_product.license_no"
           ></v-text-field>
         </v-flex>
         <v-flex xs4>
           <v-menu
             ref="menu"
             :close-on-content-click="false"
-            v-model="menu"
+            v-model="validity"
             :nudge-right="40"
             lazy
             transition="scale-transition"
@@ -99,13 +115,20 @@
               slot="activator"
               :rules="[rules.required]"
               label="LTO Validity"
+              v-model="form.food_product.license_validity"
               append-icon="event"
               readonly
             ></v-text-field>
-            <v-date-picker color="green darken-1" no-title scrollable>
-              <v-spacer></v-spacer>
+            <v-date-picker 
+            v-model="dateFormatted"
+            @input="validity=false"
+            color="green darken-1" 
+            no-title 
+            scrollable
+            :min="new Date().toISOString().substr(0, 10)">
+              <!-- <v-spacer></v-spacer>
               <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu.save(form.auth_officer.id_expiry)">OK</v-btn>
+              <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn> -->
             </v-date-picker>
           </v-menu>
         </v-flex>
@@ -118,6 +141,9 @@
             hide-no-data
             hide-selected
             label="Number of Years applied for Product Registration"
+            :items="years"
+            item-text="name"
+            item-value="code"
           ></v-autocomplete>
         </v-flex>
         <!-- Contact Information -->
@@ -136,6 +162,7 @@
             required
             color="green darken-1"
             label="1. Email Address"
+            v-model="form.food_product.contacts.email"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -145,6 +172,7 @@
             required
             mask="(##)-####-####"
             color="green darken-1"
+            v-model="form.food_product.contacts.landline"
             label="2. Landline Number"
           ></v-text-field>
         </v-flex>
@@ -156,6 +184,7 @@
             mask="(##)-####-####"
             color="green darken-1"
             label="3. Fax Number"
+            v-mode="form.food_product.contacts.fax"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -166,6 +195,7 @@
             mask="(####)-###-####"
             color="green darken-1"
             label="4. Mobile Number"
+            v-model="form.food_product.contacts.mobile"
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -179,6 +209,7 @@ export default {
   data: () => ({
     menu: null,
     valid: true,
+    contact: {},
     rules: {
       required: value => !!value || "This field is required"
     },
@@ -187,12 +218,50 @@ export default {
       v =>
         /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) ||
         "E-mail must be valid"
-    ]
+    ],
+    validity: false,
+      dateFormatted: "",
+      product_type: [],
+      category: [],
+      regions: [],
+      years: [
+        { 
+          code: 2,
+          name: "2 years"
+        },
+        {
+          code: 3,
+          name:"3 years"
+        },
+        {
+          code: 4,
+          name: "4 years"
+        },
+        {
+         code: 5,
+         name: "5 years"
+        }],
+        dateFormatted: null,
+        expiry_date: null
   }),
+  created(){
+    this.init()
+  },
+  watch: {
+    dateFormatted(val) {
+    this.form.food_product.license_validity = this.formatDate(val);
+    }
+  },
   methods: {
     validate() {
       this.$refs.vform.validate();
       return this.VALID;
+    },
+    init(){
+      this.product_type = this.$store.state.foodCertificate.food_product
+      this.category = this.$store.state.foodCertificate.food_category
+      this.regions = this.$store.state.places.regions
+      console.log("regions data: " + JSON.stringify(this.regions))
     }
   }
 };

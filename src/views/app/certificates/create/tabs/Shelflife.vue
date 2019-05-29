@@ -11,7 +11,15 @@
           ></v-text-field>
         </v-flex>
         <v-flex xs4>
-          <v-autocomplete :rules="[rules.required]" outline label="Type" autocomplete></v-autocomplete>
+          <v-autocomplete
+            :rules="[rules.required]"
+            :items="shelfLifeType"
+            item-text="name"
+            item-value="_id"
+            outline
+            label="Type"
+            autocomplete
+          ></v-autocomplete>
         </v-flex>
         <v-flex xs4>
           <v-text-field
@@ -73,10 +81,23 @@
 export default {
   data: () => ({
     valid: true,
+    shelfLifeType: [],
     rules: {
       required: value => !!value || "This field is required"
     }
-  })
+  }),
+  created() {
+    this.init();
+  },
+  methods: {
+    init() {
+      this.shelfLifeType = this.$store.state.foodCertificate.shelf_life;
+      console.log(
+        "Shelf life type data: " +
+          JSON.stringify(this.$store.state.foodCertificate.shelf_life)
+      );
+    }
+  }
 };
 </script>
 

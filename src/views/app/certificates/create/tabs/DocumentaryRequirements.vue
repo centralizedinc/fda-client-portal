@@ -103,7 +103,7 @@
                 >5. Upload the document to substantiate use of logo/seal/ certification</span>
               </v-flex>
               <v-flex xs9>
-                <uploader @upload="upload"></uploader>
+                <uploader @upload="uploadLogo"></uploader>
               </v-flex>
             </v-layout>
           </v-container>
