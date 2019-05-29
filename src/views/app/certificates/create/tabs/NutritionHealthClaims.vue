@@ -21,7 +21,7 @@
               label="Description"
               v-model="item.desc"
               :append-outer-icon="index == form.claims.length-1?'far fa-plus-square':''"
-              :append-icon="index != form.claims.length-1?'fas fa-minus-square':''"
+              :append-icon="index != form.claims.length-1?'fas fa-backspace':''"
               @click:append-outer="addItem"
               @click:append="removeItem(index)"
             ></v-text-field>
