@@ -87,7 +87,7 @@
               id="add"
             ></v-textarea>
 
-            <v-select
+            <v-autocomplete
               class="font-weight-light"
               outline
               :items="items"
@@ -95,23 +95,23 @@
               label="Region"
               v-model="account.company.address.region"
               id="region"
-            ></v-select>
-            <v-select
+            ></v-autocomplete>
+            <v-autocomplete
               class="font-weight-light"
               outline
               name="province"
               label="Province"
               v-model="account.company.address.province"
               id="province"
-            ></v-select>
-            <v-select
+            ></v-autocomplete>
+            <v-autocomplete
               class="font-weight-light"
               outline
               name="city"
               label="City/Town"
               v-model="account.company.address.city"
               id="city"
-            ></v-select>
+            ></v-autocomplete>
             <v-text-field
               class="font-weight-light"
               outline
@@ -157,14 +157,14 @@
               </v-flex>
             </v-layout>
 
-            <v-select
+            <v-autocomplete
               class="font-weight-light"
               outline
               name="position"
               label="Designation"
               v-model="account.position"
               id="position"
-            ></v-select>
+            ></v-autocomplete>
             <v-text-field
               class="font-weight-light"
               outline
@@ -210,7 +210,7 @@
           </v-form>
 
           <v-form v-else-if="step_curr===4" key="step4">
-            <v-select class="font-weight-light" outline label="Government ID"></v-select>
+            <v-autocomplete class="font-weight-light" outline label="Government ID"></v-autocomplete>
             <v-text-field class="font-weight-light" outline label="ID Number"></v-text-field>
             <v-text-field
               class="font-weight-light"

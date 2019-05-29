@@ -2,27 +2,11 @@
   <v-app>
     <v-content>
       <router-view/>
-      <v-snackbar
-        v-model="snackWithButtons"
-        :timeout="timeout"
-        bottom
-        left
-        class="snack"
-      >
+      <v-snackbar v-model="snackWithButtons" :timeout="timeout" bottom left class="snack">
         {{ snackWithBtnText }}
-        <v-spacer />
-        <v-btn
-          dark
-          flat
-          color="#00f500"
-          @click.native="refreshApp"
-        >
-          {{ snackBtnText }}
-        </v-btn>
-        <v-btn
-          icon
-          @click="snackWithButtons = false"
-        >
+        <v-spacer/>
+        <v-btn dark flat color="#00f500" @click.native="refreshApp">{{ snackBtnText }}</v-btn>
+        <v-btn icon @click="snackWithButtons = false">
           <v-icon>close</v-icon>
         </v-btn>
       </v-snackbar>
@@ -38,10 +22,10 @@ export default {
       //
       refreshing: false,
       registration: null,
-      snackBtnText: '',
-      snackWithBtnText: '',
+      snackBtnText: "",
+      snackWithBtnText: "",
       snackWithButtons: false,
-      timeout: 0,
+      timeout: 0
     };
   },
   created() {
@@ -49,13 +33,16 @@ export default {
   },
   methods: {
     init() {
-      document.addEventListener("swoffline", (e)=>{
-          // this.registration = e.detail;
-          // this.snackBtnText = 'Refresh';
-          this.snackWithBtnText = 'No internet connection found. App is running in offline mode.';
-          // this.snackWithButtons = true;
+      document.addEventListener("swoffline", e => {
+        // this.registration = e.detail;
+        // this.snackBtnText = 'Refresh';
+        this.snackWithBtnText =
+          "No internet connection found. App is running in offline mode.";
+        // this.snackWithButtons = true;
       });
-      document.addEventListener("swUpdated", this.showRefreshUI, {once: true});
+      document.addEventListener("swUpdated", this.showRefreshUI, {
+        once: true
+      });
 
       navigator.serviceWorker.addEventListener("controllerchange", () => {
         if (this.refreshing) return;
@@ -65,15 +52,18 @@ export default {
     },
     showRefreshUI(e) {
       this.registration = e.detail;
-      this.snackBtnText = 'Refresh';
-      this.snackWithBtnText = 'Version '+ process.env.VUE_APP_VERSION+ ' is already available!';
+      this.snackBtnText = "Refresh";
+      this.snackWithBtnText =
+        "Version " + process.env.VUE_APP_VERSION + " is already available!";
       this.snackWithButtons = true;
     },
-    refreshApp () {
+    refreshApp() {
       this.updateExists = false;
-      if (!this.registration || !this.registration.waiting) { return; }
-      this.registration.waiting.postMessage('skipWaiting');
-    },
+      if (!this.registration || !this.registration.waiting) {
+        return;
+      }
+      this.registration.waiting.postMessage("skipWaiting");
+    }
   }
 };
 </script>

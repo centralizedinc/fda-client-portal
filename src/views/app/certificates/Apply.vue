@@ -1,127 +1,314 @@
 <template>
-  <div>
-    <v-layout row wrap v-if="invalid">
-      <v-flex xs12>Invalid Request: 404 status code.</v-flex>
+  <v-container grid-list-md>
+    <v-layout row wrap>
+      <v-flex xs12>
+        <v-progress-linear :value="completion" color="primary" background-color="primary"></v-progress-linear>
+        <v-stepper v-model="e6" vertical>
+          <v-stepper-step :complete="e6 > 1" step="1" editable>
+            Food Product Application
+            <small>Fill out all necessary information</small>
+          </v-stepper-step>
+
+          <v-stepper-content step="1">
+            <v-card flat class="mb-5" height="auto">
+              <step-one :form="cert_form"></step-one>
+            </v-card>
+            <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
+            <v-btn flat>Cancel</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-step :complete="e6 > 2" step="2" editable>
+            Establishment Information
+            <small>Select the corresponding company activity/activities</small>
+          </v-stepper-step>
+          <v-stepper-content step="2">
+            <v-card flat class="mb-5" height="auto">
+              <step-two :form="cert_form"></step-two>
+            </v-card>
+            <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
+            <v-btn flat>Cancel</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-step :complete="e6 > 3" step="3" editable>
+            Complete List of Ingredients
+            <small>Please indicate one ingredient per data entry.</small>
+          </v-stepper-step>
+          <v-stepper-content step="3">
+            <v-card flat class="mb-5" height="auto">
+              <step-three></step-three>
+            </v-card>
+            <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
+            <v-btn flat>Cancel</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-step :complete="e6 > 4" step="4" editable>
+            Product Specifications
+            <small>Ensure the completeness and accuracy of the details for the parameters and specifications in coherence with FDA Standards (eg, Philippine National Standards, Administrative Orders, and other relevant issuances)</small>
+          </v-stepper-step>
+          <v-stepper-content step="4">
+            <v-card flat class="mb-5" height="auto">
+              <step-four></step-four>
+            </v-card>
+            <v-btn color="primary" @click="e6 = 5">Continue</v-btn>
+            <v-btn flat>Cancel</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-step :complete="e6 > 5" step="5" editable>
+            Shelf Life and Other information
+            <small>The length of time that a commodity may be stored without becoming unfit for use, consumption, or sale.</small>
+          </v-stepper-step>
+          <v-stepper-content step="5">
+            <v-card flat class="mb-5" height="auto">
+              <step-five></step-five>
+            </v-card>
+            <v-btn color="primary" @click="e6 = 6">Continue</v-btn>
+            <v-btn flat>Cancel</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-step :complete="e6 > 6" step="6" editable>
+            Nutrition Information
+            <small>Vitamins and Minerals shall be declared as applicable to product claims</small>
+          </v-stepper-step>
+          <v-stepper-content step="6">
+            <v-card flat class="mb-5" height="auto">
+              <step-six></step-six>
+            </v-card>
+            <v-btn color="primary" @click="e6 = 7">Continue</v-btn>
+            <v-btn flat>Cancel</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-step :complete="e6 > 7" step="7" editable>
+            Nutrition Health Claims
+            <small>Select which to claim. Add new if necessary.</small>
+          </v-stepper-step>
+          <v-stepper-content step="7">
+            <v-card flat class="mb-5" height="auto">
+              <step-seven :form="cert_form"></step-seven>
+            </v-card>
+            <v-btn color="primary" @click="e6 = 8">Continue</v-btn>
+            <v-btn flat>Cancel</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-step :complete="e6 > 8" step="8" editable>
+            Document Upload
+            <small>Please upload documents to determine conformance to the standard/s of product identity. For food supplement (if applicable), please upload safety data (e.g. LD50 toxicity tests). For the list of standards or issuances (e.g. PNS, Codex standards, FDA Issuances, local or international standards) please refer to the CFRR Product Registration Manual of Procedure/ Handbook.</small>
+          </v-stepper-step>
+          <v-stepper-content step="8">
+            <v-card flat class="mb-5" height="auto">
+              <step-eight></step-eight>
+            </v-card>
+            <v-btn color="primary" @click="e6 = 9">Continue</v-btn>
+            <v-btn flat>Cancel</v-btn>
+          </v-stepper-content>
+
+          <v-stepper-step step="9" :complete="e6 > 9">
+            Payment
+            <small>We will sent you an email with a confirmation link. Please check your email.</small>
+          </v-stepper-step>
+          <v-stepper-content step="9">
+            <v-card flat class="mb-5" height="auto">
+              <step-nine></step-nine>
+            </v-card>
+            <v-btn color="primary" @click="save">Submit</v-btn>
+            <v-btn flat>Cancel</v-btn>
+          </v-stepper-content>
+        </v-stepper>
+      </v-flex>
     </v-layout>
-    <form-layout
-      v-else
-      :step="e1"
-      :steps="10"
-      @prev="prev"
-      @next="next"
-      @changePage="changePage"
-      @submit="save"
-    >
-      <template slot="header-step-1">
-        Food Product Application Form
-        <v-spacer></v-spacer>
-        <v-tooltip left>
-          <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
-        </v-tooltip>
-      </template>
-      <step-one slot="content-step-1" :form="cert_form"></step-one>
-
-      <template slot="header-step-2">
-        Establishment Information
-        <v-spacer></v-spacer>
-        <v-tooltip left>
-          <v-btn slot="activator" flat icon color="error">
-            <i class="fas fa-question fa-lg"></i>
-          </v-btn>Get Help
-        </v-tooltip>
-      </template>
-      <step-two slot="content-step-2" :form="cert_form"></step-two>
-
-      <template slot="header-step-3">Complete List of Ingredients</template>
-      <step-three slot="content-step-3" :form="cert_form"></step-three>
-
-      <template slot="header-step-4">Product Specifications</template>
-      <step-four slot="content-step-4" :form="cert_form"></step-four>
-
-      <template slot="header-step-5">Shelf Life and Other Information</template>
-      <step-five slot="content-step-5" :form="cert_form"></step-five>
-
-      <template slot="header-step-6">Nutrition Information</template>
-      <step-six slot="content-step-6" :form="cert_form"></step-six>
-
-      <template slot="header-step-7">Nutrition Health Claims</template>
-      <step-seven slot="content-step-7" :form="cert_form"></step-seven>
-
-      <template slot="header-step-8">Documentary Upload</template>
-      <step-eight slot="content-step-8" :form="cert_form"></step-eight>
-
-      <template slot="header-step-9">Input Document</template>
-      <step-nine slot="content-step-9" :form="cert_form"></step-nine>
-
-      <template slot="header-step-10">Amendment</template>
-      <step-ten slot="content-step-10" :form="cert_form"></step-ten>
-
-      <template slot="header-step-11">Payment</template>
-      <step-eleven slot="content-step-11" :form="cert_form"></step-eleven>
-    </form-layout>
-  </div>
+  </v-container>
 </template>
 
 <script>
+import FoodProductAppForm from "./create/tabs/FoodProductAppForm";
+import EstablishmentInfo from "./create/tabs/EstablishmentInfo";
+import CompleteIngredients from "./create/tabs/CompleteIngredients";
+import ProductSpecs from "./create/tabs/ProductSpecs";
+import Shelflife from "./create/tabs/Shelflife";
+import NutritionInfo from "./create/tabs/NutritionInfo";
+import NutritionHealthClaims from "./create/tabs/NutritionHealthClaims";
+import DocumentaryRequirements from "./create/tabs/DocumentaryRequirements";
+import Payment from "./create/tabs/DocumentaryRequirements";
+
 export default {
   components: {
-    FormLayout: () => import("@/components/FormLayout"),
-    StepOne: () => import("./create/tabs/FoodProductAppForm.vue"),
-    StepTwo: () => import("./create/tabs/EstablishmentInfo.vue"),
-    StepThree: () => import("./create/tabs/CompleteIngredients.vue"),
-    StepFour: () => import("./create/tabs/ProductSpecs.vue"),
-    StepFive: () => import("./create/tabs/Shelflife.vue"),
-    StepSix: () => import("./create/tabs/NutritionInfo.vue"),
-    StepSeven: () => import("./create/tabs/NutritionHealthClaims.vue"),
-    StepEight: () => import("./create/tabs/DocumentaryRequirements.vue"),
-    StepNine: () => import("./create/tabs/InputDocument.vue"),
-    StepTen: () => import("./create/tabs/Amendment.vue"),
-    StepEleven: () => import("./create/tabs/Amendment.vue")
+    stepOne: () => ({
+      component: import("./create/tabs/FoodProductAppForm")
+    }),
+    stepTwo: () => ({
+      component: import("./create/tabs/EstablishmentInfo")
+    }),
+    stepThree: () => ({
+      component: import("./create/tabs/CompleteIngredients")
+    }),
+    stepFour: () => ({
+      component: import("./create/tabs/ProductSpecs")
+    }),
+    stepFive: () => ({
+      component: import("./create/tabs/Shelflife")
+    }),
+    stepSix: () => ({
+      component: import("./create/tabs/NutritionInfo")
+    }),
+    stepSeven: () => ({
+      component: import("./create/tabs/NutritionHealthClaims")
+    }),
+    stepEight: () => ({
+      component: import("./create/tabs/DocumentaryRequirements")
+    }),
+    stepNine: () => ({
+      component: import("./create/tabs/DocumentaryRequirements")
+    })
   },
   data: () => ({
-    e1: 1,
+    e6: 1,
     confirmDialog: false,
-    showAppOverview: false,
-    invalid: false,
     cert_form: {
-     food_product:{
-          type:"",
-          categorization: "",
-          brand_name: "",
-          product_name: "",
-          company: "",
-          address: {},
-          license_no: "",
-          license_validity: "",
-          years_applied: 0,
-          contacts: []
-        }
+  //   general_info: {
+  //     application_type: 0,
+  //     for_ammendment_renewal: {
+  //         product_certificate: "",
+  //         registration: "",
+  //         date_issued: "",
+  //         date_validity: ""
+  //     },
+  //     for_reapplication: {
+  //         doctracker_no: "",
+  //         email: ""
+  //     }
+  // },
+
+  food_product: {
+      type: "",
+      categorization: "",
+      brand_name: "",
+      product_name: "",
+      company: "",
+      address: "",
+      license_no: "",
+      license_validity: "",
+      years_applied: 0,
+      // object nalang contact
+      contacts: {}
+  },
+
+  establisment_info: {
+      activity: "",
+      type: "",
+      origin_country: [],
+      directly_source: false,
+      manufacturer_name: "",
+      manufacturer_address: "",
+      supplier_name: "",
+      supplier_address: ""
+  },
+
+  ingredients: [],
+
+  product_specification: {
+      physical: {
+          color: "",
+          odor: "",
+          taste: "",
+          texture: "",
+          form: ""
+      },
+      chemical: [{
+          parameter: "",
+          specification: ""
+      }],
+      microbiological: [{
+          parameter: "",
+          specification: ""
+      }]
+  },
+
+  shelf: {
+      packaging_material: "",
+      description: "",
+      storage_requirements: "",
+      food_material: "",
+      allergen_source: "",
+      lot_code_interpretation: "",
+      // expiration date
+      date: ""
+  },
+
+  nutrition_info: {
+      serving_size: "",
+      serving_per_pack: 0,
+      servings: [{
+          type: "",
+          amount_per_serving: "",
+          percent: ""
+      }]
+  },
+
+// array nalang
+  claims: {
+      nutrition: [],
+      health: []
+  },
+
+  documentary: {
+      product_label_images: [],
+      commercial_product_images: [],
+      for_export: false,
+      purchase_request_notarized: [],
+      has_claims: false,
+      substantiate_claims: [],
+      has_on_label: false
+  },
+
+  for_ammendment: {
+      brand_name: "",
+      product_name: "",
+      company_name: "",
+      supplier_name: "",
+      supplier_address: "",
+      packaging_material: "",
+      product_commercial: "",
+      shelf_life: "",
+      packaging_design: []
+  }
     }
   }),
   created() {
-    console.log("created porps: " + JSON.stringify(this.form));
+    console.log("apply created")
+    this.init();
   },
 
   methods: {
+    init(){
+//       console.log("this.$store.state.certificate.init_form: " + JSON.stringify(this.$store.state.certificate.init_form));
+// this.cert_form = this.$store.state.certificate.init_form
+//     console.log("created porps: " + JSON.stringify(this.cert_form));
+    
+    console.log("apply certificates")
+      this.$store.dispatch("GET_FOOD_PRODUCT").then(result=>{
+        return this.$store.dispatch("GET_FOOD_CATEGORY")
+      }).then(result => {
+        return this.$store.dispatch("GET_REGION")
+      }).then((result) => {
+        return this.$store.dispatch("GET_SHELF_LIFE")
+      }).catch((err) => {
+        this.$notifyError(err);
+      });
+    },
     close() {
       this.showAppOverview = false;
       this.confirmDialog = true;
-    },
-    prev() {
-      this.e1--;
-    },
-    next() {
-      this.e1++;
-    },
-    changePage(val) {
-      this.e1 = val;
-    },
-    save(){
-      this.confirmDialog=true
-      console.log("submit clicked: " + JSON.stringify(this.cert_form))
-      this.$store.dispatch('SAVE_CERTIFICATE', this.cert_form)
+      console.log("submit clicked: " + JSON.stringify(this.cert_form));
+      this.$store.dispatch("SAVE_CERTIFICATE", this.cert_form);
+    }
+  },
+  computed: {
+    completion() {
+      console.log("completion this is e1: " + JSON.stringify(this.e1));
+      console.log(
+        "completion parse int: " +
+          JSON.stringify(parseInt(((this.e6 - 1) / 7) * 100))
+      );
+      return parseInt(((this.e6 - 1) / 9) * 100);
     }
   }
 };
