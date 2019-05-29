@@ -2,9 +2,9 @@
 import CertificateAPI from "../../api/FoodCertificateApi";
 
 const state = {
-    food_product: null,
-    food_category: null,
-    shelf_life: null
+    food_product: [],
+    food_category: [],
+    shelf_life: []
 };
 
 const mutations = {

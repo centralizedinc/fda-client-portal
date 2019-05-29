@@ -2,7 +2,7 @@
 import CetificateAPI from "../../api/CertificateApi";
 
 const state = {
-  certificate: [],
+  certificates: [],
   form: null,
   init_form: {
     general_info: {
@@ -115,7 +115,10 @@ const state = {
 const mutations = {
   SET_FORM(state, form) {
     state.form = form;
-  }
+  },
+  SET_CERTIFICATE(state, certificates) {
+    state.certificates = certificates;
+},
 };
 
 var actions = {
@@ -124,7 +127,20 @@ var actions = {
     return new CetificateAPI(context.rootState.user_session.token).saveCertificate(
       certificate
     );
-  }
+  },
+  GET_CERTIFICATE(context) {
+    return new Promise((resolve, reject) => {
+        new CetificateAPI(context.rootState.user_session.token).getCertificates((certificate, err) => {
+            if (!err) {
+                context.commit('SET_PRODUCT_TYPE', certificate)
+                resolve()
+            } else {
+                reject(err)
+            }
+        })
+    })
+
+},
 };
 
 export default {

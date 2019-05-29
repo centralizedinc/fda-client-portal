@@ -187,7 +187,8 @@ export default {
       license_no: "",
       license_validity: "",
       years_applied: 0,
-      contacts: []
+      // object nalang contact
+      contacts: {}
   },
 
   establisment_info: {
@@ -285,7 +286,13 @@ export default {
     console.log("apply certificates")
       this.$store.dispatch("GET_FOOD_PRODUCT").then(result=>{
         return this.$store.dispatch("GET_FOOD_CATEGORY")
-      })
+      }).then(result => {
+        return this.$store.dispatch("GET_REGION")
+      }).then((result) => {
+        return this.$store.dispatch("GET_SHELF_LIFE")
+      }).catch((err) => {
+        this.$notifyError(err);
+      });
     },
     close() {
       this.showAppOverview = false;

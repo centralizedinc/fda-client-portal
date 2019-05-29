@@ -23,12 +23,16 @@
             >
               <v-img v-if="avatar" :src="avatar" alt="avatar">
                 <v-expand-transition>
-                  <div v-if="hover" class="transition-fast-in-fast-out green darken-4 body-1 v-card--reveal white--text">                    
-                    Change<br>Avatar
+                  <div
+                    v-if="hover"
+                    class="transition-fast-in-fast-out green darken-4 body-1 v-card--reveal white--text"
+                  >
+                    Change
+                    <br>Avatar
                   </div>
                 </v-expand-transition>
               </v-img>
-              <span v-else class="white--text display-1">{{alias}}</span>              
+              <span v-else class="white--text display-1">{{alias}}</span>
               <input
                 type="file"
                 name="avatar"
@@ -62,9 +66,9 @@
                     <v-text-field label="Establishment Owner"></v-text-field>
                     <v-text-field label="TIN" mask="###-###-###-###"></v-text-field>
                     <v-textarea label="Office Address"></v-textarea>
-                    <v-select :items="items" label="Region"></v-select>
-                    <v-select :items="items" label="Province"></v-select>
-                    <v-select :items="items" label="City/Town"></v-select>
+                    <v-autocomplete :items="items" label="Region"></v-autocomplete>
+                    <v-autocomplete :items="items" label="Province"></v-autocomplete>
+                    <v-autocomplete :items="items" label="City/Town"></v-autocomplete>
                     <v-text-field label="Zip code"></v-text-field>
                 </v-card-text>
             </v-card>
@@ -132,9 +136,13 @@
     </v-layout>
     <v-dialog v-model="dialog" max-width="300px" transition="dialog-transition">
       <v-card>
-         <v-toolbar dark color="primary" style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)">
-                <span class="title font-weight-light">Confirmation</span>
-            </v-toolbar>
+        <v-toolbar
+          dark
+          color="primary"
+          style="background: linear-gradient(45deg, #104B2A 0%, #b5c25a 100%)"
+        >
+          <span class="title font-weight-light">Confirmation</span>
+        </v-toolbar>
         <v-card-text>Do you want to save any changes ?</v-card-text>
         <v-divider></v-divider>
         <v-card-actions>
@@ -155,7 +163,9 @@
 <script>
 export default {
   data: () => ({
-    random_color:'#' + ('00000' + (Math.random() * 16777216 << 0).toString(16)).substr(-6),
+    random_color:
+      "#" +
+      ("00000" + ((Math.random() * 16777216) << 0).toString(16)).substr(-6),
     dialog: false,
     account: {
       avatar: {
@@ -218,12 +228,19 @@ export default {
         });
     }
   },
-  computed:{
-    alias(){
-      if(this.account.name && this.account.name.first && this.account.name.last){
-        return this.account.name.first.substring(0,1).toUpperCase() + this.account.name.last.substring(0,1).toUpperCase()
-      }else{
-        return ""
+  computed: {
+    alias() {
+      if (
+        this.account.name &&
+        this.account.name.first &&
+        this.account.name.last
+      ) {
+        return (
+          this.account.name.first.substring(0, 1).toUpperCase() +
+          this.account.name.last.substring(0, 1).toUpperCase()
+        );
+      } else {
+        return "";
       }
     }
   }
