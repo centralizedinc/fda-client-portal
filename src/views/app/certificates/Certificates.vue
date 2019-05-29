@@ -2,51 +2,47 @@
   <v-layout row wrap>
     <v-flex xs12 p1-2>
       <v-card>
-        <v-tooltip top>
+        <!-- <v-tooltip top>
           <v-btn slot="activator" fab medium color="fdaMed" top right absolute @click="dialog=true">
             <v-icon medium color="fdaSilver">create</v-icon>
           </v-btn>Apply New Certificate
-        </v-tooltip>
+        </v-tooltip>-->
 
         <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="closeDecDialog"></undertaking-dialog>
 
-        <v-data-table :headers="headers" :items="certificates" class="elevation-1">
+        <v-data-table
+          :headers="headers"
+          :items="certificates"
+          hide-actions
+          class="elevation-1"
+          :pagination.sync="pagination"
+          :loading="true"
+        >
           <template slot="items" slot-scope="props">
-            <td>{{ props.item.case_no }}</td>
-            <td>{{ props.item.case_no }}</td>
-            <td>{{ props.item.application_type }}</td>
-            <td>{{ props.item.current_task }}</td>
-            <td>{{ props.item.date_created }}</td>
-            <td>{{ props.item.date_variation }}</td>
-            <td>
-              <v-layout row wrap>
-                <v-flex xs3>
-                  <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary">
-                      <v-icon small>refresh</v-icon>
-                    </v-btn>Renewal
-                  </v-tooltip>
-                </v-flex>
-                <v-flex xs3>
-                  <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary">
-                      <v-icon small>far fa-edit</v-icon>
-                    </v-btn>Variation
-                  </v-tooltip>
-                </v-flex>
-                <v-flex xs3>
-                  <v-tooltip top>
-                    <v-btn slot="activator" flat icon color="primary">
-                      <v-icon small>search</v-icon>
-                    </v-btn>View Application
-                  </v-tooltip>
-                </v-flex>
-              </v-layout>
-            </td>
+            <tr @click="preview(props.item)" style="cursor:pointer">
+              <td>{{props.item.case_no}}</td>
+              <td>{{props.item.application_type}}</td>
+              <td>{{props.item.status}}</td>
+              <!-- <td>{{props.items.current_task}}</td> -->
+              <td>{{ formatDate (props.item.date_created) }}</td>
+              <td>{{ props.item.remarks }}</td>
+            </tr>
           </template>
         </v-data-table>
+        <div class="text-xs-center pt-2">
+          <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+        </div>
       </v-card>
     </v-flex>
+
+    <!-- NEW CERTIFICATE -->
+    <v-layout column class="fab-container">
+      <v-tooltip top>
+        <v-btn slot="activator" fab color="fdaLight" @click="dialog=true">
+          <v-icon large color="fdaSilver">add</v-icon>
+        </v-btn>Apply New
+      </v-tooltip>
+    </v-layout>
   </v-layout>
 </template>
 
@@ -59,23 +55,28 @@ export default {
   },
   data() {
     return {
+      loading: false,
       dialog: false,
+      pagination: {
+        sortBy: "date_created",
+        descending: true
+      },
       headers: [
         { text: "Case No", value: "case_no" },
-        { text: "License No", value: "case_no" },
         { text: "Type", value: "application_type" },
-        { text: "Task", value: "current_task" },
-        { text: "Application Date", value: "date_created" },
-        { text: "Variation Date", value: "date_variation" },
-        { text: "Actions", value: "" }
+        { text: "Status", value: "status", sortable: true },
+        // { text: "Current Task", value: "current_task" },
+        { text: "Date Created", value: "date_created" },
+        { text: "Remarks", value: "remarks" }
       ],
       certificates: [
         {
           case_no: "00",
           application_type: "sample application",
-          current_task: "sample task",
+          status: "Initial",
+          // current_task: "sample task",
           date_created: "01/01/2019",
-          date_variation: "01/01/2019"
+          remarks: "this is a remark"
         }
       ]
     };
@@ -83,10 +84,21 @@ export default {
   created() {
     this.init();
   },
+  computed: {
+    pages() {
+      if (
+        this.pagination.rowsPerPage == null ||
+        this.pagination.totalItems == null
+      )
+        return 0;
+      return Math.ceil(
+        this.pagination.totalItems / this.pagination.rowsPerPage
+      );
+    }
+  },
   methods: {
     init() {
       console.log("Welcome to certificates!!!");
-      // this.$store.dispatch("SET_LICENSES");
     },
     launchAppForm() {
       console.log("certificates launchappform");
@@ -94,10 +106,17 @@ export default {
     },
     closeDecDialog() {
       this.dialog = false;
+    },
+    preview(item) {
+      this.preview_item = item;
+      this.overview = true;
     }
   }
 };
 </script>
 
 <style>
+.data-row:hover {
+  cursor: pointer;
+}
 </style>

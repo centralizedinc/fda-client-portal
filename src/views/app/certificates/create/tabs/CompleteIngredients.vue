@@ -2,7 +2,7 @@
   <v-container grid-list-md>
     <v-layout row wrap>
       <v-toolbar dark flat color="primary" class="elevation-5">
-        <span class="title font-weight-light">Ingredients</span>
+        <span class="title font-weight-light">List of Ingredients</span>
         <v-spacer></v-spacer>
         <v-tooltip top>
           <v-btn slot="activator" outline small icon @click="addIngredients">
