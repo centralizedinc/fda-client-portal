@@ -13,8 +13,8 @@
       <v-flex xs12>
         <v-data-table :headers="headers" :items="ingredients_list" hide-actions class="elevation-1">
           <template slot="items" slot-scope="props">
-            <tr @click="viewItem(props.item, props.index)">
-              <td>{{props.item.name}}</td>
+            <tr @click="viewItem(props.item, props.index)" style="cursor:pointer">
+              <td>{{props.item.ing_name}}</td>
             </tr>
           </template>
         </v-data-table>
@@ -141,7 +141,7 @@ export default {
     headers: [
       {
         text: "Name of Ingredients",
-        value: "type"
+        value: "ing_name"
       }
     ]
   }),
@@ -155,4 +155,7 @@ export default {
 </script>
 
 <style>
+.data-row:hover {
+  cursor: pointer;
+}
 </style>
