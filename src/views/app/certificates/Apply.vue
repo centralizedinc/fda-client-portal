@@ -35,7 +35,7 @@
           </v-stepper-step>
           <v-stepper-content step="3">
             <v-card flat class="mb-5" height="auto">
-              <step-three></step-three>
+              <step-three :form="cert_form"></step-three>
             </v-card>
             <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -47,7 +47,7 @@
           </v-stepper-step>
           <v-stepper-content step="4">
             <v-card flat class="mb-5" height="auto">
-              <step-four></step-four>
+              <step-four :form="cert_form"></step-four>
             </v-card>
             <v-btn color="primary" @click="e6 = 5">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -59,7 +59,7 @@
           </v-stepper-step>
           <v-stepper-content step="5">
             <v-card flat class="mb-5" height="auto">
-              <step-five></step-five>
+              <step-five :form="cert_form"></step-five>
             </v-card>
             <v-btn color="primary" @click="e6 = 6">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -71,7 +71,7 @@
           </v-stepper-step>
           <v-stepper-content step="6">
             <v-card flat class="mb-5" height="auto">
-              <step-six></step-six>
+              <step-six :form="cert_form"></step-six>
             </v-card>
             <v-btn color="primary" @click="e6 = 7">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -95,7 +95,7 @@
           </v-stepper-step>
           <v-stepper-content step="8">
             <v-card flat class="mb-5" height="auto">
-              <step-eight></step-eight>
+              <step-eight :form="cert_form"></step-eight>
             </v-card>
             <v-btn color="primary" @click="e6 = 9">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -107,7 +107,7 @@
           </v-stepper-step>
           <v-stepper-content step="9">
             <v-card flat class="mb-5" height="auto">
-              <step-nine></step-nine>
+              <step-nine :form="cert_form"></step-nine>
             </v-card>
             <v-btn color="primary" @click="save">Submit</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -190,7 +190,7 @@ export default {
       // object nalang contact
       contacts: {}
   },
-
+  // change to establishment
   establisment_info: {
       activity: "",
       type: "",
@@ -224,13 +224,16 @@ export default {
   },
 
   shelf: {
+      // add shelf type
+      type: "", 
       packaging_material: "",
       description: "",
       storage_requirements: "",
       food_material: "",
       allergen_source: "",
       lot_code_interpretation: "",
-      // expiration date
+      // add declaration date
+      declaration_date: "",
       date: ""
   },
 
