@@ -6,7 +6,7 @@
           <v-autocomplete
             outline
             :rules="[rules.required]"
-            label="Physical Specifications"
+            label="Physical Parameters"
             hint="e.g. powder, liquid, gel, etc."
             persistent-hint
             :items="physicalSpecs"
@@ -23,60 +23,54 @@
             </v-btn>Add New
           </v-tooltip>
         </v-flex>
-        <v-toolbar
-          dark
-          class="sheetStyle elevation-10 mt-3 mb-4 subheading"
-          color="fdaGreen"
-          height="30"
-          width="calc(100% - 10px)"
-        >Chemical (e.g. Moisture Content, Water Activity, pH, etc)</v-toolbar>
-        <v-flex xs5>
-          <v-text-field :rules="[rules.required]" outline label="Parameter"></v-text-field>
-        </v-flex>
-        <v-flex xs5>
-          <v-text-field :rules="[rules.required]" outline label="Specification"></v-text-field>
-        </v-flex>
-        <v-flex xs1 mb-4>
+        <v-divider></v-divider>
+        <v-toolbar dark flat color="primary" class="elevation-5">
+          <span class="title font-weight-light">Parameter & Specs</span>
+          <v-spacer></v-spacer>
           <v-tooltip top>
-            <v-btn slot="activator" flat icon color="primary">
-              <v-icon>far fa-minus-square</v-icon>
-            </v-btn>Delete
+            <v-btn slot="activator" outline small icon>
+              <v-icon>edit</v-icon>
+            </v-btn>Add New Parameter & Specification
           </v-tooltip>
+        </v-toolbar>
+        <v-flex xs12>
+          <v-data-table
+            :headers="headers"
+            :items="ingredients_list"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="items" slot-scope="props">
+              <tr @click="viewItem(props.item, props.index)">
+                <td>{{props.item.name}}</td>
+              </tr>
+            </template>
+          </v-data-table>
         </v-flex>
-        <v-flex xs1 mb-4>
-          <v-tooltip top>
-            <v-btn slot="activator" flat icon color="primary">
-              <v-icon>far fa-plus-square</v-icon>
-            </v-btn>Add New
-          </v-tooltip>
-        </v-flex>
-        <v-toolbar
-          dark
-          class="sheetStyle elevation-10 mt-3 mb-4 subheading"
-          color="fdaGreen"
-          height="30"
-          width="calc(100% - 10px)"
-        >Microbiological (e.g. Coliforms)</v-toolbar>
-        <v-flex xs5>
-          <v-text-field outline :rules="[rules.required]" label="Parameter"></v-text-field>
-        </v-flex>
-        <v-flex xs5>
-          <v-text-field outline :rules="[rules.required]" label="Specification"></v-text-field>
-        </v-flex>
-        <v-flex xs1 mb-4>
-          <v-tooltip top>
-            <v-btn slot="activator" flat icon color="primary">
-              <v-icon>far fa-minus-square</v-icon>
-            </v-btn>Delete
-          </v-tooltip>
-        </v-flex>
-        <v-flex xs1 mb-4>
-          <v-tooltip top>
-            <v-btn slot="activator" flat icon color="primary">
-              <v-icon>far fa-plus-square</v-icon>
-            </v-btn>Add New
-          </v-tooltip>
-        </v-flex>
+        <v-dialog
+          v-model="dialogSpecs"
+          scrollable
+          persistent
+          max-width="500px"
+          transition="dialog-transition"
+        >
+          <v-card>
+            <v-toolbar dark color="primary">
+              <span class="title font-weight-light">New Ingredient</span>
+              <v-spacer></v-spacer>
+              <v-btn flat icon @click="dialogSpecs=false">
+                <v-icon>close</v-icon>
+              </v-btn>
+            </v-toolbar>
+            <v-card-text>
+              <v-form v-model="valid">
+                <v-layout row wrap>
+                  <v-flex xs12>vtext</v-flex>
+                </v-layout>
+              </v-form>
+            </v-card-text>
+          </v-card>
+        </v-dialog>
       </v-layout>
     </v-container>
   </v-form>

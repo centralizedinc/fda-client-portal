@@ -1,8 +1,6 @@
 <template>
   <v-app>
     <!-- <v-container fluid class="bg2"> -->
-    <notification></notification>
-    <credit-card></credit-card>
     <v-navigation-drawer app :mini-variant="mini" width="250" v-model="showNav">
       <v-toolbar
         dark
@@ -16,14 +14,14 @@
           >
             <v-list-tile-avatar class="mt-4">
               <v-btn fab icon slot="activator">
-                <v-avatar  size="50px" :color="random_color">
+                <v-avatar size="50px" :color="random_color">
                   <img v-if="user.avatar.location" :src="user.avatar.location">
                   <span v-else class="white--text title">{{userInitials}}</span>
                 </v-avatar>
-                 
+
                 <!-- <v-avatar class="elevation-10" dark v-else color="fdaSilver">
                   <h4 class="black--text font-weight-bold">{{userInitials}}</h4>
-                </v-avatar> -->
+                </v-avatar>-->
               </v-btn>
             </v-list-tile-avatar>
             <v-spacer></v-spacer>
@@ -115,11 +113,7 @@
         </template>
 
         <template v-else-if="user.status === 1">
-          <v-list-tile
-            @click="viewLicense()"
-            class="ma-1"
-            :style="activeRoute('License Summary')"
-          >
+          <v-list-tile @click="viewLicense()" class="ma-1" :style="activeRoute('License Summary')">
             <v-list-tile-action>
               <v-tooltip top>
                 <v-btn slot="activator" icon>
@@ -202,10 +196,9 @@
       <v-menu offset-y>
         <v-btn fab icon small flat slot="activator">
           <v-avatar size="38px" :color="random_color">
-            <img v-if="user.avatar.location" :src="user.avatar.location" >
-            <span v-else class="white--text subheading">{{userInitials}}</span> 
+            <img v-if="user.avatar.location" :src="user.avatar.location">
+            <span v-else class="white--text subheading">{{userInitials}}</span>
           </v-avatar>
-                
         </v-btn>
         <v-list two-line subheader>
           <v-list-tile avatar @click="goTo('/app/profile')" :style="activeRoute('Profile')">
@@ -238,13 +231,10 @@
         <v-icon small>fas fa-indent</v-icon>
       </v-btn>
       <v-btn flat icon v-if="isMiniView" @click="showNav=!showNav">
-          <v-icon>menu</v-icon>
+        <v-icon>menu</v-icon>
       </v-btn>
     </v-toolbar>
-    <!-- <v-content> -->
     <v-container fluid>
-      <!-- <v-card class="mt-3 mx-auto" color="fdaSilver">
-      <v-layout row wrap ml-3>-->
       <v-sheet
         class="v-sheet--offset pa-2 mt-3 pt-3"
         color="fdaSilver"
@@ -266,12 +256,6 @@
       </v-sheet>
       <v-spacer></v-spacer>
       <router-view></router-view>
-      <!-- </v-layout>-->
-      <!-- </v-card> -->
-      <!-- <v-divider></v-divider> -->
-      <!-- <transition name="fade"> -->
-      <!-- <router-view></router-view> -->
-      <!-- </transition> -->
       <v-dialog v-model="show_logout" persistent max-width="300" transition="dialog-transition">
         <v-card>
           <v-toolbar
@@ -284,7 +268,7 @@
           <v-card-text>
             <span class="font-weight-light">Are you sure you want to logout?</span>
           </v-card-text>
-                      <v-divider></v-divider>
+          <v-divider></v-divider>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn
@@ -299,7 +283,8 @@
         </v-card>
       </v-dialog>
     </v-container>
-    <!-- </v-content> -->
+    <notification></notification>
+    <credit-card></credit-card>
     <v-footer
       app
       dark
@@ -316,7 +301,7 @@
 
 <script>
 import notification from "@/components/Notification";
-import creditCard from "@/components/CreditCardDialog"
+import creditCard from "@/components/CreditCardDialog";
 export default {
   components: { notification, creditCard },
   //#########################
@@ -329,8 +314,7 @@ export default {
       mini: false,
       route_name: "",
       user: {},
-      show_logout: false,
-      
+      show_logout: false
     };
   },
   //#########################
@@ -347,19 +331,25 @@ export default {
       this.user = this.$store.state.user_session.user;
       if (!this.user.avatar) this.user.avatar = {};
     },
-    viewLicense(){
-      console.log('LICENSES: '+JSON.stringify(this.$store.state.licenses.licenses[0]))
-      
-      this.$store.dispatch('GET_LICENSES')
-      .then(result=>{
-        this.$store.commit('SET_VIEW_LICENSE',this.$store.state.licenses.licenses[0])
-        this.$store.commit("SET_VIEW_CASE", this.$store.state.case.cases[0]);
-        this.goTo('/app/licenses/summary')
-      })
-      .catch(err=>{
-        console.log(err);
-        this.$notifyError(err);
-      })
+    viewLicense() {
+      console.log(
+        "LICENSES: " + JSON.stringify(this.$store.state.licenses.licenses[0])
+      );
+
+      this.$store
+        .dispatch("GET_LICENSES")
+        .then(result => {
+          this.$store.commit(
+            "SET_VIEW_LICENSE",
+            this.$store.state.licenses.licenses[0]
+          );
+          this.$store.commit("SET_VIEW_CASE", this.$store.state.case.cases[0]);
+          this.goTo("/app/licenses/summary");
+        })
+        .catch(err => {
+          console.log(err);
+          this.$notifyError(err);
+        });
     },
     goTo(router) {
       this.$router.push(router);
@@ -404,8 +394,11 @@ export default {
     isMiniView() {
       return this.$vuetify.breakpoint.smAndDown;
     },
-    random_color(){
-      return '#' + ('00000' + (Math.random() * 16777216 << 0).toString(16)).substr(-6)
+    random_color() {
+      return (
+        "#" +
+        ("00000" + ((Math.random() * 16777216) << 0).toString(16)).substr(-6)
+      );
     }
   }
 };
