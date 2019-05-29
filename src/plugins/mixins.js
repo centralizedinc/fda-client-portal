@@ -271,6 +271,12 @@ export default {
         logout() {
           this.$store.dispatch("LOGOUT");
           this.$router.push("/login");
+        },
+        yesNo(data) {
+          if(data)
+            return "Yes"
+          else
+            return "No"
         }
       }
     });
