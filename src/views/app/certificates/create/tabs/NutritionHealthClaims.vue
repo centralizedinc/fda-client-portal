@@ -2,25 +2,26 @@
   <v-form ref="valid">
     <v-container grid-list-md>
       <v-layout row wrap align-center justify-center>
-        <template v-for="(item, index) in items">
-          <v-flex xs6 :key="index">
+        <template v-for="(item, index) in form.claims">
+          <v-flex xs6 :key="`a${index}`">
             <v-autocomplete
+              v-model="item.claims"
               outline
               label="Claims"
               :rules="[rules.required]"
               hint="Please choose if Nutrition or Health Claims"
-              :items="items"
-              autocomplete
+              persistent-hint
+              :items="claim_items"
             ></v-autocomplete>
           </v-flex>
-          <v-flex xs5 :key="index">
+          <v-flex xs5 :key="`b${index}`">
             <v-text-field
               outline
               name="name"
               label="Description"
               v-model="item.desc"
-              :append-outer-icon="index == items.length-1?'far fa-plus-square':''"
-              :append-icon="index != items.length-1?'fas fa-backspace':''"
+              :append-outer-icon="index == form.claims.length-1?'far fa-plus-square':''"
+              :append-icon="index != form.claims.length-1?'fas fa-minus-square':''"
               @click:append-outer="addItem"
               @click:append="removeItem(index)"
             ></v-text-field>
@@ -40,22 +41,24 @@
 
 <script>
 export default {
+  props: ["form"],
   data: () => ({
     valid: true,
-    items: ["Nutrition Claims", "Health Claims"],
+    claim_items: ["Nutrition Claims", "Health Claims"],
     rules: {
       required: value => !!value || "This field is required"
     }
   }),
+
   methods: {
     addItem() {
-      this.items.push({
-        items: "",
+      this.form.claims.push({
+        claims: "",
         desc: ""
       });
     },
     removeItem(index) {
-      this.items.splice(index, 1);
+      this.form.claims.splice(index, 1);
     }
   }
 };

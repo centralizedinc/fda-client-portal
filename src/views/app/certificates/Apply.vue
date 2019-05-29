@@ -83,7 +83,7 @@
           </v-stepper-step>
           <v-stepper-content step="7">
             <v-card flat class="mb-5" height="auto">
-              <step-seven></step-seven>
+              <step-seven :form="cert_form"></step-seven>
             </v-card>
             <v-btn color="primary" @click="e6 = 8">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
