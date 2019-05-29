@@ -17,5 +17,6 @@ notifications:
     - godofuri76@gmail.com
     - fquiocho@centralizedinc.com
     - venus.belo.rhi@gmail.com
+    - jbasas@centralizedinc.com
   on_success: change # default: change
   on_failure: always # default: always
