@@ -3,16 +3,19 @@
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs6>
+          <!-- v-model="form.establishment_info.activity" -->
           <v-autocomplete
             :rules="[rules.required]"
             hide-no-data
             color="green darken-1"
             outline
-            hide-selected
+            hide-selected 
+            v-model="form.establisment_info.activity"
             label="Please select the corresponding company activity/ies"
           ></v-autocomplete>
         </v-flex>
         <v-flex xs6>
+          <!-- v-model="form.establisment_info.type" -->
           <v-autocomplete
             color="green darken-1"
             :rules="[rules.required]"
@@ -20,26 +23,37 @@
             hide-no-data
             hide-selected
             label="Source Type"
+            v-model="form.establisment_info.type"
           ></v-autocomplete>
         </v-flex>
         <v-flex xs6>
+          <!-- v-model="form.establisment_info.origin_country" -->
           <v-autocomplete
             :rules="[rules.required]"
             color="green darken-1"
             outline
             hide-no-data
             hide-selected
+            v-model="form.establisment_info.origin_country"
             label="Country of Origin"
           ></v-autocomplete>
         </v-flex>
         <v-flex xs6>
+           <!-- v-model="form.establisment_info.directly_source"
+            :items="answer"
+            item-text="name"
+            item-value="code"  -->
           <v-autocomplete
-            :rules="[rules.required]"
-            color="green darken-1"
             outline
+            :rules="[rules.required]"
+            color="green darken-1"           
             hide-no-data
             hide-selected
             label="Directly Sourced?"
+            v-model="form.establisment_info.directly_source"
+            :items="answer"
+            item-text="name"
+            item-value="code"
           ></v-autocomplete>
         </v-flex>
         <!-- Documents Upload -->
@@ -90,6 +104,7 @@
             :rules="[rules.required]"
             outline
             label="Supplier's Complete Name"
+            v-model="form.establisment_info.supplier_name"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -98,6 +113,7 @@
             :rules="[rules.required]"
             outline
             label="Supplier's Complete Address"
+            v-model="form.establisment_info.supplier_address"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -106,6 +122,7 @@
             :rules="[rules.required]"
             outline
             label="Manufacturer's Complete Name"
+            v-model="form.establisment_info.manufacturer_name"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -114,6 +131,7 @@
             :rules="[rules.required]"
             outline
             label="Manufacturer's Complete Address"
+            v-model="form.establisment_info.manufacturer_address"
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -130,6 +148,16 @@ export default {
   data: () => ({
     uploads: false,
     valid: true,
+    answer: [
+        {
+          name: "No",
+          code: false
+        },
+        {
+          name: "Yes",
+          code: true
+        }
+    ],
     rules: {
       required: value => !!value || "This field is required"
     }
@@ -141,6 +169,9 @@ export default {
       },
       deep: true
     }
+  },
+  created(){
+    console.log("establishment info data: " + JSON.stringify(this.form))
   },
   methods: {
     init() {

@@ -125,11 +125,11 @@ export default {
       answer: [
         {
           name: "No",
-          code: 0
+          code: false
         },
         {
           name: "Yes",
-          code: 1
+          code: true
         }
       ]
     };

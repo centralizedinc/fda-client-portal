@@ -194,7 +194,8 @@ export default {
       establisment_info: {
         activity: "",
         type: "",
-        origin_country: [],
+        // change country origin to string
+        origin_country: "",
         directly_source: false,
         manufacturer_name: "",
         manufacturer_address: "",
