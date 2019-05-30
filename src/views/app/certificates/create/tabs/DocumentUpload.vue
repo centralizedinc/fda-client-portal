@@ -20,6 +20,7 @@ export default {
   },
   methods: {
     upload(data) {
+      console.log("document upload data: " + JSON.stringify(data))
       this.$emit("upload", data);
       this.uploads = true;
     },

@@ -136,6 +136,7 @@ export default {
   },
   methods: {
     upload(data) {
+      console.log("upload document requirements data: " + JSON.stringify(data))
       this.$emit("upload", data);
       this.uploads = true;
     },

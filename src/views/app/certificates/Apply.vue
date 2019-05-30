@@ -253,11 +253,8 @@ export default {
         ]
       },
 
-      // array nalang
-      claims: {
-        nutrition: [],
-        health: []
-      },
+      // change claims to array nalang
+      claims: [],
 
       documentary: {
         product_label_images: [],
