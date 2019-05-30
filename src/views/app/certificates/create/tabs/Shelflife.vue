@@ -76,7 +76,6 @@
             v-model="form.shelf.lot_code_interpretation"
           ></v-text-field>
         </v-flex>
-<<<<<<< HEAD
         <!-- <v-flex xs4>
           <v-text-field :rules="[rules.required]" outline label="Open Date Marking/ Expiry Date"></v-text-field>
         </v-flex>-->
@@ -114,10 +113,6 @@
               <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn>-->
             </v-date-picker>
           </v-menu>
-=======
-        <v-flex xs4>
-          <v-text-field :rules="[rules.required]" outline label="Open Date Marking/ Expiry Date" v-model="form.shelf.date"></v-text-field>
->>>>>>> 8195a8772ee0bdeeff8a0d63085f150431fc34b6
         </v-flex>
       </v-layout>
     </v-container>
