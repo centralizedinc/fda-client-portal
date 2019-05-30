@@ -135,6 +135,7 @@ export default class LicenseAPI {
                         var files = result2.data.model
                         saved_license.uploaded_files = files;
                         if (result2.data.success) {
+                            console.log("upload file attachemnts to AWS S3")
                             return axios.post('lto-api/' + saved_license._id, saved_license)
                         } else {
                             resolve(result2.data)

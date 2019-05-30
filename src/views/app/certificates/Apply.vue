@@ -276,7 +276,8 @@ export default {
         product_commercial: "",
         shelf_life: "",
         packaging_design: []
-      }
+      },
+      documents: []
     }
   }),
   created() {
@@ -306,7 +307,7 @@ export default {
           this.$notifyError(err);
         });
     },
-    close() {
+    save() {
       this.showAppOverview = false;
       this.confirmDialog = true;
       console.log("submit clicked: " + JSON.stringify(this.cert_form));

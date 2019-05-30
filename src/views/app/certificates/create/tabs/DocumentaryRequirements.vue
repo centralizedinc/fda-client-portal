@@ -116,6 +116,7 @@
 import Uploader from "@/components/Uploader";
 
 export default {
+  props: ["form"],
   components: {
     Uploader
   },
@@ -138,6 +139,10 @@ export default {
     upload(data) {
       console.log("upload document requirements data: " + JSON.stringify(data))
       this.$emit("upload", data);
+      this.form.documents.push({
+        type: "docs",
+        data: data
+      })
       this.uploads = true;
     },
     validate() {
