@@ -2,7 +2,7 @@
   <v-form ref="valid">
     <v-container grid-list-md>
       <v-layout row wrap justify-center align-center>
-        <v-flex xs4>
+        <!-- <v-flex xs4>
           <v-text-field
             :rules="[rules.required]"
             outline
@@ -10,6 +10,41 @@
             hint="For Alcoholic Beverages without Shelf Life, indicate 0 (Zero)"
             v-model="form.shelf.declaration_date"
           ></v-text-field>
+        </v-flex> -->
+        <v-flex xs4>
+          <v-menu
+            ref="menu"
+            :close-on-content-click="false"
+            v-model="validity1"
+            :nudge-right="40"
+            lazy
+            transition="scale-transition"
+            offset-y
+            full-width
+            min-width="290px"
+          >
+            <v-text-field
+              outline
+              color="green darken-1"
+              slot="activator"
+              :rules="[rules.required]"
+              label="Shelf Life Declaration (in Months)"
+              v-model="form.shelf.declaration_date"
+              append-icon="event"
+              readonly
+            ></v-text-field>
+            <v-date-picker 
+            v-model="dateFormatted1"
+            @input="validity1=false"
+            color="green darken-1" 
+            no-title 
+            scrollable
+            :min="new Date().toISOString().substr(0, 10)">
+              <!-- <v-spacer></v-spacer>
+              <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
+              <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn> -->
+            </v-date-picker>
+          </v-menu>
         </v-flex>
         <v-flex xs4>
           <v-autocomplete
@@ -97,20 +132,20 @@
               slot="activator"
               :rules="[rules.required]"
               label="Open Date Marking/ Expiry Date"
+              v-model="form.shelf.date"
               append-icon="event"
               readonly
             ></v-text-field>
-            <v-date-picker
-              v-model="dateFormatted"
-              @input="validity=false"
-              color="green darken-1"
-              no-title
-              scrollable
-              :min="new Date().toISOString().substr(0, 10)"
-            >
+            <v-date-picker 
+            v-model="dateFormatted"
+            @input="validity=false"
+            color="green darken-1" 
+            no-title 
+            scrollable
+            :min="new Date().toISOString().substr(0, 10)">
               <!-- <v-spacer></v-spacer>
               <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn>-->
+              <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn> -->
             </v-date-picker>
           </v-menu>
         </v-flex>
@@ -128,6 +163,9 @@ export default {
     rules: {
       required: value => !!value || "This field is required"
     },
+    validity1: false,
+    dateFormatted1: "",
+    dateFormatted1: null,
     validity: false,
     dateFormatted: "",
     dateFormatted: null,
@@ -138,7 +176,10 @@ export default {
   },
   watch: {
     dateFormatted(val) {
-      this.formatDate(val);
+    this.form.shelf.date = this.formatDate(val);
+    },
+    dateFormatted1(val) {
+    this.form.shelf.declaration_date = this.formatDate(val);
     }
   },
   methods: {
