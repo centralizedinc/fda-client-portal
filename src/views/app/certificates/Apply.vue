@@ -303,6 +303,28 @@ export default {
         .then(result => {
           return this.$store.dispatch("GET_SHELF_LIFE");
         })
+        .then(result => {
+          return this.$store.dispatch("GET_SOURCE");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_PRODUCT_SPECIFICATION");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_NUTRITION_INFORMATION");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_NUTRITION_HEALTH_CLAIMS");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_VITAMINS");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_MINERALS");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_ORIGIN");
+        })
+        
         .catch(err => {
           this.$notifyError(err);
         });

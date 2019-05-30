@@ -3,7 +3,8 @@ import PlacesApi from '../../api/PlacesApi';
 const state = {
     regions: [],
     provinces: [],
-    city: []
+    city: [],
+    origin: [],
 }
 
 const mutations = {
@@ -18,6 +19,11 @@ const mutations = {
     //SET CITY
     SET_CITY(state, data) {
         state.city = data
+    },
+
+    // SET SOURCE OF ORIGIN
+    SET_ORIGIN(state, data) {
+        state.origin = data
     },
     CLEAR_DATA(state) {
         state.regions = []
@@ -111,6 +117,19 @@ var actions = {
                     reject(err)
                 } else {
                     context.commit('SET_CITY', data)
+                    resolve(data)
+                }
+            })
+        })
+    },
+    //COUNTRY OF ORIGIN
+    GET_ORIGIN(context) {
+        return new Promise((resolve, reject) => {
+            new PlacesApi(context.rootState.user_session.token).origin((err, data) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    context.commit('SET_ORIGIN', data)
                     resolve(data)
                 }
             })
