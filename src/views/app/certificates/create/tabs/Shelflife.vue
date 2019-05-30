@@ -69,8 +69,43 @@
             hint="e.g. 230115A where 23- day, 01- month, 15- year, and A- 1st batch"
           ></v-text-field>
         </v-flex>
-        <v-flex xs4>
+        <!-- <v-flex xs4>
           <v-text-field :rules="[rules.required]" outline label="Open Date Marking/ Expiry Date"></v-text-field>
+        </v-flex>-->
+        <v-flex xs4>
+          <v-menu
+            ref="menu"
+            :close-on-content-click="false"
+            v-model="validity"
+            :nudge-right="40"
+            lazy
+            transition="scale-transition"
+            offset-y
+            full-width
+            min-width="290px"
+          >
+            <v-text-field
+              outline
+              color="green darken-1"
+              slot="activator"
+              :rules="[rules.required]"
+              label="Open Date Marking/ Expiry Date"
+              append-icon="event"
+              readonly
+            ></v-text-field>
+            <v-date-picker
+              v-model="dateFormatted"
+              @input="validity=false"
+              color="green darken-1"
+              no-title
+              scrollable
+              :min="new Date().toISOString().substr(0, 10)"
+            >
+              <!-- <v-spacer></v-spacer>
+              <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
+              <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn>-->
+            </v-date-picker>
+          </v-menu>
         </v-flex>
       </v-layout>
     </v-container>
@@ -84,12 +119,25 @@ export default {
     shelfLifeType: [],
     rules: {
       required: value => !!value || "This field is required"
-    }
+    },
+    validity: false,
+    dateFormatted: "",
+    dateFormatted: null,
+    expiry_date: null
   }),
   created() {
     this.init();
   },
+  watch: {
+    dateFormatted(val) {
+      this.formatDate(val);
+    }
+  },
   methods: {
+    validate() {
+      this.$refs.vform.validate();
+      return this.VALID;
+    },
     init() {
       this.shelfLifeType = this.$store.state.foodCertificate.shelf_life;
       console.log(
