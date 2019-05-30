@@ -228,8 +228,8 @@ export default {
       },
 
   shelf: {
-      // add shelf type
-      type: "", 
+      // add shelf_type
+      shelf_type: "", 
       packaging_material: "",
       description: "",
       storage_requirements: "",
@@ -277,7 +277,14 @@ export default {
         shelf_life: "",
         packaging_design: []
       },
-      documents: []
+      uploaded_files: [{
+        originalname: "",
+        mimetype: "",
+        contentType: "",
+        location: "",
+        key: ""
+    }],
+    output_files: []
     }
   }),
   created() {

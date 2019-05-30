@@ -194,6 +194,10 @@ export default {
     },
     upload(data) {
       this.$emit("upload", data);
+      this.form.output_files.push({
+        type: "documents",
+        data: data
+      })
       this.uploads = true;
     },
     validate() {

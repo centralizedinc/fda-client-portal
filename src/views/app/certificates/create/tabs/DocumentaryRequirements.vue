@@ -9,7 +9,7 @@
                 <span class="caption font-weight-light">1. Upload the Image of the product label</span>
               </v-flex>
               <v-flex xs9>
-                <uploader @upload="upload"></uploader>
+                <uploader @upload="upload1"></uploader>
               </v-flex>
             </v-layout>
           </v-container>
@@ -25,7 +25,7 @@
                 >2. Please upload the Picture of the Product in Commercial Presentation in all angles and in different packaging sizes and from at least two different perspectives</span>
               </v-flex>
               <v-flex xs9>
-                <uploader @upload="upload"></uploader>
+                <uploader @upload="upload2"></uploader>
               </v-flex>
             </v-layout>
           </v-container>
@@ -51,7 +51,7 @@
                 >3. Upload any of the following, Purchase Order, Request for Quotation, or valid notarized agreement signed by Importing and Exporting parties of the Importing Company</span>
               </v-flex>
               <v-flex xs9>
-                <uploader @upload="upload"></uploader>
+                <uploader @upload="upload3"></uploader>
               </v-flex>
             </v-layout>
           </v-container>
@@ -77,7 +77,7 @@
                 >4. Upload documents to substantiate claims, such as technical, nutritional, or health studies or reports, market-research studies, Certificate of Analysis, quantitative analysis and computations, scientific report or studies published in peer-reviewed scientific journals, certificates or certification in compliance with current labelling regulations</span>
               </v-flex>
               <v-flex xs9>
-                <uploader @upload="upload"></uploader>
+                <uploader @upload="upload4"></uploader>
               </v-flex>
             </v-layout>
           </v-container>
@@ -103,7 +103,7 @@
                 >5. Upload the document to substantiate use of logo/seal/ certification</span>
               </v-flex>
               <v-flex xs9>
-                <uploader @upload="uploadLogo"></uploader>
+                <uploader @upload="upload5"></uploader>
               </v-flex>
             </v-layout>
           </v-container>
@@ -136,11 +136,45 @@ export default {
     };
   },
   methods: {
-    upload(data) {
+    upload1(data) {
       console.log("upload document requirements data: " + JSON.stringify(data))
       this.$emit("upload", data);
-      this.form.documents.push({
-        type: "docs",
+      this.form.output_files.push({
+        type: "productLabel",
+        data: data
+      })
+      this.uploads = true;
+    },
+    upload2(data) {
+      console.log("upload document requirements data: " + JSON.stringify(data))
+      this.$emit("upload", data);
+      this.form.output_files.push({
+        type: "commercialPresentation",
+        data: data
+      })
+      this.uploads = true;
+    },
+    upload3(data) {
+      console.log("upload document requirements data: " + JSON.stringify(data))
+      this.$emit("upload", data);
+      this.form.output_files.push({
+        type: "importAndExporting",
+        data: data
+      })
+      this.uploads = true;
+    },
+    upload4(data) {
+      this.$emit("upload", data);
+      this.form.output_files.push({
+        type: "substantiateClaims",
+        data: data
+      })
+      this.uploads = true;
+    },
+    upload5(data) {
+      this.$emit("upload", data);
+      this.form.output_files.push({
+        type: "logo",
         data: data
       })
       this.uploads = true;
