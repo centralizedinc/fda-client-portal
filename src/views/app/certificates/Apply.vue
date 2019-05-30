@@ -35,7 +35,7 @@
           </v-stepper-step>
           <v-stepper-content step="3">
             <v-card flat class="mb-5" height="auto">
-              <step-three></step-three>
+              <step-three :form="cert_form"></step-three>
             </v-card>
             <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -47,7 +47,7 @@
           </v-stepper-step>
           <v-stepper-content step="4">
             <v-card flat class="mb-5" height="auto">
-              <step-four></step-four>
+              <step-four :form="cert_form"></step-four>
             </v-card>
             <v-btn color="primary" @click="e6 = 5">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -59,7 +59,7 @@
           </v-stepper-step>
           <v-stepper-content step="5">
             <v-card flat class="mb-5" height="auto">
-              <step-five></step-five>
+              <step-five :form="cert_form"></step-five>
             </v-card>
             <v-btn color="primary" @click="e6 = 6">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -71,7 +71,7 @@
           </v-stepper-step>
           <v-stepper-content step="6">
             <v-card flat class="mb-5" height="auto">
-              <step-six></step-six>
+              <step-six :form="cert_form"></step-six>
             </v-card>
             <v-btn color="primary" @click="e6 = 7">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -95,7 +95,7 @@
           </v-stepper-step>
           <v-stepper-content step="8">
             <v-card flat class="mb-5" height="auto">
-              <step-eight></step-eight>
+              <step-eight :form="cert_form"></step-eight>
             </v-card>
             <v-btn color="primary" @click="e6 = 9">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -107,7 +107,7 @@
           </v-stepper-step>
           <v-stepper-content step="9">
             <v-card flat class="mb-5" height="auto">
-              <step-nine></step-nine>
+              <step-nine :form="cert_form"></step-nine>
             </v-card>
             <v-btn color="primary" @click="save">Submit</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -163,19 +163,19 @@ export default {
     e6: 1,
     confirmDialog: false,
     cert_form: {
-  //   general_info: {
-  //     application_type: 0,
-  //     for_ammendment_renewal: {
-  //         product_certificate: "",
-  //         registration: "",
-  //         date_issued: "",
-  //         date_validity: ""
-  //     },
-  //     for_reapplication: {
-  //         doctracker_no: "",
-  //         email: ""
-  //     }
-  // },
+      //   general_info: {
+      //     application_type: 0,
+      //     for_ammendment_renewal: {
+      //         product_certificate: "",
+      //         registration: "",
+      //         date_issued: "",
+      //         date_validity: ""
+      //     },
+      //     for_reapplication: {
+      //         doctracker_no: "",
+      //         email: ""
+      //     }
+      // },
 
   food_product: {
       type: "",
@@ -190,11 +190,12 @@ export default {
       // object nalang contact
       contacts: {}
   },
-
+  // change to establishment
   establisment_info: {
       activity: "",
       type: "",
-      origin_country: [],
+      // change country origin to string
+      origin_country: "",
       directly_source: false,
       manufacturer_name: "",
       manufacturer_address: "",
@@ -202,97 +203,130 @@ export default {
       supplier_address: ""
   },
 
-  ingredients: [],
+      ingredients: [],
 
-  product_specification: {
-      physical: {
+      product_specification: {
+        physical: {
           color: "",
           odor: "",
           taste: "",
           texture: "",
           form: ""
+        },
+        chemical: [
+          {
+            parameter: "",
+            specification: ""
+          }
+        ],
+        microbiological: [
+          {
+            parameter: "",
+            specification: ""
+          }
+        ]
       },
-      chemical: [{
-          parameter: "",
-          specification: ""
-      }],
-      microbiological: [{
-          parameter: "",
-          specification: ""
-      }]
-  },
 
   shelf: {
+      // add shelf type
+      type: "", 
       packaging_material: "",
       description: "",
       storage_requirements: "",
       food_material: "",
       allergen_source: "",
       lot_code_interpretation: "",
-      // expiration date
+      // add declaration date
+      declaration_date: "",
       date: ""
   },
 
-  nutrition_info: {
-      serving_size: "",
-      serving_per_pack: 0,
-      servings: [{
-          type: "",
-          amount_per_serving: "",
-          percent: ""
-      }]
-  },
+      nutrition_info: {
+        serving_size: "",
+        serving_per_pack: 0,
+        servings: [
+          {
+            type: "",
+            amount_per_serving: "",
+            percent: ""
+          }
+        ]
+      },
 
-// array nalang
-  claims: {
-      nutrition: [],
-      health: []
-  },
+      // change claims to array nalang
+      claims: [],
 
-  documentary: {
-      product_label_images: [],
-      commercial_product_images: [],
-      for_export: false,
-      purchase_request_notarized: [],
-      has_claims: false,
-      substantiate_claims: [],
-      has_on_label: false
-  },
+      documentary: {
+        product_label_images: [],
+        commercial_product_images: [],
+        for_export: false,
+        purchase_request_notarized: [],
+        has_claims: false,
+        substantiate_claims: [],
+        has_on_label: false
+      },
 
-  for_ammendment: {
-      brand_name: "",
-      product_name: "",
-      company_name: "",
-      supplier_name: "",
-      supplier_address: "",
-      packaging_material: "",
-      product_commercial: "",
-      shelf_life: "",
-      packaging_design: []
-  }
+      for_ammendment: {
+        brand_name: "",
+        product_name: "",
+        company_name: "",
+        supplier_name: "",
+        supplier_address: "",
+        packaging_material: "",
+        product_commercial: "",
+        shelf_life: "",
+        packaging_design: []
+      }
     }
   }),
   created() {
-    console.log("apply created")
+    console.log("apply created");
     this.init();
   },
 
   methods: {
-    init(){
-//       console.log("this.$store.state.certificate.init_form: " + JSON.stringify(this.$store.state.certificate.init_form));
-// this.cert_form = this.$store.state.certificate.init_form
-//     console.log("created porps: " + JSON.stringify(this.cert_form));
-    
-    console.log("apply certificates")
-      this.$store.dispatch("GET_FOOD_PRODUCT").then(result=>{
-        return this.$store.dispatch("GET_FOOD_CATEGORY")
-      }).then(result => {
-        return this.$store.dispatch("GET_REGION")
-      }).then((result) => {
-        return this.$store.dispatch("GET_SHELF_LIFE")
-      }).catch((err) => {
-        this.$notifyError(err);
-      });
+    init() {
+      //       console.log("this.$store.state.certificate.init_form: " + JSON.stringify(this.$store.state.certificate.init_form));
+      // this.cert_form = this.$store.state.certificate.init_form
+      //     console.log("created porps: " + JSON.stringify(this.cert_form));
+
+      console.log("apply certificates");
+      this.$store
+        .dispatch("GET_FOOD_PRODUCT")
+        .then(result => {
+          return this.$store.dispatch("GET_FOOD_CATEGORY");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_REGION");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_SHELF_LIFE");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_SOURCE");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_PRODUCT_SPECIFICATION");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_NUTRITION_INFORMATION");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_NUTRITION_HEALTH_CLAIMS");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_VITAMINS");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_MINERALS");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_ORIGIN");
+        })
+        
+        .catch(err => {
+          this.$notifyError(err);
+        });
     },
     close() {
       this.showAppOverview = false;

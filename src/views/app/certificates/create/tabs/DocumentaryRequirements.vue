@@ -125,17 +125,18 @@ export default {
       answer: [
         {
           name: "No",
-          code: 0
+          code: false
         },
         {
           name: "Yes",
-          code: 1
+          code: true
         }
       ]
     };
   },
   methods: {
     upload(data) {
+      console.log("upload document requirements data: " + JSON.stringify(data))
       this.$emit("upload", data);
       this.uploads = true;
     },

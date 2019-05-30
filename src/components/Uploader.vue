@@ -157,6 +157,8 @@ export default {
       });
 
       this.currentStatus = STATUS_SUCCESS;
+      console.log("Uploader - form data: " + JSON.stringify(this.formData))
+      console.log("Uploader - uploaded files: " + JSON.stringify(this.uploadedFiles))
       this.$emit("upload", {
         formData: this.formData,
         uploadedFiles: this.uploadedFiles

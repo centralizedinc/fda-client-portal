@@ -260,7 +260,9 @@ export default {
       required: value => !!value || "This field is required"
     }
   }),
-  methods: {    
+  created(){    
+  },
+  methods: { 
     login() {
       this.$refs.form.validate()
       if(this.isFormValid){
@@ -288,6 +290,9 @@ export default {
                 });
               }
               this.$router.push("/app");
+              
+              
+              window.fda_pwa.askPermission(res.user._id);
             } else if (!res.isConfirmed) {
               this.$notify({
                 message: "Please confirm your account at " + res.user.email,
