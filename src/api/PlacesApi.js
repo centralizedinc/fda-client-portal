@@ -51,6 +51,23 @@ export default class RegionType {
             })
     }
 
+    //country of origin certificate
+
+    origin(cb) {
+        console.log("Places API!!!")
+        axios.get('core/origin')
+          .then(result => {
+              console.log("country of origin result: " + JSON.stringify(result))
+            if (result.data.success) {
+              cb(result.data.model)
+            }
+          })
+          .catch(err => {
+            console.log(JSON.stringify(err));
+            cb(null, err)
+          });
+      }
+
 
     /**
      * @description promised based method for retrieving regions

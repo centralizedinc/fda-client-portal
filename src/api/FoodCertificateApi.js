@@ -54,7 +54,93 @@ export default class CertificateAPI {
           });
       }
 
+      source(cb) {
+        console.log("Food Certificates API!!!")
+        axios.get('core/source')
+          .then(result => {
+              console.log("source result: " + JSON.stringify(result))
+            if (result.data.success) {
+              cb(result.data.model)
+            }
+          })
+          .catch(err => {
+            console.log(JSON.stringify(err));
+            cb(null, err)
+          });
+      }
 
+      productSpecification(cb) {
+        console.log("Food Certificates API!!!")
+        axios.get('core/productSpecification')
+          .then(result => {
+              console.log("product specification result: " + JSON.stringify(result))
+            if (result.data.success) {
+              cb(result.data.model)
+            }
+          })
+          .catch(err => {
+            console.log(JSON.stringify(err));
+            cb(null, err)
+          });
+      }
 
-    
+      nutritionInformation(cb) {
+        console.log("Food Certificates API!!!")
+        axios.get('core/notritionInformation')
+          .then(result => {
+              console.log("notrition information result: " + JSON.stringify(result))
+            if (result.data.success) {
+              cb(result.data.model)
+            }
+          })
+          .catch(err => {
+            console.log(JSON.stringify(err));
+            cb(null, err)
+          });
+      }
+
+      nutritionHealthClaims(cb) {
+        console.log("Food Certificates API!!!")
+        axios.get('core/nutritionHealthClaims')
+          .then(result => {
+              console.log("food health claim result: " + JSON.stringify(result))
+            if (result.data.success) {
+              cb(result.data.model)
+            }
+          })
+          .catch(err => {
+            console.log(JSON.stringify(err));
+            cb(null, err)
+          });
+      }
+
+      vitamins(cb) {
+        console.log("Food Certificates API!!!")
+        axios.get('core/vitamins')
+          .then(result => {
+              console.log("vitamins result: " + JSON.stringify(result))
+            if (result.data.success) {
+              cb(result.data.model)
+            }
+          })
+          .catch(err => {
+            console.log(JSON.stringify(err));
+            cb(null, err)
+          });
+      }
+
+      minerals(cb) {
+        console.log("Food Certificates API!!!")
+        axios.get('core/minerals')
+          .then(result => {
+              console.log("minerals result: " + JSON.stringify(result))
+            if (result.data.success) {
+              cb(result.data.model)
+            }
+          })
+          .catch(err => {
+            console.log(JSON.stringify(err));
+            cb(null, err)
+          });
+      }
 }
