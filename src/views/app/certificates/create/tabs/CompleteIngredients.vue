@@ -5,16 +5,31 @@
         <span class="title font-weight-light">List of Ingredients</span>
         <v-spacer></v-spacer>
         <v-tooltip top>
-          <v-btn slot="activator" outline small icon @click="addIngredients">
+          <v-btn slot="activator" outline small icon @click="dialogIngredients=true">
             <v-icon>edit</v-icon>
           </v-btn>Add Ingredients
         </v-tooltip>
       </v-toolbar>
       <v-flex xs12>
-        <v-data-table :headers="headers" :items="ingredients_list" hide-actions class="elevation-1">
+        <v-data-table :headers="headers" :items="form.ingredients" hide-actions class="elevation-1">
           <template slot="items" slot-scope="props">
             <tr @click="viewItem(props.item, props.index)" style="cursor:pointer">
-              <td>{{props.item.ing_name}}</td>
+              <td>{{props.item}}</td>
+              <td class="justify-center layout px-0">
+            <!-- <v-icon
+              small
+              class="mr-2"
+              @click="editIngredients(props.item)"
+            >
+              edit
+            </v-icon> -->
+            <v-icon
+              small
+              @click="deleteIngredients(props.index)"
+            >
+              delete
+            </v-icon>
+          </td>
             </tr>
           </template>
         </v-data-table>
@@ -38,7 +53,7 @@
             <v-form v-model="valid">
               <v-layout row wrap>
                 <v-flex xs12>
-                  <v-text-field outline name="name" label="Ingredient Name"></v-text-field>
+                  <v-text-field outline name="name" label="Ingredient Name" v-model="ingredient"></v-text-field>
                 </v-flex>
                 <v-divider></v-divider>
                 <br>
@@ -116,7 +131,7 @@
           <v-card-actions v-if="add">
             <v-spacer></v-spacer>
             <v-btn outline color="primary" @click="dialogIngredients=false">Cancel</v-btn>
-            <v-btn color="primary">Add</v-btn>
+            <v-btn color="primary" @click="addIngredients">Add</v-btn>
           </v-card-actions>
           <v-card-actions v-else>
             <v-spacer></v-spacer>
@@ -134,9 +149,10 @@ export default {
   props: ["form"],
   data: () => ({
     dialogIngredients: false,
-    add: true,
+    add: false,
     index: null,
     valid: true,
+    ingredient: "",
     ingredients_list: [],
     headers: [
       {
@@ -148,7 +164,16 @@ export default {
   methods: {
     addIngredients() {
       this.add = true;
-      this.dialogIngredients = true;
+      if(!this.isEmpty(this.ingredient && this.add)){
+        this.form.ingredients.push(this.ingredient)
+        this.dialogIngredients = false;
+      }      
+    },
+    editIngredients(data){
+
+    },
+    deleteIngredients(index){
+      this.form.ingredients.splice(index, 1);
     }
   }
 };

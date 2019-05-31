@@ -202,8 +202,8 @@ export default {
       supplier_name: "",
       supplier_address: ""
   },
-
-      ingredients: [],
+  
+      ingredients: ["test"],
 
       product_specification: {
         physical: {
