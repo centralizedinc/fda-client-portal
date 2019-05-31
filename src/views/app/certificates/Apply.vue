@@ -254,7 +254,7 @@ export default {
       },
 
       // change claims to array nalang
-      claims: [],
+      claims: [""],
 
       documentary: {
         product_label_images: [],

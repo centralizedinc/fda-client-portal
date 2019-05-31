@@ -26,13 +26,13 @@
               @click:append="removeItem(index)"
             ></v-text-field>
           </v-flex>
-          <!-- <v-flex mb-4 :key="index" v-if="index > 0">
+          <v-flex mb-4 :key="index" v-if="index > 0">
             <v-tooltip top>
               <v-btn slot="activator" flat icon color="primary" @click="removeItem(index)">
                 <v-icon>far fa-minus-square</v-icon>
               </v-btn>Remove
             </v-tooltip>
-          </v-flex>-->
+          </v-flex>        
         </template>
       </v-layout>
     </v-container>
