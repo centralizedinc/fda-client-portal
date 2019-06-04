@@ -67,7 +67,8 @@
 
           <v-stepper-step :complete="e6 > 6" step="6" editable>
             Nutrition Information
-            <small>Vitamins and Minerals shall be declared as applicable to product claims</small>
+            <small>Vitamins and Minerals shall be declared as applicable to product claims.</small>
+            <small>Click the table to input the corresponding fields and hit enter or save.</small>
           </v-stepper-step>
           <v-stepper-content step="6">
             <v-card flat class="mb-5" height="auto">
@@ -177,31 +178,31 @@ export default {
       //     }
       // },
 
-  food_product: {
-      type: "",
-      categorization: "",
-      brand_name: "",
-      product_name: "",
-      company: "",
-      address: "",
-      license_no: "",
-      license_validity: "",
-      years_applied: 0,
-      // object nalang contact
-      contacts: {}
-  },
-  // change to establishment
-  establisment_info: {
-      activity: "",
-      type: "",
-      // change country origin to string
-      origin_country: "",
-      directly_source: false,
-      manufacturer_name: "",
-      manufacturer_address: "",
-      supplier_name: "",
-      supplier_address: ""
-  },
+      food_product: {
+        type: "",
+        categorization: "",
+        brand_name: "",
+        product_name: "",
+        company: "",
+        address: "",
+        license_no: "",
+        license_validity: "",
+        years_applied: 0,
+        // object nalang contact
+        contacts: {}
+      },
+      // change to establishment
+      establisment_info: {
+        activity: "",
+        type: "",
+        // change country origin to string
+        origin_country: "",
+        directly_source: false,
+        manufacturer_name: "",
+        manufacturer_address: "",
+        supplier_name: "",
+        supplier_address: ""
+      },
 
       ingredients: [],
 
@@ -227,19 +228,19 @@ export default {
         ]
       },
 
-  shelf: {
-      // add shelf_type
-      shelf_type: "", 
-      packaging_material: "",
-      description: "",
-      storage_requirements: "",
-      food_material: "",
-      allergen_source: "",
-      lot_code_interpretation: "",
-      // add declaration date
-      declaration_date: "",
-      date: ""
-  },
+      shelf: {
+        // add shelf_type
+        shelf_type: "",
+        packaging_material: "",
+        description: "",
+        storage_requirements: "",
+        food_material: "",
+        allergen_source: "",
+        lot_code_interpretation: "",
+        // add declaration date
+        declaration_date: "",
+        date: ""
+      },
 
       nutrition_info: {
         serving_size: "",
@@ -277,14 +278,16 @@ export default {
         shelf_life: "",
         packaging_design: []
       },
-      uploaded_files: [{
-        originalname: "",
-        mimetype: "",
-        contentType: "",
-        location: "",
-        key: ""
-    }],
-    output_files: []
+      uploaded_files: [
+        {
+          originalname: "",
+          mimetype: "",
+          contentType: "",
+          location: "",
+          key: ""
+        }
+      ],
+      output_files: []
     }
   }),
   created() {
@@ -331,7 +334,7 @@ export default {
         .then(result => {
           return this.$store.dispatch("GET_ORIGIN");
         })
-        
+
         .catch(err => {
           this.$notifyError(err);
         });

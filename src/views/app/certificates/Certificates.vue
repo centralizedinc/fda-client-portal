@@ -1,18 +1,46 @@
 <template>
   <v-layout row wrap>
+    <v-navigation-drawer v-model="overview" right temporary app width="400px">
+      <v-toolbar dark color="primary">
+        <span class="title font-weight-light">Application Overview</span>
+        <v-spacer></v-spacer>
+        <v-tooltip bottom>
+          <v-btn :loading="loading" slot="activator" flat icon @click="loadForm()">
+            <v-icon>launch</v-icon>
+          </v-btn>View Full Details
+        </v-tooltip>
+      </v-toolbar>
+      <v-layout row wrap>
+        <v-flex xs12 pa-1>
+          <v-card>
+            <v-card-title primary-title>
+              <span class="subheading font-weight-light primary--text">Case Details</span>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+              <v-text-field name="name" label="Reference Number" id="id" readonly></v-text-field>
+              <v-text-field name="name" label="Application Type" id="id" readonly></v-text-field>
+              <v-text-field name="name" label="Date Applied" id="id" readonly></v-text-field>
+              <v-text-field name="name" label="Status" id="id" readonly></v-text-field>
+              <v-text-field name="name" label="Current Tasks" id="id" readonly></v-text-field>
+              <v-textarea rows="2" name="name" label="Remarks" id="id" readonly></v-textarea>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn :disabled="loading" outline color="secondary">Close</v-btn>
+              <v-btn :loading="loading" color="primary">View</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
+    </v-navigation-drawer>
     <v-flex xs12 p1-2>
       <v-card>
-        <!-- <v-tooltip top>
-          <v-btn slot="activator" fab medium color="fdaMed" top right absolute @click="dialog=true">
-            <v-icon medium color="fdaSilver">create</v-icon>
-          </v-btn>Apply New Certificate
-        </v-tooltip>-->
-
         <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="closeDecDialog"></undertaking-dialog>
-
         <v-data-table
           :headers="headers"
-          :items="certificates"
+          :items="items"
           hide-actions
           class="elevation-1"
           :pagination.sync="pagination"
@@ -48,6 +76,7 @@
 
 <script>
 import Undertaking from "./create/tabs/UndertakingDialog";
+import { log } from "util";
 
 export default {
   components: {
@@ -55,6 +84,7 @@ export default {
   },
   data() {
     return {
+      // preview: {},
       loading: false,
       dialog: false,
       pagination: {
@@ -69,15 +99,15 @@ export default {
         { text: "Date Created", value: "date_created" },
         { text: "Remarks", value: "remarks" }
       ],
-      certificates: [
-        {
-          case_no: "00",
-          application_type: "sample application",
-          status: "Initial",
-          // current_task: "sample task",
-          date_created: "01/01/2019",
-          remarks: "this is a remark"
-        }
+      items: [
+        // {
+        //   case_no: "00",
+        //   application_type: "sample application",
+        //   status: "Initial",
+        //   // current_task: "sample task",
+        //   date_created: "01/01/2019",
+        //   remarks: "this is a remark"
+        // }
       ]
     };
   },
@@ -98,18 +128,35 @@ export default {
   },
   methods: {
     init() {
-      console.log("Welcome to certificates!!!");
+      console.log("welcome to certificates!!!");
+      this.loading = true;
+      this.$store
+        .dispatch("GET_CERTIFICATE")
+        .then(results => {
+          this.Loading = false;
+          this.items = results;
+          console.log(
+            "############## ACTIVE CERTIFICATES: " + JSON.stringify(this.items)
+          );
+        })
+        .catch(error => {
+          this.loading = false;
+        });
     },
     launchAppForm() {
-      console.log("certificates launchappform");
+      console.log("launch application form");
       this.$router.push("/app/certificates/apply");
     },
     closeDecDialog() {
       this.dialog = false;
     },
     preview(item) {
-      this.preview_item = item;
-      this.overview = true;
+      // this.preview = item;
+      // this.overview = true;
+      this.$router.push("/app/certificates/overview");
+    },
+    loadform() {
+      this.loading = true;
     }
   }
 };

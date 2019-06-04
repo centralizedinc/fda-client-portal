@@ -183,6 +183,12 @@ var router = new Router({
           // beforeEnter: isAuthorized
         },
         {
+          path: 'certificates/overview',
+          name: 'Application Overview',
+          component: () => import('@/views/app/certificates/AppOverview.vue'),
+          // beforeEnter: isAuthorized
+        },
+        {
           path: 'payments',
           name: 'Payments',
           component: () => import('@/views/app/payment/Payment.vue'),
