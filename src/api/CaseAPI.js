@@ -17,6 +17,10 @@ export default class CaseAPI {
         return axios.get('lto-api/case/compliance')
     }
 
+    getComplyCertificate(){
+        return axios.get('certificate/case/compliance')
+    }
+
     getCertificateCases(cb) {
         cb();
         // axios.get('lto-api/case').then((result) => {

@@ -132,7 +132,7 @@ var actions = {
     return new Promise((resolve, reject) => {
         new CetificateAPI(context.rootState.user_session.token).getCertificates((certificate, err) => {
             if (!err) {
-                context.commit('SET_PRODUCT_TYPE', certificate)
+                context.commit('SET_CERTIFICATE', certificate)
                 resolve()
             } else {
                 reject(err)

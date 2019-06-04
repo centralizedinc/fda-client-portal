@@ -70,14 +70,14 @@ export default {
         { text: "Remarks", value: "remarks" }
       ],
       certificates: [
-        {
-          case_no: "00",
-          application_type: "sample application",
-          status: "Initial",
-          // current_task: "sample task",
-          date_created: "01/01/2019",
-          remarks: "this is a remark"
-        }
+        // {
+        //   case_no: "00",
+        //   application_type: "sample application",
+        //   status: "Initial",
+        //   // current_task: "sample task",
+        //   date_created: "01/01/2019",
+        //   remarks: "this is a remark"
+        // }
       ]
     };
   },
@@ -99,6 +99,11 @@ export default {
   methods: {
     init() {
       console.log("Welcome to certificates!!!");
+      this.$store.dispatch("GET_CERTIFICATE").then((result) => {
+        this.certificates = this.$store.state.certificate.certificates
+      }).catch((err) => {
+        this.$notifyError(err);
+      });
     },
     launchAppForm() {
       console.log("certificates launchappform");
