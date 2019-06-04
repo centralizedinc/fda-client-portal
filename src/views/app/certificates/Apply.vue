@@ -204,7 +204,7 @@ export default {
         supplier_address: ""
       },
 
-      ingredients: [],
+      ingredients: ["test"],
 
       product_specification: {
         physical: {
@@ -255,7 +255,7 @@ export default {
       },
 
       // change claims to array nalang
-      claims: [],
+      claims: [""],
 
       documentary: {
         product_label_images: [],
