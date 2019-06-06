@@ -301,34 +301,44 @@ export default {
       console.log("apply certificates");
       this.$store
         .dispatch("GET_FOOD_PRODUCT")
+
         .then(result => {
+          console.log("####food Product###" + JSON.stringify(this.$store.state.foodCertificate.food_product))
           return this.$store.dispatch("GET_FOOD_CATEGORY");
         })
         .then(result => {
           return this.$store.dispatch("GET_REGION");
         })
         .then(result => {
+          console.log("####shelf life###" + JSON.stringify(this.$store.state.foodCertificate.shelf_life))
           return this.$store.dispatch("GET_SHELF_LIFE");
         })
         .then(result => {
+          console.log("####source###" + JSON.stringify(this.$store.state.foodCertificate.source))
           return this.$store.dispatch("GET_SOURCE");
         })
         .then(result => {
+          console.log("####product specification###" + JSON.stringify(this.$store.state.foodCertificate.product_specification))
           return this.$store.dispatch("GET_PRODUCT_SPECIFICATION");
         })
         .then(result => {
+          console.log("####nutrition information###" + JSON.stringify(this.$store.state.foodCertificate.nutrition_information))
           return this.$store.dispatch("GET_NUTRITION_INFORMATION");
         })
         .then(result => {
+          console.log("####nutrition health claims###" + JSON.stringify(this.$store.state.foodCertificate.nutrition_health_claims))
           return this.$store.dispatch("GET_NUTRITION_HEALTH_CLAIMS");
         })
         .then(result => {
+          console.log("####Vitamins###" + JSON.stringify(this.$store.state.foodCertificate.vitamins))
           return this.$store.dispatch("GET_VITAMINS");
         })
         .then(result => {
+          console.log("####minerals###" + JSON.stringify(this.$store.state.foodCertificate.minerals))
           return this.$store.dispatch("GET_MINERALS");
         })
         .then(result => {
+          console.log("####Origin###" + JSON.stringify(this.$store.state.places.origin))
           return this.$store.dispatch("GET_ORIGIN");
         })
         
