@@ -123,7 +123,7 @@
               <td>{{props.item.application_type}}</td>
               <td>{{props.item.status}}</td>
               <!-- <td>{{props.items.current_task}}</td> -->
-              <td>{{ formatDate (props.item.date_created) }}</td>
+              <!-- <td>{{ formatDate (props.item.date_created) }}</td> -->
               <td>{{ props.item.remarks }}</td>
             </tr>
           </template>
@@ -178,7 +178,7 @@ export default {
         { text: "Type", value: "application_type" },
         { text: "Status", value: "status", sortable: true },
         // { text: "Current Task", value: "current_task" },
-        { text: "Date Created", value: "date_created" },
+        // { text: "Date Created", value: "date_created" },
         { text: "Remarks", value: "remarks" }
       ],
       items: [
