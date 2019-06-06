@@ -5,12 +5,83 @@
         <span class="title font-weight-light">Application Overview</span>
         <v-spacer></v-spacer>
         <v-tooltip bottom>
-          <v-btn :loading="loading" slot="activator" flat icon @click="loadForm()">
+          <v-btn
+            :loading="isLoading"
+            slot="activator"
+            flat
+            icon
+            @click="loadForm(preview_item.application_id)"
+          >
             <v-icon>launch</v-icon>
           </v-btn>View Full Details
         </v-tooltip>
       </v-toolbar>
       <v-layout row wrap>
+        <v-flex xs12 pa-1>
+          <v-card>
+            <v-card-title primary-title>
+              <span class="subheading font-weight-light primary--text">Case Details</span>
+            </v-card-title>
+            <v-divider></v-divider>
+            <v-card-text>
+              <v-text-field
+                name="name"
+                label="Reference Number"
+                id="id"
+                readonly
+                :value="preview_item.case_no"
+              ></v-text-field>
+              <v-text-field
+                name="name"
+                label="Application Type"
+                id="id"
+                readonly
+                :value="getAppType(preview_item.application_type)"
+              ></v-text-field>
+              <v-text-field
+                name="name"
+                label="Date Applied"
+                id="id"
+                readonly
+                :value="formatDate (preview_item.date_created)"
+              ></v-text-field>
+              <v-text-field
+                name="name"
+                label="Status"
+                id="id"
+                readonly
+                :value="getAppStatus(preview_item.status)"
+              ></v-text-field>
+              <!-- <v-text-field
+                name="name"
+                label="Current Tasks"
+                id="id"
+                readonly
+                :value="getTask(preview_item.current_task).name"
+              ></v-text-field> -->
+              <v-textarea
+                rows="2"
+                name="name"
+                label="Remarks"
+                id="id"
+                readonly
+                :value="preview_item.remarks"
+              ></v-textarea>
+            </v-card-text>
+            <v-divider></v-divider>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn :disabled="isLoading" outline color="secondary" @click="overview=false">Close</v-btn>
+              <v-btn
+                :loading="isLoading"
+                color="primary"
+                @click="loadForm(preview_item.application_id)"
+              >View</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-flex>
+      </v-layout>
+      <!-- <v-layout row wrap>
         <v-flex xs12 pa-1>
           <v-card>
             <v-card-title primary-title>
@@ -33,7 +104,7 @@
             </v-card-actions>
           </v-card>
         </v-flex>
-      </v-layout>
+      </v-layout> -->
     </v-navigation-drawer>
     <v-flex xs12 p1-2>
       <v-card>
@@ -85,11 +156,22 @@ export default {
   data() {
     return {
       // preview: {},
+      isLoading: false,
+      preview_item: {},
+      overview: null,
+      fab: false,
+      dialogView: false,
+      initial: false,
+      selected_case: {},
       loading: false,
       dialog: false,
       pagination: {
         sortBy: "date_created",
         descending: true
+      },
+      details: {
+        license_details: {},
+        case_details: {}
       },
       headers: [
         { text: "Case No", value: "case_no" },
@@ -150,14 +232,43 @@ export default {
     closeDecDialog() {
       this.dialog = false;
     },
-    preview(item) {
-      // this.preview = item;
-      // this.overview = true;
+    loadForm(item) {
+      this.preview = item;
+      this.overview = true;
       this.$router.push("/app/certificates/overview");
     },
-    loadform() {
-      this.loading = true;
+    preview(item) {
+      this.preview_item = item;
+      this.overview = true;
+    },
+    viewForm() {
+      this.$store.commit("SET_VIEW_LICENSE", this.details.license_details);
+      this.$router.push("/app/certificates/overview");
     }
+    // loadForm(application_id) {
+    //   this.isLoading = true;
+    //   this.$store
+    //     .dispatch("GET_LICENSE_BY_ID", application_id)
+    //     .then(result => {
+    //       this.isLoading = false;
+    //       if (result.data.success) {
+    //         console.log(
+    //           "get license data: " + JSON.stringify(result.data.model)
+    //         );
+    //         this.$store.commit("SET_VIEW_LICENSE", result.data.model);
+    //         this.$store.commit("SET_VIEW_CASE", this.preview_item);
+    //         console.log(
+    //           "CASE ACTIVITIES: " + JSON.stringify(this.preview_item)
+    //         );
+
+    //         this.$router.push("/app/certificates/overview");
+    //       } else console.log("result.data.errors :", result.data.errors);
+    //     })
+    //     .catch(err => {
+    //       this.isLoading = false;
+    //       console.log("###loadForm err :", err);
+    //     });
+    // }
   }
 };
 </script>

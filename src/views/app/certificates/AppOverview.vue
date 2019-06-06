@@ -4,7 +4,7 @@
       <v-card>
         <v-toolbar dark color="primary">Application Details</v-toolbar>
         <v-card-title primary-title>
-          <span class="subheading font-weight-thin primary--text">General Information</span>
+          <span class="subheading font-weight-thin primary--text">Food Product Application</span>
           <v-spacer></v-spacer>
           <v-btn v-if="show_part1" flat icon color="primary" @click="show_part1=false">
             <v-icon>expand_less</v-icon>
@@ -44,7 +44,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-title primary-title>
-          <span class="subheading font-weight-thin primary--text">Establishment Details</span>
+          <span class="subheading font-weight-thin primary--text">Establishment Information</span>
           <v-spacer></v-spacer>
           <v-btn v-if="show_part2" flat icon color="primary" @click="show_part2=false">
             <v-icon>expand_less</v-icon>
@@ -105,7 +105,7 @@
 
         <v-divider></v-divider>
         <v-card-title primary-title>
-          <span class="subheading font-weight-thin primary--text">Product Line</span>
+          <span class="subheading font-weight-thin primary--text">Complete List of Ingredients</span>
           <v-spacer></v-spacer>
           <v-btn v-if="show_part3" flat icon color="primary" @click="show_part3=false">
             <v-icon>expand_less</v-icon>
@@ -131,7 +131,7 @@
 
         <v-divider></v-divider>
         <v-card-title primary-title>
-          <span class="subheading font-weight-thin primary--text">Establishment Address</span>
+          <span class="subheading font-weight-thin primary--text">Product Specifications</span>
           <v-spacer></v-spacer>
           <v-btn v-if="show_part4" flat icon color="primary" @click="show_part4=false">
             <v-icon>expand_less</v-icon>
@@ -161,7 +161,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-title primary-title>
-          <span class="subheading font-weight-thin primary--text">Authorized Officer</span>
+          <span class="subheading font-weight-thin primary--text">Shelf Life and Other information</span>
           <v-spacer></v-spacer>
           <v-btn v-if="show_part5" flat icon color="primary" @click="show_part5=false">
             <v-icon>expand_less</v-icon>
@@ -227,7 +227,7 @@
         </v-card-text>
         <v-divider></v-divider>
         <v-card-title primary-title>
-          <span class="subheading font-weight-thin primary--text">Qualified Personnel</span>
+          <span class="subheading font-weight-thin primary--text">Nutrition Information</span>
           <v-spacer></v-spacer>
           <v-btn v-if="show_part6" flat icon color="primary" @click="show_part6=false">
             <v-icon>expand_less</v-icon>
@@ -238,6 +238,37 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part6">
+          <v-data-table
+            :headers="[{text:'Designation', sortable: false,}, 
+                        {text:'Lastname', sortable: false},
+                        {text:'Firstname', sortable: false}]"
+            :items="form.qualified"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{ getDesignation(props.item.designation).name }}</td>
+              <td>{{ props.item.lastname }}</td>
+              <td>{{ props.item.firstname }}</td>
+              <!-- <td>{{ props.item.middlename }}</td>
+              <td>{{ props.item.email }}</td>
+              <td>{{ props.item.tin }}</td>-->
+            </template>
+          </v-data-table>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-title primary-title>
+          <span class="subheading font-weight-thin primary--text">Nutrition Health Claims</span>
+          <v-spacer></v-spacer>
+          <v-btn v-if="show_part7" flat icon color="primary" @click="show_part7=false">
+            <v-icon>expand_less</v-icon>
+          </v-btn>
+          <v-btn v-else flat icon color="primary" @click="show_part7=true">
+            <v-icon>expand_more</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text v-if="show_part7">
           <v-data-table
             :headers="[{text:'Designation', sortable: false,}, 
                         {text:'Lastname', sortable: false},
@@ -427,6 +458,7 @@ export default {
       show_part4: false,
       show_part5: false,
       show_part6: false,
+      show_part7: false,
       show_activities: false,
       show_payments: false,
       show_documents: false,
