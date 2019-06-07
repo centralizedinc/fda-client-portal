@@ -71,7 +71,7 @@ export default class CertificateAPI {
 
       productSpecification(cb) {
         console.log("Food Certificates API!!!")
-        axios.get('core/productSpecification')
+        axios.get('core/specifications')
           .then(result => {
               console.log("product specification result: " + JSON.stringify(result))
             if (result.data.success) {
@@ -86,7 +86,7 @@ export default class CertificateAPI {
 
       nutritionInformation(cb) {
         console.log("Food Certificates API!!!")
-        axios.get('core/notritionInformation')
+        axios.get('core/nutrition')
           .then(result => {
               console.log("notrition information result: " + JSON.stringify(result))
             if (result.data.success) {
@@ -101,7 +101,7 @@ export default class CertificateAPI {
 
       nutritionHealthClaims(cb) {
         console.log("Food Certificates API!!!")
-        axios.get('core/nutritionHealthClaims')
+        axios.get('core/health')
           .then(result => {
               console.log("food health claim result: " + JSON.stringify(result))
             if (result.data.success) {
