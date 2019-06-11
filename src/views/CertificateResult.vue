@@ -12,11 +12,11 @@
                 <v-container grid-list-xl>
                     <v-layout row wrap class="subheading">
                         <v-flex xs6 class="font-weight-light">Application Type:</v-flex>
-                        <v-flex xs6 class="font-weight-light">{{getAppType (license_details.application_type)}} Application</v-flex>
-                        <v-flex xs6 class="font-weight-light"> Establishment Address:</v-flex>
-                        <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_name}}</v-flex>
-                        <v-flex xs6 class="font-weight-light"> Establishment Owner:</v-flex>
-                        <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_owner}}</v-flex>
+                        <!-- <v-flex xs6 class="font-weight-light">{{getAppType (license_details.application_type)}} Application</v-flex> -->
+                        <v-flex xs6 class="font-weight-light"> Product Name:</v-flex>
+                        <!-- <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_name}}</v-flex> -->
+                        <v-flex xs6 class="font-weight-light"> Company Name:</v-flex>
+                        <!-- <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_owner}}</v-flex> -->
                     </v-layout>
                     <br>
                     <span class="headline text--center font-weight-light"> This application has been <b class="red--text">DISAPPROVED.</b>

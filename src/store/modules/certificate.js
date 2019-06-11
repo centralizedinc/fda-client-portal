@@ -1,4 +1,5 @@
 import CetificateAPI from "../../api/CertificateApi";
+import CertificateAPI from "../../api/FoodCertificateApi";
 
 const state = {
     certificates: [],
@@ -138,8 +139,10 @@ var actions = {
                 }
             })
         })
-
     },
+    GET_CERTIFICATE_BY_CASE_NO(context, case_no) {
+        return new CertificateAPI(context.rootState.user_session.token).getCertificateByCaseNo(case_no);
+    }
 };
 
 export default {
