@@ -111,7 +111,8 @@ const state = {
             shelf_life: "",
             packaging_design: []
         }
-    }
+    },
+    view: []
 };
 
 const mutations = {
@@ -124,6 +125,10 @@ const mutations = {
     SET_COMPLY(state, cases) {
         state.complied = cases;
     },
+    SET_VIEW_CERTIFICATE(state, certificate) {
+        console.log("store view certificate: " + JSON.stringify(certificate))
+        state.view = certificate
+    }
 };
 
 var actions = {
@@ -153,6 +158,9 @@ var actions = {
                 }
             })
         })
+    },
+    GET_CERTIFICATE_BY_CASE_NO(context, case_no) {
+        return new CertificateAPI(context.rootState.user_session.token).getCertificateByCaseNo(case_no);
     },
     GET_COMPLY_CERTIFICATE(context) {
         return new Promise((resolve, reject) => {
@@ -189,9 +197,6 @@ var actions = {
                     reject(err)
                 });
         })
-    },
-    GET_CERTIFICATE_BY_CASE_NO(context, case_no) {
-        return new CertificateAPI(context.rootState.user_session.token).getCertificateByCaseNo(case_no);
     }
 };
 

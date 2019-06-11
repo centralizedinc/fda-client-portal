@@ -307,18 +307,8 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part7">
-          <v-text-field
-            readonly
-            name="name"
-            label="Claims"
-            :value="form.claims"
-          ></v-text-field>
-          <v-text-field
-            readonly
-            name="name"
-            label="Description"
-            :value="form.desc"
-          ></v-text-field>
+          <v-text-field readonly name="name" label="Claims" :value="form.claims"></v-text-field>
+          <v-text-field readonly name="name" label="Description" :value="form.desc"></v-text-field>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -499,11 +489,11 @@ export default {
       show_payment_summary: false,
       remaining_balance: 0.0,
       form: {
-        food_product: {},
-        establishment_info: {},
-        product_specification: {},
-        nutrition_info: {},
-        for_ammendment: {}
+        // food_product: {},
+        // establishment_info: {},
+        // product_specification: {},
+        // nutrition_info: {},
+        // for_ammendment: {}
       },
       case_details: {},
       payments: [],
@@ -519,55 +509,56 @@ export default {
   },
   methods: {
     init() {
-      this.form = this.$store.state.licenses.view_license;
-      this.case_details = this.$store.state.case.view_case;
-      this.$store.dispatch("GET_CERTIFICATE");
-      //get uploaded documents
-      if (this.form.uploaded_files) {
-        this.form.uploaded_files.forEach(doc => {
-          if (doc.location) {
-            this.uploaded_documents.push({
-              file_name: doc.originalname,
-              type: doc.contentType,
-              location: doc.location
-            });
-          }
-        });
-      }
-      //get output documents
-      if (this.form.output_files) {
-        this.form.output_files.forEach(doc => {
-          if (doc.location) {
-            this.output_documents.push({
-              file_name: doc.originalname,
-              type: doc.contentType,
-              location: doc.location
-            });
-          }
-        });
-      }
-      //get payment details
-      this.$store
-        .dispatch("FIND_PAYMENTS_BY_CASENO", this.form.case_no)
-        .then(result => {
-          if (result.data.success) {
-            this.payments = result.data.model;
-            this.payments.forEach(data => {
-              if (data.payment_details.status != 0) {
-                this.transaction.push(data);
-              }
-            });
-            console.log(
-              "find payment by case number: " + JSON.stringify(this.payments)
-            );
-          } else {
-            this.$notifyError(result.data.errors);
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          this.$notifyError(err);
-        });
+      this.form = this.$store.state.certificate.view;
+      console.log("app overview form data: " + JSON.stringify(this.form));
+      this.case_details = this.$store.state.certificate.cases;
+      // this.$store.dispatch("GET_CERTIFICATE_BY_CASE_NO");
+      // //get uploaded documents
+      // if (this.form.uploaded_files) {
+      //   this.form.uploaded_files.forEach(doc => {
+      //     if (doc.location) {
+      //       this.uploaded_documents.push({
+      //         file_name: doc.originalname,
+      //         type: doc.contentType,
+      //         location: doc.location
+      //       });
+      //     }
+      //   });
+      // }
+      // //get output documents
+      // if (this.form.output_files) {
+      //   this.form.output_files.forEach(doc => {
+      //     if (doc.location) {
+      //       this.output_documents.push({
+      //         file_name: doc.originalname,
+      //         type: doc.contentType,
+      //         location: doc.location
+      //       });
+      //     }
+      //   });
+      // }
+      // //get payment details
+      // this.$store
+      //   .dispatch("FIND_PAYMENTS_BY_CASENO", this.form.case_no)
+      //   .then(result => {
+      //     if (result.data.success) {
+      //       this.payments = result.data.model;
+      //       this.payments.forEach(data => {
+      //         if (data.payment_details.status != 0) {
+      //           this.transaction.push(data);
+      //         }
+      //       });
+      //       console.log(
+      //         "find payment by case number: " + JSON.stringify(this.payments)
+      //       );
+      //     } else {
+      //       this.$notifyError(result.data.errors);
+      //     }
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //     this.$notifyError(err);
+      //   });
     },
     viewFile(url) {
       window.open(url, "_blank");
