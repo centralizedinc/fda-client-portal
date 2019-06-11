@@ -11,7 +11,7 @@
 
           <v-stepper-content step="1">
             <v-card flat class="mb-5" height="auto">
-              <step-one :form="cert_form"></step-one>
+              <step-one :form="cert_form" :foodProduct="food_product" ></step-one>
             </v-card>
             <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -23,7 +23,7 @@
           </v-stepper-step>
           <v-stepper-content step="2">
             <v-card flat class="mb-5" height="auto">
-              <step-two :form="cert_form"></step-two>
+              <step-two :form="cert_form" :source="source" :origin="origin"></step-two>
             </v-card>
             <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -47,7 +47,7 @@
           </v-stepper-step>
           <v-stepper-content step="4">
             <v-card flat class="mb-5" height="auto">
-              <step-four :form="cert_form"></step-four>
+              <step-four :form="cert_form" :prodSpecs="product_specification" :physicalPharameter="physical_parameter"></step-four>
             </v-card>
             <v-btn color="primary" @click="e6 = 5">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -65,14 +65,14 @@
             <v-btn flat>Cancel</v-btn>
           </v-stepper-content>
 
-          <v-stepper-step :complete="e6 > 6" step="6" editable>
+          <v-stepper-step :complete="e6> 6" step="6" editable>
             Nutrition Information
             <small>Vitamins and Minerals shall be declared as applicable to product claims.</small>
             <small>Click the table to input the corresponding fields and hit enter or save.</small>
           </v-stepper-step>
           <v-stepper-content step="6">
             <v-card flat class="mb-5" height="auto">
-              <step-six :form="cert_form"></step-six>
+              <step-six :form="cert_form"  :vitamins="vitamins"></step-six>
             </v-card>
             <v-btn color="primary" @click="e6 = 7">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -84,7 +84,7 @@
           </v-stepper-step>
           <v-stepper-content step="7">
             <v-card flat class="mb-5" height="auto">
-              <step-seven :form="cert_form"></step-seven>
+              <step-seven :form="cert_form" :nutritionHealthClaims="nutrition_health_claims"></step-seven>
             </v-card>
             <v-btn color="primary" @click="e6 = 8">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -163,6 +163,16 @@ export default {
   data: () => ({
     e6: 1,
     confirmDialog: false,
+    food_product: [],
+    source:[],
+    shelf_life: [],
+    product_specification: [],
+    nutrition_information: [],
+    nutrition_health_claims: [],
+    vitamins: [],
+    minerals: [],
+    origin: [],
+    physical_parameter: [],
     cert_form: {
       //   general_info: {
       //     application_type: 0,
@@ -306,45 +316,61 @@ export default {
         .dispatch("GET_FOOD_PRODUCT")
 
         .then(result => {
+          this.food_product = this.$store.state.foodCertificate.food_product
           console.log("####food Product###" + JSON.stringify(this.$store.state.foodCertificate.food_product))
           return this.$store.dispatch("GET_FOOD_CATEGORY");
         })
         .then(result => {
+          console.log("####food category###" + JSON.stringify(this.$store.state.foodCertificate.food_category))
           return this.$store.dispatch("GET_REGION");
         })
         .then(result => {
-          console.log("####shelf life###" + JSON.stringify(this.$store.state.foodCertificate.shelf_life))
           return this.$store.dispatch("GET_SHELF_LIFE");
         })
         .then(result => {
-          console.log("####source###" + JSON.stringify(this.$store.state.foodCertificate.source))
+          this.shelf_life = this.$store.state.foodCertificate.shelf_life
+          console.log("####shelf life###" + JSON.stringify(this.$store.state.foodCertificate.shelf_life))
           return this.$store.dispatch("GET_SOURCE");
         })
         .then(result => {
-          console.log("####product specification###" + JSON.stringify(this.$store.state.foodCertificate.product_specification))
+          this.source = this.$store.state.foodCertificate.source
+          console.log("####source###" + JSON.stringify(this.$store.state.foodCertificate.source))
           return this.$store.dispatch("GET_PRODUCT_SPECIFICATION");
         })
         .then(result => {
-          console.log("####nutrition information###" + JSON.stringify(this.$store.state.foodCertificate.nutrition_information))
+          this.product_specification = this.$store.state.foodCertificate.product_specification
+          console.log("####product specification###" + JSON.stringify(this.$store.state.foodCertificate.product_specification))
           return this.$store.dispatch("GET_NUTRITION_INFORMATION");
         })
         .then(result => {
-          console.log("####nutrition health claims###" + JSON.stringify(this.$store.state.foodCertificate.nutrition_health_claims))
+          this.nutrition_information = this.$store.state.foodCertificate.nutrition_information
+          console.log("####nutrition information###" + JSON.stringify(this.$store.state.foodCertificate.nutrition_information))
           return this.$store.dispatch("GET_NUTRITION_HEALTH_CLAIMS");
         })
         .then(result => {
-          console.log("####Vitamins###" + JSON.stringify(this.$store.state.foodCertificate.vitamins))
+          this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims
+          console.log("####nutrition health claims###" + JSON.stringify(this.$store.state.foodCertificate.nutrition_health_claims))
           return this.$store.dispatch("GET_VITAMINS");
         })
         .then(result => {
-          console.log("####minerals###" + JSON.stringify(this.$store.state.foodCertificate.minerals))
+          this.vitamins = this.$store.state.foodCertificate.vitamins
+          console.log("####Vitamins###" + JSON.stringify(this.$store.state.foodCertificate.vitamins))
           return this.$store.dispatch("GET_MINERALS");
         })
         .then(result => {
-          console.log("####Origin###" + JSON.stringify(this.$store.state.places.origin))
+          this.minerals = this.$store.state.foodCertificate.minerals
+          console.log("####minerals###" + JSON.stringify(this.$store.state.foodCertificate.minerals))
           return this.$store.dispatch("GET_ORIGIN");
         })
-
+        .then(result => {
+          this.origin = this.$store.state.places.origin
+          console.log("####origin###" + JSON.stringify(this.$store.state.places.origin))
+          return this.$store.dispatch("GET_PHYSICAL_PARAMETER");
+        })
+        .then(result => {
+          this.physical_parameter = this.$store.state.foodCertificate.physical_parameter  
+          console.log("####physical parameter###" + JSON.stringify(this.$store.state.foodCertificate.physical_parameter))
+        })
         .catch(err => {
           this.$notifyError(err);
         });

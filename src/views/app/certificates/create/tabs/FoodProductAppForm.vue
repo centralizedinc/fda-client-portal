@@ -9,7 +9,7 @@
             required
             color="green darken-1"
             v-model="form.food_product.type"
-            :items="product_type"
+            :items="foodProduct"
             item-text="name"
             item-value="_id"
             hide-no-data
@@ -205,7 +205,7 @@
 
 <script>
 export default {
-  props: ["form"],
+  props: ["form", "foodProduct"],
   data: () => ({
     menu: null,
     valid: true,
@@ -258,8 +258,10 @@ export default {
       return this.VALID;
     },
     init(){
-      this.product_type = this.$store.state.foodCertificate.food_product
+      // this.product_type = this.$store.state.foodCertificate.food_product
+      // console.log("product type data: " + JSON.stringify(this.product_type))
       this.category = this.$store.state.foodCertificate.food_category
+      console.log("food category data: " + JSON.stringify(this.food_category))
       this.regions = this.$store.state.places.regions
       console.log("regions data: " + JSON.stringify(this.regions))
     }

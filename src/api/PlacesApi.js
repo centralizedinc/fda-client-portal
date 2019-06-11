@@ -59,7 +59,9 @@ export default class RegionType {
           .then(result => {
               console.log("country of origin result: " + JSON.stringify(result))
             if (result.data.success) {
-              cb(result.data.model)
+              cb(result.data.errors, result.data.model)
+            }else {
+                cb(result.data.errors)
             }
           })
           .catch(err => {

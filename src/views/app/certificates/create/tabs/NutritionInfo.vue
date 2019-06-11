@@ -88,7 +88,7 @@
         </v-flex>
 
         <v-flex xs12>
-          <v-data-table :headers="headers" :items="v_m" hide-actions class="elevation-1">
+          <v-data-table :headers="headers" :items="vitamins" hide-actions class="elevation-1">
             <template slot="items" slot-scope="props">
               <tr @click="viewItem(props.item, props.index)" style="cursor:pointer">
                 <td>{{props.item.nut_info}}</td>
@@ -117,7 +117,9 @@
                         label="Vitamins & Minerals"
                         hint="Choose one"
                         persistent-hint
-                        :items="vm_items"
+                        :items="vitamins"
+                        item-text="name"
+                        item-value="_id"
                         autocomplete
                       ></v-autocomplete>
                     </v-flex>
@@ -158,7 +160,7 @@
 
 <script>
 export default {
-  props: ["form"],
+  props: ["form", "vitamins", "minerals`"],
   data: () => ({
     add: false,
     dialogVm: false,
@@ -194,71 +196,74 @@ export default {
       }
     ],
     nutritionServing: [
-      {
-        nut_info: "Calories (kcal)",
-        aps: "",
-        reni: ""
-      },
-      {
-        nut_info: "Total Fat (g)",
-        aps: "",
-        reni: ""
-      },
-      {
-        nut_info: "Saturated Fat (g)",
-        aps: "",
-        reni: ""
-      },
-      {
-        nut_info: "Trans Fat (g)",
-        aps: "",
-        reni: ""
-      },
-      {
-        nut_info: "Cholesterol (mg)",
-        aps: "",
-        reni: ""
-      },
-      {
-        nut_info: "Sodium (mg)",
-        aps: "",
-        reni: ""
-      },
-      {
-        nut_info: "Total Carbohydrates (g)",
-        aps: "",
-        reni: ""
-      },
-      {
-        nut_info: "Sugar (g)",
-        aps: "",
-        reni: ""
-      }
+      // {
+      //   nut_info: "Calories (kcal)",
+      //   aps: "",
+      //   reni: ""
+      // },
+      // {
+      //   nut_info: "Total Fat (g)",
+      //   aps: "",
+      //   reni: ""
+      // },
+      // {
+      //   nut_info: "Saturated Fat (g)",
+      //   aps: "",
+      //   reni: ""
+      // },
+      // {
+      //   nut_info: "Trans Fat (g)",
+      //   aps: "",
+      //   reni: ""
+      // },
+      // {
+      //   nut_info: "Cholesterol (mg)",
+      //   aps: "",
+      //   reni: ""
+      // },
+      // {
+      //   nut_info: "Sodium (mg)",
+      //   aps: "",
+      //   reni: ""
+      // },
+      // {
+      //   nut_info: "Total Carbohydrates (g)",
+      //   aps: "",
+      //   reni: ""
+      // },
+      // {
+      //   nut_info: "Sugar (g)",
+      //   aps: "",
+      //   reni: ""
+      // }
     ],
     vm_items: [
-      "Vitamin C (mg)",
-      "Thiamin (mg)",
-      "Riboflavin (mg)",
-      "Niacin NE (mg)",
-      "Folate DFE (ug)",
-      "Vitamin B6 (mg)",
-      "Vitamin B12 (ug)",
-      "Vitamin A RE (IU)",
-      "Vitamin D (IU)",
-      "Vitamin E (IU)",
-      "Vitamin K (ug)",
-      { divider: true },
-      " Calcium (mg)",
-      "Iron (mg)",
-      "Iodine (ug)",
-      "Magnesium (mg)",
-      "Phosphorus (mg)",
-      "Zinc (mg)",
-      "Selenium (ug)",
-      "Flouride (mg)",
-      "Manganese (mg)"
+      // "Vitamin C (mg)",
+      // "Thiamin (mg)",
+      // "Riboflavin (mg)",
+      // "Niacin NE (mg)",
+      // "Folate DFE (ug)",
+      // "Vitamin B6 (mg)",
+      // "Vitamin B12 (ug)",
+      // "Vitamin A RE (IU)",
+      // "Vitamin D (IU)",
+      // "Vitamin E (IU)",
+      // "Vitamin K (ug)",
+      // { divider: true },
+      // " Calcium (mg)",
+      // "Iron (mg)",
+      // "Iodine (ug)",
+      // "Magnesium (mg)",
+      // "Phosphorus (mg)",
+      // "Zinc (mg)",
+      // "Selenium (ug)",
+      // "Flouride (mg)",
+      // "Manganese (mg)"
     ]
   }),
+  created() {
+    this.init();
+  },
   methods: {
     addNew() {
       this.add = true;
@@ -281,6 +286,17 @@ export default {
     },
     close() {
       console.log("Dialog closed");
+    },
+    init() {
+      this.nutritionServing = this.$store.state.foodCertificate.nutrition_information;
+      console.log(
+        "nutrition information data: " +
+          JSON.stringify(this.nutritionServing)
+      );
+      this.vitamins = this.$store.state.foodCertificate.vitamins;
+      console.log("vitamins data: " + JSON.stringify(this.vitamins));
+      this.minerals = this.$store.state.foodCertificate.minerals;
+      console.log("minerals data: " + JSON.stringify(this.minerals));
     }
   }
 };

@@ -11,7 +11,9 @@
               :rules="[rules.required]"
               hint="Please choose if Nutrition or Health Claims"
               persistent-hint
-              :items="claim_items"
+              :items="nutritionHealthClaims"
+              item-text="name"
+              item-value="_id"
             ></v-autocomplete>
           </v-flex>
           <v-flex xs5 :key="`b${index}`">
@@ -41,14 +43,17 @@
 
 <script>
 export default {
-  props: ["form"],
+  props: ["form", "nutritionHealthClaims"],
   data: () => ({
     valid: true,
-    claim_items: ["Nutrition Claims", "Health Claims"],
+    nutrition_health_claims: [],
     rules: {
       required: value => !!value || "This field is required"
     }
   }),
+  created(){
+    this.init()
+  },
 
   methods: {
     addItem() {
@@ -59,6 +64,10 @@ export default {
     },
     removeItem(index) {
       this.form.claims.splice(index, 1);
+    },
+    init(){
+      this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims
+      console.log("nutrition health claims data: " + JSON.stringify(this.nutrition_health_claims))
     }
   }
 };
