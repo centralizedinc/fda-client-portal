@@ -183,6 +183,12 @@ var router = new Router({
           // beforeEnter: isAuthorized
         },
         {
+          path: 'certificates/overview',
+          name: 'Application Overview',
+          component: () => import('@/views/app/certificates/AppOverview.vue'),
+          // beforeEnter: isAuthorized
+        },
+        {
           path: 'payments',
           name: 'Payments',
           component: () => import('@/views/app/payment/Payment.vue'),
@@ -213,6 +219,12 @@ var router = new Router({
           name: 'Change Password',
           beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/passwordSettings/ChangePassword.vue')
+        },
+        {
+          path: 'settings/notification',
+          name: 'Settings',
+          beforeEnter: dropBreadcrumbs,
+          component: () => import('@/views/app/Subscription.vue')
         },
         {
           path: 'logout',

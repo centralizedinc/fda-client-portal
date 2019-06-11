@@ -15,6 +15,7 @@ const state = {
 
 const mutations = {
   SET_FOOD_PRODUCT(state, product) {
+    console.log("STORE:" + "##PRODUCT" + JSON.stringify(product) + "##STATE" + JSON.stringify(state))
     state.food_product = product;
   },
   SET_FOOD_CATEGORY(state, product) {
@@ -35,7 +36,7 @@ const mutations = {
   SET_NUTRITION_HEALTH_CLAIMS(state, product) {
     state.nutrition_health_claims =product;
   },
-  SET_VITAMINS(state, product) {
+  SET_VITAMINS(state, product) { 
     state.vitamins =product;
   },
   SET_MINERALS(state, product) {
@@ -44,19 +45,6 @@ const mutations = {
 };
 
 var actions = {
-    GET_FOOD_CERT(){
-        return new Promise((resolve, reject) => {
-            new CertificateAPI(context.rootState.user_session.token).foodProduct((foodProduct, err) => {
-                if (!err) {
-                    console.log("GET_FOOD_PRODUCT data: " + JSON.stringify(foodProduct))
-                    context.commit('SET_FOOD_PRODUCT', foodProduct)
-                    resolve(foodProduct)
-                } else {
-                    reject(err)
-                }
-            })
-        })
-    },
   GET_FOOD_PRODUCT(context) {
     console.log("Food Certificates!!!")
     return new Promise((resolve, reject) => {
