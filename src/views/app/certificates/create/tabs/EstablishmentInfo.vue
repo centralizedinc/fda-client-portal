@@ -10,7 +10,7 @@
             color="green darken-1"
             outline
             hide-selected 
-            v-model="form.establisment_info.activity"
+            v-model="form.establishment_info.activity"
             label="Please select the corresponding company activity/ies"
           ></v-autocomplete>
         </v-flex>
@@ -23,7 +23,7 @@
             hide-no-data
             hide-selected
             label="Source Type"
-            v-model="form.establisment_info.type"
+            v-model="form.establishment_info.type"
           ></v-autocomplete>
         </v-flex>
         <v-flex xs6>
@@ -34,7 +34,7 @@
             outline
             hide-no-data
             hide-selected
-            v-model="form.establisment_info.origin_country"
+            v-model="form.establishment_info.origin_country"
             label="Country of Origin"
           ></v-autocomplete>
         </v-flex>
@@ -50,7 +50,7 @@
             hide-no-data
             hide-selected
             label="Directly Sourced?"
-            v-model="form.establisment_info.directly_source"
+            v-model="form.establishment_info.directly_source"
             :items="answer"
             item-text="name"
             item-value="code"
@@ -104,7 +104,7 @@
             :rules="[rules.required]"
             outline
             label="Supplier's Complete Name"
-            v-model="form.establisment_info.supplier_name"
+            v-model="form.establishment_info.supplier_name"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -113,7 +113,7 @@
             :rules="[rules.required]"
             outline
             label="Supplier's Complete Address"
-            v-model="form.establisment_info.supplier_address"
+            v-model="form.establishment_info.supplier_address"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -122,7 +122,7 @@
             :rules="[rules.required]"
             outline
             label="Manufacturer's Complete Name"
-            v-model="form.establisment_info.manufacturer_name"
+            v-model="form.establishment_info.manufacturer_name"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -131,7 +131,7 @@
             :rules="[rules.required]"
             outline
             label="Manufacturer's Complete Address"
-            v-model="form.establisment_info.manufacturer_address"
+            v-model="form.establishment_info.manufacturer_address"
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -148,6 +148,8 @@ export default {
   data: () => ({
     uploads: false,
     valid: true,
+    uploadedFiles: [],
+    form_data: null,
     answer: [
         {
           name: "No",
@@ -194,10 +196,32 @@ export default {
     },
     upload(data) {
       this.$emit("upload", data);
+      this.form_data = data.formData;
+      this.uploadedFiles = data.uploadedFiles;
       this.form.output_files.push({
-        type: "documents",
-        data: data
+        form_data: this.form_data,
+        uploadedFiles: this.uploadedFiles,
+        type: "documents"
       })
+
+      // console.log("this is upload data!!!: " + JSON.stringify(this.form_data));
+      // this.$store.dispatch("SAVE_COMPLY_CERTIFICATE", {
+      //       case_id: "this.selected.case_id",
+      //       case_no: "this.selected.case_no",
+      //       remarks: "this.remarks",
+      //       form_data: this.form_data
+      //     }).then((result) => {
+      //       console.log("SAVE_COMPLY_CERTIFICATE result data: " + JSON.stringify(result))
+      //       return this.$store.dispatch("GET_COMPLY_CERTIFICATE")
+      //     }).then((result1) =>{
+      //       console.log("GET_COMPLY_CERTIFICATE data result: " + JSON.stringify(result1))
+      //     })
+
+
+      // this.form.output_files.push({
+      //   type: "documents",
+      //   data: data
+      // })
       this.uploads = true;
     },
     validate() {

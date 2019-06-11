@@ -1,8 +1,10 @@
 
 import CetificateAPI from "../../api/CertificateApi";
+import CaseAPI from '../../api/CaseAPI'; 
 
 const state = {
   certificates: [],
+  cases: [],
   form: null,
   init_form: {
     general_info: {
@@ -119,28 +121,75 @@ const mutations = {
   SET_CERTIFICATE(state, certificates) {
     state.certificates = certificates;
 },
+SET_COMPLY(state, cases) {
+    state.complied = cases;
+},
 };
 
 var actions = {
   SAVE_CERTIFICATE(context, certificate) {
-    console.log("action certificate data: " + JSON.stringify(certificate))
-    return new CetificateAPI(context.rootState.user_session.token).saveCertificate(
-      certificate
-    );
+    return new Promise((resolve, reject) => {
+    // console.log("action certificate data: " + JSON.stringify(certificate))
+    // new CetificateAPI(context.rootState.user_session.token).saveCertificate(
+    // //   certificate
+    // ).then((result) =>{
+    //     console.log("save certificate data: " + JSON.stringify(result))
+    //     // var CaseApi = new CaseAPI(context.rootState.user_session.token);
+    //     // CaseApi.uploadFile(comply)
+    // })
+    return new CetificateAPI(context.rootState.user_session.token).applyCertificate(
+        certificate
+      );
+    })
   },
   GET_CERTIFICATE(context) {
     return new Promise((resolve, reject) => {
         new CetificateAPI(context.rootState.user_session.token).getCertificates((certificate, err) => {
             if (!err) {
                 context.commit('SET_CERTIFICATE', certificate)
-                resolve()
+                resolve(certificate)
             } else {
                 reject(err)
             }
         })
     })
-
-},
+    },
+    GET_COMPLY_CERTIFICATE(context){
+      return new Promise((resolve, reject) => {
+            new CetificateAPI(context.rootState.user_session.token).getComplyCertificate()
+                .then((result) => {
+                     
+                    context.commit('SET_COMPLY', result.data.model);
+                    resolve(result.data)
+                }).catch((err) => {
+                    reject(err)
+                });
+        })  
+    },
+    SAVE_COMPLY_CERTIFICATE(context, comply) {
+        return new Promise((resolve, reject) => {
+            console.log("SAVE_COMPLY_CERTIFICATE store")
+            var CaseApi = new CaseAPI(context.rootState.user_session.token);
+            CaseApi.uploadFile(comply)
+                .then((result) => {
+                    var files = result.data.model
+                    console.log('SAVE_COMPLY_CERTIFICATE files : '+ JSON.stringify(files));
+                    var compliance = {
+                        case_id: comply.case_id,
+                        remarks: comply.remarks,
+                        files: files
+                    }
+                    console.log("compliance data: " + JSON.stringify(compliance))
+                    return new CetificateAPI(context.rootState.user_session.token).submitComplianceCertificate(compliance)
+                }).then((result1) => {
+                    console.log('result :' + JSON.stringify(result1));
+                    resolve(result1.data)
+                })
+                .catch((err) => {
+                    reject(err)
+                });
+        })
+    }
 };
 
 export default {

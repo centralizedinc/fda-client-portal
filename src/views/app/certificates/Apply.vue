@@ -191,7 +191,7 @@ export default {
       contacts: {}
   },
   // change to establishment
-  establisment_info: {
+  establishment_info: {
       activity: "",
       type: "",
       // change country origin to string
@@ -203,7 +203,7 @@ export default {
       supplier_address: ""
   },
   
-      ingredients: ["test"],
+      ingredients: [],
 
       product_specification: {
         physical: {
@@ -277,13 +277,16 @@ export default {
         shelf_life: "",
         packaging_design: []
       },
-      uploaded_files: [{
-        originalname: "",
-        mimetype: "",
-        contentType: "",
-        location: "",
-        key: ""
-    }],
+      uploaded_files: [
+    //     {
+    //     file_type: "",
+    //     originalname: "",
+    //     mimetype: "",
+    //     contentType: "",
+    //     location: "",
+    //     key: ""
+    // }
+    ],
     output_files: []
     }
   }),
@@ -339,6 +342,7 @@ export default {
     save() {
       this.showAppOverview = false;
       this.confirmDialog = true;
+      
       console.log("submit clicked: " + JSON.stringify(this.cert_form));
       this.$store.dispatch("SAVE_CERTIFICATE", this.cert_form);
     }

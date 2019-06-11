@@ -141,7 +141,8 @@ export default {
       this.$emit("upload", data);
       this.form.output_files.push({
         type: "productLabel",
-        data: data
+        form_data: data.formData,
+        uploadedFiles: data.uploadedFiles
       })
       this.uploads = true;
     },
@@ -150,7 +151,8 @@ export default {
       this.$emit("upload", data);
       this.form.output_files.push({
         type: "commercialPresentation",
-        data: data
+        form_data: data.formData,
+        uploadedFiles: data.uploadedFiles
       })
       this.uploads = true;
     },
@@ -159,7 +161,8 @@ export default {
       this.$emit("upload", data);
       this.form.output_files.push({
         type: "importAndExporting",
-        data: data
+        form_data: data.formData,
+        uploadedFiles: data.uploadedFiles
       })
       this.uploads = true;
     },
@@ -167,7 +170,8 @@ export default {
       this.$emit("upload", data);
       this.form.output_files.push({
         type: "substantiateClaims",
-        data: data
+        form_data: data.formData,
+        uploadedFiles: data.uploadedFiles
       })
       this.uploads = true;
     },
@@ -175,7 +179,8 @@ export default {
       this.$emit("upload", data);
       this.form.output_files.push({
         type: "logo",
-        data: data
+        form_data: data.formData,
+        uploadedFiles: data.uploadedFiles
       })
       this.uploads = true;
     },
