@@ -12,6 +12,9 @@
             hide-selected 
             v-model="form.establishment_info.activity"
             label="Please select the corresponding company activity/ies"
+            :items="companyActivity"
+            item-text="name"
+            item-value="_id"
           ></v-autocomplete>
         </v-flex>
         <v-flex xs6>
@@ -150,7 +153,7 @@ export default {
   components: {
     Uploader: () => import("@/components/Uploader")
   },
-  props: ["form", "source", "origin"],
+  props: ["form", "source", "origin", "companyActivity"],
   data: () => ({
     uploads: false,
     valid: true,

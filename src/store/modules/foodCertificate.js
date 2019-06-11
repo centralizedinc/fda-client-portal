@@ -11,7 +11,8 @@ const state = {
     nutrition_information: [],
     nutrition_health_claims: [],
     vitamins: [],
-    minerals: []
+    minerals: [],
+    company_activity: []
 };
 
 const mutations = {
@@ -37,7 +38,7 @@ const mutations = {
   },
   SET_PHYSICAL_PARAMETER(state, physical_parameter) {
     console.log("STORE:" + "##PHYSICAL PARAMETER" + JSON.stringify(physical_parameter))
-    state.physicalParameter = physical_parameter;
+    state.physical_parameter = physical_parameter;
   },
   SET_NUTRITION_INFORMATION(state, nutrition_information) {
     console.log("STORE:" + "##NUTRITION INFORMATION" + JSON.stringify(nutrition_information))
@@ -54,6 +55,10 @@ const mutations = {
   SET_MINERALS(state, minerals) {
     console.log("STORE:" + "##MINERALS" + JSON.stringify(minerals))
     state.minerals = minerals;
+  },
+  SET_COMPANY_ACTIVITY(state, company_activity) {
+    console.log("STORE:" + "##COMPANY ACTIVITY" + JSON.stringify(company_activity))
+    state.company_activity = company_activity;
   }
 };
 
@@ -206,6 +211,20 @@ var actions = {
                 console.log("GET_MINERALS data: " + JSON.stringify(minerals))
                 context.commit('SET_MINERALS', minerals)
                 resolve(minerals)
+            } else {
+                reject(err)
+            }
+        })
+    })
+  },
+  GET_COMPANY_ACTIVITY(context) {
+    console.log("Food Certificates!!!")
+    return new Promise((resolve, reject) => {
+        new CertificateAPI(context.rootState.user_session.token).companyActivity((company_activity, err) => {
+            if (!err) {
+                console.log("GET_COMPANY_ACTIVITY data: " + JSON.stringify(company_activity))
+                context.commit('SET_COMPANY_ACTIVITY', company_activity)
+                resolve(company_activity)
             } else {
                 reject(err)
             }

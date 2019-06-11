@@ -11,7 +11,7 @@
 
           <v-stepper-content step="1">
             <v-card flat class="mb-5" height="auto">
-              <step-one :form="cert_form" :foodProduct="food_product" ></step-one>
+              <step-one :form="cert_form" :foodProduct="food_product" :category="category"></step-one>
             </v-card>
             <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -23,7 +23,7 @@
           </v-stepper-step>
           <v-stepper-content step="2">
             <v-card flat class="mb-5" height="auto">
-              <step-two :form="cert_form" :source="source" :origin="origin"></step-two>
+              <step-two :form="cert_form" :source="source" :origin="origin" :companyActivity="company_activity"></step-two>
             </v-card>
             <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -47,7 +47,7 @@
           </v-stepper-step>
           <v-stepper-content step="4">
             <v-card flat class="mb-5" height="auto">
-              <step-four :form="cert_form" :prodSpecs="product_specification" :physicalPharameter="physical_parameter"></step-four>
+              <step-four :form="cert_form" :prodSpecs="product_specification" :physicalParameter="physical_parameter"></step-four>
             </v-card>
             <v-btn color="primary" @click="e6 = 5">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -59,7 +59,7 @@
           </v-stepper-step>
           <v-stepper-content step="5">
             <v-card flat class="mb-5" height="auto">
-              <step-five :form="cert_form"></step-five>
+              <step-five :form="cert_form" :shelfLifeType="shelf_life"></step-five>
             </v-card>
             <v-btn color="primary" @click="e6 = 6">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -164,6 +164,7 @@ export default {
     e6: 1,
     confirmDialog: false,
     food_product: [],
+    category: [],
     source:[],
     shelf_life: [],
     product_specification: [],
@@ -173,6 +174,7 @@ export default {
     minerals: [],
     origin: [],
     physical_parameter: [],
+    company_activity: [],
     cert_form: {
       //   general_info: {
       //     application_type: 0,
@@ -322,6 +324,7 @@ export default {
           return this.$store.dispatch("GET_FOOD_CATEGORY");
         })
         .then(result => {
+          this.category = this.$store.state.foodCertificate.food_category
           console.log("####food category###" + JSON.stringify(this.$store.state.foodCertificate.food_category))
           return this.$store.dispatch("GET_REGION");
         })
@@ -371,6 +374,11 @@ export default {
         .then(result => {
           this.physical_parameter = this.$store.state.foodCertificate.physical_parameter  
           console.log("####physical parameter###" + JSON.stringify(this.$store.state.foodCertificate.physical_parameter))
+          return this.$store.dispatch("GET_COMPANY_ACTIVITY");
+        })
+        .then(result => {
+          this.company_activity = this.$store.state.foodCertificate.company_activity  
+          console.log("####company activity###" + JSON.stringify(this.$store.state.foodCertificate.company_activity))
         })
         .catch(err => {
           this.$notifyError(err);

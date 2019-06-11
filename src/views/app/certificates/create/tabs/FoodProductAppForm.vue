@@ -205,7 +205,7 @@
 
 <script>
 export default {
-  props: ["form", "foodProduct"],
+  props: ["form", "foodProduct", "category"],
   data: () => ({
     menu: null,
     valid: true,

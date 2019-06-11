@@ -156,7 +156,7 @@
 
 <script>
 export default {
-  props: ["form"],
+  props: ["form", "shelfLifeType"],
   data: () => ({
     valid: true,
     shelfLifeType: [],
