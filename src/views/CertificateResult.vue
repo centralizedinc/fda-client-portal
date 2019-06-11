@@ -1,37 +1,39 @@
 <template>
-<v-layout row wrap justify-center>
+  <v-layout row wrap justify-center>
     <v-flex xs5>
-        <v-card>
-            <v-card-title class="disappCase black--text">
-                <v-avatar class="mr-2" color="grey">
-                    <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
-            </v-avatar>
-                    <span class="display-1 font-weight-thin">Case No.: {{case_details.case_no}}</span>
-            </v-card-title>
-            <v-card-text>
-                <v-container grid-list-xl>
-                    <v-layout row wrap class="subheading">
-                        <v-flex xs6 class="font-weight-light">Application Type:</v-flex>
-                        <!-- <v-flex xs6 class="font-weight-light">{{getAppType (license_details.application_type)}} Application</v-flex> -->
-                        <v-flex xs6 class="font-weight-light"> Product Name:</v-flex>
-                        <!-- <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_name}}</v-flex> -->
-                        <v-flex xs6 class="font-weight-light"> Company Name:</v-flex>
-                        <!-- <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_owner}}</v-flex> -->
-                    </v-layout>
-                    <br>
-                    <span class="headline text--center font-weight-light"> This application has been <b class="red--text">DISAPPROVED.</b>
-</span>
-                </v-container>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-                <v-btn color="primary" block @click="viewLetter">Open Letter</v-btn>
-            </v-card-actions>
-        </v-card>
+      <v-card>
+        <v-card-title class="disappCase black--text">
+          <v-avatar class="mr-2" color="grey">
+            <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
+          </v-avatar>
+          <span class="display-1 font-weight-thin">Case No.: {{case_details.case_no}}</span>
+        </v-card-title>
+        <v-card-text>
+          <v-container grid-list-xl>
+            <v-layout row wrap class="subheading">
+              <v-flex xs6 class="font-weight-light">Application Type:</v-flex>
+              <!-- <v-flex xs6 class="font-weight-light">{{getAppType (license_details.application_type)}} Application</v-flex> -->
+              <v-flex xs6 class="font-weight-light">Product Name:</v-flex>
+              <!-- <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_name}}</v-flex> -->
+              <v-flex xs6 class="font-weight-light">Company Name:</v-flex>
+              <!-- <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_owner}}</v-flex> -->
+            </v-layout>
+            <br>
+            <span class="headline text--center font-weight-light">
+              This application has been
+              <b class="red--text">DISAPPROVED.</b>
+            </span>
+          </v-container>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn color="primary" block @click="viewLetter">Open Letter</v-btn>
+        </v-card-actions>
+      </v-card>
     </v-flex>
-</v-layout>
+  </v-layout>
 
-<!-- <v-container grid-list-xl>
+  <!-- <v-container grid-list-xl>
     <v-layout row align-center justify-center>
       <v-flex xs6>
         <v-card>
@@ -47,7 +49,7 @@
         </v-card>
       </v-flex>
     </v-layout>
-  </v-container> -->
+  </v-container>-->
 </template>
 
 <script>

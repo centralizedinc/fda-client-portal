@@ -155,6 +155,22 @@
             <v-list-tile-title class="body-1 font-weight-light">Password Settings</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+        <v-list-tile
+          @click="goTo('/app/settings/notification')"
+          class="ma-1"
+          :style="activeRoute('Settings')"
+        >
+          <v-list-tile-action>
+            <v-tooltip top>
+              <v-btn slot="activator" icon>
+                <v-icon color="fdaBlueGreen">far fa-bell</v-icon>
+              </v-btn>Notification
+            </v-tooltip>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title class="body-1 font-weight-light">Notification</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
         <v-list-tile @click="showLogout()" class="ma-1" :style="activeRoute('Logout')">
           <v-list-tile-action>
             <v-tooltip top>

@@ -19,27 +19,64 @@
           <v-text-field
             readonly
             name="name"
-            label="Product Type"
-            :value="getProduct(form.general_info.product_type)"
+            label="Food Product Type"
+            :value="form.food_product.type"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
-            label="Primary Activity"
-            :value="getPrimary(form.general_info.primary_activity)"
+            label="Food Category"
+            :value="form.food_product.categorization"
           ></v-text-field>
           <v-textarea
             readonly
             name="name"
-            label="Additional Activities"
+            label="Brand Name"
             rows="2"
-            :value="getAdditionalActivies(form.general_info.addtl_activity)"
+            :value="form.food_product.brand_name"
           ></v-textarea>
           <v-text-field
             readonly
             name="name"
-            label="Declared Capital"
-            :value="getDeclared(form.general_info.declared_capital)"
+            label="Product Name"
+            :value="form.food_product.product_name"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Company Name (as listed in LTO)"
+            :value="form.food_product.company"
+          ></v-text-field>
+          <v-text-field readonly name="name" label="Region" :value="form.food_product.address"></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="LTO Number"
+            :value="form.food_product.license_no"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="LTO Validity"
+            :value="form.food_product.license_validity"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Email Address"
+            :value="form.food_product.contacts.email"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Landline Number"
+            :value="form.food_product.contacts.landline"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Fax Number"
+            :value="form.food_product.contacts.fax"
           ></v-text-field>
         </v-card-text>
         <v-divider></v-divider>
@@ -58,48 +95,50 @@
           <v-text-field
             readonly
             name="name"
-            label="Name of Establishment"
-            :value="form.estab_details.establishment_name"
+            label="Corresponding company activities"
+            :value="form.establisment_info.activity"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
-            label="Establishment Owner"
-            :value="form.estab_details.establishment_owner"
+            label="Source Type"
+            :value="form.establisment_info.type"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
-            label="TIN"
-            mask="###-###-###-###"
-            :value="form.estab_details.tin"
+            label="Country of Origin"
+            :value="form.establisment_info.origin_country"
           ></v-text-field>
           <v-text-field
             readonly
             name="Email"
-            label="Declared Capital"
-            :value="form.estab_details.email"
+            label="Directly Sourced"
+            :value="form.establisment_info.directly_source"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
-            label="Landline"
-            mask="(##) ####-####"
-            :value="form.estab_details.landline"
+            label="Supplier's Complete Name"
+            :value="form.establisment_info.supplier_name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
-            label="Fax Number"
-            mask="(##) ####-####"
-            :value="form.estab_details.fax"
+            label="Supplier's Complete Address"
+            :value="form.establisment_info.supplier_address"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
-            label="Mobile Number"
-            mask="(##) ####-####"
-            :value="form.estab_details.mobile"
+            label="Manufacturer's Complete Name"
+            :value="form.establisment_info.manufacturer_name"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Manufacturer's Complete Address"
+            :value="form.establisment_info.manufacturer_address"
           ></v-text-field>
         </v-card-text>
 
@@ -118,7 +157,7 @@
         <v-card-text v-if="show_part3">
           <v-data-table
             :headers="[{text:'Product Line', sortable: false,}, {text:'Remarks', sortable: false}]"
-            :items="form.estab_details.products"
+            :items="form.ingredients"
             hide-actions
             class="elevation-1"
           >
@@ -145,17 +184,16 @@
           <v-data-table
             :headers="[{text:'Type', sortable: false,}, 
                         {text:'Address', sortable: false},]"
-            :items="form.address_list"
+            :items="specs_list"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{ getEstablishmentType(props.item.type) }}</td>
-              <td>{{ props.item.address }}</td>
-              <!-- <td>{{ getCityName(props.item.city) }}</td>
-              <td>{{ getProvinceName(props.item.province) }}</td>
-              <td>{{ getRegionName(props.item.region) }}</td>
-              <td>{{ props.item.zipcode }}</td>-->
+              <!-- <td>{{ getEstablishmentType(props.item.type) }}</td>
+              <td>{{ props.item.address }}</td>-->
+              <td>{{props.item.prod_spec}}</td>
+              <td>{{props.item.parameter}}</td>
+              <td>{{props.item.specs}}</td>
             </template>
           </v-data-table>
         </v-card-text>
@@ -172,57 +210,60 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text class="compact-form" v-if="show_part5">
-          <v-text-field readonly name="name" label="Last Name" :value="form.auth_officer.lastname"></v-text-field>
           <v-text-field
             readonly
             name="name"
-            label="First Name"
-            :value="form.auth_officer.firstname"
+            label="Shelf Life Declaration (in Months)"
+            :value="form.shelf.declaration_date"
           ></v-text-field>
+          <v-text-field readonly name="name" label="Type" :value="form.shelf.type"></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Designation"
             :value="getDesignation(form.auth_officer.designation).name"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Email" :value="form.auth_officer.email"></v-text-field>
           <v-text-field
             readonly
             name="name"
-            label="Id Type"
-            :value="getIdType(form.auth_officer.id_type).name"
-          ></v-text-field>
-          <v-text-field readonly name="name" label="Id Number" :value="form.auth_officer.id_no"></v-text-field>
-          <v-text-field readonly name="name" label="Id Expiry" :value="form.auth_officer.id_expiry"></v-text-field>
-          <v-text-field
-            readonly
-            name="name"
-            label="Address"
-            :value="form.auth_officer.mail_add.address"
+            label="Packaging Material Type/Name"
+            :value="form.shelf.packaging_material"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
-            label="City"
-            :value="getCityName(form.auth_officer.mail_add.city)"
+            label="Description of Product in Commercial Presentation"
+            :value="form.shelf.description"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
-            label="Province"
-            :value="getProvinceName(form.auth_officer.mail_add.province)"
+            label="Storage Condition Requirements"
+            :value="form.shelf.storage_requirements"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
-            label="Region"
-            :value="getRegionName(form.auth_officer.mail_add.region)"
+            label="Function of the Food material"
+            :value="form.shelf.food_material"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
-            label="Zip Code"
-            :value="form.auth_officer.mail_add.zipcode"
+            label="Source of Allergen"
+            :value="form.shelf.allergen_source"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Lot Code and Interpretation"
+            :value="form.shelf.lot_code_interpretation"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Open Date Marking/ Expiry Date"
+            :value="form.shelf.date"
           ></v-text-field>
         </v-card-text>
         <v-divider></v-divider>
@@ -242,17 +283,14 @@
             :headers="[{text:'Designation', sortable: false,}, 
                         {text:'Lastname', sortable: false},
                         {text:'Firstname', sortable: false}]"
-            :items="form.qualified"
+            :items="nutritionServing"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{ getDesignation(props.item.designation).name }}</td>
-              <td>{{ props.item.lastname }}</td>
-              <td>{{ props.item.firstname }}</td>
-              <!-- <td>{{ props.item.middlename }}</td>
-              <td>{{ props.item.email }}</td>
-              <td>{{ props.item.tin }}</td>-->
+              <td>{{props.item.nut_info}}</td>
+              <td>{{props.item.aps}}</td>
+              <td>{{props.item.reni}}</td>
             </template>
           </v-data-table>
         </v-card-text>
@@ -269,23 +307,18 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part7">
-          <v-data-table
-            :headers="[{text:'Designation', sortable: false,}, 
-                        {text:'Lastname', sortable: false},
-                        {text:'Firstname', sortable: false}]"
-            :items="form.qualified"
-            hide-actions
-            class="elevation-1"
-          >
-            <template slot="items" slot-scope="props">
-              <td>{{ getDesignation(props.item.designation).name }}</td>
-              <td>{{ props.item.lastname }}</td>
-              <td>{{ props.item.firstname }}</td>
-              <!-- <td>{{ props.item.middlename }}</td>
-              <td>{{ props.item.email }}</td>
-              <td>{{ props.item.tin }}</td>-->
-            </template>
-          </v-data-table>
+          <v-text-field
+            readonly
+            name="name"
+            label="Claims"
+            :value="form.claims"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Description"
+            :value="form.desc"
+          ></v-text-field>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -466,17 +499,19 @@ export default {
       show_payment_summary: false,
       remaining_balance: 0.0,
       form: {
-        general_info: {},
-        estab_details: {},
-        auth_officer: {
-          mail_add: {}
-        }
+        food_product: {},
+        establishment_info: {},
+        product_specification: {},
+        nutrition_info: {},
+        for_ammendment: {}
       },
       case_details: {},
       payments: [],
+      claims: [],
       transaction: [],
-      uploaded_documents: [],
-      output_documents: []
+      documentary: [],
+      uploaded_files: [],
+      output_files: []
     };
   },
   created() {
@@ -486,7 +521,7 @@ export default {
     init() {
       this.form = this.$store.state.licenses.view_license;
       this.case_details = this.$store.state.case.view_case;
-      this.$store.dispatch("GET_REFERENCES");
+      this.$store.dispatch("GET_CERTIFICATE");
       //get uploaded documents
       if (this.form.uploaded_files) {
         this.form.uploaded_files.forEach(doc => {

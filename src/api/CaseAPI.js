@@ -17,10 +17,6 @@ export default class CaseAPI {
         return axios.get('lto-api/case/compliance')
     }
 
-    getComplyCertificate(){
-        return axios.get('certificate/case/compliance')
-    }
-
     getCertificateCases(cb) {
         cb();
         // axios.get('lto-api/case').then((result) => {
@@ -35,6 +31,7 @@ export default class CaseAPI {
     }
 
     uploadFile(comply) {
+        console.log("uploadFile : " + JSON.stringify(comply))
         return axios.post('documents/uploads?account_id=' + comply.case_no, comply.form_data)
     }
 

@@ -178,33 +178,33 @@ export default {
       //     }
       // },
 
-      food_product: {
-        type: "",
-        categorization: "",
-        brand_name: "",
-        product_name: "",
-        company: "",
-        address: "",
-        license_no: "",
-        license_validity: "",
-        years_applied: 0,
-        // object nalang contact
-        contacts: {}
-      },
-      // change to establishment
-      establisment_info: {
-        activity: "",
-        type: "",
-        // change country origin to string
-        origin_country: "",
-        directly_source: false,
-        manufacturer_name: "",
-        manufacturer_address: "",
-        supplier_name: "",
-        supplier_address: ""
-      },
-
-      ingredients: ["test"],
+  food_product: {
+      type: "",
+      categorization: "",
+      brand_name: "",
+      product_name: "",
+      company: "",
+      address: "",
+      license_no: "",
+      license_validity: "",
+      years_applied: 0,
+      // object nalang contact
+      contacts: {}
+  },
+  // change to establishment
+  establishment_info: {
+      activity: "",
+      type: "",
+      // change country origin to string
+      origin_country: "",
+      directly_source: false,
+      manufacturer_name: "",
+      manufacturer_address: "",
+      supplier_name: "",
+      supplier_address: ""
+  },
+  
+      ingredients: [],
 
       product_specification: {
         physical: {
@@ -279,15 +279,16 @@ export default {
         packaging_design: []
       },
       uploaded_files: [
-        {
-          originalname: "",
-          mimetype: "",
-          contentType: "",
-          location: "",
-          key: ""
-        }
-      ],
-      output_files: []
+    //     {
+    //     file_type: "",
+    //     originalname: "",
+    //     mimetype: "",
+    //     contentType: "",
+    //     location: "",
+    //     key: ""
+    // }
+    ],
+    output_files: []
     }
   }),
   created() {
@@ -352,6 +353,7 @@ export default {
     save() {
       this.showAppOverview = false;
       this.confirmDialog = true;
+      
       console.log("submit clicked: " + JSON.stringify(this.cert_form));
       this.$store.dispatch("SAVE_CERTIFICATE", this.cert_form);
     }

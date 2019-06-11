@@ -221,6 +221,12 @@ var router = new Router({
           component: () => import('@/views/app/passwordSettings/ChangePassword.vue')
         },
         {
+          path: 'settings/notification',
+          name: 'Settings',
+          beforeEnter: dropBreadcrumbs,
+          component: () => import('@/views/app/Subscription.vue')
+        },
+        {
           path: 'logout',
           name: 'Logout',
           component: () => import('@/views/app/UserPortfolio.vue')
