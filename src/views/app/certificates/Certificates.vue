@@ -175,7 +175,7 @@ export default {
       },
       headers: [
         { text: "Case No", value: "case_no" },
-        { text: "Type", value: "application_type" },
+        { text: "Application Type", value: "application_type" },
         { text: "Status", value: "status", sortable: true },
         // { text: "Current Task", value: "current_task" },
         // { text: "Date Created", value: "date_created" },
