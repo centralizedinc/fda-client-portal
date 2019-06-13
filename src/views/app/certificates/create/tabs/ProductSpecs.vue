@@ -72,6 +72,8 @@
                         hint="You are required to fill in both Chemical and Microbiological specification"
                         persistent-hint
                         :items="prodSpecs"
+                        item-text="name"
+                        item-value="_id"
                         autocomplete
                       ></v-autocomplete>
                     </v-flex>
@@ -83,6 +85,8 @@
                         label="Parameter"
                         persistent-hint
                         :items="physicalParameter"
+                        item-text="name"
+                        item-value="_id"
                         autocomplete
                       ></v-autocomplete>
                     </v-flex>
@@ -117,7 +121,7 @@
 
 <script>
 export default {
-  props: ["form"],
+  props: ["form", "prodSpecs" , "physicalParameter"],
   data: () => ({
     dialogSpecs: false,
     selected_specs: "",
@@ -128,9 +132,9 @@ export default {
     specs_list: [],
     physicalParameter: [],
     prodSpecs: [
-      "Physical (e.g. powder, liquid, gel, etc)",
-      "Chemical (e.g. Moisture Content, Water Activity, pH, etc)",
-      "Microbiological (e.g. Coliforms)"
+      // "Physical (e.g. powder, liquid, gel, etc)",
+      // "Chemical (e.g. Moisture Content, Water Activity, pH, etc)",
+      // "Microbiological (e.g. Coliforms)"
     ],
     headers: [
       {
@@ -150,21 +154,34 @@ export default {
       required: value => !!value || "This field is required"
     }
   }),
+  created() {
+    this.init();
+  },
   methods: {
     addNewSpecs() {
       this.add = true;
       this.dialogSpecs = true;
+    },
+    init() {
+      this.prodSpecs = this.$store.state.foodCertificate.product_specification;
+      console.log(
+        "food specification data: " + JSON.stringify(this.prodSpecs)
+      );
+      // this.physicalParameter = this.$store.state.foodCertificate.physical_parameter;
+      // console.log("physical parameter: " + JSON.stringify(this.physicalParameter));
+      // this.vm_items = this.$store.state.foodCertificate.minerals;
+      // console.log("minerals data: " + JSON.stringify(this.minerals));
     }
   },
-  watch: {
-    selected_specs(val) {
-      if (val === "Physical (e.g. powder, liquid, gel, etc)") {
-        this.physicalParameter = ["Color", "Odor", "Taste", "Texture", "Form"];
-      } else {
-        this.selected = false;
-      }
-    }
-  }
+  // watch: {
+  //   selected_specs(val) {
+  //     if (val === "Physical (e.g. powder, liquid, gel, etc)") {
+  //       this.physicalParameter = ["Color", "Odor", "Taste", "Texture", "Form"];
+  //     } else {
+  //       this.selected = false;
+  //     }
+  //   }
+  // }
 };
 </script>
 

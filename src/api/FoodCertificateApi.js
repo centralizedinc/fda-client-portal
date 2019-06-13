@@ -84,6 +84,21 @@ export default class CertificateAPI {
           });
       }
 
+      physicalParameter(cb) {
+        console.log("Food Certificates API!!!")
+        axios.get('core/physicalReference')
+          .then(result => {
+              console.log("physical parameter result: " + JSON.stringify(result))
+            if (result.data.success) {
+              cb(result.data.model)
+            }
+          })
+          .catch(err => {
+            console.log(JSON.stringify(err));
+            cb(null, err)
+          });
+      }
+
       nutritionInformation(cb) {
         console.log("Food Certificates API!!!")
         axios.get('core/nutrition')

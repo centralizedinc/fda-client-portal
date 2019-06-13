@@ -24,6 +24,9 @@
             hide-selected
             label="Source Type"
             v-model="form.establishment_info.type"
+            :items="source"
+            item-text="name"
+            item-value="_id"
           ></v-autocomplete>
         </v-flex>
         <v-flex xs6>
@@ -36,6 +39,9 @@
             hide-selected
             v-model="form.establishment_info.origin_country"
             label="Country of Origin"
+            :items="origin"
+            item-text="name"
+            item-value="_id"
           ></v-autocomplete>
         </v-flex>
         <v-flex xs6>
@@ -144,7 +150,7 @@ export default {
   components: {
     Uploader: () => import("@/components/Uploader")
   },
-  props: ["form"],
+  props: ["form", "source", "origin"],
   data: () => ({
     uploads: false,
     valid: true,
