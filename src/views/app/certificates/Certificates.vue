@@ -209,6 +209,7 @@ export default {
       this.dialog = false;
     },
     loadForm(application_id) {
+      console.log("load form")
       // this.preview = item;
       this.loading = true;
       // this.$store
