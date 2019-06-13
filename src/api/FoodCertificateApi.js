@@ -158,4 +158,19 @@ export default class CertificateAPI {
             cb(null, err)
           });
       }
+
+      companyActivity(cb) {
+        console.log("Food Certificates API!!!")
+        axios.get('core/company/activity')
+          .then(result => {
+              console.log("company activity result: " + JSON.stringify(result))
+            if (result.data.success) {
+              cb(result.data.model)
+            }
+          })
+          .catch(err => {
+            console.log(JSON.stringify(err));
+            cb(null, err)
+          });
+      }
 }
