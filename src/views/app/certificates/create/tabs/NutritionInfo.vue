@@ -88,12 +88,12 @@
         </v-flex>
 
         <v-flex xs12>
-          <v-data-table :headers="headers" :items="vitamins" hide-actions class="elevation-1">
+          <v-data-table :headers="headers" :items="form.nutrition_info.servings" hide-actions class="elevation-1">
             <template slot="items" slot-scope="props">
               <tr @click="viewItem(props.item, props.index)" style="cursor:pointer">
-                <td>{{props.item.nut_info}}</td>
-                <td>{{props.item.aps}}</td>
-                <td>{{props.item.reni}}</td>
+                <td>{{props.item.type}}</td>
+                <td>{{props.item.amount_per_serving}}</td>
+                <td>{{props.item.percent}}</td>
               </tr>
             </template>
           </v-data-table>
@@ -114,24 +114,38 @@
                     <v-flex xs12>
                       <v-autocomplete
                         outline
-                        label="Vitamins & Minerals"
+                        label="Vitamins or Minerals"
                         hint="Choose one"
                         persistent-hint
-                        :items="vitamins"
+                        v-model="choice"
+                        :items="vitMin"
                         item-text="name"
                         item-value="_id"
                         autocomplete
                       ></v-autocomplete>
                     </v-flex>
-
                     <v-flex xs12>
-                      <v-text-field outline name="name" label="Amount per Serving" id="id"></v-text-field>
+                      <v-autocomplete
+                        outline
+                        label="Nutrision"
+                        hint="Choose one"
+                        persistent-hint
+                        :items="vitMinHolder"
+                        v-model="type"
+                        item-text="name"
+                        item-value="_id"
+                        autocomplete
+                      ></v-autocomplete>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-text-field outline name="name" v-model="amount_per_serving" label="Amount per Serving" id="id"></v-text-field>
                     </v-flex>
                     <v-flex xs12>
                       <v-text-field
                         outline
                         name="name"
                         hint="N/A if not applicable"
+                        v-model="percent"
                         label="%RENI, for Locally Manufactured Products "
                         id="id"
                       ></v-text-field>
@@ -143,8 +157,8 @@
             <v-divider></v-divider>
             <v-card-actions v-if="add">
               <v-spacer></v-spacer>
-              <v-btn outline color="primary" @click="dialogSpecs=false">Cancel</v-btn>
-              <v-btn color="primary">Add</v-btn>
+              <v-btn outline color="primary" @click="dialogVm=false">Cancel</v-btn>
+              <v-btn color="primary" @click="addVitMin">Add</v-btn>
             </v-card-actions>
             <v-card-actions v-else>
               <v-spacer></v-spacer>
@@ -170,6 +184,21 @@ export default {
     snackColor: "",
     snackText: "",
     valid: true,
+    vitMinHolder: {},
+    type: "",
+    amount_per_serving: "",
+    percent: "",
+    choice: null,
+    vitMin: [
+      {
+        name: "Vitamin",
+        _id: 0
+      },
+      {
+        name: "Minerals",
+        _id: 1
+      }
+    ],
     rules: {
       required: value => !!value || "This field is required",
       counter: value => value.length <= 5 || "Max 5 characters"
@@ -269,6 +298,14 @@ export default {
       this.add = true;
       this.dialogVm = true;
     },
+    addVitMin() {
+      this.dialogVm = false;
+      this.form.nutrition_info.servings.push({
+        type: this.type,
+        amount_per_serving: this.amount_per_serving,
+        percent: this.percent
+      })
+    },
     save() {
       this.snack = true;
       this.snackColor = "success";
@@ -297,6 +334,20 @@ export default {
       console.log("vitamins data: " + JSON.stringify(this.vitamins));
       this.minerals = this.$store.state.foodCertificate.minerals;
       console.log("minerals data: " + JSON.stringify(this.minerals));
+      
+      
+
+    }
+  },
+  watch: {
+    choice(val){
+      this.vitMinHolder = {}
+      if(val == 0){
+        this.vitMinHolder = this.vitamins
+      }else if(val == 1){
+        this.vitMinHolder = this.minerals
+      }
+
     }
   }
 };

@@ -128,16 +128,17 @@
             </v-form>
           </v-card-text>
           <v-divider></v-divider>
-          <v-card-actions v-if="add">
+          <!-- v-if="add" -->
+          <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn outline color="primary" @click="dialogIngredients=false">Cancel</v-btn>
             <v-btn color="primary" @click="addIngredients">Add</v-btn>
           </v-card-actions>
-          <v-card-actions v-else>
+          <!-- <v-card-actions v-else>
             <v-spacer></v-spacer>
             <v-btn outline color="error">Delete</v-btn>
             <v-btn color="primary">Edit</v-btn>
-          </v-card-actions>
+          </v-card-actions> -->
         </v-card>
       </v-dialog>
     </v-layout>

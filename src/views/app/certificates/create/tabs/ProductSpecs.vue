@@ -78,12 +78,13 @@
                       ></v-autocomplete>
                     </v-flex>
                     <!-- show only for physical -->
-                    <v-flex xs12 v-if="selected">
+                    <v-flex xs12 v-if="selected === true">
                       <v-autocomplete
                         outline
                         :rules="[rules.required]"
                         label="Parameter"
                         persistent-hint
+                        v-model="parameter"
                         :items="physicalParameter"
                         item-text="name"
                         item-value="_id"
@@ -92,10 +93,10 @@
                     </v-flex>
                     <!-- default -->
                     <v-flex xs12 v-else>
-                      <v-text-field outline name="name" label="Parameter" id="id"></v-text-field>
+                      <v-text-field outline name="name" v-model="parameter" label="Parameter" id="id"></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-text-field outline name="name" label="Specification" id="id"></v-text-field>
+                      <v-text-field outline name="name" v-model="specification" label="Specification" id="id"></v-text-field>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -105,7 +106,7 @@
             <v-card-actions v-if="add">
               <v-spacer></v-spacer>
               <v-btn outline color="primary" @click="dialogSpecs=false">Cancel</v-btn>
-              <v-btn color="primary">Add</v-btn>
+              <v-btn color="primary" @click="saveSpecs">Add</v-btn>
             </v-card-actions>
             <v-card-actions v-else>
               <v-spacer></v-spacer>
@@ -128,6 +129,10 @@ export default {
     selected: true,
     add: true,
     index: null,
+    spec: null,
+    physical: "",
+    parameter: "",
+    specification: "",
     valid: true,
     specs_list: [],
     physicalParameter: [],
@@ -161,6 +166,9 @@ export default {
     addNewSpecs() {
       this.add = true;
       this.dialogSpecs = true;
+      this.selected_specs = null;
+      this.parameter = null;
+      this.specification = null;
     },
     init() {
       this.prodSpecs = this.$store.state.foodCertificate.product_specification;
@@ -171,17 +179,63 @@ export default {
       // console.log("physical parameter: " + JSON.stringify(this.physicalParameter));
       // this.vm_items = this.$store.state.foodCertificate.minerals;
       // console.log("minerals data: " + JSON.stringify(this.minerals));
+    },
+    saveSpecs() {
+      this.dialogSpecs = false
+      console.log("this spec data: " + JSON.stringify(this.spec)) 
+      if(this.spec.name == "Physical"){
+        console.log("save specs physical")
+        var phy = this.physicalParameter.find(x => x._id === this.parameter) 
+        console.log("selected physical data: " + JSON.stringify(this.parameter))
+        console.log("physical data: " + JSON.stringify(this.physicalParameter))
+        console.log("this is phy data: " + JSON.stringify(phy))
+        if(phy.name == "Color"){
+          this.form.product_specification.physical.color = this.specification
+        }else if(phy.name == "Odor"){
+          this.form.product_specification.physical.odor = this.specification
+        }else if(phy.name == "Taste"){
+          this.form.product_specification.physical.taste = this.specification
+        }else if(phy.name == "Texture"){
+          this.form.product_specification.physical.texture = this.specification
+        }else if(phy.name == "Form"){
+          this.form.product_specification.physical.form = this.specification
+        }
+        // specification
+      }else if(this.spec.name == "Chemical"){
+        this.form.product_specification.chemical.push({
+          parameter: this.parameter,
+          specification: this.specification
+        })
+        console.log("save specs chemical")
+      }else if(this.spec.name == "Microbiological"){
+        this.form.product_specification.microbiological.push({
+          parameter: this.parameter,
+          specification: this.specification
+        })
+        console.log("save specs microbiological")
+      }
+
+      this.specs_list.push({
+        prod_spec: this.specs_list,
+        parameter: this.parameter,
+        specs: this.specification
+      })
     }
   },
-  // watch: {
-  //   selected_specs(val) {
-  //     if (val === "Physical (e.g. powder, liquid, gel, etc)") {
-  //       this.physicalParameter = ["Color", "Odor", "Taste", "Texture", "Form"];
-  //     } else {
-  //       this.selected = false;
-  //     }
-  //   }
-  // }
+  watch: {
+    selected_specs(val) {
+      this.spec = this.prodSpecs.find(x => x._id === val)
+      console.log("selected data: " + JSON.stringify(this.spec))
+      if (this.spec.name === "Physical") {
+        console.log("selected specs  true data: " + JSON.stringify(val))
+        this.selected = true
+        // this.physicalParameter = ["Color", "Odor", "Taste", "Texture", "Form"];
+      } else {
+        console.log("selected specs false data: " + JSON.stringify(val))
+        this.selected = false;
+      }
+    }
+  }
 };
 </script>
 

@@ -277,6 +277,24 @@ export default {
             return "Yes"
           else
             return "No"
+        },
+        foodProductType(data){
+          var foodProduct = this.$store.state.foodCertificate.food_product
+          foodProduct.forEach(product => {
+            console.log("food product type: " + JSON.stringify(product))
+          })
+        },
+        productSpecs(spec){
+          var prodSpec = this.$store.state.foodCertificate.product_specification
+          if (!prodSpec) return {}
+          var prodSpec = prodSpec.find(x => x._id === spec)
+          return prodSpec ? prodSpec : {}
+        },
+        physicalParameter(spec){
+          var phyParam = this.$store.state.foodCertificate.physical_parameter
+          if (!phyParam) return {}
+          var phyParam = phyParam.find(x => x._id === spec)
+          return phyParam ? phyParam : {}
         }
       }
     });
