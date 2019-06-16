@@ -45,9 +45,9 @@
             readonly
             name="name"
             label="Company Name (as listed in LTO)"
-            :value="form.food_product.company"
+            :value="formatDate(form.food_product.company)"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Region" :value="form.food_product.address"></v-text-field>
+          <v-text-field readonly name="name" label="Region" :value="getRegionName(form.food_product.address)"></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -76,7 +76,7 @@
             readonly
             name="name"
             label="Fax Number"
-            :value="form.food_product.contacts.fax"
+            :value="form.food_product.contacts.mobile"
           ></v-text-field>
         </v-card-text>
         <v-divider></v-divider>
@@ -96,49 +96,49 @@
             readonly
             name="name"
             label="Corresponding company activities"
-            :value="form.establisment_info.activity"
+            :value="form.establishment_info.activity"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Source Type"
-            :value="form.establisment_info.type"
+            :value="form.establishment_info.type"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Country of Origin"
-            :value="form.establisment_info.origin_country"
+            :value="form.establishment_info.origin_country"
           ></v-text-field>
           <v-text-field
             readonly
             name="Email"
             label="Directly Sourced"
-            :value="form.establisment_info.directly_source"
+            :value="form.establishment_info.directly_source"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Supplier's Complete Name"
-            :value="form.establisment_info.supplier_name"
+            :value="form.establishment_info.supplier_name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Supplier's Complete Address"
-            :value="form.establisment_info.supplier_address"
+            :value="form.establishment_info.supplier_address"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Manufacturer's Complete Name"
-            :value="form.establisment_info.manufacturer_name"
+            :value="form.establishment_info.manufacturer_name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Manufacturer's Complete Address"
-            :value="form.establisment_info.manufacturer_address"
+            :value="form.establishment_info.manufacturer_address"
           ></v-text-field>
         </v-card-text>
 
@@ -162,7 +162,7 @@
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{ getProdLine(props.item.prod_line).name }}</td>
+              <!-- <td>{{ getProdLine(props.item.prod_line).name }}</td> -->
               <td>{{ props.item.remarks }}</td>
             </template>
           </v-data-table>
@@ -182,18 +182,19 @@
         <v-divider></v-divider>
         <v-card-text v-if="show_part4">
           <v-data-table
-            :headers="[{text:'Type', sortable: false,}, 
-                        {text:'Address', sortable: false},]"
-            :items="specs_list"
+            :headers="[{text:'Color', sortable: false,}, 
+                        {text:'Odor', sortable: false},{text:'Taste', sortable: false},{text:'Texture', sortable: false},]"
+            :items="product_specification"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
               <!-- <td>{{ getEstablishmentType(props.item.type) }}</td>
               <td>{{ props.item.address }}</td>-->
-              <td>{{props.item.prod_spec}}</td>
-              <td>{{props.item.parameter}}</td>
-              <td>{{props.item.specs}}</td>
+              <td>{{props.item.physical.color}}</td>
+              <td>{{props.item.physical.odor}}</td>
+              <td>{{props.item.physical.taste}}</td>
+              <td>{{props.item.physical.texture}}</td>
             </template>
           </v-data-table>
         </v-card-text>
@@ -214,15 +215,9 @@
             readonly
             name="name"
             label="Shelf Life Declaration (in Months)"
-            :value="form.shelf.declaration_date"
+            :value="formatDate(form.shelf.declaration_date)"
           ></v-text-field>
           <v-text-field readonly name="name" label="Type" :value="form.shelf.type"></v-text-field>
-          <v-text-field
-            readonly
-            name="name"
-            label="Designation"
-            :value="getDesignation(form.auth_officer.designation).name"
-          ></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -263,7 +258,7 @@
             readonly
             name="name"
             label="Open Date Marking/ Expiry Date"
-            :value="form.shelf.date"
+            :value="formatDate(form.shelf.date)"
           ></v-text-field>
         </v-card-text>
         <v-divider></v-divider>
@@ -280,17 +275,17 @@
         <v-divider></v-divider>
         <v-card-text v-if="show_part6">
           <v-data-table
-            :headers="[{text:'Designation', sortable: false,}, 
-                        {text:'Lastname', sortable: false},
-                        {text:'Firstname', sortable: false}]"
-            :items="nutritionServing"
+            :headers="[{text:'Serving Size', sortable: false,}, 
+                        {text:'Serving Per Pack', sortable: false},
+                        {text:'Servings Amount', sortable: false}]"
+            :items="nutrition_info"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{props.item.nut_info}}</td>
-              <td>{{props.item.aps}}</td>
-              <td>{{props.item.reni}}</td>
+              <td>{{props.item.serving_size}}</td>
+              <td>{{props.item.serving_per_pack}}</td>
+              <td>{{props.item.servings}}</td>
             </template>
           </v-data-table>
         </v-card-text>
@@ -307,18 +302,8 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part7">
-          <v-text-field
-            readonly
-            name="name"
-            label="Claims"
-            :value="form.claims"
-          ></v-text-field>
-          <v-text-field
-            readonly
-            name="name"
-            label="Description"
-            :value="form.desc"
-          ></v-text-field>
+          <v-text-field readonly name="name" label="Claims" :value="form.claims.claims"></v-text-field>
+          <v-text-field readonly name="name" label="Description" :value="form.claims.desc"></v-text-field>
         </v-card-text>
       </v-card>
     </v-flex>
@@ -347,7 +332,7 @@
               class="elevation-1"
             >
               <template slot="items" slot-scope="props">
-                <td>{{ getTask(props.item.task_id).name }}</td>
+                <!-- <td>{{ getTask(props.item.task_id).name }}</td> -->
                 <td>{{ formatDate(props.item.date_started) }}</td>
                 <td>{{ formatDate(props.item.date_completed) }}</td>
                 <td>{{ props.item.remarks }}</td>
@@ -416,7 +401,7 @@
             <v-card-text v-if="show_documents">
               <v-container grid-list-sm fluid>
                 <v-layout row wrap>
-                  <v-flex v-for="(n, indx) in uploaded_documents" :key="indx" xs4 d-flex>
+                  <v-flex v-for="(n, indx) in uploaded_files" :key="indx" xs4 d-flex>
                     <v-card
                       tile
                       class="d-flex"
@@ -450,7 +435,7 @@
             <v-card-text v-if="show_generated">
               <v-container grid-list-sm fluid>
                 <v-layout row wrap>
-                  <v-flex v-for="(n, indx) in output_documents" :key="indx" xs4 d-flex>
+                  <v-flex v-for="(n, indx) in output_files" :key="indx" xs4 d-flex>
                     <v-card
                       tile
                       class="d-flex"
@@ -499,19 +484,15 @@ export default {
       show_payment_summary: false,
       remaining_balance: 0.0,
       form: {
-        food_product: {},
-        establishment_info: {},
-        product_specification: {},
-        nutrition_info: {},
-        for_ammendment: {}
+        // food_product: {},
+        // establishment_info: {},
+        // product_specification: {},
+        // nutrition_info: {},
+        // for_ammendment: {}
       },
       case_details: {},
       payments: [],
-      claims: [],
       transaction: [],
-      documentary: [],
-      uploaded_files: [],
-      output_files: []
     };
   },
   created() {
@@ -519,127 +500,128 @@ export default {
   },
   methods: {
     init() {
-      this.form = this.$store.state.licenses.view_license;
-      this.case_details = this.$store.state.case.view_case;
-      this.$store.dispatch("GET_CERTIFICATE");
+      this.form = this.$store.state.certificate.view;
+      console.log("app overview form data: " + JSON.stringify(this.form));
+      this.case_details = this.$store.state.certificate.cases;
+      // this.$store.dispatch("GET_CERTIFICATE_BY_CASE_NO");
       //get uploaded documents
-      if (this.form.uploaded_files) {
-        this.form.uploaded_files.forEach(doc => {
-          if (doc.location) {
-            this.uploaded_documents.push({
-              file_name: doc.originalname,
-              type: doc.contentType,
-              location: doc.location
-            });
-          }
-        });
-      }
-      //get output documents
-      if (this.form.output_files) {
-        this.form.output_files.forEach(doc => {
-          if (doc.location) {
-            this.output_documents.push({
-              file_name: doc.originalname,
-              type: doc.contentType,
-              location: doc.location
-            });
-          }
-        });
-      }
-      //get payment details
-      this.$store
-        .dispatch("FIND_PAYMENTS_BY_CASENO", this.form.case_no)
-        .then(result => {
-          if (result.data.success) {
-            this.payments = result.data.model;
-            this.payments.forEach(data => {
-              if (data.payment_details.status != 0) {
-                this.transaction.push(data);
-              }
-            });
-            console.log(
-              "find payment by case number: " + JSON.stringify(this.payments)
-            );
-          } else {
-            this.$notifyError(result.data.errors);
-          }
-        })
-        .catch(err => {
-          console.log(err);
-          this.$notifyError(err);
-        });
-    },
-    viewFile(url) {
-      window.open(url, "_blank");
-    },
-    remainingBalance() {
-      console.log("case details: " + JSON.stringify(this.case_details));
-      console.log("form details: " + JSON.stringify(this.form));
-      console.log("payment details: " + JSON.stringify(this.payments));
-      var credit = 0;
-      var debit = 0;
-      this.payments.forEach(compute => {
-        if (compute.payment_details.status != 0) {
-          console.log("compute details data: " + JSON.stringify(compute));
-          credit += compute.payment_details.total_amount;
-        } else {
-          debit = compute.transaction_details.order_payment.total_amount;
-        }
-      });
-      console.log("this is debit: " + JSON.stringify(debit));
-      console.log("this. is credit: " + JSON.stringify(credit));
-      this.remaining_balance = debit - credit;
-      console.log(
-        "show payment summary: " + JSON.stringify(this.remaining_balance)
-      );
-      if (
-        this.remaining_balance === null ||
-        this.remaining_balance === undefined ||
-        this.remaining_balance === 0 ||
-        debit === null ||
-        debit === undefined ||
-        debit === 0 ||
-        debit === credit
-      ) {
-        console.log("show payment summary false ");
-        this.remaining_balance = 0.0;
-        if (credit === 0) {
-          this.remaining_balance = debit;
-        }
-        this.show_payment_summary = false;
-      } else {
-        console.log("show payment summary true ");
-        this.show_payment_summary = true;
-      }
+      //     if (this.form.uploaded_files) {
+      //       this.form.uploaded_files.forEach(doc => {
+      //         if (doc.location) {
+      //           this.uploaded_documents.push({
+      //             file_name: doc.originalname,
+      //             type: doc.contentType,
+      //             location: doc.location
+      //           });
+      //         }
+      //       });
+      //     }
+      //     //get output documents
+      //     if (this.form.output_files) {
+      //       this.form.output_files.forEach(doc => {
+      //         if (doc.location) {
+      //           this.output_documents.push({
+      //             file_name: doc.originalname,
+      //             type: doc.contentType,
+      //             location: doc.location
+      //           });
+      //         }
+      //       });
+      //     }
+      //     //get payment details
+      //     this.$store
+      //       .dispatch("FIND_PAYMENTS_BY_CASENO", this.form.case_no)
+      //       .then(result => {
+      //         if (result.data.success) {
+      //           this.payments = result.data.model;
+      //           this.payments.forEach(data => {
+      //             if (data.payment_details.status != 0) {
+      //               this.transaction.push(data);
+      //             }
+      //           });
+      //           console.log(
+      //             "find payment by case number: " + JSON.stringify(this.payments)
+      //           );
+      //         } else {
+      //           this.$notifyError(result.data.errors);
+      //         }
+      //       })
+      //       .catch(err => {
+      //         console.log(err);
+      //         this.$notifyError(err);
+      //       });
+      //   },
+      //   viewFile(url) {
+      //     window.open(url, "_blank");
+      //   },
+      //   remainingBalance() {
+      //     console.log("case details: " + JSON.stringify(this.case_details));
+      //     console.log("form details: " + JSON.stringify(this.form));
+      //     console.log("payment details: " + JSON.stringify(this.payments));
+      //     var credit = 0;
+      //     var debit = 0;
+      //     this.payments.forEach(compute => {
+      //       if (compute.payment_details.status != 0) {
+      //         console.log("compute details data: " + JSON.stringify(compute));
+      //         credit += compute.payment_details.total_amount;
+      //       } else {
+      //         debit = compute.transaction_details.order_payment.total_amount;
+      //       }
+      //     });
+      //     console.log("this is debit: " + JSON.stringify(debit));
+      //     console.log("this. is credit: " + JSON.stringify(credit));
+      //     this.remaining_balance = debit - credit;
+      //     console.log(
+      //       "show payment summary: " + JSON.stringify(this.remaining_balance)
+      //     );
+      //     if (
+      //       this.remaining_balance === null ||
+      //       this.remaining_balance === undefined ||
+      //       this.remaining_balance === 0 ||
+      //       debit === null ||
+      //       debit === undefined ||
+      //       debit === 0 ||
+      //       debit === credit
+      //     ) {
+      //       console.log("show payment summary false ");
+      //       this.remaining_balance = 0.0;
+      //       if (credit === 0) {
+      //         this.remaining_balance = debit;
+      //       }
+      //       this.show_payment_summary = false;
+      //     } else {
+      //       console.log("show payment summary true ");
+      //       this.show_payment_summary = true;
+      //     }
 
-      return this.remaining_balance;
-    },
-    paymentSummary() {
-      console.log(
-        "payment summary data: " +
-          JSON.stringify(this.$store.state.payments.fee)
-      );
-      console.log("form details: " + JSON.stringify(this.form));
-      console.log("case details: " + JSON.stringify(this.case_details));
-      this.$store.commit("SET_FORM", this.form);
-      this.$store.commit("FEES", {
-        _id: "5cad5db243fea80e24d01454",
-        description: "Another Transaction",
-        appType: this.form.application_type,
-        productType: this.form.general_info.product_type,
-        primaryActivity: this.form.general_info.primary_activity,
-        declaredCapital: this.form.general_info.product_type,
-        created_by: "default",
-        date_created: new Date(),
-        total: this.remaining_balance,
-        others: 0.0,
-        interest: 0.0,
-        surcharge: 0.0,
-        yearsApplied: (this.form.application_type = 2 ? 2 : 3),
-        lrf: 0.0,
-        fee: 0.0
-      });
-      this.$router.push("/app/licenses/pay");
+      //     return this.remaining_balance;
+      //   },
+      //   paymentSummary() {
+      //     console.log(
+      //       "payment summary data: " +
+      //         JSON.stringify(this.$store.state.payments.fee)
+      //     );
+      //     console.log("form details: " + JSON.stringify(this.form));
+      //     console.log("case details: " + JSON.stringify(this.case_details));
+      //     this.$store.commit("SET_FORM", this.form);
+      //     this.$store.commit("FEES", {
+      //       _id: "5cad5db243fea80e24d01454",
+      //       description: "Another Transaction",
+      //       appType: this.form.application_type,
+      //       productType: this.form.general_info.product_type,
+      //       primaryActivity: this.form.general_info.primary_activity,
+      //       declaredCapital: this.form.general_info.product_type,
+      //       created_by: "default",
+      //       date_created: new Date(),
+      //       total: this.remaining_balance,
+      //       others: 0.0,
+      //       interest: 0.0,
+      //       surcharge: 0.0,
+      //       yearsApplied: (this.form.application_type = 2 ? 2 : 3),
+      //       lrf: 0.0,
+      //       fee: 0.0
+      //     });
+      //     this.$router.push("/app/licenses/pay");
     }
   }
 };
