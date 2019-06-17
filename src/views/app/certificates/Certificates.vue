@@ -245,7 +245,114 @@ export default {
           console.log(
             "############## ACTIVE CERTIFICATES: " + JSON.stringify(this.items)
           );
+          return this.$store.dispatch("GET_FOOD_PRODUCT");
         })
+        .then(result => {
+          // this.food_product = this.$store.state.foodCertificate.food_product
+          console.log(
+            "####food Product###" +
+              JSON.stringify(this.$store.state.foodCertificate.food_product)
+          );
+          return this.$store.dispatch("GET_FOOD_CATEGORY");
+        })
+        .then(result => {
+          // this.category = this.$store.state.foodCertificate.food_category
+          console.log(
+            "####food category###" +
+              JSON.stringify(this.$store.state.foodCertificate.food_category)
+          );
+          return this.$store.dispatch("GET_REGION");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_SHELF_LIFE");
+        })
+        .then(result => {
+          // this.shelf_life = this.$store.state.foodCertificate.shelf_life
+          console.log(
+            "####shelf life###" +
+              JSON.stringify(this.$store.state.foodCertificate.shelf_life)
+          );
+          return this.$store.dispatch("GET_SOURCE");
+        })
+        .then(result => {
+          // this.source = this.$store.state.foodCertificate.source
+          console.log(
+            "####source###" +
+              JSON.stringify(this.$store.state.foodCertificate.source)
+          );
+          return this.$store.dispatch("GET_PRODUCT_SPECIFICATION");
+        })
+        .then(result => {
+          // this.product_specification = this.$store.state.foodCertificate.product_specification
+          console.log(
+            "####product specification###" +
+              JSON.stringify(
+                this.$store.state.foodCertificate.product_specification
+              )
+          );
+          return this.$store.dispatch("GET_NUTRITION_INFORMATION");
+        })
+        .then(result => {
+          // this.nutrition_information = this.$store.state.foodCertificate.nutrition_information
+          console.log(
+            "####nutrition information###" +
+              JSON.stringify(
+                this.$store.state.foodCertificate.nutrition_information
+              )
+          );
+          return this.$store.dispatch("GET_NUTRITION_HEALTH_CLAIMS");
+        })
+        .then(result => {
+          // this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims
+          console.log(
+            "####nutrition health claims###" +
+              JSON.stringify(
+                this.$store.state.foodCertificate.nutrition_health_claims
+              )
+          );
+          return this.$store.dispatch("GET_VITAMINS");
+        })
+        .then(result => {
+          // this.vitamins = this.$store.state.foodCertificate.vitamins
+          console.log(
+            "####Vitamins###" +
+              JSON.stringify(this.$store.state.foodCertificate.vitamins)
+          );
+          return this.$store.dispatch("GET_MINERALS");
+        })
+        .then(result => {
+          // this.minerals = this.$store.state.foodCertificate.minerals
+          console.log(
+            "####minerals###" +
+              JSON.stringify(this.$store.state.foodCertificate.minerals)
+          );
+          return this.$store.dispatch("GET_ORIGIN");
+        })
+        .then(result => {
+          // this.origin = this.$store.state.places.origin
+          console.log(
+            "####origin###" + JSON.stringify(this.$store.state.places.origin)
+          );
+          return this.$store.dispatch("GET_PHYSICAL_PARAMETER");
+        })
+        .then(result => {
+          // this.physical_parameter = this.$store.state.foodCertificate.physical_parameter
+          console.log(
+            "####physical parameter###" +
+              JSON.stringify(
+                this.$store.state.foodCertificate.physical_parameter
+              )
+          );
+          return this.$store.dispatch("GET_COMPANY_ACTIVITY");
+        })
+        .then(result => {
+          // this.company_activity = this.$store.state.foodCertificate.company_activity
+          console.log(
+            "####company activity###" +
+              JSON.stringify(this.$store.state.foodCertificate.company_activity)
+          );
+        })
+
         .catch(error => {
           this.loading = false;
         });
