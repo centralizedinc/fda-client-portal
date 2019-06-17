@@ -462,19 +462,19 @@ export default {
       show_payment_summary: false,
       remaining_balance: 0.0,
       form: {
-        food_product: {},
-        establishment_info: {},
-        product_specification: {},
-        nutrition_info: {},
-        for_ammendment: {}
+        // food_product: {},
+        // establishment_info: {},
+        // product_specification: {},
+        // nutrition_info: {},
+        // for_ammendment: {}
       },
       case_details: {},
       payments: [],
       claims: [],
       transaction: [],
-      documentary: [],
-      uploaded_files: [],
-      output_files: [],
+      // documentary: [],
+      // uploaded_files: [],
+      // output_files: [],
       fees_form: {}
     };
   },
@@ -483,33 +483,37 @@ export default {
   },
   methods: {
     init() {
-      this.form = this.$store.state.licenses.view_license;
-      this.case_details = this.$store.state.case.view_case;
-      this.$store.dispatch("GET_CERTIFICATE");
-      //get uploaded documents
-      if (this.form.uploaded_files) {
-        this.form.uploaded_files.forEach(doc => {
-          if (doc.location) {
-            this.uploaded_documents.push({
-              file_name: doc.originalname,
-              type: doc.contentType,
-              location: doc.location
-            });
-          }
-        });
-      }
-      //get output documents
-      if (this.form.output_files) {
-        this.form.output_files.forEach(doc => {
-          if (doc.location) {
-            this.output_documents.push({
-              file_name: doc.originalname,
-              type: doc.contentType,
-              location: doc.location
-            });
-          }
-        });
-      }
+      this.form = this.$store.state.certificate.view;
+      console.log("app overview form data: " + JSON.stringify(this.form));
+      this.case_details = this.$store.state.certificate.cases;
+
+      // this.form = this.$store.state.licenses.view_license;
+      // this.case_details = this.$store.state.case.view_case;
+      // this.$store.dispatch("GET_CERTIFICATE");
+      // //get uploaded documents
+      // if (this.form.uploaded_files) {
+      //   this.form.uploaded_files.forEach(doc => {
+      //     if (doc.location) {
+      //       this.uploaded_documents.push({
+      //         file_name: doc.originalname,
+      //         type: doc.contentType,
+      //         location: doc.location
+      //       });
+      //     }
+      //   });
+      // }
+      // //get output documents
+      // if (this.form.output_files) {
+      //   this.form.output_files.forEach(doc => {
+      //     if (doc.location) {
+      //       this.output_documents.push({
+      //         file_name: doc.originalname,
+      //         type: doc.contentType,
+      //         location: doc.location
+      //       });
+      //     }
+      //   });
+      // }
       //get payment details
       //   this.$store
       //     .dispatch("FIND_PAYMENTS_BY_CASENO", this.form.case_no)
@@ -532,79 +536,80 @@ export default {
       //   console.log(err);
       //   this.$notifyError(err);
       // });
-    },
-    viewFile(url) {
-      window.open(url, "_blank");
-    },
-    remainingBalance() {
-      console.log("case details: " + JSON.stringify(this.case_details));
-      console.log("form details: " + JSON.stringify(this.form));
-      console.log("payment details: " + JSON.stringify(this.payments));
-      var credit = 0;
-      var debit = 0;
-      this.payments.forEach(compute => {
-        if (compute.payment_details.status != 0) {
-          console.log("compute details data: " + JSON.stringify(compute));
-          credit += compute.payment_details.total_amount;
-        } else {
-          debit = compute.transaction_details.order_payment.total_amount;
-        }
-      });
-      console.log("this is debit: " + JSON.stringify(debit));
-      console.log("this. is credit: " + JSON.stringify(credit));
-      this.remaining_balance = debit - credit;
-      console.log(
-        "show payment summary: " + JSON.stringify(this.remaining_balance)
-      );
-      if (
-        this.remaining_balance === null ||
-        this.remaining_balance === undefined ||
-        this.remaining_balance === 0 ||
-        debit === null ||
-        debit === undefined ||
-        debit === 0 ||
-        debit === credit
-      ) {
-        console.log("show payment summary false ");
-        this.remaining_balance = 0.0;
-        if (credit === 0) {
-          this.remaining_balance = debit;
-        }
-        this.show_payment_summary = false;
-      } else {
-        console.log("show payment summary true ");
-        this.show_payment_summary = true;
-      }
-
-      return this.remaining_balance;
-    },
-    paymentSummary() {
-      console.log(
-        "payment summary data: " +
-          JSON.stringify(this.$store.state.payments.fee)
-      );
-      console.log("form details: " + JSON.stringify(this.form));
-      console.log("case details: " + JSON.stringify(this.case_details));
-      this.$store.commit("SET_FORM", this.form);
-      this.$store.commit("FEES", {
-        _id: "5cad5db243fea80e24d01454",
-        description: "Another Transaction",
-        appType: this.form.application_type,
-        productType: this.form.general_info.product_type,
-        primaryActivity: this.form.general_info.primary_activity,
-        declaredCapital: this.form.general_info.product_type,
-        created_by: "default",
-        date_created: new Date(),
-        total: this.remaining_balance,
-        others: 0.0,
-        interest: 0.0,
-        surcharge: 0.0,
-        yearsApplied: (this.form.application_type = 2 ? 2 : 3),
-        lrf: 0.0,
-        fee: 0.0
-      });
-      this.$router.push("/app/licenses/pay");
     }
+    // viewFile(url) {
+    //   window.open(url, "_blank");
+    // },
+    // remainingBalance() {
+    //   console.log("case details: " + JSON.stringify(this.case_details));
+    //   console.log("form details: " + JSON.stringify(this.form));
+    //   console.log("payment details: " + JSON.stringify(this.payments));
+    //   var credit = 0;
+    //   var debit = 0;
+    //   this.payments.forEach(compute => {
+    //     if (compute.payment_details.status != 0) {
+    //       console.log("compute details data: " + JSON.stringify(compute));
+    //       credit += compute.payment_details.total_amount;
+    //     } else {
+    //       debit = compute.transaction_details.order_payment.total_amount;
+    //     }
+    //   });
+    //   console.log("this is debit: " + JSON.stringify(debit));
+    //   console.log("this. is credit: " + JSON.stringify(credit));
+    //   this.remaining_balance = debit - credit;
+    //   console.log(
+    //     "show payment summary: " + JSON.stringify(this.remaining_balance)
+    //   );
+    //   if (
+    //     this.remaining_balance === null ||
+    //     this.remaining_balance === undefined ||
+    //     this.remaining_balance === 0 ||
+    //     debit === null ||
+    //     debit === undefined ||
+    //     debit === 0 ||
+    //     debit === credit
+    //   ) {
+    //     console.log("show payment summary false ");
+    //     this.remaining_balance = 0.0;
+    //     if (credit === 0) {
+    //       this.remaining_balance = debit;
+    //     }
+    //     this.show_payment_summary = false;
+    //   } else {
+    //     console.log("show payment summary true ");
+    //     this.show_payment_summary = true;
+    //   }
+
+    //   return this.remaining_balance;
+    // },
+
+    // paymentSummary() {
+    //   console.log(
+    //     "payment summary data: " +
+    //       JSON.stringify(this.$store.state.payments.fee)
+    //   );
+    //   console.log("form details: " + JSON.stringify(this.form));
+    //   console.log("case details: " + JSON.stringify(this.case_details));
+    //   this.$store.commit("SET_FORM", this.form);
+    //   this.$store.commit("FEES", {
+    //     _id: "5cad5db243fea80e24d01454",
+    //     description: "Another Transaction",
+    //     appType: this.form.application_type,
+    //     productType: this.form.general_info.product_type,
+    //     primaryActivity: this.form.general_info.primary_activity,
+    //     declaredCapital: this.form.general_info.product_type,
+    //     created_by: "default",
+    //     date_created: new Date(),
+    //     total: this.remaining_balance,
+    //     others: 0.0,
+    //     interest: 0.0,
+    //     surcharge: 0.0,
+    //     yearsApplied: (this.form.application_type = 2 ? 2 : 3),
+    //     lrf: 0.0,
+    //     fee: 0.0
+    //   });
+    //   this.$router.push("/app/licenses/pay");
+    // }
   }
 };
 </script>

@@ -280,9 +280,10 @@ export default {
         },
         foodProductType(data){
           var foodProduct = this.$store.state.foodCertificate.food_product
-          foodProduct.forEach(product => {
-            console.log("food product type: " + JSON.stringify(product))
-          })
+          console.log("MIXIN DATA:" + JSON.stringify(foodProduct))
+          if (!foodProduct) return {}
+          var foodProduct = foodProduct.find(x => x._id === data)
+          return foodProduct ? foodProduct : {}
         },
         productSpecs(spec){
           var prodSpec = this.$store.state.foodCertificate.product_specification

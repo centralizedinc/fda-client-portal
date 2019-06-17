@@ -20,7 +20,7 @@
             readonly
             name="name"
             label="Food Product Type"
-            :value="form.food_product.type"
+            :value="foodProductType(form.food_product.type).name"
           ></v-text-field>
           <v-text-field
             readonly
