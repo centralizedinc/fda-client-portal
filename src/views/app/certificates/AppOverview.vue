@@ -26,7 +26,7 @@
             readonly
             name="name"
             label="Food Category"
-            :value="getfoodProductType(form.food_product.categorization).name"
+            :value="foodCategory(form.food_product.categorization).name"
           ></v-text-field>
           <v-textarea
             readonly
