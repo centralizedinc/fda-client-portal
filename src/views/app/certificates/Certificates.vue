@@ -6,63 +6,32 @@
         <span class="title font-weight-light">Application Overview</span>
         <v-spacer></v-spacer>
         <v-tooltip bottom>
-          <v-btn
-            :loading="loading"
-            slot="activator"
-            flat
-            icon
-            @click="loadForm(preview_item.application_id)"
-          >
-            <v-icon>launch</v-icon>
-          </v-btn>View Full Details
+          <v-btn slot="activator" flat icon>
+            <v-icon small dark @click="overview=false">fas fa-times-circle</v-icon>
+          </v-btn>Close
         </v-tooltip>
       </v-toolbar>
 
       <v-layout row wrap>
         <v-flex xs12 pa-1>
           <v-card>
-            <!-- <v-card-title primary-title>
-             
-              <v-spacer></v-spacer>
-            </v-card-title>-->
-            <v-toolbar color="primary-title" flat>
+            <v-toolbar flat>
               <span class="subheading font-weight-light primary--text">Case Details</span>
               <v-spacer></v-spacer>
-              <v-speed-dial
-                v-model="fab"
-                direction="left"
-                open-on-hover
-                transition="slide-x-reverse-transition"
-              >
-                <template v-slot:activator>
-                  <v-tooltip top>
-                    <v-btn small slot="activator" v-model="fab" color="fdaGreen" dark flat fab>
-                      <v-icon>{{ fab ? "close" : "menu"}}</v-icon>
-                    </v-btn>Close
-                  </v-tooltip>
-                </template>
-                <v-tooltip top>
-                  <v-btn small slot="activator" fab dark color="fdaBlueGreen">
-                    <v-icon>search</v-icon>
-                  </v-btn>View Full Certificate
-                </v-tooltip>
-                <v-tooltip top>
-                  <v-btn small slot="activator" fab dark color="fdaOrange">
-                    <v-icon>edit</v-icon>
-                  </v-btn>Amendment
-                </v-tooltip>
-                <v-tooltip top>
-                  <v-btn small slot="activator" fab dark color="fdaMed">
-                    <v-icon>autorenew</v-icon>
-                  </v-btn>Renewal
-                </v-tooltip>
-                <v-tooltip top>
-                  <v-btn small slot="activator" fab dark color="fdaYellow">
-                    <v-icon>print</v-icon>
-                  </v-btn>Print
-                </v-tooltip>
-              </v-speed-dial>
+              <v-tooltip bottom>
+                <v-btn
+                  :loading="loading"
+                  slot="activator"
+                  flat
+                  icon
+                  @click="loadForm(preview_item.application_id)"
+                >
+                  <v-icon color="primary">launch</v-icon>
+                </v-btn>View Full Details
+              </v-tooltip>
             </v-toolbar>
+            <!-- <v-card-title primary-title>
+            </v-card-title>-->
             <v-divider></v-divider>
             <v-card-text>
               <v-text-field
@@ -110,7 +79,45 @@
               ></v-textarea>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-actions>
+            <v-footer flat height="50px">
+              <v-spacer></v-spacer>
+              <v-speed-dial
+                v-model="fab"
+                direction="left"
+                open-on-hover
+                transition="slide-x-reverse-transition"
+              >
+                <template v-slot:activator>
+                  <v-tooltip top>
+                    <v-btn small slot="activator" v-model="fab" color="fdaGreen" dark flat fab>
+                      <v-icon>{{ fab ? "close" : "menu"}}</v-icon>
+                    </v-btn>Actions
+                  </v-tooltip>
+                </template>
+                <v-tooltip top>
+                  <v-btn small slot="activator" fab dark color="fdaBlueGreen">
+                    <v-icon>search</v-icon>
+                  </v-btn>View Full Certificate
+                </v-tooltip>
+                <v-tooltip top>
+                  <v-btn small slot="activator" fab dark color="fdaOrange">
+                    <v-icon>edit</v-icon>
+                  </v-btn>Amendment
+                </v-tooltip>
+                <v-tooltip top>
+                  <v-btn small slot="activator" fab dark color="fdaMed">
+                    <v-icon>autorenew</v-icon>
+                  </v-btn>Renewal
+                </v-tooltip>
+                <v-tooltip top>
+                  <v-btn small slot="activator" fab dark color="fdaYellow">
+                    <v-icon>print</v-icon>
+                  </v-btn>Print
+                </v-tooltip>
+              </v-speed-dial>
+            </v-footer>
+
+            <!-- <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn :disabled="loading" outline color="secondary" @click="overview=false">Close</v-btn>
               <v-btn
@@ -118,7 +125,7 @@
                 color="primary"
                 @click="loadForm(preview_item.application_id)"
               >View</v-btn>
-            </v-card-actions>
+            </v-card-actions>-->
           </v-card>
         </v-flex>
       </v-layout>
