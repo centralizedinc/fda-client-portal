@@ -1,6 +1,7 @@
 <template>
   <v-layout row wrap>
     <v-navigation-drawer v-model="overview" right temporary app width="400px">
+      <!-- nav drawer details-->
       <v-toolbar dark color="primary">
         <span class="title font-weight-light">Application Overview</span>
         <v-spacer></v-spacer>
@@ -16,12 +17,52 @@
           </v-btn>View Full Details
         </v-tooltip>
       </v-toolbar>
+
       <v-layout row wrap>
         <v-flex xs12 pa-1>
           <v-card>
-            <v-card-title primary-title>
+            <!-- <v-card-title primary-title>
+             
+              <v-spacer></v-spacer>
+            </v-card-title>-->
+            <v-toolbar color="primary-title" flat>
               <span class="subheading font-weight-light primary--text">Case Details</span>
-            </v-card-title>
+              <v-spacer></v-spacer>
+              <v-speed-dial
+                v-model="fab"
+                direction="left"
+                open-on-hover
+                transition="slide-x-reverse-transition"
+              >
+                <template v-slot:activator>
+                  <v-tooltip top>
+                    <v-btn small slot="activator" v-model="fab" color="fdaGreen" dark flat fab>
+                      <v-icon>{{ fab ? "close" : "menu"}}</v-icon>
+                    </v-btn>Close
+                  </v-tooltip>
+                </template>
+                <v-tooltip top>
+                  <v-btn small slot="activator" fab dark color="fdaBlueGreen">
+                    <v-icon>search</v-icon>
+                  </v-btn>View Full Certificate
+                </v-tooltip>
+                <v-tooltip top>
+                  <v-btn small slot="activator" fab dark color="fdaOrange">
+                    <v-icon>edit</v-icon>
+                  </v-btn>Amendment
+                </v-tooltip>
+                <v-tooltip top>
+                  <v-btn small slot="activator" fab dark color="fdaMed">
+                    <v-icon>autorenew</v-icon>
+                  </v-btn>Renewal
+                </v-tooltip>
+                <v-tooltip top>
+                  <v-btn small slot="activator" fab dark color="fdaYellow">
+                    <v-icon>print</v-icon>
+                  </v-btn>Print
+                </v-tooltip>
+              </v-speed-dial>
+            </v-toolbar>
             <v-divider></v-divider>
             <v-card-text>
               <v-text-field
@@ -82,6 +123,7 @@
         </v-flex>
       </v-layout>
     </v-navigation-drawer>
+
     <v-flex xs12 p1-2>
       <v-card>
         <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="closeDecDialog"></undertaking-dialog>
@@ -91,7 +133,7 @@
           hide-actions
           class="elevation-1"
           :pagination.sync="pagination"
-          :loading="true"
+          :loading="loading"
         >
           <template slot="items" slot-scope="props">
             <tr @click="preview(props.item)" style="cursor:pointer">
@@ -209,7 +251,8 @@ export default {
       this.dialog = false;
     },
     loadForm(application_id) {
-      console.log("load form")
+      console.log("#########loadform");
+
       // this.preview = item;
       this.loading = true;
       // this.$store
