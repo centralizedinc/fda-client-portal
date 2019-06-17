@@ -105,7 +105,7 @@
                   </v-btn>Amendment
                 </v-tooltip>
                 <v-tooltip top>
-                  <v-btn small slot="activator" fab dark color="fdaMed">
+                  <v-btn small slot="activator" fab dark color="fdaMed" @click="renew">
                     <v-icon>autorenew</v-icon>
                   </v-btn>Renewal
                 </v-tooltip>
@@ -394,6 +394,9 @@ export default {
     viewForm() {
       // this.$store.commit("SET_VIEW_LICENSE", this.details.license_details);
       this.$router.push("/app/certificates/overview");
+    },
+    renew() {
+      this.$router.push("/app/certificates/renew")
     }
   }
 };
