@@ -165,6 +165,12 @@ var router = new Router({
           // beforeEnter: isAuthorized
         },
         {
+          path: 'certificates/renew',
+          name: 'Renewal Certificate of Product Registration',
+          component: () => import('@/views/app/certificates/Renew.vue'),
+          // beforeEnter: isAuthorized
+        },
+        {
           path: 'certificates/apply',
           name: 'New Certificate of Product Registration',
           component: () => import('@/views/app/certificates/Apply.vue'),
