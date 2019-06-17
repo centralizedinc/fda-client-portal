@@ -285,6 +285,13 @@ export default {
           var foodProduct = foodProduct.find(x => x._id === data)
           return foodProduct ? foodProduct : {}
         },
+        establishmentInfo(data){
+          var establishment = this.$store.state.foodCertificate.company_activity
+          console.log("MIXIN DATA ESTABLISHMENT:" + JSON.stringify(establishment))
+          if (!establishment) return {}
+          var establishment = establishment.find(x => x._id === data)
+          return establishment ? establishment : {}
+        },
         getfoodProductType(prod){
           // console.log("MIXIN DATA: " + JSON.stringify(prod))
           var prodType = this.$store.state.foodCertificate.food_product
