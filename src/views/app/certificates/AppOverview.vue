@@ -20,11 +20,7 @@
             readonly
             name="name"
             label="Food Product Type"
-<<<<<<< HEAD
-            :value="foodProductType(form.food_product.type).name"
-=======
             :value="getfoodProductType(form.food_product.type).name"
->>>>>>> 06c9fff5a3594f655c7fb94f4e5485c09b514a07
           ></v-text-field>
           <v-text-field
             readonly
