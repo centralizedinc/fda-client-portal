@@ -284,6 +284,14 @@ export default {
             console.log("food product type: " + JSON.stringify(product))
           })
         },
+        getfoodProductType(prod){
+          console.log("MIXIN DATA: " + JSON.stringify(prod))
+          var prodType = this.$store.state.foodCertificate.food_product
+          console.log("MIXIN TWO DATA: " + JSON.stringify(prodType))
+          if (!prodType) return {}
+          var prodType = prodType.find(x => x._id === prod)
+          return prodType ? prodType : {}
+        },
         productSpecs(spec){
           var prodSpec = this.$store.state.foodCertificate.product_specification
           if (!prodSpec) return {}

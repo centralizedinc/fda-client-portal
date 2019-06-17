@@ -20,13 +20,13 @@
             readonly
             name="name"
             label="Food Product Type"
-            :value="form.food_product.type"
+            :value="getfoodProductType(form.food_product.type).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Food Category"
-            :value="form.food_product.categorization"
+            :value="getfoodProductType(form.food_product.categorization).name"
           ></v-text-field>
           <v-textarea
             readonly
@@ -47,7 +47,12 @@
             label="Company Name (as listed in LTO)"
             :value="formatDate(form.food_product.company)"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Region" :value="getRegionName(form.food_product.address)"></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Region"
+            :value="getRegionName(form.food_product.address)"
+          ></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -492,7 +497,7 @@ export default {
       },
       case_details: {},
       payments: [],
-      transaction: [],
+      transaction: []
     };
   },
   created() {
