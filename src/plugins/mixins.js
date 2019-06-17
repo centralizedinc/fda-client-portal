@@ -285,6 +285,7 @@ export default {
           var foodProduct = foodProduct.find(x => x._id === data)
           return foodProduct ? foodProduct : {}
         },
+<<<<<<< HEAD
         establishmentInfo(data){
           var establishment = this.$store.state.foodCertificate.company_activity
           console.log("MIXIN DATA ESTABLISHMENT:" + JSON.stringify(establishment))
@@ -292,6 +293,17 @@ export default {
           var establishment = establishment.find(x => x._id === data)
           return establishment ? establishment : {}
         },
+=======
+<<<<<<< HEAD
+        foodCategory(data){
+          console.log("MIXIN DATA: " + JSON.stringify(data))
+          var foodCategory = this.$store.state.foodCertificate.food_category
+          console.log("MIXIN TWO DATA: " + JSON.stringify(foodCategory))
+          if (!foodCategory) return {}
+          var foodCategory = foodCategory.find(x => x._id === data)
+          return foodCategory ? foodCategory : {}
+=======
+>>>>>>> d57041f3d9a97a9a429a3f36f5a7fa94587d2a8e
         getfoodProductType(prod){
           // console.log("MIXIN DATA: " + JSON.stringify(prod))
           var prodType = this.$store.state.foodCertificate.food_product
@@ -299,6 +311,7 @@ export default {
           if (!prodType) return {}
           var prodType = prodType.find(x => x._id === prod)
           return prodType ? prodType : {}
+>>>>>>> 4d6eabb99f742a9e506317ad6194eabe3550867c
         },
         productSpecs(spec){
           var prodSpec = this.$store.state.foodCertificate.product_specification

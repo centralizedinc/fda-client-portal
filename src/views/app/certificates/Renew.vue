@@ -20,13 +20,13 @@
             readonly
             name="name"
             label="Food Product Type"
-            :value="form.food_product.type"
+            :value="foodProductType(form.food_product.type).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Food Category"
-            :value="form.food_product.categorization"
+            :value="foodCategory(form.food_product.categorization).name"
           ></v-text-field>
           <v-textarea
             readonly
@@ -461,13 +461,7 @@ export default {
       show_generated: false,
       show_payment_summary: false,
       remaining_balance: 0.0,
-      form: {
-        // food_product: {},
-        // establishment_info: {},
-        // product_specification: {},
-        // nutrition_info: {},
-        // for_ammendment: {}
-      },
+      form: {},
       case_details: {},
       payments: [],
       claims: [],
