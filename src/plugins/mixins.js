@@ -280,14 +280,14 @@ export default {
         },
         foodProductType(data){
           var foodProduct = this.$store.state.foodCertificate.food_product
-          console.log("MIXIN DATA:" + JSON.stringify(foodProduct))
+          console.log("MIXIN DATA FOODPRODUCT:" + JSON.stringify(foodProduct))
           if (!foodProduct) return {}
           var foodProduct = foodProduct.find(x => x._id === data)
           return foodProduct ? foodProduct : {}
         },
         establishmentInfo(data){
           var establishment = this.$store.state.foodCertificate.company_activity
-          console.log("MIXIN DATA ESTABLISHMENT:" + JSON.stringify(establishment))
+          console.log("MIXIN DATA ESTABLISHMENTINFO:" + JSON.stringify(establishment))
           if (!establishment) return {}
           var establishment = establishment.find(x => x._id === data)
           return establishment ? establishment : {}
@@ -301,10 +301,17 @@ export default {
         },
         establishplacesOrigin(data){
           var placesOrigin = this.$store.state.places.origin
-          console.log("MIXIN DATA ESTABLISHMENTTYPE:" + JSON.stringify(placesOrigin))
+          console.log("MIXIN DATA ESTABLISHMENTORIGIN:" + JSON.stringify(placesOrigin))
           if (!placesOrigin) return {}
           var placesOrigin = placesOrigin.find(x => x._id === data)
           return placesOrigin ? placesOrigin : {}
+        },
+        shelfLifeType(data){
+          var shelfLife = this.$store.state.foodCertificate.shelf_life
+          console.log("MIXIN DATA SHELFLIFE:" + JSON.stringify(shelfLife))
+          if (!shelfLife) return {}
+          var shelfLife = shelfLife.find(x => x._id === data)
+          return shelfLife ? shelfLife : {}
         },
         foodCategory(data){
           console.log("MIXIN DATA: " + JSON.stringify(data))

@@ -1,0 +1,25 @@
+[{
+    "description": "Change in Brand Name",
+    "code": "VR1"
+}, {
+    "description": "Change in Product Name",
+    "code": "VR2"
+}, {
+    "description": "Change in Company Name",
+    "code": "VR3"
+}, {
+    "description": "Change in Supplier Details",
+    "code": "VR4"
+}, {
+    "description": "Change in Packaging Material and/or Additional Packaging Type",
+    "code": "VR5"
+}, {
+    "description": "Change of Packaging in Commercial Presentation",
+    "code": "VR6"
+}, {
+    "description": "Change or Extension in Shelf Life",
+    "code": "VR7"
+}, {
+    "description": "Change in/ Additional Packaging Design",
+    "code": "VR8"
+}]
