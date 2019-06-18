@@ -152,6 +152,12 @@ var router = new Router({
           // beforeEnter: isAuthorized
         },
         {
+          path: 'certificate/pay',
+          name: 'Pay Certificate',
+          component: () => import('@/views/app/payment/PaymentSummary.vue'),
+          // beforeEnter: isAuthorized
+        },
+        {
           path: 'licenses/summary',
           name: 'License Summary',
           beforeEnter: dropBreadcrumbs,

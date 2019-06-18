@@ -13,11 +13,11 @@
           ></v-text-field>
         </v-flex>
         <!-- amt per serving -->
-        <v-flex xs12>
+        <!-- <v-flex xs12>
           <v-card>
             <v-data-table :headers="headers" :items="nutritionServing" hide-actions>
               <template v-slot:items="props">
-                <td class="text-xs-left">{{ props.item.nut_info }}</td>
+                <td class="text-xs-left">{{ props.item.name }}</td>
                 <td>
                   <v-edit-dialog
                     large
@@ -65,10 +65,19 @@
                     </template>
                   </v-edit-dialog>
                 </td>
+                <td>
+                  <v-icon
+                    small
+                    class="mr-2"
+                    @click="editItem(props.item)"
+                  >
+                    edit
+                  </v-icon>
+                </td>
               </template>
             </v-data-table>
           </v-card>
-        </v-flex>
+        </v-flex> -->
         <v-snackbar :top="y === 'top'" v-model="snack" :timeout="3000" :color="snackColor">
           {{ snackText }}
           <v-btn flat @click="snack = false">Close</v-btn>
@@ -90,11 +99,20 @@
         <v-flex xs12>
           <v-data-table :headers="headers" :items="form.nutrition_info.servings" hide-actions class="elevation-1">
             <template slot="items" slot-scope="props">
-              <tr @click="viewItem(props.item, props.index)" style="cursor:pointer">
+              <!-- <tr @click="viewItem(props.item, props.index)" style="cursor:pointer"> -->
                 <td>{{props.item.type}}</td>
                 <td>{{props.item.amount_per_serving}}</td>
                 <td>{{props.item.percent}}</td>
-              </tr>
+                <td>
+                  <v-icon
+                    small
+                    class="mr-2"
+                    @click="editItem(props.item)"
+                  >
+                    edit
+                  </v-icon>
+                </td>
+              <!-- </tr> -->
             </template>
           </v-data-table>
         </v-flex>
@@ -108,7 +126,7 @@
               </v-btn>
             </v-toolbar>
             <v-card-text>
-              <v-form v-model="valid">
+              <v-form v-if="valid">
                 <v-container grid-list-md>
                   <v-layout row wrap>
                     <v-flex xs12>
@@ -153,6 +171,41 @@
                   </v-layout>
                 </v-container>
               </v-form>
+              <v-form v-else>
+                <v-container grid-list-md>
+                  <v-layout row wrap>
+                    <v-flex xs12>
+                      <v-text-field
+                        label="Vitamins or Minerals"
+                        :value="choice"
+                        disabled
+                        outline
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-text-field
+                        label="Nutrision"
+                        :value="type"
+                        disabled
+                        outline
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-text-field outline name="name" v-model="amount_per_serving" label="Amount per Serving" id="id"></v-text-field>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-text-field
+                        outline
+                        name="name"
+                        hint="N/A if not applicable"
+                        v-model="percent"
+                        label="%RENI, for Locally Manufactured Products "
+                        id="id"
+                      ></v-text-field>
+                    </v-flex>
+                  </v-layout>
+                </v-container>
+              </v-form>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions v-if="add">
@@ -174,7 +227,7 @@
 
 <script>
 export default {
-  props: ["form", "vitamins", "minerals`"],
+  props: ["form", "vitamins", "minerals", "nutrition_information"],
   data: () => ({
     add: false,
     dialogVm: false,
@@ -197,7 +250,11 @@ export default {
       {
         name: "Minerals",
         _id: 1
-      }
+      },
+      // {
+      //   name: "Nutrition",
+      //   _id: 2
+      // }
     ],
     rules: {
       required: value => !!value || "This field is required",
@@ -220,6 +277,12 @@ export default {
       {
         text: "%RENI for Locally Manufactured Products",
         value: "reni",
+        sortable: false,
+        width: "1px"
+      },
+      {
+        text: "",
+        value: "",
         sortable: false,
         width: "1px"
       }
@@ -302,9 +365,20 @@ export default {
       this.dialogVm = false;
       this.form.nutrition_info.servings.push({
         type: this.type,
+        kind: this.choice,
         amount_per_serving: this.amount_per_serving,
         percent: this.percent
       })
+    },
+    editItem(item){
+      this.add = true;
+      this.dialogVm = true;
+      this.valid = false
+      console.log("edit item data: " + JSON.stringify(item))
+      this.choice = item.type
+      this.type = item.kind
+      this.amount_per_serving = item.amount_per_serving
+      this.percent = item.percent
     },
     save() {
       this.snack = true;
@@ -334,9 +408,6 @@ export default {
       console.log("vitamins data: " + JSON.stringify(this.vitamins));
       this.minerals = this.$store.state.foodCertificate.minerals;
       console.log("minerals data: " + JSON.stringify(this.minerals));
-      
-      
-
     }
   },
   watch: {
@@ -347,6 +418,18 @@ export default {
       }else if(val == 1){
         this.vitMinHolder = this.minerals
       }
+    },
+    nutrition_information(val){
+      console.log("nutrition_information data: " + JSON.stringify(val))
+
+      val.forEach(element => {
+        this.form.nutrition_info.servings.push({
+        type: element._id,
+        kind: "2",
+        amount_per_serving: "0",  
+        percent: "NOT APPLICABLE"
+        })
+      }); 
 
     }
   }
