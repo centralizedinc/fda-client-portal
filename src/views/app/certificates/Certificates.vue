@@ -91,10 +91,10 @@
           hide-actions
           class="elevation-1"
           :pagination.sync="pagination"
-          :loading="true"
+          :loading="loading"
         >
           <template slot="items" slot-scope="props">
-            <tr @click="preview(props.item)" style="cursor:pointer">
+            <tr @click="variate(props.item)" style="cursor:pointer">
               <td>{{props.item.case_no}}</td>
               <td>{{props.item.application_type}}</td>
               <td>{{props.item.status}}</td>
@@ -153,20 +153,9 @@ export default {
         { text: "Case No", value: "case_no" },
         { text: "Application Type", value: "application_type" },
         { text: "Status", value: "status", sortable: true },
-        // { text: "Current Task", value: "current_task" },
-        // { text: "Date Created", value: "date_created" },
         { text: "Remarks", value: "remarks" }
       ],
-      items: [
-        // {
-        //   case_no: "00",
-        //   application_type: "sample application",
-        //   status: "Initial",
-        //   // current_task: "sample task",
-        //   date_created: "01/01/2019",
-        //   remarks: "this is a remark"
-        // }
-      ]
+      items: []
     };
   },
   created() {
@@ -208,7 +197,7 @@ export default {
     closeDecDialog() {
       this.dialog = false;
     },
-    loadForm(application_id) {
+    loadForm(application_id, type) {
       console.log("load form")
       // this.preview = item;
       this.loading = true;
@@ -237,6 +226,11 @@ export default {
     viewForm() {
       // this.$store.commit("SET_VIEW_LICENSE", this.details.license_details);
       this.$router.push("/app/certificates/overview");
+    },
+    variate(item){
+      console.log("preview data: " + JSON.stringify(item));
+      this.$store.commit("SET_VIEW_CERTIFICATE", item);
+      this.$router.push("/app/certificates/variation")
     }
   }
 };
