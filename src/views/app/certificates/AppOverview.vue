@@ -109,19 +109,19 @@
             readonly
             name="name"
             label="Source Type"
-            :value="establishmentInfo(form.establishment_info.type).name"
+            :value="establishmentType(form.establishment_info.type).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Country of Origin"
-            :value="establishmentInfo(form.establishment_info.origin_country).name"
+            :value="establishplacesOrigin(form.establishment_info.origin_country).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="Email"
             label="Directly Sourced"
-            :value="establishmentInfo(form.establishment_info.directly_source).name"
+            :value="form.establishment_info.directly_source"
           ></v-text-field>
           <v-text-field
             readonly
