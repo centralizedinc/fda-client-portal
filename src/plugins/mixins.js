@@ -292,6 +292,20 @@ export default {
           var establishment = establishment.find(x => x._id === data)
           return establishment ? establishment : {}
         },
+        establishmentType(data){
+          var establishType = this.$store.state.foodCertificate.source
+          console.log("MIXIN DATA ESTABLISHMENTTYPE:" + JSON.stringify(establishType))
+          if (!establishType) return {}
+          var establishType = establishType.find(x => x._id === data)
+          return establishType ? establishType : {}
+        },
+        establishplacesOrigin(data){
+          var placesOrigin = this.$store.state.places.origin
+          console.log("MIXIN DATA ESTABLISHMENTTYPE:" + JSON.stringify(placesOrigin))
+          if (!placesOrigin) return {}
+          var placesOrigin = placesOrigin.find(x => x._id === data)
+          return placesOrigin ? placesOrigin : {}
+        },
         foodCategory(data){
           console.log("MIXIN DATA: " + JSON.stringify(data))
           var foodCategory = this.$store.state.foodCertificate.food_category
