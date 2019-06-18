@@ -2,7 +2,7 @@
   <v-form ref="valid">
     <v-container grid-list-md>
       <v-layout row wrap justify-center align-center>
-        <!-- <v-flex xs4>
+        <v-flex xs4>
           <v-text-field
             :rules="[rules.required]"
             outline
@@ -10,8 +10,8 @@
             hint="For Alcoholic Beverages without Shelf Life, indicate 0 (Zero)"
             v-model="form.shelf.declaration_date"
           ></v-text-field>
-        </v-flex> -->
-        <v-flex xs4>
+        </v-flex>
+        <!-- <v-flex xs4>
           <v-menu
             ref="menu"
             :close-on-content-click="false"
@@ -39,13 +39,13 @@
             color="green darken-1" 
             no-title 
             scrollable
-            :min="new Date().toISOString().substr(0, 10)">
+            :min="new Date().toISOString().substr(0, 10)"> -->
               <!-- <v-spacer></v-spacer>
               <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
               <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn> -->
-            </v-date-picker>
+            <!-- </v-date-picker>
           </v-menu>
-        </v-flex>
+        </v-flex> -->
         <v-flex xs4>
           <v-autocomplete
             :rules="[rules.required]"
@@ -54,7 +54,7 @@
             item-value="_id"
             outline
             label="Type"
-            v-model="form.shelf.type"
+            v-model="form.shelf.shelf_type"
           ></v-autocomplete>
         </v-flex>
         <v-flex xs4>
@@ -111,10 +111,10 @@
             v-model="form.shelf.lot_code_interpretation"
           ></v-text-field>
         </v-flex>
-        <!-- <v-flex xs4>
-          <v-text-field :rules="[rules.required]" outline label="Open Date Marking/ Expiry Date"></v-text-field>
-        </v-flex>-->
         <v-flex xs4>
+          <v-text-field :rules="[rules.required]" outline label="Open Date Marking/ Expiry Date" v-model="form.shelf.date"></v-text-field>
+        </v-flex>
+        <!-- <v-flex xs4>
           <v-menu
             ref="menu"
             :close-on-content-click="false"
@@ -142,13 +142,13 @@
             color="green darken-1" 
             no-title 
             scrollable
-            :min="new Date().toISOString().substr(0, 10)">
+            :min="new Date().toISOString().substr(0, 10)"> -->
               <!-- <v-spacer></v-spacer>
               <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
               <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn> -->
-            </v-date-picker>
+            <!-- </v-date-picker>
           </v-menu>
-        </v-flex>
+        </v-flex> -->
       </v-layout>
     </v-container>
   </v-form>

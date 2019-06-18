@@ -168,6 +168,7 @@ export default {
       if(!this.isEmpty(this.ingredient && this.add)){
         this.form.ingredients.push(this.ingredient)
         this.dialogIngredients = false;
+        this.ingredient = ""
       }      
     },
     editIngredients(data){

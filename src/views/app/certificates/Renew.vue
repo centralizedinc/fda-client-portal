@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <v-flex dark xs12 md6 pa-1>
+    <v-flex dark xs12 md8 pa-1>
       <v-card>
         <v-toolbar dark color="primary">Application Details</v-toolbar>
         <v-card-title primary-title>
@@ -47,7 +47,12 @@
             label="Company Name (as listed in LTO)"
             :value="form.food_product.company"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Region" :value="form.food_product.address"></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Region"
+            :value="getRegionName(form.food_product.address)"
+          ></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -58,7 +63,7 @@
             readonly
             name="name"
             label="LTO Validity"
-            :value="form.food_product.license_validity"
+            :value="formatDate(form.food_product.license_validity)"
           ></v-text-field>
           <v-text-field
             readonly
@@ -70,13 +75,15 @@
             readonly
             name="name"
             label="Landline Number"
+            mask="(##) ####-####"
             :value="form.food_product.contacts.landline"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Fax Number"
-            :value="form.food_product.contacts.fax"
+            mask="(##) ####-####"
+            :value="form.food_product.contacts.mobile"
           ></v-text-field>
         </v-card-text>
         <v-divider></v-divider>
@@ -96,49 +103,49 @@
             readonly
             name="name"
             label="Corresponding company activities"
-            :value="form.establisment_info.activity"
+            :value="establishmentInfo(form.establishment_info.activity).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Source Type"
-            :value="form.establisment_info.type"
+            :value="establishmentInfo(form.establishment_info.type).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Country of Origin"
-            :value="form.establisment_info.origin_country"
+            :value="establishmentInfo(form.establishment_info.origin_country).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="Email"
             label="Directly Sourced"
-            :value="form.establisment_info.directly_source"
+            :value="establishmentInfo(form.establishment_info.directly_source).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Supplier's Complete Name"
-            :value="form.establisment_info.supplier_name"
+            :value="form.establishment_info.supplier_name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Supplier's Complete Address"
-            :value="form.establisment_info.supplier_address"
+            :value="form.establishment_info.supplier_address"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Manufacturer's Complete Name"
-            :value="form.establisment_info.manufacturer_name"
+            :value="form.establishment_info.manufacturer_name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Manufacturer's Complete Address"
-            :value="form.establisment_info.manufacturer_address"
+            :value="form.establishment_info.manufacturer_address"
           ></v-text-field>
         </v-card-text>
 
@@ -162,7 +169,7 @@
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{ getProdLine(props.item.prod_line).name }}</td>
+              <!-- <td>{{ getProdLine(props.item.prod_line).name }}</td> -->
               <td>{{ props.item.remarks }}</td>
             </template>
           </v-data-table>
@@ -182,18 +189,19 @@
         <v-divider></v-divider>
         <v-card-text v-if="show_part4">
           <v-data-table
-            :headers="[{text:'Type', sortable: false,}, 
-                        {text:'Address', sortable: false},]"
-            :items="specs_list"
+            :headers="[{text:'Color', sortable: false,}, 
+                        {text:'Odor', sortable: false},{text:'Taste', sortable: false},{text:'Texture', sortable: false},]"
+            :items="product_specification"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
               <!-- <td>{{ getEstablishmentType(props.item.type) }}</td>
               <td>{{ props.item.address }}</td>-->
-              <td>{{props.item.prod_spec}}</td>
-              <td>{{props.item.parameter}}</td>
-              <td>{{props.item.specs}}</td>
+              <td>{{props.item.physical.color}}</td>
+              <td>{{props.item.physical.odor}}</td>
+              <td>{{props.item.physical.taste}}</td>
+              <td>{{props.item.physical.texture}}</td>
             </template>
           </v-data-table>
         </v-card-text>
@@ -214,15 +222,9 @@
             readonly
             name="name"
             label="Shelf Life Declaration (in Months)"
-            :value="form.shelf.declaration_date"
+            :value="formatDate(form.shelf.declaration_date)"
           ></v-text-field>
           <v-text-field readonly name="name" label="Type" :value="form.shelf.type"></v-text-field>
-          <v-text-field
-            readonly
-            name="name"
-            label="Designation"
-            :value="getDesignation(form.auth_officer.designation).name"
-          ></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -263,7 +265,7 @@
             readonly
             name="name"
             label="Open Date Marking/ Expiry Date"
-            :value="form.shelf.date"
+            :value="formatDate(form.shelf.date)"
           ></v-text-field>
         </v-card-text>
         <v-divider></v-divider>
@@ -280,17 +282,17 @@
         <v-divider></v-divider>
         <v-card-text v-if="show_part6">
           <v-data-table
-            :headers="[{text:'Designation', sortable: false,}, 
-                        {text:'Lastname', sortable: false},
-                        {text:'Firstname', sortable: false}]"
-            :items="nutritionServing"
+            :headers="[{text:'Serving Size', sortable: false,}, 
+                        {text:'Serving Per Pack', sortable: false},
+                        {text:'Servings Amount', sortable: false}]"
+            :items="nutrition_info"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{props.item.nut_info}}</td>
-              <td>{{props.item.aps}}</td>
-              <td>{{props.item.reni}}</td>
+              <td>{{props.item.serving_size}}</td>
+              <td>{{props.item.serving_per_pack}}</td>
+              <td>{{props.item.servings}}</td>
             </template>
           </v-data-table>
         </v-card-text>
@@ -307,78 +309,15 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part7">
-          <v-text-field readonly name="name" label="Claims" :value="form.claims"></v-text-field>
-          <v-text-field readonly name="name" label="Description" :value="form.desc"></v-text-field>
+          <v-text-field readonly name="name" label="Claims" :value="form.claims.claims"></v-text-field>
+          <v-text-field readonly name="name" label="Description" :value="form.claims.desc"></v-text-field>
         </v-card-text>
       </v-card>
-      <!-- DOCUMENTS -->
-      <v-flex xs12 pa-1>
-        <v-card>
-          <v-toolbar dark color="primary">Documents</v-toolbar>
-          <v-card-title primary-title>
-            <span class="subheading font-weight-thin primary--text">Files Uploaded</span>
-            <v-spacer></v-spacer>
-            <v-btn v-if="show_documents" flat icon color="primary" @click="show_documents=false">
-              <v-icon>expand_less</v-icon>
-            </v-btn>
-            <v-btn v-else flat icon color="primary" @click="show_documents=true; loaded=false">
-              <v-icon>expand_more</v-icon>
-            </v-btn>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text v-if="show_documents">
-            <v-container grid-list-sm fluid>
-              <v-layout row wrap>
-                <v-flex v-for="(n, indx) in uploaded_documents" :key="indx" xs4 d-flex>
-                  <v-card tile class="d-flex" @click="viewFile(n.location)" style="cursor:zoom-in">
-                    <pdf
-                      v-show="loaded"
-                      @loaded="loaded=true"
-                      :src="'https://cors-anywhere.herokuapp.com/'+n.location"
-                    ></pdf>
-
-                    <v-progress-circular v-show="!loaded" indeterminate color="primary"></v-progress-circular>
-                  </v-card>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-          <v-divider></v-divider>
-          <v-card-title primary-title>
-            <span class="subheading font-weight-thin primary--text">Generated Files</span>
-            <v-spacer></v-spacer>
-            <v-btn v-if="show_generated" flat icon color="primary" @click="show_generated=false">
-              <v-icon>expand_less</v-icon>
-            </v-btn>
-            <v-btn v-else flat icon color="primary" @click="show_generated=true">
-              <v-icon>expand_more</v-icon>
-            </v-btn>
-          </v-card-title>
-          <v-divider></v-divider>
-          <v-card-text v-if="show_generated">
-            <v-container grid-list-sm fluid>
-              <v-layout row wrap>
-                <v-flex v-for="(n, indx) in output_documents" :key="indx" xs4 d-flex>
-                  <v-card tile class="d-flex" @click="viewFile(n.location)" style="cursor:zoom-in">
-                    <pdf
-                      v-show="loaded"
-                      @loaded="loaded=true"
-                      :src="'https://cors-anywhere.herokuapp.com/'+n.location"
-                    ></pdf>
-                    <v-progress-circular v-show="!loaded" indeterminate color="primary"></v-progress-circular>
-                  </v-card>
-                </v-flex>
-              </v-layout>
-            </v-container>
-          </v-card-text>
-        </v-card>
-      </v-flex>
     </v-flex>
-
-    <!-- PAYMENTS -->
-    <v-flex dark xs12 md6 pa-1>
-      <v-layout row wrap>
+ <!-- PAYMENTS -->
+    <v-flex dark xs12 md4 pa-1>
         <v-card>
+          <v-toolbar dark color="primary">Payment</v-toolbar>
           <v-card-title primary-title class="font-weight-light headline">Payment Summary</v-card-title>
           <v-container grid-list-xl>
             <v-layout row wrap align-center justify-center fill-height>
@@ -395,15 +334,6 @@
               <v-flex xs6>
                 <label class="subheading">{{fees_form.yearsApplied}} years</label>
               </v-flex>
-              <!-- <v-flex xs6>
-                <label class="subheading">Surcharge:</label>
-              </v-flex>
-              <v-flex xs6>
-                <label class="subheading">
-                  <label class="subheading">₱ {{numberWithCommas(fees_form.surcharge)}}</label>
-                  <v-icon medium color="error">close</v-icon>
-                </label>
-              </v-flex>-->
               <v-flex xs6>
                 <label class="subheading">Legal Research Fund (LRF):</label>
               </v-flex>
@@ -434,8 +364,72 @@
             <!-- button renewal -->
           </v-card-actions>
         </v-card>
-      </v-layout>
+
     </v-flex>
+    <!-- DOCUMENTS -->
+    <v-flex xs12 md8 pa-1>
+      <v-card>
+        <v-toolbar dark color="primary">Documents</v-toolbar>
+        <v-card-title primary-title>
+          <span class="subheading font-weight-thin primary--text">Files Uploaded</span>
+          <v-spacer></v-spacer>
+          <v-btn v-if="show_documents" flat icon color="primary" @click="show_documents=false">
+            <v-icon>expand_less</v-icon>
+          </v-btn>
+          <v-btn v-else flat icon color="primary" @click="show_documents=true; loaded=false">
+            <v-icon>expand_more</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text v-if="show_documents">
+          <v-container grid-list-sm fluid>
+            <v-layout row wrap>
+              <v-flex v-for="(n, indx) in uploaded_documents" :key="indx" xs4 d-flex>
+                <v-card tile class="d-flex" @click="viewFile(n.location)" style="cursor:zoom-in">
+                  <pdf
+                    v-show="loaded"
+                    @loaded="loaded=true"
+                    :src="'https://cors-anywhere.herokuapp.com/'+n.location"
+                  ></pdf>
+
+                  <v-progress-circular v-show="!loaded" indeterminate color="primary"></v-progress-circular>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-title primary-title>
+          <span class="subheading font-weight-thin primary--text">Generated Files</span>
+          <v-spacer></v-spacer>
+          <v-btn v-if="show_generated" flat icon color="primary" @click="show_generated=false">
+            <v-icon>expand_less</v-icon>
+          </v-btn>
+          <v-btn v-else flat icon color="primary" @click="show_generated=true">
+            <v-icon>expand_more</v-icon>
+          </v-btn>
+        </v-card-title>
+        <v-divider></v-divider>
+        <v-card-text v-if="show_generated">
+          <v-container grid-list-sm fluid>
+            <v-layout row wrap>
+              <v-flex v-for="(n, indx) in output_documents" :key="indx" xs4 d-flex>
+                <v-card tile class="d-flex" @click="viewFile(n.location)" style="cursor:zoom-in">
+                  <pdf
+                    v-show="loaded"
+                    @loaded="loaded=true"
+                    :src="'https://cors-anywhere.herokuapp.com/'+n.location"
+                  ></pdf>
+                  <v-progress-circular v-show="!loaded" indeterminate color="primary"></v-progress-circular>
+                </v-card>
+              </v-flex>
+            </v-layout>
+          </v-container>
+        </v-card-text>
+      </v-card>
+    </v-flex>
+
+   
   </v-layout>
 </template>
 
