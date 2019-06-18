@@ -11,7 +11,6 @@ const state = {
   renewal_license: {},
   variation_license: {},
   details: {},
-  form: null,
   uploaded: null,
   existingLicense: null,
   init_form: {
@@ -80,9 +79,6 @@ const mutations = {
   },
   SET_VARIATION(state, details) {
     state.variation_license = details;
-  },
-  SET_FORM(state, form) {
-    state.form = form;
   },
   UPLOADED_DATA(state, form) {
     state.uploaded = form;

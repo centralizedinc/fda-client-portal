@@ -260,4 +260,35 @@ export default class CertificateAPI {
     return axios.post('certificates/' + id, certificate)
   }
 
+  addDocuments(certificate, formData) {
+    return new Promise((resolve, reject) => {
+      axios.post('documents/uploads?account_id=' + certificate.case_no, formData)
+        .then(result => {
+          console.log(JSON.stringify(result))
+          var files = result.data.model
+          var output_files = certificate.output_files.concat(files)
+          if (result.data.success) {
+            return axios.post('certificates/' + certificate._id, {
+              output_files
+            })
+          } else {
+            reject()
+            return
+          }
+        })
+        .then(updated => {
+          console.log(JSON.stringify(updated))
+          if (updated) {
+            resolve(updated)
+          } else {
+            reject()
+          }
+        })
+        .catch(err => {
+          console.log(err)
+          reject(err)
+        })
+    })
+  }
+
 }

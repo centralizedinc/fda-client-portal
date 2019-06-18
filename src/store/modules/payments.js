@@ -1,5 +1,6 @@
 import PaymentAPI from '../../api/PaymentApi';
-
+import LicenseAPI from '../../api/LicenseApi';
+import CertificateAPI from '../../api/CertificateApi'
 
 const state = {
     credit_card: null,
@@ -10,7 +11,8 @@ const state = {
         summary: []
     },
     showCCDialog: false,
-    providerDetails: null
+    providerDetails: null,
+    form: {}
 }
 
 const mutations = {
@@ -52,6 +54,9 @@ const mutations = {
     },
     SET_PAYMENT_PROVIDER(state, details) {
         state.providerDetails = details
+    },
+    SET_FORM(state, form) {
+        state.form = form
     }
 }
 
@@ -113,7 +118,7 @@ var actions = {
                 .getCertificateFees(fees)
                 .then((result) => {
                     console.log(result.data);
-                    if(result.data.success){
+                    if (result.data.success) {
                         context.commit('FEES', result.data.model.fees)
                         resolve(result.data.model.fees)
                     } else {
@@ -153,6 +158,19 @@ var actions = {
                 }
             })
         })
+    },
+    GENERATED_DOCUMENTS(context, data) {
+        if (data.case_type === 0) {
+            return new LicenseAPI(context.rootState.user_session.token).addDocuments(
+                data.details,
+                data.formData
+            );
+        } else if (data.case_type === 1) {
+            return new CertificateAPI(context.rootState.user_session.token).addDocuments(
+                data.details,
+                data.formData
+            );
+        }
     }
 }
 

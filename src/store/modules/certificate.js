@@ -5,7 +5,6 @@ import CaseAPI from '../../api/CaseAPI';
 const state = {
     certificates: [],
     cases: [],
-    form: null,
     init_form: {
         general_info: {
             application_type: 0,
@@ -116,9 +115,6 @@ const state = {
 };
 
 const mutations = {
-    SET_FORM(state, form) {
-        state.form = form;
-    },
     SET_CERTIFICATE(state, certificates) {
         state.certificates = certificates;
     },

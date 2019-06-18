@@ -221,9 +221,9 @@ export default {
   },
   methods: {
     init() {
-      console.log("FORM: " + JSON.stringify(this.$store.state.licenses.form));
-      this.app_form = this.$store.state.licenses.form;
-      this.form = this.$store.state.licenses.form;
+      console.log("FORM: " + JSON.stringify(this.$store.state.payments.form));
+      this.app_form = this.$store.state.payments.form;
+      this.form = this.$store.state.payments.form;
       this.$store.dispatch("GET_ONE_CASE", this.form.case_no).then(result => {
         console.log("get onse case @ view: " + JSON.stringify(result));
         this.case_holder = result;
@@ -257,12 +257,12 @@ export default {
         description: "Surcharge",
         amount: this.fees_form.surcharge
       });
-      if(this.fees_form.total !=0 ){
+      if (this.fees_form.total != 0) {
         summary.push({
-            description: 'Remaining Balance',
-            amount: this.fees_form.total
-        })
-        }
+          description: "Remaining Balance",
+          amount: this.fees_form.total
+        });
+      }
       console.log("FORM: " + JSON.stringify(this.form));
       console.log("fees form data: " + JSON.stringify(this.fees_form));
       console.log("summary data: " + JSON.stringify(summary));
@@ -325,7 +325,7 @@ export default {
           console.log("ecpay upload files: " + JSON.stringify(file));
           fd.append("file", file);
           return this.$store.dispatch("GENERATED_DOCUMENTS", {
-            license: this.$store.state.licenses.form,
+            details: this.$store.state.payments.form,
             formData: fd
           });
         })
@@ -403,16 +403,16 @@ export default {
             full_details.formDetails.application_type
           );
           full_details.formDetails.auth_officer.designation = this.getDesignation(
-            full_details.formDetails.auth_officer.designation 
+            full_details.formDetails.auth_officer.designation
           );
           full_details.qualified.designation = this.getDesignation(
-            full_details.qualified.designation 
+            full_details.qualified.designation
           );
           full_details.qualified.id_type = this.getIdType(
-            full_details.qualified.id_type 
+            full_details.qualified.id_type
           );
           full_details.qualified.tin = this.numberMask(
-            full_details.qualified.tin 
+            full_details.qualified.tin
           );
           full_details.paymentDetails.total = this.numberWithCommas(
             full_details.paymentDetails.total
@@ -426,7 +426,9 @@ export default {
           full_details.paymentDetails.surcharge = this.numberWithCommas(
             full_details.paymentDetails.surcharge
           );
-          console.log("full details payment summary: " + JSON.stringify(full_details))
+          console.log(
+            "full details payment summary: " + JSON.stringify(full_details)
+          );
           this.$download(full_details, "PAY", "FDAC.pdf");
 
           console.log(
