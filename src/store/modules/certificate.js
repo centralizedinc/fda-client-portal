@@ -1,5 +1,5 @@
-import CetificateAPI from "../../api/CertificateApi";
-import CertificateAPI from "../../api/FoodCertificateApi";
+import CertificateAPI from "../../api/CertificateApi";
+// import FoodCertificateApi from "../../api/FoodCertificateApi";
 import CaseAPI from '../../api/CaseAPI';
 
 const state = {
@@ -135,21 +135,21 @@ var actions = {
     SAVE_CERTIFICATE(context, certificate) {
         return new Promise((resolve, reject) => {
             // console.log("action certificate data: " + JSON.stringify(certificate))
-            // new CetificateAPI(context.rootState.user_session.token).saveCertificate(
+            // new CertificateAPI(context.rootState.user_session.token).saveCertificate(
             // //   certificate
             // ).then((result) =>{
             //     console.log("save certificate data: " + JSON.stringify(result))
             //     // var CaseApi = new CaseAPI(context.rootState.user_session.token);
             //     // CaseApi.uploadFile(comply)
             // })
-            return new CetificateAPI(context.rootState.user_session.token).applyCertificate(
+            return new CertificateAPI(context.rootState.user_session.token).applyCertificate(
                 certificate
             );
         })
     },
     GET_CERTIFICATE(context) {
         return new Promise((resolve, reject) => {
-            new CetificateAPI(context.rootState.user_session.token).getCertificates((certificate, err) => {
+            new CertificateAPI(context.rootState.user_session.token).getCertificates((certificate, err) => {
                 if (!err) {
                     context.commit('SET_CERTIFICATE', certificate)
                     resolve(certificate)
@@ -164,7 +164,7 @@ var actions = {
     },
     GET_COMPLY_CERTIFICATE(context) {
         return new Promise((resolve, reject) => {
-            new CetificateAPI(context.rootState.user_session.token).getComplyCertificate()
+            new CertificateAPI(context.rootState.user_session.token).getComplyCertificate()
                 .then((result) => {
 
                     context.commit('SET_COMPLY', result.data.model);
@@ -188,10 +188,60 @@ var actions = {
                         files: files
                     }
                     console.log("compliance data: " + JSON.stringify(compliance))
-                    return new CetificateAPI(context.rootState.user_session.token).submitComplianceCertificate(compliance)
+                    return new CertificateAPI(context.rootState.user_session.token).submitComplianceCertificate(compliance)
                 }).then((result1) => {
                     console.log('result :' + JSON.stringify(result1));
                     resolve(result1.data)
+                })
+                .catch((err) => {
+                    reject(err)
+                });
+        })
+    },
+    VARIATE_CERTIFICATE(context, data) {
+        return new Promise((resolve, reject) => {
+            var CertificateApi = new CertificateAPI(context.rootState.user_session.token)
+            var case_details = {}
+            var certificate = {}
+            CertificateApi
+                .variateCertificate(data)
+                .then((result) => {
+                    console.log('variateCertificate :', result.data);
+                    if (result.data.success) {
+                        case_details = result.data.model.case_details
+                        certificate = result.data.model.certificate
+                        if (data.form_data) {
+                            return CertificateApi.uploadCertificateFiles(case_details.case_no, data.form_data)
+                        } else {
+                            resolve(result.data.model)
+                        }
+                    } else reject(result.data.errors)
+                })
+                // if there is form data
+                .then((result) => {
+                    console.log('uploadCertificateFiles :', result.data);
+                    if (result.data.success) {
+                        result.data.model.forEach(file => {
+                            certificate.uploaded_files.push({
+                                file_type: "commercialPresentation",
+                                originalname: file.originalname,
+                                mimetype: file.mimetype,
+                                contentType: file.contentType,
+                                location: file.location,
+                                key: file.key,
+                            })
+                        })
+                        return CertificateApi.updateCertificate(certificate._id, certificate)
+                    } else reject(result.data.errors)
+                })
+                .then((result) => {
+                    console.log('updateCertificate :', result.data);
+                    if (result.data.success) {
+                        resolve({
+                            case_details,
+                            certificate: result.data.model
+                        })
+                    } else reject(result.data.errors)
                 })
                 .catch((err) => {
                     reject(err)
