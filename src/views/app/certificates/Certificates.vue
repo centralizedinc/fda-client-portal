@@ -1,27 +1,37 @@
 <template>
   <v-layout row wrap>
     <v-navigation-drawer v-model="overview" right temporary app width="400px">
+      <!-- nav drawer details-->
       <v-toolbar dark color="primary">
         <span class="title font-weight-light">Application Overview</span>
         <v-spacer></v-spacer>
         <v-tooltip bottom>
-          <v-btn
-            :loading="loading"
-            slot="activator"
-            flat
-            icon
-            @click="loadForm(preview_item.application_id)"
-          >
-            <v-icon>launch</v-icon>
-          </v-btn>View Full Details
+          <v-btn slot="activator" flat icon>
+            <v-icon small dark @click="overview=false">fas fa-times-circle</v-icon>
+          </v-btn>Close
         </v-tooltip>
       </v-toolbar>
+
       <v-layout row wrap>
         <v-flex xs12 pa-1>
           <v-card>
-            <v-card-title primary-title>
+            <v-toolbar flat>
               <span class="subheading font-weight-light primary--text">Case Details</span>
-            </v-card-title>
+              <v-spacer></v-spacer>
+              <v-tooltip bottom>
+                <v-btn
+                  :loading="loading"
+                  slot="activator"
+                  flat
+                  icon
+                  @click="loadForm(preview_item.application_id)"
+                >
+                  <v-icon color="primary">launch</v-icon>
+                </v-btn>View Full Details
+              </v-tooltip>
+            </v-toolbar>
+            <!-- <v-card-title primary-title>
+            </v-card-title>-->
             <v-divider></v-divider>
             <v-card-text>
               <v-text-field
@@ -69,7 +79,45 @@
               ></v-textarea>
             </v-card-text>
             <v-divider></v-divider>
-            <v-card-actions>
+            <v-footer flat height="50px">
+              <v-spacer></v-spacer>
+              <v-speed-dial
+                v-model="fab"
+                direction="left"
+                open-on-hover
+                transition="slide-x-reverse-transition"
+              >
+                <template v-slot:activator>
+                  <v-tooltip top>
+                    <v-btn small slot="activator" v-model="fab" color="fdaGreen" dark flat fab>
+                      <v-icon>{{ fab ? "close" : "menu"}}</v-icon>
+                    </v-btn>Actions
+                  </v-tooltip>
+                </template>
+                <v-tooltip top>
+                  <v-btn small slot="activator" fab dark color="fdaBlueGreen">
+                    <v-icon>search</v-icon>
+                  </v-btn>View Full Certificate
+                </v-tooltip>
+                <v-tooltip top>
+                  <v-btn small slot="activator" fab dark color="fdaOrange">
+                    <v-icon>edit</v-icon>
+                  </v-btn>Amendment
+                </v-tooltip>
+                <v-tooltip top>
+                  <v-btn small slot="activator" fab dark color="fdaMed" @click="renew">
+                    <v-icon>autorenew</v-icon>
+                  </v-btn>Renewal
+                </v-tooltip>
+                <v-tooltip top>
+                  <v-btn small slot="activator" fab dark color="fdaYellow">
+                    <v-icon>print</v-icon>
+                  </v-btn>Print
+                </v-tooltip>
+              </v-speed-dial>
+            </v-footer>
+
+            <!-- <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn :disabled="loading" outline color="secondary" @click="overview=false">Close</v-btn>
               <v-btn
@@ -77,11 +125,12 @@
                 color="primary"
                 @click="loadForm(preview_item.application_id)"
               >View</v-btn>
-            </v-card-actions>
+            </v-card-actions>-->
           </v-card>
         </v-flex>
       </v-layout>
     </v-navigation-drawer>
+
     <v-flex xs12 p1-2>
       <v-card>
         <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="closeDecDialog"></undertaking-dialog>
@@ -91,7 +140,7 @@
           hide-actions
           class="elevation-1"
           :pagination.sync="pagination"
-          :loading="true"
+          :loading="loading"
         >
           <template slot="items" slot-scope="props">
             <tr @click="preview(props.item)" style="cursor:pointer">
@@ -196,7 +245,114 @@ export default {
           console.log(
             "############## ACTIVE CERTIFICATES: " + JSON.stringify(this.items)
           );
+          return this.$store.dispatch("GET_FOOD_PRODUCT");
         })
+        .then(result => {
+          // this.food_product = this.$store.state.foodCertificate.food_product
+          console.log(
+            "####food Product###" +
+              JSON.stringify(this.$store.state.foodCertificate.food_product)
+          );
+          return this.$store.dispatch("GET_FOOD_CATEGORY");
+        })
+        .then(result => {
+          // this.category = this.$store.state.foodCertificate.food_category
+          console.log(
+            "####food category###" +
+              JSON.stringify(this.$store.state.foodCertificate.food_category)
+          );
+          return this.$store.dispatch("GET_REGION");
+        })
+        .then(result => {
+          return this.$store.dispatch("GET_SHELF_LIFE");
+        })
+        .then(result => {
+          // this.shelf_life = this.$store.state.foodCertificate.shelf_life
+          console.log(
+            "####shelf life###" +
+              JSON.stringify(this.$store.state.foodCertificate.shelf_life)
+          );
+          return this.$store.dispatch("GET_SOURCE");
+        })
+        .then(result => {
+          // this.source = this.$store.state.foodCertificate.source
+          console.log(
+            "####source###" +
+              JSON.stringify(this.$store.state.foodCertificate.source)
+          );
+          return this.$store.dispatch("GET_PRODUCT_SPECIFICATION");
+        })
+        .then(result => {
+          // this.product_specification = this.$store.state.foodCertificate.product_specification
+          console.log(
+            "####product specification###" +
+              JSON.stringify(
+                this.$store.state.foodCertificate.product_specification
+              )
+          );
+          return this.$store.dispatch("GET_NUTRITION_INFORMATION");
+        })
+        .then(result => {
+          // this.nutrition_information = this.$store.state.foodCertificate.nutrition_information
+          console.log(
+            "####nutrition information###" +
+              JSON.stringify(
+                this.$store.state.foodCertificate.nutrition_information
+              )
+          );
+          return this.$store.dispatch("GET_NUTRITION_HEALTH_CLAIMS");
+        })
+        .then(result => {
+          // this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims
+          console.log(
+            "####nutrition health claims###" +
+              JSON.stringify(
+                this.$store.state.foodCertificate.nutrition_health_claims
+              )
+          );
+          return this.$store.dispatch("GET_VITAMINS");
+        })
+        .then(result => {
+          // this.vitamins = this.$store.state.foodCertificate.vitamins
+          console.log(
+            "####Vitamins###" +
+              JSON.stringify(this.$store.state.foodCertificate.vitamins)
+          );
+          return this.$store.dispatch("GET_MINERALS");
+        })
+        .then(result => {
+          // this.minerals = this.$store.state.foodCertificate.minerals
+          console.log(
+            "####minerals###" +
+              JSON.stringify(this.$store.state.foodCertificate.minerals)
+          );
+          return this.$store.dispatch("GET_ORIGIN");
+        })
+        .then(result => {
+          // this.origin = this.$store.state.places.origin
+          console.log(
+            "####origin###" + JSON.stringify(this.$store.state.places.origin)
+          );
+          return this.$store.dispatch("GET_PHYSICAL_PARAMETER");
+        })
+        .then(result => {
+          // this.physical_parameter = this.$store.state.foodCertificate.physical_parameter
+          console.log(
+            "####physical parameter###" +
+              JSON.stringify(
+                this.$store.state.foodCertificate.physical_parameter
+              )
+          );
+          return this.$store.dispatch("GET_COMPANY_ACTIVITY");
+        })
+        .then(result => {
+          // this.company_activity = this.$store.state.foodCertificate.company_activity
+          console.log(
+            "####company activity###" +
+              JSON.stringify(this.$store.state.foodCertificate.company_activity)
+          );
+        })
+
         .catch(error => {
           this.loading = false;
         });
@@ -209,7 +365,8 @@ export default {
       this.dialog = false;
     },
     loadForm(application_id) {
-      console.log("load form")
+      console.log("#########loadform");
+
       // this.preview = item;
       this.loading = true;
       // this.$store
@@ -237,6 +394,9 @@ export default {
     viewForm() {
       // this.$store.commit("SET_VIEW_LICENSE", this.details.license_details);
       this.$router.push("/app/certificates/overview");
+    },
+    renew() {
+      this.$router.push("/app/certificates/renew")
     }
   }
 };

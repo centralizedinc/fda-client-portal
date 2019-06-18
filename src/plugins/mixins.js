@@ -280,9 +280,25 @@ export default {
         },
         foodProductType(data){
           var foodProduct = this.$store.state.foodCertificate.food_product
-          foodProduct.forEach(product => {
-            console.log("food product type: " + JSON.stringify(product))
-          })
+          console.log("MIXIN DATA:" + JSON.stringify(foodProduct))
+          if (!foodProduct) return {}
+          var foodProduct = foodProduct.find(x => x._id === data)
+          return foodProduct ? foodProduct : {}
+        },
+        establishmentInfo(data){
+          var establishment = this.$store.state.foodCertificate.company_activity
+          console.log("MIXIN DATA ESTABLISHMENT:" + JSON.stringify(establishment))
+          if (!establishment) return {}
+          var establishment = establishment.find(x => x._id === data)
+          return establishment ? establishment : {}
+        },
+        foodCategory(data){
+          console.log("MIXIN DATA: " + JSON.stringify(data))
+          var foodCategory = this.$store.state.foodCertificate.food_category
+          console.log("MIXIN TWO DATA: " + JSON.stringify(foodCategory))
+          if (!foodCategory) return {}
+          var foodCategory = foodCategory.find(x => x._id === data)
+          return foodCategory ? foodCategory : {}
         },
         productSpecs(spec){
           var prodSpec = this.$store.state.foodCertificate.product_specification
