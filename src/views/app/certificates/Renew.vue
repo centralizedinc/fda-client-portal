@@ -109,19 +109,19 @@
             readonly
             name="name"
             label="Source Type"
-            :value="establishmentInfo(form.establishment_info.type).name"
+            :value="establishmentType(form.establishment_info.type).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Country of Origin"
-            :value="establishmentInfo(form.establishment_info.origin_country).name"
+            :value="establishplacesOrigin(form.establishment_info.origin_country).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="Email"
             label="Directly Sourced"
-            :value="establishmentInfo(form.establishment_info.directly_source).name"
+            :value="yesNo(form.establishment_info.directly_source)"
           ></v-text-field>
           <v-text-field
             readonly
@@ -224,7 +224,7 @@
             label="Shelf Life Declaration (in Months)"
             :value="formatDate(form.shelf.declaration_date)"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Type" :value="form.shelf.type"></v-text-field>
+          <v-text-field readonly name="name" label="Type" :value="shelfLife(form.shelf.type).name"></v-text-field>
           <v-text-field
             readonly
             name="name"
