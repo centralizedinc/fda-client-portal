@@ -339,6 +339,18 @@ export default {
           var sLife = sLife.find(x => x._id === spec)
           return sLife ? sLife : {}
         },
+        desc(data){
+          var nutrInfo = this.$store.state.foodCertificate.nutrition_information
+          if (!nutrInfo) return {}
+          var nutrInfo = nutrInfo.find(x => x._id === data)
+          return nutrInfo ? nutrInfo : {}
+        },
+        claims(data){
+          var claim = this.$store.state.foodCertificate.nutrition_health_claims
+          if (!claim) return {}
+          var claim = claim.find(x => x._id === data)
+          return claim ? claim : {}
+        },
 
       }
     });
