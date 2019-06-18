@@ -81,7 +81,7 @@
           </v-stepper-step>
           <v-stepper-content step="6">
             <v-card flat class="mb-5" height="auto">
-              <step-six :form="cert_form" :vitamins="vitamins"></step-six>
+              <step-six :form="cert_form"  :vitamins="vitamins" :minerals="minerals" :nutrition_information="nutrition_information" ></step-six>
             </v-card>
             <v-btn color="primary" @click="e6 = 7">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -107,21 +107,22 @@
             <v-card flat class="mb-5" height="auto">
               <step-eight :form="cert_form"></step-eight>
             </v-card>
-            <v-btn color="primary" @click="e6 = 9">Continue</v-btn>
+            <v-btn color="primary" @click="save">Submit</v-btn>
+            <!-- <v-btn color="primary" @click="e6 = 9">Continue</v-btn> -->
             <v-btn flat>Cancel</v-btn>
           </v-stepper-content>
 
-          <v-stepper-step step="9" :complete="e6 > 9">
+          <!-- <v-stepper-step step="9" :complete="e6 > 9">
             Payment
             <small>We will sent you an email with a confirmation link. Please check your email.</small>
-          </v-stepper-step>
-          <v-stepper-content step="9">
+          </v-stepper-step> -->
+          <!-- <v-stepper-content step="9">
             <v-card flat class="mb-5" height="auto">
               <step-nine :form="cert_form"></step-nine>
             </v-card>
             <v-btn color="primary" @click="save">Submit</v-btn>
             <v-btn flat>Cancel</v-btn>
-          </v-stepper-content>
+          </v-stepper-content> -->
         </v-stepper>
       </v-flex>
     </v-layout>
@@ -165,9 +166,9 @@ export default {
     stepEight: () => ({
       component: import("./create/tabs/DocumentaryRequirements")
     }),
-    stepNine: () => ({
-      component: import("./create/tabs/DocumentaryRequirements")
-    })
+    // stepNine: () => ({
+    //   component: import("./create/tabs/DocumentaryRequirements")
+    // })
   },
   data: () => ({
     e6: 1,
@@ -267,11 +268,12 @@ export default {
         serving_size: "",
         serving_per_pack: 0,
         servings: [
-          {
-            type: "",
-            amount_per_serving: "",
-            percent: ""
-          }
+          // {
+          //   type: "",
+          //   kind: "",
+          //   amount_per_serving: "",
+          //   percent: ""
+          // }
         ]
       },
 
@@ -350,11 +352,13 @@ export default {
       this.company_activity = this.$store.state.foodCertificate.company_activity;
     },
     save() {
+      // this.cert_form.
       this.showAppOverview = false;
       this.confirmDialog = true;
 
       console.log("submit clicked: " + JSON.stringify(this.cert_form));
       this.$store.dispatch("SAVE_CERTIFICATE", this.cert_form);
+      this.$router.push("/app/certificate/pay");
     }
   },
   computed: {
