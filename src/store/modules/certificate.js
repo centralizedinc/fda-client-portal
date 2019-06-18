@@ -206,6 +206,7 @@ var actions = {
             CertificateApi
                 .variateCertificate(data)
                 .then((result) => {
+                    console.log('variateCertificate :', result.data);
                     if (result.data.success) {
                         case_details = result.data.model.case_details
                         certificate = result.data.model.certificate
@@ -218,6 +219,7 @@ var actions = {
                 })
                 // if there is form data
                 .then((result) => {
+                    console.log('uploadCertificateFiles :', result.data);
                     if (result.data.success) {
                         result.data.model.forEach(file => {
                             certificate.uploaded_files.push({
@@ -233,6 +235,7 @@ var actions = {
                     } else reject(result.data.errors)
                 })
                 .then((result) => {
+                    console.log('updateCertificate :', result.data);
                     if (result.data.success) {
                         resolve({
                             case_details,

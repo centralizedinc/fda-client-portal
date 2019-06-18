@@ -166,9 +166,9 @@ export default {
     addNewSpecs() {
       this.add = true;
       this.dialogSpecs = true;
-      this.selected_specs = null;
-      this.parameter = null;
-      this.specification = null;
+      this.selected_specs = "";
+      this.parameter = "";
+      this.specification = "";
     },
     init() {
       this.prodSpecs = this.$store.state.foodCertificate.product_specification;
@@ -216,7 +216,7 @@ export default {
       }
 
       this.specs_list.push({
-        prod_spec: this.specs_list,
+        prod_spec: this.spec._id,
         parameter: this.parameter,
         specs: this.specification
       })

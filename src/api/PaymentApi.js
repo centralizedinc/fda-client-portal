@@ -72,7 +72,7 @@ export default class PaymentAPI {
             cb(null, err)
         })
     }
-
+    
     saveTransaction(details, cb) {
         console.log("details data: " + JSON.stringify(details))
         axios.post('payments/transactions/initiate', {

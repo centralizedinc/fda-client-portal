@@ -152,6 +152,12 @@ var router = new Router({
           // beforeEnter: isAuthorized
         },
         {
+          path: 'certificate/pay',
+          name: 'Pay Certificate',
+          component: () => import('@/views/app/payment/PaymentSummary.vue'),
+          // beforeEnter: isAuthorized
+        },
+        {
           path: 'licenses/summary',
           name: 'License Summary',
           beforeEnter: dropBreadcrumbs,
@@ -162,6 +168,12 @@ var router = new Router({
           path: 'certificates',
           name: 'Certificate of Product Registration',
           component: () => import('@/views/app/certificates/Certificates.vue'),
+          // beforeEnter: isAuthorized
+        },
+        {
+          path: 'certificates/renew',
+          name: 'Renewal Certificate of Product Registration',
+          component: () => import('@/views/app/certificates/Renew.vue'),
           // beforeEnter: isAuthorized
         },
         {

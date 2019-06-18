@@ -20,13 +20,13 @@
             readonly
             name="name"
             label="Food Product Type"
-            :value="form.food_product.type"
+            :value="foodProductType(form.food_product.type).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Food Category"
-            :value="form.food_product.categorization"
+            :value="foodCategory(form.food_product.categorization).name"
           ></v-text-field>
           <v-textarea
             readonly
@@ -45,9 +45,14 @@
             readonly
             name="name"
             label="Company Name (as listed in LTO)"
-            :value="formatDate(form.food_product.company)"
+            :value="form.food_product.company"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Region" :value="getRegionName(form.food_product.address)"></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Region"
+            :value="getRegionName(form.food_product.address)"
+          ></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -58,7 +63,7 @@
             readonly
             name="name"
             label="LTO Validity"
-            :value="form.food_product.license_validity"
+            :value="formatDate(form.food_product.license_validity)"
           ></v-text-field>
           <v-text-field
             readonly
@@ -70,12 +75,14 @@
             readonly
             name="name"
             label="Landline Number"
+            mask="(##) ####-####"
             :value="form.food_product.contacts.landline"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Fax Number"
+            mask="(##) ####-####"
             :value="form.food_product.contacts.mobile"
           ></v-text-field>
         </v-card-text>
@@ -96,25 +103,25 @@
             readonly
             name="name"
             label="Corresponding company activities"
-            :value="form.establishment_info.activity"
+            :value="establishmentInfo(form.establishment_info.activity).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Source Type"
-            :value="form.establishment_info.type"
+            :value="establishmentInfo(form.establishment_info.type).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Country of Origin"
-            :value="form.establishment_info.origin_country"
+            :value="establishmentInfo(form.establishment_info.origin_country).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="Email"
             label="Directly Sourced"
-            :value="form.establishment_info.directly_source"
+            :value="establishmentInfo(form.establishment_info.directly_source).name"
           ></v-text-field>
           <v-text-field
             readonly
@@ -492,7 +499,7 @@ export default {
       },
       case_details: {},
       payments: [],
-      transaction: [],
+      transaction: []
     };
   },
   created() {

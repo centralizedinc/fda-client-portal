@@ -237,7 +237,7 @@ export default {
     },
     uploadFile(file) {
       this.form_data = file.formData;
-      this.uploaded_files = file.uploaded_files;
+      this.uploaded_files = file.uploadedFiles;
     },
     next() {
       /**
@@ -285,6 +285,7 @@ export default {
         });
     },
     submit() {
+      this.isLoading = true;
       var variated_values = [];
       this.selected_variations.forEach(element => {
         console.log(element);
@@ -365,6 +366,7 @@ export default {
           }
         })
         .then(model => {
+          this.isLoading = false;
           this.$notify({
             message:
               "Successfully applied for Certificate Variation with Case No.: " +
@@ -373,9 +375,10 @@ export default {
             icon: "check_circle"
           });
           this.$store.commit("SET_FORM", model.certificate);
-          this.$router.push("/app/licenses/pay");
+          this.$router.push("/app/certificate/pay");
         })
         .catch(err => {
+          this.isLoading = false;
           console.log("Saving variation err :", err);
           this.$notifyError(err);
         });
