@@ -1,6 +1,6 @@
 <template>
   <v-layout row wrap>
-    <v-flex dark xs12 md6 pa-1>
+    <v-flex dark xs12 md8 pa-1>
       <v-card>
         <v-toolbar dark color="primary">Application Details</v-toolbar>
         <v-card-title primary-title>
@@ -47,7 +47,7 @@
             label="Company Name (as listed in LTO)"
             :value="form.food_product.company"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Region" :value="form.food_product.address"></v-text-field>
+          <v-text-field readonly name="name" label="Region" :value="getRegionName(form.food_product.address)"></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -376,7 +376,7 @@
     </v-flex>
 
     <!-- PAYMENTS -->
-    <v-flex dark xs12 md6 pa-1>
+    <v-flex dark xs12 md4 pa-1>
       <v-layout row wrap>
         <v-card>
           <v-card-title primary-title class="font-weight-light headline">Payment Summary</v-card-title>
