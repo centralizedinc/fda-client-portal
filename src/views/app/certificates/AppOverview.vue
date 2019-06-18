@@ -224,7 +224,7 @@
             label="Shelf Life Declaration (in Months)"
             :value="formatDate(form.shelf.declaration_date)"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Type" :value="shelfLifeType(form.shelf.type).name"></v-text-field>
+          <v-text-field readonly name="name" label="Type" :value="form.shelf.shelf_type"></v-text-field>
           <v-text-field
             readonly
             name="name"
