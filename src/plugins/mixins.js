@@ -332,7 +332,14 @@ export default {
           if (!phyParam) return {}
           var phyParam = phyParam.find(x => x._id === spec)
           return phyParam ? phyParam : {}
-        }
+        },
+        shelfLife(spec){
+          var sLife = this.$store.state.foodCertificate.shelf_life
+          if (!sLife) return {}
+          var sLife = sLife.find(x => x._id === spec)
+          return sLife ? sLife : {}
+        },
+
       }
     });
   }
