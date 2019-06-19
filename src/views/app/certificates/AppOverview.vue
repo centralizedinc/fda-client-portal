@@ -121,7 +121,7 @@
             readonly
             name="Email"
             label="Directly Sourced"
-            :value="form.establishment_info.directly_source"
+            :value="yesNo(form.establishment_info.directly_source)"
           ></v-text-field>
           <v-text-field
             readonly
@@ -224,7 +224,7 @@
             label="Shelf Life Declaration (in Months)"
             :value="formatDate(form.shelf.declaration_date)"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Type" :value="form.shelf.type"></v-text-field>
+          <v-text-field readonly name="name" label="Type" :value="form.shelf.shelf_type"></v-text-field>
           <v-text-field
             readonly
             name="name"

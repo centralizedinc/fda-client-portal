@@ -109,19 +109,19 @@
             readonly
             name="name"
             label="Source Type"
-            :value="establishmentInfo(form.establishment_info.type).name"
+            :value="establishmentType(form.establishment_info.type).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="name"
             label="Country of Origin"
-            :value="establishmentInfo(form.establishment_info.origin_country).name"
+            :value="establishplacesOrigin(form.establishment_info.origin_country).name"
           ></v-text-field>
           <v-text-field
             readonly
             name="Email"
             label="Directly Sourced"
-            :value="establishmentInfo(form.establishment_info.directly_source).name"
+            :value="yesNo(form.establishment_info.directly_source)"
           ></v-text-field>
           <v-text-field
             readonly
@@ -224,7 +224,7 @@
             label="Shelf Life Declaration (in Months)"
             :value="formatDate(form.shelf.declaration_date)"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Type" :value="form.shelf.type"></v-text-field>
+          <v-text-field readonly name="name" label="Type" :value="shelfLife(form.shelf.type).name"></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -285,7 +285,7 @@
             :headers="[{text:'Serving Size', sortable: false,}, 
                         {text:'Serving Per Pack', sortable: false},
                         {text:'Servings Amount', sortable: false}]"
-            :items="nutrition_info"
+            :items="form.nutrition_info"
             hide-actions
             class="elevation-1"
           >
@@ -297,6 +297,7 @@
           </v-data-table>
         </v-card-text>
         <v-divider></v-divider>
+       
         <v-card-title primary-title>
           <span class="subheading font-weight-thin primary--text">Nutrition Health Claims</span>
           <v-spacer></v-spacer>
@@ -309,8 +310,20 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part7">
-          <v-text-field readonly name="name" label="Claims" :value="form.claims.claims"></v-text-field>
-          <v-text-field readonly name="name" label="Description" :value="form.claims.desc"></v-text-field>
+          <!-- <v-text-field readonly name="name" label="Claims" :value="form.claims.claims"></v-text-field>
+          <v-text-field readonly name="name" label="Description" :value=" form.claims.desc"></v-text-field> -->
+          <v-data-table
+            :headers="[{text:'Claims', sortable: false,}, 
+                        {text:'Description', sortable: false}]"
+            :items="form.claims"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{props.item.claims}}</td>
+              <td>{{props.item.desc}}</td>
+            </template>
+          </v-data-table>
         </v-card-text>
       </v-card>
     </v-flex>

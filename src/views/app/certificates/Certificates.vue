@@ -24,7 +24,7 @@
                   slot="activator"
                   flat
                   icon
-                  @click="loadForm(preview_item.application_id)"
+                  @click="viewForm"
                 >
                   <v-icon color="primary">launch</v-icon>
                 </v-btn>View Full Details
@@ -89,18 +89,18 @@
               >
                 <template v-slot:activator>
                   <v-tooltip top>
-                    <v-btn small slot="activator" v-model="fab" color="fdaGreen" dark flat fab>
+                    <v-btn small slot="activator" color="fdaGreen" dark flat fab>
                       <v-icon>{{ fab ? "close" : "menu"}}</v-icon>
                     </v-btn>Actions
                   </v-tooltip>
                 </template>
                 <v-tooltip top>
-                  <v-btn small slot="activator" fab dark color="fdaBlueGreen">
+                  <v-btn small slot="activator" fab dark color="fdaBlueGreen" @click="viewForm">
                     <v-icon>search</v-icon>
                   </v-btn>View Full Certificate
                 </v-tooltip>
                 <v-tooltip top>
-                  <v-btn small slot="activator" fab dark color="fdaOrange">
+                  <v-btn small slot="activator" fab dark color="fdaOrange" @click="variate">
                     <v-icon>edit</v-icon>
                   </v-btn>Amendment
                 </v-tooltip>
@@ -203,20 +203,9 @@ export default {
         { text: "Case No", value: "case_no" },
         { text: "Application Type", value: "application_type" },
         { text: "Status", value: "status", sortable: true },
-        // { text: "Current Task", value: "current_task" },
-        // { text: "Date Created", value: "date_created" },
         { text: "Remarks", value: "remarks" }
       ],
-      items: [
-        // {
-        //   case_no: "00",
-        //   application_type: "sample application",
-        //   status: "Initial",
-        //   // current_task: "sample task",
-        //   date_created: "01/01/2019",
-        //   remarks: "this is a remark"
-        // }
-      ]
+      items: []
     };
   },
   created() {
@@ -397,8 +386,13 @@ export default {
       // this.$store.commit("SET_VIEW_LICENSE", this.details.license_details);
       this.$router.push("/app/certificates/overview");
     },
+    variate() {
+      console.log("preview data: " + JSON.stringify(this.preview_item));
+      // this.$store.commit("SET_VIEW_CERTIFICATE", item);
+      this.$router.push("/app/certificates/variation");
+    },
     renew() {
-      this.$router.push("/app/certificates/renew")
+      this.$router.push("/app/certificates/renew");
     }
   }
 };

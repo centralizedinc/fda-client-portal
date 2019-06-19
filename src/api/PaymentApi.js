@@ -54,6 +54,10 @@ export default class PaymentAPI {
         })
     }
 
+    getCertificateFees(details) {
+        return axios.post("payments/fees/certificate", details)
+    }
+
     savePayment(fullDetails, cb) {
         console.log("save payments details: " + JSON.stringify(fullDetails))
         axios.post('payments/', {
@@ -71,14 +75,14 @@ export default class PaymentAPI {
     
     saveTransaction(details, cb) {
         console.log("details data: " + JSON.stringify(details))
-        axios.post('payments/transactions/initiate',{
+        axios.post('payments/transactions/initiate', {
             payment_details: {
-                status: 0, //Initiate
+                status: details.case.application_type,
                 mode_of_payment: details.mode_of_payment
             },
             transaction_details: {
                 application_type: details.fees.appType,
-                application: 0,
+                application: details.case.case_type,
                 case_no: details.case.case_no,
                 // user_id: ,
                 order_payment: {
@@ -90,20 +94,20 @@ export default class PaymentAPI {
                     total_amount: details.fees.total,
                     remarks: details.fees.remarks
                 }
-        }
-    }).then((result) => {
+            }
+        }).then((result) => {
             cb(result.data.model)
         }).catch(err => {
             cb(null, err)
         })
     }
 
-    getPayments(user_id){
-        return axios.get('payments/client/'+user_id)
+    getPayments(user_id) {
+        return axios.get('payments/client/' + user_id)
     }
 
-    getPaymentsByCaseNo(case_no){
-        return axios.get('payments/transactions/cases/'+case_no)
+    getPaymentsByCaseNo(case_no) {
+        return axios.get('payments/transactions/cases/' + case_no)
     }
 
 

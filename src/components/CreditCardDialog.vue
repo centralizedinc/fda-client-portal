@@ -534,7 +534,7 @@ export default {
             var fd = new FormData();
             fd.append("file", file);
             return this.$store.dispatch("GENERATED_DOCUMENTS", {
-              license: this.$store.state.licenses.form,
+              details: this.$store.state.payments.form,
               formData: fd
             });
           })

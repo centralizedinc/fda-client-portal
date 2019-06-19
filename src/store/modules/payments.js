@@ -1,5 +1,6 @@
 import PaymentAPI from '../../api/PaymentApi';
-
+import LicenseAPI from '../../api/LicenseApi';
+import CertificateAPI from '../../api/CertificateApi'
 
 const state = {
     credit_card: null,
@@ -10,7 +11,8 @@ const state = {
         summary: []
     },
     showCCDialog: false,
-    providerDetails: null
+    providerDetails: null,
+    form: {}
 }
 
 const mutations = {
@@ -50,16 +52,19 @@ const mutations = {
         }
         state.showCCDialog = false;
     },
-    SET_PAYMENT_PROVIDER(state, details){
+    SET_PAYMENT_PROVIDER(state, details) {
         state.providerDetails = details
+    },
+    SET_FORM(state, form) {
+        state.form = form
     }
 }
 
 var actions = {
-    FIND_PAYMENTS(context, user_id){
+    FIND_PAYMENTS(context, user_id) {
         return new PaymentAPI(context.rootState.user_session.token).getPayments(user_id)
     },
-    FIND_PAYMENTS_BY_CASENO(context, case_no){
+    FIND_PAYMENTS_BY_CASENO(context, case_no) {
         return new PaymentAPI(context.rootState.user_session.token).getPaymentsByCaseNo(case_no)
     },
     VALIDATE_CREDIT_CARD(context, creditCard) {
@@ -106,6 +111,26 @@ var actions = {
             })
         })
     },
+    GET_CERTIFICATE_FEES(context, fees) {
+        return new Promise((resolve, reject) => {
+            console.log("entering mutation GET_CERTIFICATE_FEES: " + JSON.stringify(fees))
+            new PaymentAPI(context.rootState.user_session.token)
+                .getCertificateFees(fees)
+                .then((result) => {
+                    console.log(result.data);
+                    if (result.data.success) {
+                        context.commit('FEES', result.data.model.fees)
+                        resolve(result.data.model.fees)
+                    } else {
+                        console.log('CERTIFICATE FEES result.data.errors :', result.data.errors);
+                        reject(result.data.errors)
+                    }
+                }).catch((err) => {
+                    console.log('CERTIFICATE FEES err :', err);
+                    reject(err)
+                });
+        })
+    },
     SAVE_PAYMENT(context, fullDetails) {
         return new Promise((resolve, reject) => {
             console.log("save payment store actions" + JSON.stringify(fullDetails))
@@ -121,18 +146,31 @@ var actions = {
             })
         })
     },
-    SAVE_TRANSACTION_PROVIDER(context, details){
+    SAVE_TRANSACTION_PROVIDER(context, details) {
         return new Promise((resolve, reject) => {
             console.log("save transaction by provider: " + JSON.stringify(details))
             new PaymentAPI(context.rootState.user_session.token).saveTransaction(details, (data, err) => {
-                if(!err){
+                if (!err) {
                     console.log("action save transaction")
                     resolve(data)
-                }else{
+                } else {
                     reject(err)
                 }
             })
         })
+    },
+    GENERATED_DOCUMENTS(context, data) {
+        if (data.case_type === 0) {
+            return new LicenseAPI(context.rootState.user_session.token).addDocuments(
+                data.details,
+                data.formData
+            );
+        } else if (data.case_type === 1) {
+            return new CertificateAPI(context.rootState.user_session.token).addDocuments(
+                data.details,
+                data.formData
+            );
+        }
     }
 }
 
