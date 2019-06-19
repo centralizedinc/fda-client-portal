@@ -162,7 +162,7 @@
     <!-- NEW CERTIFICATE -->
     <v-layout column class="fab-container">
       <v-tooltip top>
-        <v-btn slot="activator" fab color="fdaLight" @click="dialog=true">
+        <v-btn :disabled="!data_complete" slot="activator" fab color="fdaLight" @click="dialog=true">
           <v-icon large color="fdaSilver">add</v-icon>
         </v-btn>Apply New
       </v-tooltip>
@@ -185,6 +185,7 @@ export default {
       preview_item: {},
       overview: null,
       fab: false,
+      data_complete: false,
       dialogView: false,
       initial: false,
       selected_case: {},
@@ -351,6 +352,7 @@ export default {
             "####company activity###" +
               JSON.stringify(this.$store.state.foodCertificate.company_activity)
           );
+          this.data_complete = true
         })
 
         .catch(error => {

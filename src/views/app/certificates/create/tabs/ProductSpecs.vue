@@ -171,7 +171,7 @@ export default {
       this.specification = "";
     },
     init() {
-      this.prodSpecs = this.$store.state.foodCertificate.product_specification;
+      // this.prodSpecs = this.$store.state.foodCertificate.product_specification;
       console.log(
         "food specification data: " + JSON.stringify(this.prodSpecs)
       );
