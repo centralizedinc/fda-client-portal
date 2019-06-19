@@ -399,14 +399,14 @@ export default {
       console.log("Dialog closed");
     },
     init() {
-      this.nutritionServing = this.$store.state.foodCertificate.nutrition_information;
+      // this.nutritionServing = this.$store.state.foodCertificate.nutrition_information;
       console.log(
         "nutrition information data: " +
           JSON.stringify(this.nutritionServing)
       );
-      this.vitamins = this.$store.state.foodCertificate.vitamins;
+      // this.vitamins = this.$store.state.foodCertificate.vitamins;
       console.log("vitamins data: " + JSON.stringify(this.vitamins));
-      this.minerals = this.$store.state.foodCertificate.minerals;
+      // this.minerals = this.$store.state.foodCertificate.minerals;
       console.log("minerals data: " + JSON.stringify(this.minerals));
     }
   },

@@ -204,6 +204,7 @@ export default {
       });
     },
     upload(data) {
+      console.log("form data check point: " + JSON.stringify(this.form.establishment_info))
       this.$emit("upload", data);
       this.form_data = data.formData;
       this.uploadedFiles = data.uploadedFiles;

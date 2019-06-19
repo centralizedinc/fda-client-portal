@@ -5,7 +5,7 @@
         <template v-for="(item, index) in form.claims">
           <v-flex xs6 :key="`a${index}`">
             <v-autocomplete
-              v-model="item.claims"
+              v-model="claims"
               outline
               label="Claims"
               :rules="[rules.required]"
@@ -21,7 +21,7 @@
               outline
               name="name"
               label="Description"
-              v-model="item.desc"
+              v-model="description"
               :append-outer-icon="index == form.claims.length-1?'far fa-plus-square':''"
               :append-icon="index != form.claims.length-1?'fas fa-backspace':''"
               @click:append-outer="addItem"
@@ -47,6 +47,8 @@ export default {
   data: () => ({
     valid: true,
     nutrition_health_claims: [],
+    claims: "",
+    description: "",
     rules: {
       required: value => !!value || "This field is required"
     }
@@ -57,16 +59,19 @@ export default {
 
   methods: {
     addItem() {
+      console.log("add item claim data: " + JSON.stringify(this.form.claims))
       this.form.claims.push({
-        claims: "",
-        desc: ""
+        claims: this.claims,
+        desc: this.description
       });
+      this.claims = ""
+      this.description = ""
     },
     removeItem(index) {
       this.form.claims.splice(index, 1);
     },
     init(){
-      this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims
+      // this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims
       console.log("nutrition health claims data: " + JSON.stringify(this.nutrition_health_claims))
     }
   }
