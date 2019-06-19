@@ -230,7 +230,7 @@ export default {
       this.$store
         .dispatch("GET_CERTIFICATE")
         .then(results => {
-          this.loading = false;
+          
           this.items = results;
           console.log(
             "############## ACTIVE CERTIFICATES: " + JSON.stringify(this.items)
@@ -341,6 +341,7 @@ export default {
             "####company activity###" +
               JSON.stringify(this.$store.state.foodCertificate.company_activity)
           );
+          this.loading = false;
           this.data_complete = true
         })
 
