@@ -46,7 +46,7 @@
                 label="Application Type"
                 id="id"
                 readonly
-                :value="getAppType(preview_item.application_type)"
+                :value="getAppType(preview_item.application_type, preview_item.case_type)"
               ></v-text-field>
               <v-text-field
                 name="name"

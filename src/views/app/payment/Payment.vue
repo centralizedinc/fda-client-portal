@@ -15,7 +15,7 @@
               
               <td>{{ props.item.transaction_id }}</td>
               <td>{{ props.item.transaction_details.case_no }}</td>
-              <td>{{ getAppType(props.item.transaction_details.application_type) }}</td>
+              <td>{{ getAppType(props.item.transaction_details.application_type, props.item.transaction_details.application) }}</td>
               <td>{{ getModeOfPayment(props.item.payment_details.mode_of_payment) }}</td>
               <td>{{ formatCurrency(props.item.payment_details.total_amount)}}</td>
               <td>{{ formatDate (props.item.date_created) }}</td>

@@ -111,8 +111,10 @@ export default {
           .establishment_name,
         establishment_address: address,
         application_type:
-          this.getAppType(this.license_details.application_type) +
-          " Application",
+          this.getAppType(
+            this.license_details.application_type,
+            this.case_details.case_no
+          ) + " Application",
         case_no: this.case_details.case_no,
         reasons: this.director.remarks
       };

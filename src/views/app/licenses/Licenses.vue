@@ -32,7 +32,7 @@
                   label="Application Type"
                   id="id"
                   readonly
-                  :value="getAppType(preview_item.application_type)"
+                  :value="getAppType(preview_item.application_type, preview_item.case_type)"
                 ></v-text-field>
                 <v-text-field
                   name="name"
@@ -105,7 +105,7 @@
               <!-- <tr @click="loadForm(props.item.application_id)" class="data-row"> -->
               <tr @click="preview(props.item)" style="cursor:pointer">
                 <td>{{ props.item.case_no }}</td>
-                <td>{{ getAppType(props.item.application_type) }}</td>
+                <td>{{ getAppType(props.item.application_type, props.item.case_type) }}</td>
                 <td
                   :class="`${getAppStatusColor(props.item.status)}--text`"
                 >{{ getAppStatus(props.item.status) }}</td>
@@ -309,7 +309,7 @@ export default {
             app.general_info.primary_activity = this.getPrimary(
               app.general_info.primary_activity
             );
-            app.application_type = this.getAppType(app.application_type);
+            app.application_type = this.getAppType(app.application_type, app.case_type);
             app.license_expiry = this.formatDate(app.license_expiry);
 
             app.officeAddress = app.address_list.find(x => {

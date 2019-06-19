@@ -363,57 +363,69 @@ export default {
           console.log("this.app_form: " + JSON.stringify(this.app_form));
           this.cashierPayment = true;
           var full_details = {
-            date_issue: this.formatDate(result.date_created),
-            formDetails: this.app_form,
-            paymentDetails: this.fees_form,
-            officeAddress: this.app_form.address_list.find(data => {
-              return data.type === 0;
-            }),
-            qualified: this.app_form.qualified[0]
+            formDetails: this.deepCopy(this.app_form),
+            paymentDetails: this.deepCopy(this.fees_form)
           };
 
-          full_details.formDetails.general_info.product_type = this.getProduct(
-            full_details.formDetails.general_info.product_type
-          );
-          full_details.formDetails.general_info.primary_activity = this.getPrimary(
-            full_details.formDetails.general_info.primary_activity
-          );
-          full_details.formDetails.general_info.declared_capital = this.getDeclared(
-            full_details.formDetails.general_info.declared_capital
-          );
-          full_details.formDetails.auth_officer.mail_add.region = this.getRegionName(
-            full_details.formDetails.auth_officer.mail_add.region
-          );
-          full_details.formDetails.auth_officer.mail_add.province = this.getProvinceName(
-            full_details.formDetails.auth_officer.mail_add.province
-          );
-          full_details.formDetails.auth_officer.mail_add.city = this.getCityName(
-            full_details.formDetails.auth_officer.mail_add.city
-          );
-          full_details.officeAddress.region = this.getRegionName(
-            full_details.officeAddress.region
-          );
-          full_details.officeAddress.province = this.getProvinceName(
-            full_details.officeAddress.province
-          );
-          full_details.officeAddress.city = this.getCityName(
-            full_details.officeAddress.city
+          full_details.formDetails.date_created = this.formatDate(
+            full_details.formDetails.date_created
           );
           full_details.formDetails.application_type = this.getAppType(
-            full_details.formDetails.application_type
+            full_details.formDetails.application_type,
+            full_details.formDetails.case_type
           );
-          full_details.formDetails.auth_officer.designation = this.getDesignation(
-            full_details.formDetails.auth_officer.designation
-          );
-          full_details.qualified.designation = this.getDesignation(
-            full_details.qualified.designation
-          );
-          full_details.qualified.id_type = this.getIdType(
-            full_details.qualified.id_type
-          );
-          full_details.qualified.tin = this.numberMask(
-            full_details.qualified.tin
-          );
+
+          if (full_details.formDetails.case_type === 0) {
+            full_details.officeAddress = this.app_form.address_list.find(
+              data => {
+                return data.type === 0;
+              }
+            );
+            full_details.qualified = this.app_form.qualified[0];
+
+            full_details.formDetails.general_info.product_type = this.getProduct(
+              full_details.formDetails.general_info.product_type
+            );
+            full_details.formDetails.general_info.primary_activity = this.getPrimary(
+              full_details.formDetails.general_info.primary_activity
+            );
+            full_details.formDetails.general_info.declared_capital = this.getDeclared(
+              full_details.formDetails.general_info.declared_capital
+            );
+            full_details.formDetails.auth_officer.mail_add.region = this.getRegionName(
+              full_details.formDetails.auth_officer.mail_add.region
+            );
+            full_details.formDetails.auth_officer.mail_add.province = this.getProvinceName(
+              full_details.formDetails.auth_officer.mail_add.province
+            );
+            full_details.formDetails.auth_officer.mail_add.city = this.getCityName(
+              full_details.formDetails.auth_officer.mail_add.city
+            );
+            full_details.officeAddress.region = this.getRegionName(
+              full_details.officeAddress.region
+            );
+            full_details.officeAddress.province = this.getProvinceName(
+              full_details.officeAddress.province
+            );
+            full_details.officeAddress.city = this.getCityName(
+              full_details.officeAddress.city
+            );
+            full_details.formDetails.auth_officer.designation = this.getDesignation(
+              full_details.formDetails.auth_officer.designation
+            );
+            full_details.qualified.designation = this.getDesignation(
+              full_details.qualified.designation
+            );
+            full_details.qualified.id_type = this.getIdType(
+              full_details.qualified.id_type
+            );
+            full_details.qualified.tin = this.numberMask(
+              full_details.qualified.tin
+            );
+          } else if(full_details.formDetails.case_type === 1){
+            // full_details.food_product.type = this.
+          }
+
           full_details.paymentDetails.total = this.numberWithCommas(
             full_details.paymentDetails.total
           );
@@ -430,11 +442,6 @@ export default {
             "full details payment summary: " + JSON.stringify(full_details)
           );
           this.$download(full_details, "PAY", "FDAC.pdf");
-
-          console.log(
-            "application form data: " + JSON.stringify(this.app_form)
-          );
-          console.log("fees form data: " + JSON.stringify(this.fees_form));
         });
     }
   }
