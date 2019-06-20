@@ -107,7 +107,7 @@ var actions = {
   GET_SOURCE(context) {
     console.log("Food Certificates!!!")
     return new Promise((resolve, reject) => {
-      new CertificateAPI(context.rootState.user_session.token).shelfLife((source, err) => {
+      new CertificateAPI(context.rootState.user_session.token).source((source, err) => {
         if (!err) {
           console.log("GET_SOURCE data: " + JSON.stringify(source))
           context.commit('SET_SOURCE', source)
