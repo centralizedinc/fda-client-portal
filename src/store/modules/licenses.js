@@ -290,12 +290,12 @@ var actions = {
     );
   },
 
-  GENERATED_DOCUMENTS(context, data) {
-    return new LicenseAPI(context.rootState.user_session.token).addDocuments(
-      data.license,
-      data.formData
-    );
-  }
+  // GENERATED_DOCUMENTS(context, data) {
+  //   return new LicenseAPI(context.rootState.user_session.token).addDocuments(
+  //     data.license,
+  //     data.formData
+  //   );
+  // }
 };
 
 export default {

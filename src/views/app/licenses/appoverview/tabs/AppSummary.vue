@@ -4,7 +4,7 @@
     <v-flex xs12 md4 class="subheading" v-if="show">Case Number</v-flex>
     <v-flex xs12 md8 v-if="show">{{form.case_no}}</v-flex>
     <v-flex xs12 md4 class="subheading">Application Type</v-flex>
-    <v-flex xs12 md8>{{getAppType(form.application_type)}}</v-flex>
+    <v-flex xs12 md8>{{getAppType(form.application_type, form.case_type)}}</v-flex>
     <v-flex xs12 md4 class="subheading">Name of Establishment</v-flex>
     <v-flex xs12 md8>{{form.estab_details.establishment_name}}</v-flex>
     <v-flex xs12 md4 class="subheading">Establishment Owner</v-flex>

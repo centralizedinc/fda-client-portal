@@ -179,6 +179,7 @@
                         label="Vitamins or Minerals"
                         :value="choice"
                         disabled
+                        v-model="kind"
                         outline
                       ></v-text-field>
                     </v-flex>
@@ -186,6 +187,7 @@
                       <v-text-field
                         label="Nutrision"
                         :value="type"
+                        v-model="type"
                         disabled
                         outline
                       ></v-text-field>
@@ -430,7 +432,7 @@ export default {
         percent: "NOT APPLICABLE"
         })
       }); 
-
+      
     }
   }
 };
