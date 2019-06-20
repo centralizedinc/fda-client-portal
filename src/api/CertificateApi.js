@@ -253,6 +253,10 @@ export default class CertificateAPI {
     return axios.post('certificates/variation', form);
   }
 
+  renewCertificate(form) {
+    return axios.post('certificates/renewal', form)
+  }
+
   uploadCertificateFiles(case_no, form_data) {
     return axios.post('documents/uploads?account_id=' + case_no, form_data)
   }

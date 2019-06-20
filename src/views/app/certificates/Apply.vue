@@ -278,7 +278,10 @@ export default {
       },
 
       // change claims to array nalang
-      claims: [""],
+      claims: [{
+        cliam: "",
+        desc: ""
+      }],
 
       documentary: {
         product_label_images: [],
@@ -368,6 +371,9 @@ export default {
         "completion parse int: " +
           JSON.stringify(parseInt(((this.e6 - 1) / 7) * 100))
       );
+      // if(this.foodProductType(this.cert_form.food_product.type).name == "Raw Material" && this.e6 == 6 || this.e6 == 7)
+      //   this.e6 = 8
+
       return parseInt(((this.e6 - 1) / 9) * 100);
     }
   }

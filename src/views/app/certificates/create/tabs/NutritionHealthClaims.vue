@@ -5,7 +5,7 @@
         <template v-for="(item, index) in form.claims">
           <v-flex xs6 :key="`a${index}`">
             <v-autocomplete
-              v-model="claims"
+              v-model="item.claim"
               outline
               label="Claims"
               :rules="[rules.required]"
@@ -21,7 +21,7 @@
               outline
               name="name"
               label="Description"
-              v-model="description"
+              v-model="item.desc"
               :append-outer-icon="index == form.claims.length-1?'far fa-plus-square':''"
               :append-icon="index != form.claims.length-1?'fas fa-backspace':''"
               @click:append-outer="addItem"
@@ -59,13 +59,14 @@ export default {
 
   methods: {
     addItem() {
-      console.log("add item claim data: " + JSON.stringify(this.form.claims))
+      console.log("add item claim first data: " + JSON.stringify(this.form.claims))
       this.form.claims.push({
-        claims: this.claims,
+        claim: this.claims,
         desc: this.description
       });
       this.claims = ""
       this.description = ""
+      console.log("add item claim data: " + JSON.stringify(this.form.claims))
     },
     removeItem(index) {
       this.form.claims.splice(index, 1);

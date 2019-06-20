@@ -2,6 +2,7 @@
   <v-form ref="form" v-model="valid">
     <v-container grid-list-md>
       <v-layout row wrap>
+        <!-- Activity -->
         <v-flex xs6>
           <!-- v-model="form.establishment_info.activity" -->
           <v-autocomplete
@@ -10,6 +11,7 @@
             color="green darken-1"
             outline
             hide-selected 
+            :value="activity"
             v-model="form.establishment_info.activity"
             label="Please select the corresponding company activity/ies"
             :items="companyActivity"
@@ -17,9 +19,11 @@
             item-value="_id"
           ></v-autocomplete>
         </v-flex>
+        <!-- Source Type -->
         <v-flex xs6>
           <!-- v-model="form.establisment_info.type" -->
           <v-autocomplete
+            disabled=""
             color="green darken-1"
             :rules="[rules.required]"
             outline
@@ -32,6 +36,7 @@
             item-value="_id"
           ></v-autocomplete>
         </v-flex>
+        <!-- Country Origin -->
         <v-flex xs6>
           <!-- v-model="form.establisment_info.origin_country" -->
           <v-autocomplete
@@ -47,6 +52,7 @@
             item-value="_id"
           ></v-autocomplete>
         </v-flex>
+        <!-- Directly Source -->
         <v-flex xs6>
            <!-- v-model="form.establisment_info.directly_source"
             :items="answer"
@@ -106,7 +112,7 @@
             </ul>
           </span>
         </v-flex>
-
+        <!-- Supplier -->
         <v-flex xs6>
           <v-text-field
             color="green darken-1"
@@ -125,6 +131,7 @@
             v-model="form.establishment_info.supplier_address"
           ></v-text-field>
         </v-flex>
+        <!-- Manufacturer -->
         <v-flex xs6>
           <v-text-field
             color="green darken-1"
@@ -159,6 +166,7 @@ export default {
     valid: true,
     uploadedFiles: [],
     form_data: null,
+
     answer: [
         {
           name: "No",
@@ -179,6 +187,19 @@ export default {
         this.form.uploaded_files = val;
       },
       deep: true
+    },
+  },
+  computed:{
+    activity(){
+      if(this.establishmentInfo(this.form.establishment_info.activity) == "Manufacturer"){
+ 
+      }else if(this.establishmentInfo(this.form.establishment_info.activity) == "Manufacturer"){
+        
+      }else if(this.establishmentInfo(this.form.establishment_info.activity) == "Manufacturer"){
+        
+      }else if(this.establishmentInfo(this.form.establishment_info.activity) == "Manufacturer"){
+        
+      }
     }
   },
   created(){

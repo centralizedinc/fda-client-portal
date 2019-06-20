@@ -306,12 +306,18 @@ export default {
           console.log('establishType :', establishType);
           return establishType ? establishType : {}
         },
-        establishplacesOrigin(data) {
-          var placesOrigins = this.deepCopy(this.$store.state.places.origin)
-          console.log("MIXIN DATA ESTABLISHMENTORIGIN:" + JSON.stringify(placesOrigins))
-          console.log('estab origin data :', data);
-          if (!placesOrigins || !placesOrigins.length) return {}
-          var placesOrigin = placesOrigins.find(x => x._id === data)
+        setEstablishmentType(data){
+          var establishType = this.$store.state.foodCertificate.source
+          console.log("MIXIN DATA ESTABLISHMENTTYPE:" + JSON.stringify(establishType))
+          if (!establishType) return {}
+          var establishType = establishType.find(x => x._id === data)
+          return establishType ? establishType : {}
+        },
+        establishplacesOrigin(data){
+          var placesOrigin = this.$store.state.places.origin
+          console.log("MIXIN DATA ESTABLISHMENTORIGIN:" + JSON.stringify(placesOrigin))
+          if (!placesOrigin) return {}
+          var placesOrigin = placesOrigin.find(x => x._id === data)
           return placesOrigin ? placesOrigin : {}
         },
         shelfLifeType(data) {
@@ -360,7 +366,9 @@ export default {
           var claim = claims.find(x => x._id === data)
           return claim ? claim : {}
         },
-
+        nutrition(id){
+          
+        }
       }
     });
   }
