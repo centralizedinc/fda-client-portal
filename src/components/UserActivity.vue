@@ -20,7 +20,7 @@
               </v-tooltip>
             </v-list-tile-title>
             <v-list-tile-title class="font-weight-bold">
-              {{getAppType(item.application_type)}} {{getCaseType(item.case_type)}}
+              {{getAppType(item.application_type, item.case_type)}} {{getCaseType(item.case_type)}}
               <span
                 style="text-transform: uppercase ; text-decoration: underline"
               >{{getActStatus(item.status, getTask(item.recommend_to).name)}}</span>
@@ -28,7 +28,7 @@
           </v-list-tile-content>
           <!-- <v-list-tile-content>
                         <v-list-tile-title class="font-weight-bold">{{getTask(item.task_id).name}}</v-list-tile-title>
-                        <v-list-tile-sub-title>{{getActStatus(item.status)}} {{getAppType(item.application_type)}} application of {{getCaseType(item.case_type)}} with</v-list-tile-sub-title>
+                        <v-list-tile-sub-title>{{getActStatus(item.status)}} {{getAppType(item.application_type, item.case_type)}} application of {{getCaseType(item.case_type)}} with</v-list-tile-sub-title>
                         <v-list-tile-sub-title>
                           Case No.: 
                           <v-tooltip bottom>

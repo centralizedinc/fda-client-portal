@@ -34,9 +34,12 @@ export default {
           var app_status_color = ["fdaOrange", "fdaGreen", "fdaBlueGreen", "red", "red"];
           return app_status_color[status]
         },
-        getAppType(type) {
-          var app_type = ["Initial", "Variation", "Renewal"]
-          return app_type[type];
+        getAppType(type, app) {
+          var app_type = [
+            ["Initial", "Variation", "Renewal"], // For License
+            ["Initial", "Amendment", "Renewal", "Reapplication"] // For Certificate
+          ];
+          return app_type[app] ? app_type[app][type] ? app_type[app][type] : "N/A" : "N/A"
         },
         getActStatus(status, recommended_task) {
           var act_status = ["Approved", `Recommend for ${recommended_task}`, "Denied"]
@@ -186,9 +189,9 @@ export default {
           validate = this.isEmpty(email) || !re.test(email);
           return !validate;
         },
-        getEstablishmentType(type){
-         var address_types = ['Head Office','Branch','Warehouse','Plant']
-         return address_types[type]; 
+        getEstablishmentType(type) {
+          var address_types = ['Head Office', 'Branch', 'Warehouse', 'Plant']
+          return address_types[type];
         },
         getRegionName(id) {
           var region = this.$store.state.places.regions.find(x => {
@@ -273,30 +276,34 @@ export default {
           this.$router.push("/login");
         },
         yesNo(data) {
-          if(data)
+          if (data)
             return "Yes"
           else
             return "No"
         },
-        foodProductType(data){
-          var foodProduct = this.$store.state.foodCertificate.food_product
-          console.log("MIXIN DATA FOODPRODUCT:" + JSON.stringify(foodProduct))
-          if (!foodProduct) return {}
-          var foodProduct = foodProduct.find(x => x._id === data)
+        foodProductType(data) {
+          var foodProducts = this.deepCopy(this.$store.state.foodCertificate.food_product)
+          console.log("MIXIN DATA FOODPRODUCT:" + JSON.stringify(foodProducts))
+          console.log('food product data :', data);
+          if (!foodProducts || !foodProducts.length) return {}
+          var foodProduct = foodProducts.find(x => x._id === data)
           return foodProduct ? foodProduct : {}
         },
-        establishmentInfo(data){
-          var establishment = this.$store.state.foodCertificate.company_activity
-          console.log("MIXIN DATA ESTABLISHMENTINFO:" + JSON.stringify(establishment))
-          if (!establishment) return {}
-          var establishment = establishment.find(x => x._id === data)
+        establishmentInfo(data) {
+          var establishments = this.deepCopy(this.$store.state.foodCertificate.company_activity)
+          console.log("MIXIN DATA ESTABLISHMENTINFO:" + JSON.stringify(establishments))
+          console.log('estab info data :', data);
+          if (!establishments || !establishments.length) return {}
+          var establishment = establishments.find(x => x._id === data)
           return establishment ? establishment : {}
         },
-        establishmentType(data){
-          var establishType = this.$store.state.foodCertificate.source
-          console.log("MIXIN DATA ESTABLISHMENTTYPE:" + JSON.stringify(establishType))
-          if (!establishType) return {}
-          var establishType = establishType.find(x => x._id === data)
+        establishmentType(data) {
+          var establishTypes = this.deepCopy(this.$store.state.foodCertificate.source)
+          console.log("MIXIN DATA ESTABLISHMENTTYPE:" + JSON.stringify(establishTypes))
+          console.log('estab type data :', data);
+          if (!establishTypes || !establishTypes.length) return {}
+          var establishType = establishTypes.find(x => x._id === data)
+          console.log('establishType :', establishType);
           return establishType ? establishType : {}
         },
         setEstablishmentType(data){
@@ -313,49 +320,50 @@ export default {
           var placesOrigin = placesOrigin.find(x => x._id === data)
           return placesOrigin ? placesOrigin : {}
         },
-        shelfLifeType(data){
-          var shelfLife = this.$store.state.foodCertificate.shelf_life
-          console.log("MIXIN DATA SHELFLIFE:" + JSON.stringify(shelfLife))
-          if (!shelfLife) return {}
-          var shelfLife = shelfLife.find(x => x._id === data)
+        shelfLifeType(data) {
+          var shelfLifes = this.deepCopy(this.$store.state.foodCertificate.shelf_life)
+          console.log("MIXIN DATA SHELFLIFE:" + JSON.stringify(shelfLifes))
+          console.log('shelf type data :', data);
+          if (!shelfLifes || !shelfLifes.length) return {}
+          var shelfLife = shelfLifes.find(x => x._id === data)
           return shelfLife ? shelfLife : {}
         },
-        foodCategory(data){
-          console.log("MIXIN DATA: " + JSON.stringify(data))
-          var foodCategory = this.$store.state.foodCertificate.food_category
-          console.log("MIXIN TWO DATA: " + JSON.stringify(foodCategory))
-          if (!foodCategory) return {}
-          var foodCategory = foodCategory.find(x => x._id === data)
+        foodCategory(data) {
+          console.log("food category data: " + JSON.stringify(data))
+          var foodCategories = this.deepCopy(this.$store.state.foodCertificate.food_category)
+          console.log("MIXIN TWO DATA: " + JSON.stringify(foodCategories))
+          if (!foodCategories || !foodCategories.length) return {}
+          var foodCategory = foodCategories.find(x => x._id === data)
           return foodCategory ? foodCategory : {}
         },
-        productSpecs(spec){
-          var prodSpec = this.$store.state.foodCertificate.product_specification
-          if (!prodSpec) return {}
-          var prodSpec = prodSpec.find(x => x._id === spec)
+        productSpecs(spec) {
+          var prodSpecs = this.deepCopy(this.$store.state.foodCertificate.product_specification)
+          if (!prodSpecs || !prodSpecs.length) return {}
+          var prodSpec = prodSpecs.find(x => x._id === spec)
           return prodSpec ? prodSpec : {}
         },
-        physicalParameter(spec){
-          var phyParam = this.$store.state.foodCertificate.physical_parameter
-          if (!phyParam) return {}
-          var phyParam = phyParam.find(x => x._id === spec)
+        physicalParameter(spec) {
+          var phyParams = this.deepCopy(this.$store.state.foodCertificate.physical_parameter)
+          if (!phyParams || !phyParams.length) return {}
+          var phyParam = phyParams.find(x => x._id === spec)
           return phyParam ? phyParam : {}
         },
-        shelfLife(spec){
-          var sLife = this.$store.state.foodCertificate.shelf_life
-          if (!sLife) return {}
-          var sLife = sLife.find(x => x._id === spec)
+        shelfLife(spec) {
+          var sLifes = this.deepCopy(this.$store.state.foodCertificate.shelf_life)
+          if (!sLifes || !sLifes.length) return {}
+          var sLife = sLifes.find(x => x._id === spec)
           return sLife ? sLife : {}
         },
-        desc(data){
-          var nutrInfo = this.$store.state.foodCertificate.nutrition_information
-          if (!nutrInfo) return {}
-          var nutrInfo = nutrInfo.find(x => x._id === data)
+        desc(data) {
+          var nutrInfos = this.deepCopy(this.$store.state.foodCertificate.nutrition_information)
+          if (!nutrInfos || !nutrInfos.length) return {}
+          var nutrInfo = nutrInfos.find(x => x._id === data)
           return nutrInfo ? nutrInfo : {}
         },
-        claims(data){
-          var claim = this.$store.state.foodCertificate.nutrition_health_claims
-          if (!claim) return {}
-          var claim = claim.find(x => x._id === data)
+        claims(data) {
+          var claims = this.deepCopy(this.$store.state.foodCertificate.nutrition_health_claims)
+          if (!claims || !claims.length) return {}
+          var claim = claims.find(x => x._id === data)
           return claim ? claim : {}
         },
         nutrition(id){

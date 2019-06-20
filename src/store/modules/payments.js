@@ -160,7 +160,7 @@ var actions = {
         })
     },
     GENERATED_DOCUMENTS(context, data) {
-        if (data.case_type === 0) {
+        if (data.details.case_type === 0) {
             return new LicenseAPI(context.rootState.user_session.token).addDocuments(
                 data.details,
                 data.formData

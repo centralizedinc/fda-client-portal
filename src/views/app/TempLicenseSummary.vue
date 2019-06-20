@@ -350,7 +350,10 @@ export default {
                   "charges data payment details: " +
                     JSON.stringify(this.charges)
                 );
-                return this.$store.dispatch("GET_ONE_CASE", this.form.case_no);
+                return this.$store.dispatch("GET_ONE_CASE", {
+                  case_no: this.form.case_no,
+                  case_type: this.form.case_type
+                });
               })
               .then(result => {
                 console.log("get onse case @ view: " + JSON.stringify(result));

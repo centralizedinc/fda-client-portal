@@ -12,7 +12,7 @@
                 <v-container grid-list-xl>
                     <v-layout row wrap class="subheading">
                         <v-flex xs6 class="font-weight-light">Application Type:</v-flex>
-                        <v-flex xs6 class="font-weight-light">{{getAppType (license_details.application_type)}} Application</v-flex>
+                        <v-flex xs6 class="font-weight-light">{{getAppType (license_details.application_type, license_details.case_type)}} Application</v-flex>
                         <v-flex xs6 class="font-weight-light"> Establishment Address:</v-flex>
                         <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_name}}</v-flex>
                         <v-flex xs6 class="font-weight-light"> Establishment Owner:</v-flex>
@@ -109,8 +109,10 @@ export default {
           .establishment_name,
         establishment_address: address,
         application_type:
-          this.getAppType(this.license_details.application_type) +
-          " Application",
+          this.getAppType(
+            this.license_details.application_type,
+            this.case_details.case_type
+          ) + " Application",
         case_no: this.case_details.case_no,
         reasons: this.director.remarks
       };

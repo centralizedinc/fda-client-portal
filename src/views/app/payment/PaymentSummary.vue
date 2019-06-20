@@ -14,10 +14,10 @@
             <v-container grid-list-xl>
                 <v-layout row wrap align-center justify-center fill-height>
                     <!-- <v-flex xs6> -->
-                    <v-flex xs6 v-if="fees_form.lrf != 0">
+                    <v-flex xs6>
                         <label class="subheading">Application Fee:</label>
                     </v-flex>
-                    <v-flex xs6 v-if="fees_form.lrf != 0">
+                    <v-flex xs6>
                         <label class="subheading">₱ {{numberWithCommas(fees_form.fee)}}</label>
                     </v-flex>
                     <v-flex xs6>
@@ -41,7 +41,7 @@
                     <v-flex xs6>
                         <label class="subheading">₱ {{numberWithCommas(fees_form.lrf)}}</label>
                     </v-flex>
-                    <v-flex xs6 v-if="fees_form.lrf != 0">
+                    <v-flex xs6 v-if="fees_form.lrf !== 0">
                         <label class="subheading" color="error">Total Payment Due:</label>
                     </v-flex>
                     <v-flex xs6 v-if="fees_form.lrf === 0">
@@ -222,15 +222,20 @@ export default {
   methods: {
     init() {
       console.log("FORM: " + JSON.stringify(this.$store.state.payments.form));
-      this.app_form = this.$store.state.payments.form;
-      this.form = this.$store.state.payments.form;
-      this.$store.dispatch("GET_ONE_CASE", this.form.case_no).then(result => {
-        console.log("get onse case @ view: " + JSON.stringify(result));
-        this.case_holder = result;
-      });
+      this.app_form = this.deepCopy(this.$store.state.payments.form);
+      this.form = this.deepCopy(this.$store.state.payments.form);
+      this.$store
+        .dispatch("GET_ONE_CASE", {
+          case_no: this.form.case_no,
+          case_type: this.form.case_type
+        })
+        .then(result => {
+          console.log("get onse case @ view: " + JSON.stringify(result));
+          this.case_holder = result;
+        });
       this.fees_form = this.charges
         ? this.charges
-        : this.$store.state.payments.fee;
+        : this.deepCopy(this.$store.state.payments.fee);
     },
     cancel() {
       this.showCreditCard = false;
@@ -299,7 +304,7 @@ export default {
           );
           var ecpay_fee = 0;
           var details = {
-            date_issue: formatDate(result.date_created),
+            date_issue: this.formatDate(result.date_created),
             reference_number: result.third_party_ref_no,
             status: this.getPaymentStatus(result.payment_details.status),
             expiration: this.formatDt(this.case_holder.date_expiry),
@@ -325,7 +330,7 @@ export default {
           console.log("ecpay upload files: " + JSON.stringify(file));
           fd.append("file", file);
           return this.$store.dispatch("GENERATED_DOCUMENTS", {
-            details: this.$store.state.payments.form,
+            details: this.deepCopy(this.$store.state.payments.form),
             formData: fd
           });
         })
@@ -341,7 +346,7 @@ export default {
           });
         })
         .catch(error => {
-          this.$notifyError(err);
+          this.$notifyError(error);
         });
     },
     generatePDF() {
@@ -363,56 +368,88 @@ export default {
           console.log("this.app_form: " + JSON.stringify(this.app_form));
           this.cashierPayment = true;
           var full_details = {
-            date_issue: this.formatDate(result.date_created),
-            formDetails: this.app_form,
-            paymentDetails: this.fees_form,
-            officeAddress: this.app_form.address_list.find(data => {
-              return data.type === 0;
-            }),
-            qualified: this.app_form.qualified[0]
+            formDetails: this.deepCopy(this.app_form),
+            paymentDetails: this.deepCopy(this.fees_form)
           };
 
-          full_details.formDetails.general_info.product_type = this.getProduct(
-            full_details.formDetails.general_info.product_type
-          );
-          full_details.formDetails.general_info.primary_activity = this.getPrimary(
-            full_details.formDetails.general_info.primary_activity
-          );
-          full_details.formDetails.general_info.declared_capital = this.getDeclared(
-            full_details.formDetails.general_info.declared_capital
-          );
-          full_details.formDetails.auth_officer.mail_add.region = this.getRegionName(
-            full_details.formDetails.auth_officer.mail_add.region
-          );
-          full_details.formDetails.auth_officer.mail_add.province = this.getProvinceName(
-            full_details.formDetails.auth_officer.mail_add.province
-          );
-          full_details.formDetails.auth_officer.mail_add.city = this.getCityName(
-            full_details.formDetails.auth_officer.mail_add.city
-          );
-          full_details.officeAddress.region = this.getRegionName(
-            full_details.officeAddress.region
-          );
-          full_details.officeAddress.province = this.getProvinceName(
-            full_details.officeAddress.province
-          );
-          full_details.officeAddress.city = this.getCityName(
-            full_details.officeAddress.city
+          full_details.formDetails.date_created = this.formatDate(
+            full_details.formDetails.date_created
           );
           full_details.formDetails.application_type = this.getAppType(
-            full_details.formDetails.application_type
+            full_details.formDetails.application_type,
+            full_details.formDetails.case_type
           );
-          full_details.formDetails.auth_officer.designation = this.getDesignation(
-            full_details.formDetails.auth_officer.designation
+
+          if (full_details.formDetails.case_type === 0) {
+            full_details.officeAddress = this.app_form.address_list.find(
+              data => {
+                return data.type === 0;
+              }
+            );
+            full_details.qualified = this.app_form.qualified[0];
+
+            full_details.formDetails.general_info.product_type = this.getProduct(
+              full_details.formDetails.general_info.product_type
+            );
+            full_details.formDetails.general_info.primary_activity = this.getPrimary(
+              full_details.formDetails.general_info.primary_activity
+            );
+            full_details.formDetails.general_info.declared_capital = this.getDeclared(
+              full_details.formDetails.general_info.declared_capital
+            );
+            full_details.formDetails.auth_officer.mail_add.region = this.getRegionName(
+              full_details.formDetails.auth_officer.mail_add.region
+            );
+            full_details.formDetails.auth_officer.mail_add.province = this.getProvinceName(
+              full_details.formDetails.auth_officer.mail_add.province
+            );
+            full_details.formDetails.auth_officer.mail_add.city = this.getCityName(
+              full_details.formDetails.auth_officer.mail_add.city
+            );
+            full_details.officeAddress.region = this.getRegionName(
+              full_details.officeAddress.region
+            );
+            full_details.officeAddress.province = this.getProvinceName(
+              full_details.officeAddress.province
+            );
+            full_details.officeAddress.city = this.getCityName(
+              full_details.officeAddress.city
+            );
+            full_details.formDetails.auth_officer.designation = this.getDesignation(
+              full_details.formDetails.auth_officer.designation
+            );
+            full_details.qualified.designation = this.getDesignation(
+              full_details.qualified.designation
+            );
+            full_details.qualified.id_type = this.getIdType(
+              full_details.qualified.id_type
+            );
+            full_details.qualified.tin = this.numberMask(
+              full_details.qualified.tin
+            );
+          } else if (full_details.formDetails.case_type === 1) {
+            full_details.formDetails.food_product.type = this.foodProductType(
+              full_details.formDetails.food_product.type
+            ).name;
+            full_details.formDetails.food_product.categorization = this.foodCategory(
+              full_details.formDetails.food_product.categorization
+            ).name;
+            full_details.formDetails.establishment_info.activity = this.establishmentInfo(
+              full_details.formDetails.establishment_info.activity
+            ).name;
+            full_details.formDetails.establishment_info.type = this.establishmentType(
+              full_details.formDetails.establishment_info.type
+            ).name;
+            full_details.formDetails.establishment_info.origin_country = this.establishplacesOrigin(
+              full_details.formDetails.establishment_info.origin_country
+            ).name;
+          }
+
+          full_details.paymentDetails.fee = this.numberWithCommas(
+            full_details.paymentDetails.fee
           );
-          full_details.qualified.designation = this.getDesignation(
-            full_details.qualified.designation
-          );
-          full_details.qualified.id_type = this.getIdType(
-            full_details.qualified.id_type
-          );
-          full_details.qualified.tin = this.numberMask(
-            full_details.qualified.tin
+          full_details.paymentDetails.lrf = this.numberWithCommas(
+            full_details.paymentDetails.lrf
           );
           full_details.paymentDetails.total = this.numberWithCommas(
             full_details.paymentDetails.total
@@ -430,11 +467,6 @@ export default {
             "full details payment summary: " + JSON.stringify(full_details)
           );
           this.$download(full_details, "PAY", "FDAC.pdf");
-
-          console.log(
-            "application form data: " + JSON.stringify(this.app_form)
-          );
-          console.log("fees form data: " + JSON.stringify(this.fees_form));
         });
     }
   }

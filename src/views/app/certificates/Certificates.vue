@@ -19,13 +19,7 @@
               <span class="subheading font-weight-light primary--text">Case Details</span>
               <v-spacer></v-spacer>
               <v-tooltip bottom>
-                <v-btn
-                  :loading="loading"
-                  slot="activator"
-                  flat
-                  icon
-                  @click="viewForm"
-                >
+                <v-btn :loading="loading" slot="activator" flat icon @click="viewForm">
                   <v-icon color="primary">launch</v-icon>
                 </v-btn>View Full Details
               </v-tooltip>
@@ -46,7 +40,7 @@
                 label="Application Type"
                 id="id"
                 readonly
-                :value="getAppType(preview_item.application_type)"
+                :value="getAppType(preview_item.application_type, preview_item.case_type)"
               ></v-text-field>
               <v-text-field
                 name="name"
@@ -131,38 +125,55 @@
       </v-layout>
     </v-navigation-drawer>
 
+    <v-layout row wrap align-end>
+      <v-spacer></v-spacer>
+      <v-flex xs6 pa-2>
+        <v-text-field
+          outline
+          v-model="search"
+          append-icon="search"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-flex>
+    </v-layout>
     <v-flex xs12 p1-2>
       <v-card>
         <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="closeDecDialog"></undertaking-dialog>
         <v-data-table
           :headers="headers"
           :items="items"
-          hide-actions
           class="elevation-1"
           :pagination.sync="pagination"
           :loading="loading"
+          :rows-per-page-items="rowsPerPageItems"
+          :search="search"
         >
           <template slot="items" slot-scope="props">
             <tr @click="preview(props.item)" style="cursor:pointer">
               <td>{{props.item.case_no}}</td>
-              <td>{{props.item.application_type}}</td>
-              <td>{{props.item.status}}</td>
+              <td>{{getAppType(props.item.application_type, props.item.case_type)}}</td>
+              <td>{{getAppStatus(props.item.status)}}</td>
               <!-- <td>{{props.items.current_task}}</td> -->
               <!-- <td>{{ formatDate (props.item.date_created) }}</td> -->
               <td>{{ props.item.remarks }}</td>
             </tr>
           </template>
+          <template v-slot:no-data>
+            <v-alert :value="true" color="error" icon="warning">No data found</v-alert>
+          </template>
         </v-data-table>
-        <div class="text-xs-center pt-2">
+        <!-- <div class="text-xs-center pt-2">
           <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
-        </div>
+        </div>-->
       </v-card>
     </v-flex>
 
     <!-- NEW CERTIFICATE -->
-    <v-layout column class="fab-container">
+    <v-layout column class="fab-container pb-5">
       <v-tooltip top>
-        <v-btn :disabled="!data_complete" slot="activator" fab color="fdaLight" @click="dialog=true">
+        <v-btn slot="activator" fab elevation-15 color="fdaLight" @click="dialog=true">
           <v-icon large color="fdaSilver">add</v-icon>
         </v-btn>Apply New
       </v-tooltip>
@@ -182,6 +193,7 @@ export default {
     return {
       // preview: {},
       // isLoading: false,
+      search: "",
       preview_item: {},
       overview: null,
       fab: false,
@@ -191,6 +203,7 @@ export default {
       selected_case: {},
       loading: false,
       dialog: false,
+      rowsPerPageItems: [10, 20, 30, 40],
       pagination: {
         sortBy: "date_created",
         descending: true
@@ -218,6 +231,7 @@ export default {
         this.pagination.totalItems == null
       )
         return 0;
+
       return Math.ceil(
         this.pagination.totalItems / this.pagination.rowsPerPage
       );
@@ -227,123 +241,137 @@ export default {
     init() {
       console.log("welcome to certificates!!!");
       this.loading = true;
+      this.$store.dispatch("GET_FOOD_PRODUCT");
+      this.$store.dispatch("GET_FOOD_CATEGORY");
+      this.$store.dispatch("GET_REGION");
+      this.$store.dispatch("GET_SHELF_LIFE");
+      this.$store.dispatch("GET_SOURCE");
+      this.$store.dispatch("GET_PRODUCT_SPECIFICATION");
+      this.$store.dispatch("GET_NUTRITION_INFORMATION");
+      this.$store.dispatch("GET_NUTRITION_HEALTH_CLAIMS");
+      this.$store.dispatch("GET_VITAMINS");
+      this.$store.dispatch("GET_MINERALS");
+      this.$store.dispatch("GET_ORIGIN");
+      this.$store.dispatch("GET_PHYSICAL_PARAMETER");
+      this.$store.dispatch("GET_COMPANY_ACTIVITY");
       this.$store
         .dispatch("GET_CERTIFICATE")
         .then(results => {
-          
           this.items = results;
           console.log(
             "############## ACTIVE CERTIFICATES: " + JSON.stringify(this.items)
           );
-          return this.$store.dispatch("GET_FOOD_PRODUCT");
-        })
-        .then(result => {
-          // this.food_product = this.$store.state.foodCertificate.food_product
-          console.log(
-            "####food Product###" +
-              JSON.stringify(this.$store.state.foodCertificate.food_product)
-          );
-          return this.$store.dispatch("GET_FOOD_CATEGORY");
-        })
-        .then(result => {
-          // this.category = this.$store.state.foodCertificate.food_category
-          console.log(
-            "####food category###" +
-              JSON.stringify(this.$store.state.foodCertificate.food_category)
-          );
-          return this.$store.dispatch("GET_REGION");
-        })
-        .then(result => {
-          return this.$store.dispatch("GET_SHELF_LIFE");
-        })
-        .then(result => {
-          // this.shelf_life = this.$store.state.foodCertificate.shelf_life
-          console.log(
-            "####shelf life###" +
-              JSON.stringify(this.$store.state.foodCertificate.shelf_life)
-          );
-          return this.$store.dispatch("GET_SOURCE");
-        })
-        .then(result => {
-          // this.source = this.$store.state.foodCertificate.source
-          console.log(
-            "####source###" +
-              JSON.stringify(this.$store.state.foodCertificate.source)
-          );
-          return this.$store.dispatch("GET_PRODUCT_SPECIFICATION");
-        })
-        .then(result => {
-          // this.product_specification = this.$store.state.foodCertificate.product_specification
-          console.log(
-            "####product specification###" +
-              JSON.stringify(
-                this.$store.state.foodCertificate.product_specification
-              )
-          );
-          return this.$store.dispatch("GET_NUTRITION_INFORMATION");
-        })
-        .then(result => {
-          // this.nutrition_information = this.$store.state.foodCertificate.nutrition_information
-          console.log(
-            "####nutrition information###" +
-              JSON.stringify(
-                this.$store.state.foodCertificate.nutrition_information
-              )
-          );
-          return this.$store.dispatch("GET_NUTRITION_HEALTH_CLAIMS");
-        })
-        .then(result => {
-          // this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims
-          console.log(
-            "####nutrition health claims###" +
-              JSON.stringify(
-                this.$store.state.foodCertificate.nutrition_health_claims
-              )
-          );
-          return this.$store.dispatch("GET_VITAMINS");
-        })
-        .then(result => {
-          // this.vitamins = this.$store.state.foodCertificate.vitamins
-          console.log(
-            "####Vitamins###" +
-              JSON.stringify(this.$store.state.foodCertificate.vitamins)
-          );
-          return this.$store.dispatch("GET_MINERALS");
-        })
-        .then(result => {
-          // this.minerals = this.$store.state.foodCertificate.minerals
-          console.log(
-            "####minerals###" +
-              JSON.stringify(this.$store.state.foodCertificate.minerals)
-          );
-          return this.$store.dispatch("GET_ORIGIN");
-        })
-        .then(result => {
-          // this.origin = this.$store.state.places.origin
-          console.log(
-            "####origin###" + JSON.stringify(this.$store.state.places.origin)
-          );
-          return this.$store.dispatch("GET_PHYSICAL_PARAMETER");
-        })
-        .then(result => {
-          // this.physical_parameter = this.$store.state.foodCertificate.physical_parameter
-          console.log(
-            "####physical parameter###" +
-              JSON.stringify(
-                this.$store.state.foodCertificate.physical_parameter
-              )
-          );
-          return this.$store.dispatch("GET_COMPANY_ACTIVITY");
-        })
-        .then(result => {
-          // this.company_activity = this.$store.state.foodCertificate.company_activity
-          console.log(
-            "####company activity###" +
-              JSON.stringify(this.$store.state.foodCertificate.company_activity)
-          );
           this.loading = false;
-          this.data_complete = true
+          this.data_complete = true;
         })
+        //   return this.$store.dispatch("GET_FOOD_PRODUCT");
+        // })
+        // .then(result => {
+        //   // this.food_product = this.$store.state.foodCertificate.food_product
+        //   console.log(
+        //     "####food Product###" +
+        //       JSON.stringify(this.$store.state.foodCertificate.food_product)
+        //   );
+        //   return this.$store.dispatch("GET_FOOD_CATEGORY");
+        // })
+        // .then(result => {
+        //   // this.category = this.$store.state.foodCertificate.food_category
+        //   console.log(
+        //     "####food category###" +
+        //       JSON.stringify(this.$store.state.foodCertificate.food_category)
+        //   );
+        //   return this.$store.dispatch("GET_REGION");
+        // })
+        // .then(result => {
+        //   return this.$store.dispatch("GET_SHELF_LIFE");
+        // })
+        // .then(result => {
+        //   // this.shelf_life = this.$store.state.foodCertificate.shelf_life
+        //   console.log(
+        //     "####shelf life###" +
+        //       JSON.stringify(this.$store.state.foodCertificate.shelf_life)
+        //   );
+        //   return this.$store.dispatch("GET_SOURCE");
+        // })
+        // .then(result => {
+        //   // this.source = this.$store.state.foodCertificate.source
+        //   console.log(
+        //     "####source###" +
+        //       JSON.stringify(this.$store.state.foodCertificate.source)
+        //   );
+        //   return this.$store.dispatch("GET_PRODUCT_SPECIFICATION");
+        // })
+        // .then(result => {
+        //   // this.product_specification = this.$store.state.foodCertificate.product_specification
+        //   console.log(
+        //     "####product specification###" +
+        //       JSON.stringify(
+        //         this.$store.state.foodCertificate.product_specification
+        //       )
+        //   );
+        //   return this.$store.dispatch("GET_NUTRITION_INFORMATION");
+        // })
+        // .then(result => {
+        //   // this.nutrition_information = this.$store.state.foodCertificate.nutrition_information
+        //   console.log(
+        //     "####nutrition information###" +
+        //       JSON.stringify(
+        //         this.$store.state.foodCertificate.nutrition_information
+        //       )
+        //   );
+        //   return this.$store.dispatch("GET_NUTRITION_HEALTH_CLAIMS");
+        // })
+        // .then(result => {
+        //   // this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims
+        //   console.log(
+        //     "####nutrition health claims###" +
+        //       JSON.stringify(
+        //         this.$store.state.foodCertificate.nutrition_health_claims
+        //       )
+        //   );
+        //   return this.$store.dispatch("GET_VITAMINS");
+        // })
+        // .then(result => {
+        //   // this.vitamins = this.$store.state.foodCertificate.vitamins
+        //   console.log(
+        //     "####Vitamins###" +
+        //       JSON.stringify(this.$store.state.foodCertificate.vitamins)
+        //   );
+        //   return this.$store.dispatch("GET_MINERALS");
+        // })
+        // .then(result => {
+        //   // this.minerals = this.$store.state.foodCertificate.minerals
+        //   console.log(
+        //     "####minerals###" +
+        //       JSON.stringify(this.$store.state.foodCertificate.minerals)
+        //   );
+        //   return this.$store.dispatch("GET_ORIGIN");
+        // })
+        // .then(result => {
+        //   // this.origin = this.$store.state.places.origin
+        //   console.log(
+        //     "####origin###" + JSON.stringify(this.$store.state.places.origin)
+        //   );
+        //   return this.$store.dispatch("GET_PHYSICAL_PARAMETER");
+        // })
+        // .then(result => {
+        //   // this.physical_parameter = this.$store.state.foodCertificate.physical_parameter
+        //   console.log(
+        //     "####physical parameter###" +
+        //       JSON.stringify(
+        //         this.$store.state.foodCertificate.physical_parameter
+        //       )
+        //   );
+        //   return this.$store.dispatch("GET_COMPANY_ACTIVITY");
+        // })
+        // .then(result => {
+        //   // this.company_activity = this.$store.state.foodCertificate.company_activity
+        //   console.log(
+        //     "####company activity###" +
+        //       JSON.stringify(this.$store.state.foodCertificate.company_activity)
+        //   );
+        //   this.data_complete = true
+        // })
 
         .catch(error => {
           this.loading = false;

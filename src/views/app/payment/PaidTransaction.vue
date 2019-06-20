@@ -19,7 +19,7 @@
         ml-1
         mt-2
         mb-2
-      >{{getAppType(form.application_type)}} - {{getCaseType(case_holder.case_type)}}</v-flex>
+      >{{getAppType(form.application_type, case_holder.case_type)}} - {{getCaseType(case_holder.case_type)}}</v-flex>
       <!-- <v-flex xs4 mr-5 ml-1>
         <v-chip class="font-weight-bold" label color="fdaGreen" text-color="white">{{getCaseType(case_holder.case_type)}}</v-chip>
       </v-flex>-->
