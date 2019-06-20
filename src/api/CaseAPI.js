@@ -26,8 +26,9 @@ export default class CaseAPI {
         //     cb(err)
         // })
     }
-    getCaseByCaseNumber(case_no) {
-        return axios.get('lto-api/case/case_id/' + case_no)
+    getCaseByCaseNumber(details) {
+        if(details.case_type === 0) return axios.get('lto-api/case/case_id/' + details.case_no)
+        else if(details.case_type === 1) return axios.get('certificates/case/case_id/' + details.case_no)
     }
 
     uploadFile(comply) {

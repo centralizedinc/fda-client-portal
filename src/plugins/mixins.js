@@ -282,76 +282,82 @@ export default {
             return "No"
         },
         foodProductType(data) {
-          var foodProduct = this.$store.state.foodCertificate.food_product
-          console.log("MIXIN DATA FOODPRODUCT:" + JSON.stringify(foodProduct))
-          if (!foodProduct) return {}
-          var foodProduct = foodProduct.find(x => x._id === data)
+          var foodProducts = this.deepCopy(this.$store.state.foodCertificate.food_product)
+          console.log("MIXIN DATA FOODPRODUCT:" + JSON.stringify(foodProducts))
+          console.log('food product data :', data);
+          if (!foodProducts || !foodProducts.length) return {}
+          var foodProduct = foodProducts.find(x => x._id === data)
           return foodProduct ? foodProduct : {}
         },
         establishmentInfo(data) {
-          var establishment = this.$store.state.foodCertificate.company_activity
-          console.log("MIXIN DATA ESTABLISHMENTINFO:" + JSON.stringify(establishment))
-          if (!establishment) return {}
-          var establishment = establishment.find(x => x._id === data)
+          var establishments = this.deepCopy(this.$store.state.foodCertificate.company_activity)
+          console.log("MIXIN DATA ESTABLISHMENTINFO:" + JSON.stringify(establishments))
+          console.log('estab info data :', data);
+          if (!establishments || !establishments.length) return {}
+          var establishment = establishments.find(x => x._id === data)
           return establishment ? establishment : {}
         },
         establishmentType(data) {
-          var establishType = this.$store.state.foodCertificate.source
-          console.log("MIXIN DATA ESTABLISHMENTTYPE:" + JSON.stringify(establishType))
-          if (!establishType) return {}
-          var establishType = establishType.find(x => x._id === data)
+          var establishTypes = this.deepCopy(this.$store.state.foodCertificate.source)
+          console.log("MIXIN DATA ESTABLISHMENTTYPE:" + JSON.stringify(establishTypes))
+          console.log('estab type data :', data);
+          if (!establishTypes || !establishTypes.length) return {}
+          var establishType = establishTypes.find(x => x._id === data)
+          console.log('establishType :', establishType);
           return establishType ? establishType : {}
         },
         establishplacesOrigin(data) {
-          var placesOrigin = this.$store.state.places.origin
-          console.log("MIXIN DATA ESTABLISHMENTORIGIN:" + JSON.stringify(placesOrigin))
-          if (!placesOrigin) return {}
-          var placesOrigin = placesOrigin.find(x => x._id === data)
+          var placesOrigins = this.deepCopy(this.$store.state.places.origin)
+          console.log("MIXIN DATA ESTABLISHMENTORIGIN:" + JSON.stringify(placesOrigins))
+          console.log('estab origin data :', data);
+          if (!placesOrigins || !placesOrigins.length) return {}
+          var placesOrigin = placesOrigins.find(x => x._id === data)
           return placesOrigin ? placesOrigin : {}
         },
         shelfLifeType(data) {
-          var shelfLife = this.$store.state.foodCertificate.shelf_life
-          console.log("MIXIN DATA SHELFLIFE:" + JSON.stringify(shelfLife))
-          if (!shelfLife) return {}
-          var shelfLife = shelfLife.find(x => x._id === data)
+          var shelfLifes = this.deepCopy(this.$store.state.foodCertificate.shelf_life)
+          console.log("MIXIN DATA SHELFLIFE:" + JSON.stringify(shelfLifes))
+          console.log('shelf type data :', data);
+          if (!shelfLifes || !shelfLifes.length) return {}
+          var shelfLife = shelfLifes.find(x => x._id === data)
           return shelfLife ? shelfLife : {}
         },
         foodCategory(data) {
-          console.log("MIXIN DATA: " + JSON.stringify(data))
-          var foodCategory = this.$store.state.foodCertificate.food_category
-          console.log("MIXIN TWO DATA: " + JSON.stringify(foodCategory))
-          if (!foodCategory) return {}
-          var foodCategory = foodCategory.find(x => x._id === data)
+          console.log("food category data: " + JSON.stringify(data))
+          var foodCategories = this.deepCopy(this.$store.state.foodCertificate.food_category)
+          console.log("MIXIN TWO DATA: " + JSON.stringify(foodCategories))
+          if (!foodCategories || !foodCategories.length) return {}
+          var foodCategory = foodCategories.find(x => x._id === data)
           return foodCategory ? foodCategory : {}
         },
         productSpecs(spec) {
-          var prodSpec = this.$store.state.foodCertificate.product_specification
-          if (!prodSpec) return {}
-          var prodSpec = prodSpec.find(x => x._id === spec)
+          var prodSpecs = this.deepCopy(this.$store.state.foodCertificate.product_specification)
+          if (!prodSpecs || !prodSpecs.length) return {}
+          var prodSpec = prodSpecs.find(x => x._id === spec)
           return prodSpec ? prodSpec : {}
         },
         physicalParameter(spec) {
-          var phyParam = this.$store.state.foodCertificate.physical_parameter
-          if (!phyParam) return {}
-          var phyParam = phyParam.find(x => x._id === spec)
+          var phyParams = this.deepCopy(this.$store.state.foodCertificate.physical_parameter)
+          if (!phyParams || !phyParams.length) return {}
+          var phyParam = phyParams.find(x => x._id === spec)
           return phyParam ? phyParam : {}
         },
         shelfLife(spec) {
-          var sLife = this.$store.state.foodCertificate.shelf_life
-          if (!sLife) return {}
-          var sLife = sLife.find(x => x._id === spec)
+          var sLifes = this.deepCopy(this.$store.state.foodCertificate.shelf_life)
+          if (!sLifes || !sLifes.length) return {}
+          var sLife = sLifes.find(x => x._id === spec)
           return sLife ? sLife : {}
         },
         desc(data) {
-          var nutrInfo = this.$store.state.foodCertificate.nutrition_information
-          if (!nutrInfo) return {}
-          var nutrInfo = nutrInfo.find(x => x._id === data)
+          var nutrInfos = this.deepCopy(this.$store.state.foodCertificate.nutrition_information)
+          if (!nutrInfos || !nutrInfos.length) return {}
+          var nutrInfo = nutrInfos.find(x => x._id === data)
           return nutrInfo ? nutrInfo : {}
         },
         claims(data) {
-          var claim = this.$store.state.foodCertificate.nutrition_health_claims
-          if (!claim) return {}
-          var claim = claim.find(x => x._id === data)
+          var claims = this.deepCopy(this.$store.state.foodCertificate.nutrition_health_claims)
+          if (!claims || !claims.length) return {}
+          var claim = claims.find(x => x._id === data)
           return claim ? claim : {}
         },
 

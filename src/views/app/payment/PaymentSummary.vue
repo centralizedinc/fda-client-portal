@@ -14,10 +14,10 @@
             <v-container grid-list-xl>
                 <v-layout row wrap align-center justify-center fill-height>
                     <!-- <v-flex xs6> -->
-                    <v-flex xs6 v-if="fees_form.lrf != 0">
+                    <v-flex xs6>
                         <label class="subheading">Application Fee:</label>
                     </v-flex>
-                    <v-flex xs6 v-if="fees_form.lrf != 0">
+                    <v-flex xs6>
                         <label class="subheading">₱ {{numberWithCommas(fees_form.fee)}}</label>
                     </v-flex>
                     <v-flex xs6>
@@ -41,7 +41,7 @@
                     <v-flex xs6>
                         <label class="subheading">₱ {{numberWithCommas(fees_form.lrf)}}</label>
                     </v-flex>
-                    <v-flex xs6 v-if="fees_form.lrf != 0">
+                    <v-flex xs6 v-if="fees_form.lrf !== 0">
                         <label class="subheading" color="error">Total Payment Due:</label>
                     </v-flex>
                     <v-flex xs6 v-if="fees_form.lrf === 0">
@@ -222,15 +222,20 @@ export default {
   methods: {
     init() {
       console.log("FORM: " + JSON.stringify(this.$store.state.payments.form));
-      this.app_form = this.$store.state.payments.form;
-      this.form = this.$store.state.payments.form;
-      this.$store.dispatch("GET_ONE_CASE", this.form.case_no).then(result => {
-        console.log("get onse case @ view: " + JSON.stringify(result));
-        this.case_holder = result;
-      });
+      this.app_form = this.deepCopy(this.$store.state.payments.form);
+      this.form = this.deepCopy(this.$store.state.payments.form);
+      this.$store
+        .dispatch("GET_ONE_CASE", {
+          case_no: this.form.case_no,
+          case_type: this.form.case_type
+        })
+        .then(result => {
+          console.log("get onse case @ view: " + JSON.stringify(result));
+          this.case_holder = result;
+        });
       this.fees_form = this.charges
         ? this.charges
-        : this.$store.state.payments.fee;
+        : this.deepCopy(this.$store.state.payments.fee);
     },
     cancel() {
       this.showCreditCard = false;
@@ -299,7 +304,7 @@ export default {
           );
           var ecpay_fee = 0;
           var details = {
-            date_issue: formatDate(result.date_created),
+            date_issue: this.formatDate(result.date_created),
             reference_number: result.third_party_ref_no,
             status: this.getPaymentStatus(result.payment_details.status),
             expiration: this.formatDt(this.case_holder.date_expiry),
@@ -325,7 +330,7 @@ export default {
           console.log("ecpay upload files: " + JSON.stringify(file));
           fd.append("file", file);
           return this.$store.dispatch("GENERATED_DOCUMENTS", {
-            details: this.$store.state.payments.form,
+            details: this.deepCopy(this.$store.state.payments.form),
             formData: fd
           });
         })
@@ -341,7 +346,7 @@ export default {
           });
         })
         .catch(error => {
-          this.$notifyError(err);
+          this.$notifyError(error);
         });
     },
     generatePDF() {
@@ -422,10 +427,30 @@ export default {
             full_details.qualified.tin = this.numberMask(
               full_details.qualified.tin
             );
-          } else if(full_details.formDetails.case_type === 1){
-            // full_details.food_product.type = this.
+          } else if (full_details.formDetails.case_type === 1) {
+            full_details.formDetails.food_product.type = this.foodProductType(
+              full_details.formDetails.food_product.type
+            ).name;
+            full_details.formDetails.food_product.categorization = this.foodCategory(
+              full_details.formDetails.food_product.categorization
+            ).name;
+            full_details.formDetails.establishment_info.activity = this.establishmentInfo(
+              full_details.formDetails.establishment_info.activity
+            ).name;
+            full_details.formDetails.establishment_info.type = this.establishmentType(
+              full_details.formDetails.establishment_info.type
+            ).name;
+            full_details.formDetails.establishment_info.origin_country = this.establishplacesOrigin(
+              full_details.formDetails.establishment_info.origin_country
+            ).name;
           }
 
+          full_details.paymentDetails.fee = this.numberWithCommas(
+            full_details.paymentDetails.fee
+          );
+          full_details.paymentDetails.lrf = this.numberWithCommas(
+            full_details.paymentDetails.lrf
+          );
           full_details.paymentDetails.total = this.numberWithCommas(
             full_details.paymentDetails.total
           );

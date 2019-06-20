@@ -168,7 +168,10 @@ export default {
                   );
                   return this.$store.dispatch(
                     "GET_ONE_CASE",
-                    this.form.case_no
+                    {
+                      case_no: this.form.case_no,
+                      case_type: this.form.case_type
+                    }
                   );
                 })
                 .then(result => {

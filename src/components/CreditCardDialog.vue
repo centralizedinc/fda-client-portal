@@ -24,12 +24,12 @@
                 >
                   <template slot="items" slot-scope="props">
                     <td>{{ props.item.description }}</td>
-                    <td>? {{ numberWithCommas (props.item.amount) }}</td>
+                    <td>₱ {{ numberWithCommas (props.item.amount) }}</td>
                   </template>
 
                   <template slot="footer">
                     <td>Total</td>
-                    <td class="font-weight-bold">? {{ numberWithCommas(total_amount) }}</td>
+                    <td class="font-weight-bold">₱ {{ numberWithCommas(total_amount) }}</td>
                   </template>
                 </v-data-table>
                 <span
@@ -293,7 +293,7 @@ export default {
         payment_details: {
           amount: 0,
           mode_of_payment: 0,
-          currency: "?",
+          currency: "₱",
           description: "",
           statement_descriptor: "",
           capture: true
@@ -307,7 +307,7 @@ export default {
       },
       payment_details: {
         amount: 0,
-        currency: "?",
+        currency: "₱",
         description: "",
         statement_descriptor: "",
         capture: true
@@ -534,7 +534,7 @@ export default {
             var fd = new FormData();
             fd.append("file", file);
             return this.$store.dispatch("GENERATED_DOCUMENTS", {
-              details: this.$store.state.payments.form,
+              details: this.deepCopy(this.$store.state.payments.form),
               formData: fd
             });
           })
