@@ -243,6 +243,11 @@ var actions = {
                     reject(err)
                 });
         })
+    },
+    RENEWAL_CERTIFICATE(context, certificate){
+        return new Promise((resolve, reject) => {
+            new CertificateAPI(context.rootState.user_session.token).renewCertificate(certificate);
+        })
     }
 };
 

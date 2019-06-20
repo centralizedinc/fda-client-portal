@@ -372,7 +372,7 @@
             <v-btn
               :loading="isLoading"
               color="primary"
-              @click="loadForm(preview_item.application_id)"
+              @click="save"
             >Payment</v-btn>
             <!-- button renewal -->
           </v-card-actions>
@@ -537,6 +537,9 @@ export default {
       //   console.log(err);
       //   this.$notifyError(err);
       // });
+    },
+    save(){
+      this.$store.dispatch("RENEWAL_CERTIFICATE", this.form);
     }
     // viewFile(url) {
     //   window.open(url, "_blank");
