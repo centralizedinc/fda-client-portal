@@ -12,11 +12,11 @@
           <v-container grid-list-xl>
             <v-layout row wrap class="subheading">
               <v-flex xs6 class="font-weight-light">Application Type:</v-flex>
-              <!-- <v-flex xs6 class="font-weight-light">{{getAppType (license_details.application_type)}} Application</v-flex> -->
+              <!-- <v-flex xs6 class="font-weight-light">{{getAppType (certificate_details.application_type)}} Application</v-flex> -->
               <v-flex xs6 class="font-weight-light">Product Name:</v-flex>
-              <!-- <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_name}}</v-flex> -->
+              <!-- <v-flex xs6 class="font-weight-light"> {{certificate_details.estab_details.establishment_name}}</v-flex> -->
               <v-flex xs6 class="font-weight-light">Company Name:</v-flex>
-              <!-- <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_owner}}</v-flex> -->
+              <!-- <v-flex xs6 class="font-weight-light"> {{certificate_details.estab_details.establishment_owner}}</v-flex> -->
             </v-layout>
             <br>
             <span class="headline text--center font-weight-light">
@@ -56,10 +56,7 @@
 export default {
   data() {
     return {
-      license_details: {
-        estab_details: {},
-        address_list: []
-      },
+      certificate_details: {},
       case_details: {},
       client_details: {
         name: {}
@@ -75,12 +72,12 @@ export default {
     init() {
       this.loading = true;
       this.$store
-        .dispatch("GET_RESULT_BY_KEY", this.$route.params.key)
+        .dispatch("GET_CERTIFICATE_RESULT_BY_KEY", this.$route.params.key)
         .then(result => {
           this.loading = false;
           console.log("result.data :", result.data);
           if (result.data.success) {
-            this.license_details = result.data.model.license_details;
+            this.certificate_details = result.data.model.certificate_details;
             this.case_details = result.data.model.case_details;
             this.client_details = result.data.model.client_details;
             this.director = result.data.model.director;
@@ -96,7 +93,7 @@ export default {
     viewLetter() {
       var address = "";
 
-      this.license_details.address_list.forEach(elem => {
+      this.certificate_details.address_list.forEach(elem => {
         if (elem.type === 0) {
           address = elem.address;
         }
@@ -107,13 +104,12 @@ export default {
         name: `${this.client_details.name.first} ${
           this.client_details.name.last
         }`,
-        establishment_name: this.license_details.estab_details
-          .establishment_name,
-        establishment_address: address,
+        establishment_name: this.certificate_details.food_product.company,
+        establishment_address: this.certificate_details.food_product.address,
         application_type:
           this.getAppType(
-            this.license_details.application_type,
-            this.case_details.case_no
+            this.certificate_details.application_type,
+            this.case_details.case_type
           ) + " Application",
         case_no: this.case_details.case_no,
         reasons: this.director.remarks
