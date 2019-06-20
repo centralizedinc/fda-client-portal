@@ -6,20 +6,25 @@
           <span class="title font-weight-light">Application Overview</span>
           <v-spacer></v-spacer>
           <v-tooltip bottom>
-            <v-btn :loading="isLoading" slot="activator" flat icon @click="loadForm(preview_item.application_id)">
+            <v-btn
+              :loading="isLoading"
+              slot="activator"
+              flat
+              icon
+              @click="loadForm(preview_item.application_id)"
+            >
               <v-icon>launch</v-icon>
-            </v-btn>
-              View Full Details
+            </v-btn>View Full Details
           </v-tooltip>
         </v-toolbar>
         <v-layout row wrap>
           <v-flex xs12 pa-1>
-          <v-card>
-            <v-card-title primary-title>
-              <span class="subheading font-weight-light primary--text">Case Details</span>
-            </v-card-title>
-            <v-divider></v-divider>
-            <v-card-text>
+            <v-card>
+              <v-card-title primary-title>
+                <span class="subheading font-weight-light primary--text">Case Details</span>
+              </v-card-title>
+              <v-divider></v-divider>
+              <v-card-text>
                 <v-text-field
                   name="name"
                   label="Reference Number"
@@ -54,27 +59,29 @@
                   id="id"
                   readonly
                   :value="getTask(preview_item.current_task).name"
-                ></v-text-field>                                 
-                <v-textarea rows="2"
+                ></v-text-field>
+                <v-textarea
+                  rows="2"
                   name="name"
                   label="Remarks"
                   id="id"
                   readonly
                   :value="preview_item.remarks"
                 ></v-textarea>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn :disabled="isLoading" outline color="secondary" @click="overview=false">Close</v-btn>
-              <v-btn :loading="isLoading" color="primary" @click="loadForm(preview_item.application_id)">View</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-flex>
+              </v-card-text>
+              <v-divider></v-divider>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn :disabled="isLoading" outline color="secondary" @click="overview=false">Close</v-btn>
+                <v-btn
+                  :loading="isLoading"
+                  color="primary"
+                  @click="loadForm(preview_item.application_id)"
+                >View</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-flex>
         </v-layout>
-        
-        
-        
       </v-navigation-drawer>
       <!-- ACTIVE LICENSE -->
       <active-license
@@ -95,9 +102,9 @@
           >Application History</v-card-title>
           <v-divider></v-divider>
           <v-data-table
+            :rows-per-page-items="rowsPerPageItems"
             :pagination.sync="pagination"
             :headers="headers"
-            hide-actions
             :items="details.cases"
             class="elevation-1"
           >
@@ -116,9 +123,9 @@
               </tr>
             </template>
           </v-data-table>
-          <div class="text-xs-center pt-2">
+          <!-- <div class="text-xs-center pt-2">
             <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
-          </div>
+          </div>-->
         </v-card>
       </v-flex>
 
@@ -129,7 +136,7 @@
             <v-icon large color="fdaSilver">add</v-icon>
           </v-btn>Apply New
         </v-tooltip>
-      </v-layout> -->
+      </v-layout>-->
 
       <!-- DIALOGS -->
       <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="dialog = false"></undertaking-dialog>
@@ -188,6 +195,7 @@ export default {
       dialogView: false,
       initial: false,
       selected_case: {},
+      rowsPerPageItems: [10, 20, 30, 40],
       pagination: {
         sortBy: "date_created",
         descending: true

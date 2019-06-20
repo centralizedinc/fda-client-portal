@@ -19,13 +19,7 @@
               <span class="subheading font-weight-light primary--text">Case Details</span>
               <v-spacer></v-spacer>
               <v-tooltip bottom>
-                <v-btn
-                  :loading="loading"
-                  slot="activator"
-                  flat
-                  icon
-                  @click="viewForm"
-                >
+                <v-btn :loading="loading" slot="activator" flat icon @click="viewForm">
                   <v-icon color="primary">launch</v-icon>
                 </v-btn>View Full Details
               </v-tooltip>
@@ -131,16 +125,30 @@
       </v-layout>
     </v-navigation-drawer>
 
+    <v-layout row wrap align-end>
+      <v-spacer></v-spacer>
+      <v-flex xs6 pa-2>
+        <v-text-field
+          outline
+          v-model="search"
+          append-icon="search"
+          label="Search"
+          single-line
+          hide-details
+        ></v-text-field>
+      </v-flex>
+    </v-layout>
     <v-flex xs12 p1-2>
       <v-card>
         <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="closeDecDialog"></undertaking-dialog>
         <v-data-table
           :headers="headers"
           :items="items"
-          hide-actions
           class="elevation-1"
           :pagination.sync="pagination"
           :loading="loading"
+          :rows-per-page-items="rowsPerPageItems"
+          :search="search"
         >
           <template slot="items" slot-scope="props">
             <tr @click="preview(props.item)" style="cursor:pointer">
@@ -152,17 +160,20 @@
               <td>{{ props.item.remarks }}</td>
             </tr>
           </template>
+          <template v-slot:no-data>
+            <v-alert :value="true" color="error" icon="warning">No data found</v-alert>
+          </template>
         </v-data-table>
-        <div class="text-xs-center pt-2">
+        <!-- <div class="text-xs-center pt-2">
           <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
-        </div>
+        </div>-->
       </v-card>
     </v-flex>
 
     <!-- NEW CERTIFICATE -->
-    <v-layout column class="fab-container">
+    <v-layout column class="fab-container pb-5">
       <v-tooltip top>
-        <v-btn :disabled="!data_complete" slot="activator" fab color="fdaLight" @click="dialog=true">
+        <v-btn slot="activator" fab elevation-15 color="fdaLight" @click="dialog=true">
           <v-icon large color="fdaSilver">add</v-icon>
         </v-btn>Apply New
       </v-tooltip>
@@ -182,6 +193,7 @@ export default {
     return {
       // preview: {},
       // isLoading: false,
+      search: "",
       preview_item: {},
       overview: null,
       fab: false,
@@ -191,6 +203,7 @@ export default {
       selected_case: {},
       loading: false,
       dialog: false,
+      rowsPerPageItems: [10, 20, 30, 40],
       pagination: {
         sortBy: "date_created",
         descending: true
@@ -218,6 +231,7 @@ export default {
         this.pagination.totalItems == null
       )
         return 0;
+
       return Math.ceil(
         this.pagination.totalItems / this.pagination.rowsPerPage
       );
@@ -230,7 +244,6 @@ export default {
       this.$store
         .dispatch("GET_CERTIFICATE")
         .then(results => {
-          
           this.items = results;
           console.log(
             "############## ACTIVE CERTIFICATES: " + JSON.stringify(this.items)
@@ -342,7 +355,7 @@ export default {
               JSON.stringify(this.$store.state.foodCertificate.company_activity)
           );
           this.loading = false;
-          this.data_complete = true
+          this.data_complete = true;
         })
 
         .catch(error => {
