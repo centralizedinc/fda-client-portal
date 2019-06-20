@@ -309,6 +309,7 @@ export default {
         shelfLifeType(data){
           var shelfLife = this.$store.state.foodCertificate.shelf_life
           console.log("MIXIN DATA SHELFLIFE:" + JSON.stringify(shelfLife))
+          console.log("MIXIN DATA DATA:" + JSON.stringify(data))
           if (!shelfLife) return {}
           var shelfLife = shelfLife.find(x => x._id === data)
           return shelfLife ? shelfLife : {}
@@ -331,8 +332,9 @@ export default {
           var phyParam = this.$store.state.foodCertificate.physical_parameter
           if (!phyParam) return {}
           var phyParam = phyParam.find(x => x._id === spec)
-          return phyParam ? phyParam : {}
+          return phyParam ? phyParam: ""
         },
+        
         shelfLife(spec){
           var sLife = this.$store.state.foodCertificate.shelf_life
           if (!sLife) return {}
@@ -351,6 +353,43 @@ export default {
           var claim = claim.find(x => x._id === data)
           return claim ? claim : {}
         },
+        // Certificate
+        getAppTypeCert(type) {
+          var app_type = ["Initial", "Ammendment", "Renewal", "Reapplication" ]
+          console.log("get app cert type: " + JSON.stringify(type))
+          console.log("get app cert type return: " + JSON.stringify(app_type[type]))
+          return app_type[type];
+        },
+        getAppStatusCert(status) {
+          var apps = ["On Process", "Active", "Compliance", "Denied", "Expired", "Waiting for Confirmation", "Inactive/Archived/DNP"];
+          return apps[status];
+        },
+        vitMin(data) {
+          var minVit = ["Vitamin", "Minerals", "Nutrition"]
+          console.log("vitmin kind: " + JSON.stringify(kind))
+          var vit = this.$store.state.foodCertificate.vitamins
+          var min = this.$store.state.foodCertificate.minerals
+          var nut = this.$store.state.foodCertificate.nutrition_information
+           
+          // vit = vit.find(x => x._id === data)
+          // min = min.find(x => x._id === data)
+          // nut = nut.find(x => x._id === data)
+          for(var x=0; x<=2;x++){
+            if(x===0){
+              vit.find(q => q._id === data)
+            }else if(x===1){
+              min.find(q => q._id === data)
+            }else if(x===2){
+              nut.find(q => q._id === data)
+            }
+          }
+          console.log("vita: " + JSON.stringify(vit))
+          console.log("mine: " + JSON.stringify(min))
+          console.log("nutr: " + JSON.stringify(nut))
+
+          // return minVit ? minVit : {}
+        }
+
 
       }
     });

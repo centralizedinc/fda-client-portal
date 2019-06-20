@@ -37,8 +37,8 @@
           <v-data-table :headers="headers" :items="specs_list" hide-actions class="elevation-1">
             <template slot="items" slot-scope="props">
               <tr @click="viewItem(props.item, props.index)" style="cursor:pointer">
-                <td>{{props.item.prod_spec}}</td>
-                <td>{{props.item.parameter}}</td>
+                <td>{{productSpecs(props.item.prod_spec).name}}</td>
+                <td>{{physicalParameter(props.item.parameter)}}</td>
                 <td>{{props.item.specs}}</td>
               </tr>
             </template>

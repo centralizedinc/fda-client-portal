@@ -64,8 +64,6 @@ export default {
         claims: this.claims,
         desc: this.description
       });
-      this.claims = ""
-      this.description = ""
     },
     removeItem(index) {
       this.form.claims.splice(index, 1);
