@@ -258,7 +258,8 @@ var actions = {
         new LicenseAPI(token)
           .getActiveLicense()
           .then(result => {
-            this.commit(
+            console.log('result.data :', result.data);
+            context.commit(
               "SET_ACTIVE_LICENSE",
               result.data.model.license_details
             );

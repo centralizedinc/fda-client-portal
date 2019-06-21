@@ -264,6 +264,9 @@ var actions = {
                     reject(err)
                 });
         })
+    },
+    GET_CERTIFICATE_RESULT_BY_KEY(context, key){
+        return new CertificateAPI(context.rootState.user_session.token).retrieveCertificateByKey(key)
     }
 };
 

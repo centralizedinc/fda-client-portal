@@ -100,6 +100,7 @@ export default {
     this.$store
       .dispatch("GET_ACTIVE_LICENSE")
       .then(result => {
+        console.log('result :', result);
         this.details.license_details = result;
       })
       .catch(err => {
