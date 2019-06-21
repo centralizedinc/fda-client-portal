@@ -296,4 +296,8 @@ export default class CertificateAPI {
     })
   }
 
+  retrieveCertificateByKey(key){
+    return axios.get(`public/certificates/result/${key}`)
+  }
+  
 }

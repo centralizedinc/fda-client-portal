@@ -320,21 +320,12 @@ export default {
           var placesOrigin = placesOrigin.find(x => x._id === data)
           return placesOrigin ? placesOrigin : {}
         },
-<<<<<<< HEAD
-        shelfLifeType(data){
-          var shelfLife = this.$store.state.foodCertificate.shelf_life
-          console.log("MIXIN DATA SHELFLIFE:" + JSON.stringify(shelfLife))
-          console.log("MIXIN DATA DATA:" + JSON.stringify(data))
-          if (!shelfLife) return {}
-          var shelfLife = shelfLife.find(x => x._id === data)
-=======
         shelfLifeType(data) {
           var shelfLifes = this.deepCopy(this.$store.state.foodCertificate.shelf_life)
           console.log("MIXIN DATA SHELFLIFE:" + JSON.stringify(shelfLifes))
           console.log('shelf type data :', data);
           if (!shelfLifes || !shelfLifes.length) return {}
           var shelfLife = shelfLifes.find(x => x._id === data)
->>>>>>> 5e6d8ba80049bec831d47287bf7c57661527463e
           return shelfLife ? shelfLife : {}
         },
         foodCategory(data) {
@@ -351,19 +342,6 @@ export default {
           var prodSpec = prodSpecs.find(x => x._id === spec)
           return prodSpec ? prodSpec : {}
         },
-<<<<<<< HEAD
-        physicalParameter(spec){
-          var phyParam = this.$store.state.foodCertificate.physical_parameter
-          if (!phyParam) return {}
-          var phyParam = phyParam.find(x => x._id === spec)
-          return phyParam ? phyParam: ""
-        },
-        
-        shelfLife(spec){
-          var sLife = this.$store.state.foodCertificate.shelf_life
-          if (!sLife) return {}
-          var sLife = sLife.find(x => x._id === spec)
-=======
         physicalParameter(spec) {
           var phyParams = this.deepCopy(this.$store.state.foodCertificate.physical_parameter)
           if (!phyParams || !phyParams.length) return {}
@@ -374,7 +352,6 @@ export default {
           var sLifes = this.deepCopy(this.$store.state.foodCertificate.shelf_life)
           if (!sLifes || !sLifes.length) return {}
           var sLife = sLifes.find(x => x._id === spec)
->>>>>>> 5e6d8ba80049bec831d47287bf7c57661527463e
           return sLife ? sLife : {}
         },
         desc(data) {
@@ -389,7 +366,6 @@ export default {
           var claim = claims.find(x => x._id === data)
           return claim ? claim : {}
         },
-<<<<<<< HEAD
         // Certificate
         getAppTypeCert(type) {
           var app_type = ["Initial", "Ammendment", "Renewal", "Reapplication" ]
@@ -428,11 +404,6 @@ export default {
         }
 
 
-=======
-        nutrition(id){
-          
-        }
->>>>>>> 5e6d8ba80049bec831d47287bf7c57661527463e
       }
     });
   }

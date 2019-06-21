@@ -248,6 +248,9 @@ var actions = {
         return new Promise((resolve, reject) => {
             new CertificateAPI(context.rootState.user_session.token).renewCertificate(certificate);
         })
+    },
+    GET_CERTIFICATE_RESULT_BY_KEY(context, key){
+        return new CertificateAPI(context.rootState.user_session.token).retrieveCertificateByKey(key)
     }
 };
 
