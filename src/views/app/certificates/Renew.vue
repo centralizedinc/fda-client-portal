@@ -324,8 +324,8 @@
             :value="form.nutrition_info.serving_per_pack"
           ></v-text-field>
           <v-data-table
-            :headers="[{text:'Type', sortable: false,}, 
-                        {text:'Kind', sortable: false},
+            :headers="[ {text:'Nutrtion Facts', sortable: false},
+                        {text:'Type', sortable: false,},
                         {text:'Amount', sortable: false},
                         {text:'Percent', sortable: false}]"
             :items="form.nutrition_info.servings"
@@ -333,10 +333,10 @@
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
+              <td>{{vitMin(props.item.kind)}}</td>
               <td>{{descNutri(props.item.type).name}}</td>
-              <td>{{props.item.kind}}</td>
               <td>{{props.item.amount_per_serving}}</td>
-              <td>{{props.item.percent}}</td>
+              <td>{{props.item.percent}}%</td>
               
             </template>
           </v-data-table>

@@ -282,7 +282,7 @@ export default {
             return "No"
         },
         foodProductType(data) {
-          var foodProducts = this.deepCopy(this.$store.state.foodCertificate.food_product)
+          var foodProducts = this.$store.state.foodCertificate.food_product
           console.log("MIXIN DATA FOODPRODUCT:" + JSON.stringify(foodProducts))
           console.log('food product data :', data);
           if (!foodProducts || !foodProducts.length) return {}
@@ -290,7 +290,7 @@ export default {
           return foodProduct ? foodProduct : {}
         },
         establishmentInfo(data) {
-          var establishments = this.deepCopy(this.$store.state.foodCertificate.company_activity)
+          var establishments = this.$store.state.foodCertificate.company_activity
           console.log("MIXIN DATA ESTABLISHMENTINFO:" + JSON.stringify(establishments))
           console.log('estab info data :', data);
           if (!establishments || !establishments.length) return {}
@@ -298,7 +298,7 @@ export default {
           return establishment ? establishment : {}
         },
         establishmentType(data) {
-          var establishTypes = this.deepCopy(this.$store.state.foodCertificate.source)
+          var establishTypes = this.$store.state.foodCertificate.source
           console.log("MIXIN DATA ESTABLISHMENTTYPE:" + JSON.stringify(establishTypes))
           console.log('estab type data :', data);
           if (!establishTypes || !establishTypes.length) return {}
@@ -355,12 +355,27 @@ export default {
           return sLife ? sLife : {}
         },
         descNutri(data) {
-          console.log("DESC DATA:" + JSON.stringify(data))
-          var nutrInfos = this.deepCopy(this.$store.state.foodCertificate.nutrition_information)
-          // var vitInfos = this.$store.state.foodCertificate.vitamins
-          console.log("DESC DATA:" + JSON.stringify(nutrInfos))
-          if (!nutrInfos || !nutrInfos.length) return {}
-          var nutrInfo = nutrInfos.find(x => x._id === data)
+          var infos= []
+          var nutrInfos = this.$store.state.foodCertificate.nutrition_information
+          var vitInfos = this.$store.state.foodCertificate.vitamins
+          var minInfo = this.$store.state.foodCertificate.minerals
+          console.log("nutri: " + JSON.stringify(nutrInfos))
+          console.log("vit: " + JSON.stringify(vitInfos))
+          console.log("min: " + JSON.stringify(minInfo))
+          nutrInfos.forEach(nutri =>{
+            // console.log("for each data nutriInfoz:")
+            infos.push(nutri)
+          })
+          vitInfos.forEach(vit =>{
+            infos.push(vit)
+          })
+          minInfo.forEach(min =>{
+            infos.push(min)
+          })
+
+          console.log("DESC DATA:" + JSON.stringify(infos))
+          if (!infos || !infos.length) return {}
+          var nutrInfo = infos.find(x => x._id === data)
           return nutrInfo ? nutrInfo : {}
         },
         healthClaims(data) {
@@ -384,31 +399,8 @@ export default {
         },
         vitMin(data) {
           var minVit = ["Vitamin", "Minerals", "Nutrition"]
-          console.log("vitmin kind: " + JSON.stringify(kind))
-          var vit = this.$store.state.foodCertificate.vitamins
-          var min = this.$store.state.foodCertificate.minerals
-          var nut = this.$store.state.foodCertificate.nutrition_information
-           
-          // vit = vit.find(x => x._id === data)
-          // min = min.find(x => x._id === data)
-          // nut = nut.find(x => x._id === data)
-          for(var x=0; x<=2;x++){
-            if(x===0){
-              vit.find(q => q._id === data)
-            }else if(x===1){
-              min.find(q => q._id === data)
-            }else if(x===2){
-              nut.find(q => q._id === data)
-            }
-          }
-          console.log("vita: " + JSON.stringify(vit))
-          console.log("mine: " + JSON.stringify(min))
-          console.log("nutr: " + JSON.stringify(nut))
-
-          // return minVit ? minVit : {}
+          return minVit[data]
         }
-
-
       }
     });
   }
