@@ -346,7 +346,7 @@ export default {
           var phyParams = this.deepCopy(this.$store.state.foodCertificate.physical_parameter)
           if (!phyParams || !phyParams.length) return {}
           var phyParam = phyParams.find(x => x._id === spec)
-          return phyParam ? phyParam : {}
+          return phyParam ? phyParam : spec
         },
         shelfLife(spec) {
           var sLifes = this.deepCopy(this.$store.state.foodCertificate.shelf_life)
@@ -354,23 +354,61 @@ export default {
           var sLife = sLifes.find(x => x._id === spec)
           return sLife ? sLife : {}
         },
-        desc(data) {
+        descNutri(data) {
+          console.log("DESC DATA:" + JSON.stringify(data))
           var nutrInfos = this.deepCopy(this.$store.state.foodCertificate.nutrition_information)
+          // var vitInfos = this.$store.state.foodCertificate.vitamins
+          console.log("DESC DATA:" + JSON.stringify(nutrInfos))
           if (!nutrInfos || !nutrInfos.length) return {}
           var nutrInfo = nutrInfos.find(x => x._id === data)
           return nutrInfo ? nutrInfo : {}
         },
-        claims(data) {
+        healthClaims(data) {
+          console.log("claims data: " + JSON.stringify(data))
           var claims = this.deepCopy(this.$store.state.foodCertificate.nutrition_health_claims)
+          console.log("LOGS CLAIMS:" + JSON.stringify(this.$store.state.foodCertificate.nutrition_health_claims))
           if (!claims || !claims.length) return {}
           var claim = claims.find(x => x._id === data)
-          return claim ? claim : {}
+          return claim || data
         },
-        nutrition(id){
+        // Certificate
+        getAppTypeCert(type) {
+          var app_type = ["Initial", "Ammendment", "Renewal", "Reapplication" ]
+          console.log("get app cert type: " + JSON.stringify(type))
+          console.log("get app cert type return: " + JSON.stringify(app_type[type]))
+          return app_type[type];
+        },
+        getAppStatusCert(status) {
+          var apps = ["On Process", "Active", "Compliance", "Denied", "Expired", "Waiting for Confirmation", "Inactive/Archived/DNP"];
+          return apps[status];
+        },
+        vitMin(data) {
+          var minVit = ["Vitamin", "Minerals", "Nutrition"]
+          console.log("vitmin kind: " + JSON.stringify(kind))
           var vit = this.$store.state.foodCertificate.vitamins
           var min = this.$store.state.foodCertificate.minerals
-          // var nut = 
+          var nut = this.$store.state.foodCertificate.nutrition_information
+           
+          // vit = vit.find(x => x._id === data)
+          // min = min.find(x => x._id === data)
+          // nut = nut.find(x => x._id === data)
+          for(var x=0; x<=2;x++){
+            if(x===0){
+              vit.find(q => q._id === data)
+            }else if(x===1){
+              min.find(q => q._id === data)
+            }else if(x===2){
+              nut.find(q => q._id === data)
+            }
+          }
+          console.log("vita: " + JSON.stringify(vit))
+          console.log("mine: " + JSON.stringify(min))
+          console.log("nutr: " + JSON.stringify(nut))
+
+          // return minVit ? minVit : {}
         }
+
+
       }
     });
   }

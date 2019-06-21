@@ -38,7 +38,6 @@
               <v-text-field
                 name="name"
                 label="Application Type"
-                id="id"
                 readonly
                 :value="getAppType(preview_item.application_type, preview_item.case_type)"
               ></v-text-field>
@@ -54,7 +53,7 @@
                 label="Status"
                 id="id"
                 readonly
-                :value="getAppStatus(preview_item.status)"
+                :value="getAppStatusCert(preview_item.status)"
               ></v-text-field>
               <!-- <v-text-field
                 name="name"

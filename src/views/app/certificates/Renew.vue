@@ -163,14 +163,14 @@
         <v-divider></v-divider>
         <v-card-text v-if="show_part3">
           <v-data-table
-            :headers="[{text:'Product Line', sortable: false,}, {text:'Remarks', sortable: false}]"
+            :headers="[{text:'Ingredients', sortable: false,}]"
             :items="form.ingredients"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
               <!-- <td>{{ getProdLine(props.item.prod_line).name }}</td> -->
-              <td>{{ props.item.remarks }}</td>
+              <td>{{ props.item}}</td>
             </template>
           </v-data-table>
         </v-card-text>
@@ -188,20 +188,50 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part4">
+          <v-text-field
+            readonly
+            name="name"
+            label="Color"
+            :value="physicalParameter(form.product_specification.microbiological[1].parameter)"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Odor"
+            :value="form.product_specification.physical.odor"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Taste"
+            :value="form.product_specification.physical.tatse"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Texture"
+            :value="form.product_specification.physical.texture"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Form"
+            :value="form.product_specification.physical.form"
+          ></v-text-field>
           <v-data-table
-            :headers="[{text:'Color', sortable: false,}, 
-                        {text:'Odor', sortable: false},{text:'Taste', sortable: false},{text:'Texture', sortable: false},]"
-            :items="product_specification"
+            :headers="[{text:'Microbiological Parameter', sortable: false},
+            {text:'Microbiological Specification', sortable: false},
+            {text:'Chemical Parameter', sortable: false},
+            {text:'Chemical Specification', sortable: false}]"
+            :items="form.product_specification"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <!-- <td>{{ getEstablishmentType(props.item.type) }}</td>
-              <td>{{ props.item.address }}</td>-->
-              <td>{{props.item.physical.color}}</td>
-              <td>{{props.item.physical.odor}}</td>
-              <td>{{props.item.physical.taste}}</td>
-              <td>{{props.item.physical.texture}}</td>
+              <td>{{physicalParameter(props.item.microbiological.parameter)}}</td>
+              <td>{{props.item.microbiological.specification}}</td>
+              <td>{{props.item.chemical.parameter}}</td>
+              <td>{{props.item.chemical.specification}}</td>
             </template>
           </v-data-table>
         </v-card-text>
@@ -224,7 +254,7 @@
             label="Shelf Life Declaration (in Months)"
             :value="formatDate(form.shelf.declaration_date)"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Type" :value="shelfLife(form.shelf.type).name"></v-text-field>
+          <v-text-field readonly name="name" label="Type" :value="shelfLifeType(form.shelf.shelf_type).name"></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -281,18 +311,33 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part6">
+          <v-text-field
+            readonly
+            name="name"
+            label="Servings Size (grams or ml)"
+            :value="form.nutrition_info.serving_size"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="NUmber of Serving per Container/Pack"
+            :value="form.nutrition_info.serving_per_pack"
+          ></v-text-field>
           <v-data-table
-            :headers="[{text:'Serving Size', sortable: false,}, 
-                        {text:'Serving Per Pack', sortable: false},
-                        {text:'Servings Amount', sortable: false}]"
-            :items="form.nutrition_info"
+            :headers="[{text:'Type', sortable: false,}, 
+                        {text:'Kind', sortable: false},
+                        {text:'Amount', sortable: false},
+                        {text:'Percent', sortable: false}]"
+            :items="form.nutrition_info.servings"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{props.item.serving_size}}</td>
-              <td>{{props.item.serving_per_pack}}</td>
-              <td>{{props.item.servings}}</td>
+              <td>{{descNutri(props.item.type).name}}</td>
+              <td>{{props.item.kind}}</td>
+              <td>{{props.item.amount_per_serving}}</td>
+              <td>{{props.item.percent}}</td>
+              
             </template>
           </v-data-table>
         </v-card-text>
@@ -320,7 +365,7 @@
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{props.item.claims}}</td>
+              <td>{{healthClaims(props.item.claim).name}}</td>
               <td>{{props.item.desc}}</td>
             </template>
           </v-data-table>

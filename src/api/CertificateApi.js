@@ -75,7 +75,8 @@ export default class CertificateAPI {
     var cert_case = {}
     console.log("apply certificate data: " + JSON.stringify(cert_data))
     return new Promise((resolve, reject) => {
-      var output_files = []
+      var output_files = cert_data.output_files
+      cert_data.output_files = []
       axios.post('certificates/', cert_data)
         .then(save_cert => {
           if (save_cert.data.success) {
@@ -88,11 +89,11 @@ export default class CertificateAPI {
             // console.log('save_certificate.output_files[0] :', cert_data.output_files[0]);
             // docs.push(axios.post('documents/uploads?account_id=' + cert_case.case_no, cert_data.output_files[0].form_data))
             // }
-            cert_data.output_files.forEach(file => {
+            output_files.forEach(file => {
               docs.push(axios.post('documents/uploads?account_id=' + cert_case.case_no, file.form_data))
-              output_files.push({
-                type: file.type
-              })
+              // output_files.push({
+              //   type: file.type
+              // })
             })
             console.log("this docs data: " + JSON.stringify(docs))
             return axios.all(docs)
@@ -264,6 +265,7 @@ export default class CertificateAPI {
       uploaded_files: form.certificate.uploaded_files,
       output_files: form.certificate.output_files 
     }
+
     return axios.post('certificates/renewal', certificate)
   }
 
