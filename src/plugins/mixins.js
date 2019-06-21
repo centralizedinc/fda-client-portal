@@ -346,7 +346,7 @@ export default {
           var phyParams = this.deepCopy(this.$store.state.foodCertificate.physical_parameter)
           if (!phyParams || !phyParams.length) return {}
           var phyParam = phyParams.find(x => x._id === spec)
-          return phyParam ? phyParam : {}
+          return phyParam ? phyParam : spec
         },
         shelfLife(spec) {
           var sLifes = this.deepCopy(this.$store.state.foodCertificate.shelf_life)
@@ -354,17 +354,22 @@ export default {
           var sLife = sLifes.find(x => x._id === spec)
           return sLife ? sLife : {}
         },
-        desc(data) {
+        descNutri(data) {
+          console.log("DESC DATA:" + JSON.stringify(data))
           var nutrInfos = this.deepCopy(this.$store.state.foodCertificate.nutrition_information)
+          // var vitInfos = this.$store.state.foodCertificate.vitamins
+          console.log("DESC DATA:" + JSON.stringify(nutrInfos))
           if (!nutrInfos || !nutrInfos.length) return {}
           var nutrInfo = nutrInfos.find(x => x._id === data)
           return nutrInfo ? nutrInfo : {}
         },
-        claims(data) {
+        healthClaims(data) {
+          console.log("claims data: " + JSON.stringify(data))
           var claims = this.deepCopy(this.$store.state.foodCertificate.nutrition_health_claims)
+          console.log("LOGS CLAIMS:" + JSON.stringify(this.$store.state.foodCertificate.nutrition_health_claims))
           if (!claims || !claims.length) return {}
           var claim = claims.find(x => x._id === data)
-          return claim ? claim : {}
+          return claim || data
         },
         // Certificate
         getAppTypeCert(type) {
