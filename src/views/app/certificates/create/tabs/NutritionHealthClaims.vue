@@ -64,12 +64,9 @@ export default {
         claim: this.claims,
         desc: this.description
       });
-<<<<<<< HEAD
-=======
       this.claims = ""
       this.description = ""
       console.log("add item claim data: " + JSON.stringify(this.form.claims))
->>>>>>> 5e6d8ba80049bec831d47287bf7c57661527463e
     },
     removeItem(index) {
       this.form.claims.splice(index, 1);
