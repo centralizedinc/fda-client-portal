@@ -192,7 +192,7 @@
             readonly
             name="name"
             label="Color"
-            :value="form.product_specification.physical.color"
+            :value="physicalParameter(form.product_specification.microbiological[1].parameter)"
           ></v-text-field>
           <v-text-field
             readonly
@@ -218,7 +218,7 @@
             label="Form"
             :value="form.product_specification.physical.form"
           ></v-text-field>
-          <!-- <v-data-table
+          <v-data-table
             :headers="[{text:'Microbiological Parameter', sortable: false},
             {text:'Microbiological Specification', sortable: false},
             {text:'Chemical Parameter', sortable: false},
@@ -228,12 +228,12 @@
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{props.item.microbiological.parameter}}</td>
+              <td>{{physicalParameter(props.item.microbiological.parameter)}}</td>
               <td>{{props.item.microbiological.specification}}</td>
               <td>{{props.item.chemical.parameter}}</td>
               <td>{{props.item.chemical.specification}}</td>
             </template>
-          </v-data-table> -->
+          </v-data-table>
         </v-card-text>
         <v-divider></v-divider>
         <v-card-title primary-title>
@@ -333,7 +333,7 @@
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{props.item.type}}</td>
+              <td>{{descNutri(props.item.type).name}}</td>
               <td>{{props.item.kind}}</td>
               <td>{{props.item.amount_per_serving}}</td>
               <td>{{props.item.percent}}</td>
@@ -365,7 +365,7 @@
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{props.item.claims}}</td>
+              <td>{{healthClaims(props.item.claim).name}}</td>
               <td>{{props.item.desc}}</td>
             </template>
           </v-data-table>
@@ -584,7 +584,12 @@ export default {
       // });
     },
     save(){
-      this.$store.dispatch("RENEWAL_CERTIFICATE", this.form);
+      this.$store.dispatch("RENEWAL_CERTIFICATE", this.form)
+      .then((result) => {
+        console.log("renewal certificate: " + JSON.stringify(result))
+      }).catch((err) => {
+        
+      });
     }
     // viewFile(url) {
     //   window.open(url, "_blank");
