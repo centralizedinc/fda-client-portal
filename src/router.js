@@ -100,6 +100,11 @@ var router = new Router({
           path: '/result/license/:key',
           name: 'License Result',
           component: () => import('@/views/LicenseResult.vue')
+        },
+        {
+          path: '/result/certificate/:key',
+          name: 'Certificate Result',
+          component: () => import('@/views/CertificateResult.vue')
         }
       ]
 
