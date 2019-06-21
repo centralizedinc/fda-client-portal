@@ -132,7 +132,7 @@
                     <v-flex xs12>
                       <v-autocomplete
                         outline
-                        label="Vitamins or Minerals"
+                        label="Nutrition Facts"
                         hint="Choose one"
                         persistent-hint
                         v-model="choice"
@@ -253,10 +253,10 @@ export default {
         name: "Minerals",
         _id: 1
       },
-      // {
-      //   name: "Nutrition",
-      //   _id: 2
-      // }
+      {
+        name: "Food Labels",
+        _id: 2
+      }
     ],
     rules: {
       required: value => !!value || "This field is required",
@@ -419,21 +419,23 @@ export default {
         this.vitMinHolder = this.vitamins
       }else if(val == 1){
         this.vitMinHolder = this.minerals
+      }else if(val == 2){
+        this.vitMinHolder = this.nutrition_information
       }
     },
-    nutrition_information(val){
-      console.log("nutrition_information data: " + JSON.stringify(val))
+    // nutrition_information(val){
+    //   console.log("nutrition_information data: " + JSON.stringify(val))
 
-      val.forEach(element => {
-        this.form.nutrition_info.servings.push({
-        type: element._id,
-        kind: "2",
-        amount_per_serving: "0",  
-        percent: "NOT APPLICABLE"
-        })
-      }); 
+    //   val.forEach(element => {
+    //     this.form.nutrition_info.servings.push({
+    //     type: element._id,
+    //     kind: "2",
+    //     amount_per_serving: "0",  
+    //     percent: "NOT APPLICABLE"
+    //     })
+    //   }); 
       
-    }
+    // }
   }
 };
 </script>

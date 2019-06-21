@@ -228,27 +228,13 @@ export default {
 
       ingredients: [],
 
-      product_specification: {
-        physical: {
-          color: "",
-          odor: "",
-          taste: "",
-          texture: "",
-          form: ""
-        },
-        chemical: [
-          {
-            parameter: "",
-            specification: ""
-          }
-        ],
-        microbiological: [
-          {
-            parameter: "",
-            specification: ""
-          }
-        ]
-      },
+      product_specification: [
+      //   {
+      //   type: "",
+      //   parameter: "",
+      //   specification: ""
+      // }
+      ],
 
       shelf: {
         // add shelf_type

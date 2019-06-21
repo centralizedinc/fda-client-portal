@@ -183,38 +183,43 @@ export default {
     saveSpecs() {
       this.dialogSpecs = false
       console.log("this spec data: " + JSON.stringify(this.spec)) 
-      if(this.spec.name == "Physical"){
-        console.log("save specs physical")
-        var phy = this.physicalParameter.find(x => x._id === this.parameter) 
-        console.log("selected physical data: " + JSON.stringify(this.parameter))
-        console.log("physical data: " + JSON.stringify(this.physicalParameter))
-        console.log("this is phy data: " + JSON.stringify(phy))
-        if(phy.name == "Color"){
-          this.form.product_specification.physical.color = this.specification
-        }else if(phy.name == "Odor"){
-          this.form.product_specification.physical.odor = this.specification
-        }else if(phy.name == "Taste"){
-          this.form.product_specification.physical.taste = this.specification
-        }else if(phy.name == "Texture"){
-          this.form.product_specification.physical.texture = this.specification
-        }else if(phy.name == "Form"){
-          this.form.product_specification.physical.form = this.specification
-        }
-        // specification
-      }else if(this.spec.name == "Chemical"){
-        this.form.product_specification.chemical.push({
-          parameter: this.parameter,
-          specification: this.specification
+      // if(this.spec.name == "Physical"){
+      //   console.log("save specs physical")
+      //   var phy = this.physicalParameter.find(x => x._id === this.parameter) 
+      //   console.log("selected physical data: " + JSON.stringify(this.parameter))
+      //   console.log("physical data: " + JSON.stringify(this.physicalParameter))
+      //   console.log("this is phy data: " + JSON.stringify(phy))
+      //   if(phy.name == "Color"){
+      //     this.form.product_specification.physical.color = this.specification
+      //   }else if(phy.name == "Odor"){
+      //     this.form.product_specification.physical.odor = this.specification
+      //   }else if(phy.name == "Taste"){
+      //     this.form.product_specification.physical.taste = this.specification
+      //   }else if(phy.name == "Texture"){
+      //     this.form.product_specification.physical.texture = this.specification
+      //   }else if(phy.name == "Form"){
+      //     this.form.product_specification.physical.form = this.specification
+      //   }
+      //   // specification
+      // }else if(this.spec.name == "Chemical"){
+      //   this.form.product_specification.chemical.push({
+      //     parameter: this.parameter,
+      //     specification: this.specification
+      //   })
+      //   console.log("save specs chemical")
+      // }else if(this.spec.name == "Microbiological"){
+      //   this.form.product_specification.microbiological.push({
+      //     parameter: this.parameter,
+      //     specification: this.specification
+      //   })
+      //   console.log("save specs microbiological")
+      // }
+      this.form.product_specification.push({
+        type: this.spec._id,
+        parameter: this.parameter,
+        specification: this.specification
         })
-        console.log("save specs chemical")
-      }else if(this.spec.name == "Microbiological"){
-        this.form.product_specification.microbiological.push({
-          parameter: this.parameter,
-          specification: this.specification
-        })
-        console.log("save specs microbiological")
-      }
-
+        console.log("product specification data: " + JSON.stringify(this.form.product_specification))
       this.specs_list.push({
         prod_spec: this.spec._id,
         parameter: this.parameter,
