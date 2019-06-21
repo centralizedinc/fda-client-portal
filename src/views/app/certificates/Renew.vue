@@ -539,7 +539,12 @@ export default {
       // });
     },
     save(){
-      this.$store.dispatch("RENEWAL_CERTIFICATE", this.form);
+      this.$store.dispatch("RENEWAL_CERTIFICATE", this.form)
+      .then((result) => {
+        console.log("renewal certificate: " + JSON.stringify(result))
+      }).catch((err) => {
+        
+      });
     }
     // viewFile(url) {
     //   window.open(url, "_blank");

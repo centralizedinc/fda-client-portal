@@ -111,7 +111,8 @@ const state = {
             packaging_design: []
         }
     },
-    view: []
+    view: [],
+    renew_certificate: []
 };
 
 const mutations = {
@@ -123,6 +124,9 @@ const mutations = {
     },
     SET_VIEW_CERTIFICATE(state, certificate) {
         console.log("store view certificate: " + JSON.stringify(certificate))
+        state.view = certificate
+    },
+    SET_RENEW_CERTIFICATE(state, certificate){
         state.view = certificate
     }
 };
@@ -246,7 +250,19 @@ var actions = {
     },
     RENEWAL_CERTIFICATE(context, certificate){
         return new Promise((resolve, reject) => {
-            new CertificateAPI(context.rootState.user_session.token).renewCertificate(certificate);
+            console.log("WELCOME TO RENEWAL CERTIFICATE" + JSON.stringify(certificate))
+            new CertificateAPI(context.rootState.user_session.token).renewCertificate(certificate)
+                .then((result) => {
+                    if(result.data.success){
+                        console.log("renewal cert store")
+                        context.commit('SET_RENEW_CERTIFICATE', result.data.model);
+                        resolve(result.data.model)
+                    }else{
+                        reject(result.data.errors)
+                    }
+                }).catch((err) => {
+                    reject(err)
+                });
         })
     }
 };

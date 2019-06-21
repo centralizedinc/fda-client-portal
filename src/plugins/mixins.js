@@ -367,7 +367,9 @@ export default {
           return claim ? claim : {}
         },
         nutrition(id){
-          
+          var vit = this.$store.state.foodCertificate.vitamins
+          var min = this.$store.state.foodCertificate.minerals
+          // var nut = 
         }
       }
     });
