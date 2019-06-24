@@ -81,7 +81,12 @@
           </v-stepper-step>
           <v-stepper-content step="6">
             <v-card flat class="mb-5" height="auto">
-              <step-six :form="cert_form"  :vitamins="vitamins" :minerals="minerals" :nutrition_information="nutrition_information" ></step-six>
+              <step-six
+                :form="cert_form"
+                :vitamins="vitamins"
+                :minerals="minerals"
+                :nutrition_information="nutrition_information"
+              ></step-six>
             </v-card>
             <v-btn color="primary" @click="e6 = 7">Continue</v-btn>
             <v-btn flat>Cancel</v-btn>
@@ -115,14 +120,14 @@
           <!-- <v-stepper-step step="9" :complete="e6 > 9">
             Payment
             <small>We will sent you an email with a confirmation link. Please check your email.</small>
-          </v-stepper-step> -->
+          </v-stepper-step>-->
           <!-- <v-stepper-content step="9">
             <v-card flat class="mb-5" height="auto">
               <step-nine :form="cert_form"></step-nine>
             </v-card>
             <v-btn color="primary" @click="save">Submit</v-btn>
             <v-btn flat>Cancel</v-btn>
-          </v-stepper-content> -->
+          </v-stepper-content>-->
         </v-stepper>
       </v-flex>
     </v-layout>
@@ -165,7 +170,7 @@ export default {
     }),
     stepEight: () => ({
       component: import("./create/tabs/DocumentaryRequirements")
-    }),
+    })
     // stepNine: () => ({
     //   component: import("./create/tabs/DocumentaryRequirements")
     // })
@@ -229,11 +234,11 @@ export default {
       ingredients: [],
 
       product_specification: [
-      //   {
-      //   type: "",
-      //   parameter: "",
-      //   specification: ""
-      // }
+        //   {
+        //   type: "",
+        //   parameter: "",
+        //   specification: ""
+        // }
       ],
 
       shelf: {
@@ -264,10 +269,12 @@ export default {
       },
 
       // change claims to array nalang
-      claims: [{
-        cliam: "",
-        desc: ""
-      }],
+      claims: [
+        {
+          cliam: "",
+          desc: ""
+        }
+      ],
 
       documentary: {
         product_label_images: [],
@@ -339,6 +346,53 @@ export default {
       this.physical_parameter = this.$store.state.foodCertificate.physical_parameter;
 
       this.company_activity = this.$store.state.foodCertificate.company_activity;
+
+      this.cert_form.food_product.company = this.active_license.estab_details.establishment_name;
+
+      var address = "";
+      this.active_license.address_list.forEach(add => {
+        if (add.type === 0) {
+          address = add.address;
+        }
+      });
+      this.cert_form.food_product.address = address;
+      
+
+      // var region = "";
+      // this.active_license.address_list.forEach(add => {
+      //   if (add.type === 0) {
+      //     region = add.region;
+      //   }
+      //   this.cert_form.food_product.regions = region;
+      // });
+      
+
+      //
+
+      // var address = "";
+
+      // this.certificate_details.address_list.forEach(elem => {
+      //   if (elem.type === 0) {
+      //     address = elem.address;
+      //   }
+      // });
+
+      // var notif = [];
+      // this.$store.state.notifications.notifications.forEach(element => {
+      //   if (element.expiry > new Date().getTime()) {
+      //     notif.push(element);
+      //   }
+      // });
+      // if (notif.length === 0) {
+      //   this.$store.commit("REMOVE_NOTIFICATION");
+      // }
+      // return notif;
+
+      // this.cert_form.food_product.region = this.active_license.address_list[0].region;
+
+      this.cert_form.food_product.license_no = this.active_license.license_no;
+
+      this.cert_form.food_product.license_validity = this.active_license.license_expiry;
     },
     save() {
       // this.cert_form.
@@ -361,6 +415,13 @@ export default {
       //   this.e6 = 8
 
       return parseInt(((this.e6 - 1) / 9) * 100);
+    },
+    active_license() {
+      console.log(
+        "ACTIVE LICENSE : ",
+        this.$store.state.licenses.active_license
+      );
+      return this.$store.state.licenses.active_license;
     }
   }
 };

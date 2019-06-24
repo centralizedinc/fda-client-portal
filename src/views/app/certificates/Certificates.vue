@@ -253,16 +253,14 @@ export default {
       this.$store.dispatch("GET_ORIGIN");
       this.$store.dispatch("GET_PHYSICAL_PARAMETER");
       this.$store.dispatch("GET_COMPANY_ACTIVITY");
-      this.$store
-        .dispatch("GET_CERTIFICATE")
-        .then(results => {
-          this.items = results;
-          console.log(
-            "############## ACTIVE CERTIFICATES: " + JSON.stringify(this.items)
-          );
-          this.loading = false;
-          this.data_complete = true;
-        })
+      this.$store.dispatch("GET_CERTIFICATE").then(results => {
+        this.items = results;
+        console.log(
+          "############## ACTIVE CERTIFICATES: " + JSON.stringify(this.items)
+        );
+        this.loading = false;
+        this.data_complete = true;
+      })
         //   return this.$store.dispatch("GET_FOOD_PRODUCT");
         // })
         // .then(result => {
