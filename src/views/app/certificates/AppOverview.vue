@@ -109,7 +109,7 @@
             readonly
             name="name"
             label="Source Type"
-            :value="establishmentType(form.establishment_info.type).name"
+            :value="getEstablishSource(form.establishment_info.type).name"
           ></v-text-field>
           <v-text-field
             readonly
@@ -163,14 +163,14 @@
         <v-divider></v-divider>
         <v-card-text v-if="show_part3">
           <v-data-table
-            :headers="[{text:'Product Line', sortable: false,}, {text:'Remarks', sortable: false}]"
+            :headers="[{text:'Ingredients', sortable: false,}]"
             :items="form.ingredients"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
               <!-- <td>{{ getProdLine(props.item.prod_line).name }}</td> -->
-              <td>{{ props.item.remarks }}</td>
+              <td>{{ props.item}}</td>
             </template>
           </v-data-table>
         </v-card-text>
@@ -188,20 +188,48 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part4">
+          <!-- <v-text-field
+            readonly
+            name="name"
+            label="Color"
+            :value="physicalParameter(form.product_specification.microbiological[1].parameter)"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Odor"
+            :value="form.product_specification.physical.odor"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Taste"
+            :value="form.product_specification.physical.tatse"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Texture"
+            :value="form.product_specification.physical.texture"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Form"
+            :value="form.product_specification.physical.form"
+          ></v-text-field> -->
           <v-data-table
-            :headers="[{text:'Color', sortable: false,}, 
-                        {text:'Odor', sortable: false},{text:'Taste', sortable: false},{text:'Texture', sortable: false},]"
-            :items="product_specification"
+            :headers="[{text:'Product Specification', sortable: false},
+            {text:'Parameter', sortable: false},
+            {text:'Specification', sortable: false}]"
+            :items="form.product_specification"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <!-- <td>{{ getEstablishmentType(props.item.type) }}</td>
-              <td>{{ props.item.address }}</td>-->
-              <td>{{props.item.physical.color}}</td>
-              <td>{{props.item.physical.odor}}</td>
-              <td>{{props.item.physical.taste}}</td>
-              <td>{{props.item.physical.texture}}</td>
+              <td>{{productSpecs(props.item.type).name}}</td>
+              <td>{{getPhysicalParameter(props.item.parameter).name}}</td>
+              <td>{{props.item.specification}}</td>
             </template>
           </v-data-table>
         </v-card-text>
@@ -224,7 +252,7 @@
             label="Shelf Life Declaration (in Months)"
             :value="formatDate(form.shelf.declaration_date)"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Type" :value="form.shelf.shelf_type"></v-text-field>
+          <v-text-field readonly name="name" label="Type" :value="shelfLifeType(form.shelf.shelf_type).name"></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -281,22 +309,38 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part6">
+          <v-text-field
+            readonly
+            name="name"
+            label="Servings Size (grams or ml)"
+            :value="form.nutrition_info.serving_size"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="NUmber of Serving per Container/Pack"
+            :value="form.nutrition_info.serving_per_pack"
+          ></v-text-field>
           <v-data-table
-            :headers="[{text:'Serving Size', sortable: false,}, 
-                        {text:'Serving Per Pack', sortable: false},
-                        {text:'Servings Amount', sortable: false}]"
-            :items="nutrition_info"
+            :headers="[ {text:'Nutrtion Facts', sortable: false},
+                        {text:'Type', sortable: false,},
+                        {text:'Amount', sortable: false},
+                        {text:'Percent', sortable: false}]"
+            :items="form.nutrition_info.servings"
             hide-actions
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{props.item.serving_size}}</td>
-              <td>{{props.item.serving_per_pack}}</td>
-              <td>{{props.item.servings}}</td>
+              <td>{{vitMin(props.item.kind)}}</td>
+              <td>{{descNutri(props.item.type).name}}</td>
+              <td>{{props.item.amount_per_serving}}</td>
+              <td>{{props.item.percent}}%</td>
+              
             </template>
           </v-data-table>
         </v-card-text>
         <v-divider></v-divider>
+       
         <v-card-title primary-title>
           <span class="subheading font-weight-thin primary--text">Nutrition Health Claims</span>
           <v-spacer></v-spacer>
@@ -309,8 +353,20 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part7">
-          <v-text-field readonly name="name" label="Claims" :value="form.claims.claims"></v-text-field>
-          <v-text-field readonly name="name" label="Description" :value="form.claims.desc"></v-text-field>
+          <!-- <v-text-field readonly name="name" label="Claims" :value="form.claims.claims"></v-text-field>
+          <v-text-field readonly name="name" label="Description" :value=" form.claims.desc"></v-text-field> -->
+          <v-data-table
+            :headers="[{text:'Claims', sortable: false,}, 
+                        {text:'Description', sortable: false}]"
+            :items="form.claims"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{healthClaims(props.item.claim).name}}</td>
+              <td>{{props.item.desc}}</td>
+            </template>
+          </v-data-table>
         </v-card-text>
       </v-card>
     </v-flex>

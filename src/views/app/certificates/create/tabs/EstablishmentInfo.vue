@@ -23,7 +23,6 @@
         <v-flex xs6>
           <!-- v-model="form.establisment_info.type" -->
           <v-autocomplete
-            disabled=""
             color="green darken-1"
             :rules="[rules.required]"
             outline

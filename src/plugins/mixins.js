@@ -297,22 +297,30 @@ export default {
           var establishment = establishments.find(x => x._id === data)
           return establishment ? establishment : {}
         },
-        establishmentType(data) {
-          var establishTypes = this.$store.state.foodCertificate.source
-          console.log("MIXIN DATA ESTABLISHMENTTYPE:" + JSON.stringify(establishTypes))
-          console.log('estab type data :', data);
-          if (!establishTypes || !establishTypes.length) return {}
-          var establishType = establishTypes.find(x => x._id === data)
-          console.log('establishType :', establishType);
-          return establishType ? establishType : {}
+        // establishmentType(data) {
+        //   var establishTypes = this.$store.state.foodCertificate.source
+        //   console.log("MIXIN DATA ESTABLISHMENTTYPE 1:" + JSON.stringify(establishTypes))
+        //   console.log('estab type data :', data);
+        //   if (!establishTypes || !establishTypes.length) return {}
+        //   var establishTypeSource = establishTypes.find(x => x._id === data)
+        //   return establishTypeSource ? establishTypeSource : {}
+        // },
+        // setEstablishmentType(data){
+        //   var establishTypes = this.$store.state.foodCertificate.source
+        //   console.log("MIXIN DATA ESTABLISHMENTTYPE:" + JSON.stringify(establishTypes))
+        //   if (!establishTypes) return {}
+        //   var establishType = establishTypes.find(x => x._id === data)
+        //   return establishType ? establishType : {}
+        // },
+
+        getEstablishSource(data){
+          var sources = this.$store.state.foodCertificate.source
+          console.log("MIXIN DATA ESTABLISHMENTSOURCE:" + JSON.stringify(sources))
+          if (!sources) return {}
+          var source = sources  .find(x => x._id === data)
+          return source ? source : {}
         },
-        setEstablishmentType(data){
-          var establishType = this.$store.state.foodCertificate.source
-          console.log("MIXIN DATA ESTABLISHMENTTYPE:" + JSON.stringify(establishType))
-          if (!establishType) return {}
-          var establishType = establishType.find(x => x._id === data)
-          return establishType ? establishType : {}
-        },
+
         establishplacesOrigin(data){
           var placesOrigin = this.$store.state.places.origin
           console.log("MIXIN DATA ESTABLISHMENTORIGIN:" + JSON.stringify(placesOrigin))
@@ -342,7 +350,7 @@ export default {
           var prodSpec = prodSpecs.find(x => x._id === spec)
           return prodSpec ? prodSpec : {}
         },
-        physicalParameter(spec) {
+        getPhysicalParameter(spec) {
           var phyParams = this.deepCopy(this.$store.state.foodCertificate.physical_parameter)
           if (!phyParams || !phyParams.length) return {}
           var phyParam = phyParams.find(x => x._id === spec)

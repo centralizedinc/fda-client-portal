@@ -109,7 +109,7 @@
             readonly
             name="name"
             label="Source Type"
-            :value="establishmentType(form.establishment_info.type).name"
+            :value="getEstablishSource(form.establishment_info.type).name"
           ></v-text-field>
           <v-text-field
             readonly
@@ -227,8 +227,8 @@
             class="elevation-1"
           >
             <template slot="items" slot-scope="props">
-              <td>{{props.item.type}}</td>
-              <td>{{props.item.parameter}}</td>
+              <td>{{productSpecs(props.item.type).name}}</td>
+              <td>{{getPhysicalParameter(props.item.parameter).name}}</td>
               <td>{{props.item.specification}}</td>
             </template>
           </v-data-table>

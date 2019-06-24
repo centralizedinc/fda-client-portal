@@ -100,7 +100,7 @@
           <v-data-table :headers="headers" :items="form.nutrition_info.servings" hide-actions class="elevation-1">
             <template slot="items" slot-scope="props">
               <!-- <tr @click="viewItem(props.item, props.index)" style="cursor:pointer"> -->
-                <td>{{props.item.type}}</td>
+                <td>{{descNutri(props.item.type).name}}</td>
                 <td>{{props.item.amount_per_serving}}</td>
                 <td>{{props.item.percent}}</td>
                 <td>

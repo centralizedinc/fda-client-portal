@@ -38,7 +38,7 @@
             <template slot="items" slot-scope="props">
               <tr @click="viewItem(props.item, props.index)" style="cursor:pointer">
                 <td>{{productSpecs(props.item.prod_spec).name}}</td>
-                <td>{{physicalParameter(props.item.parameter)}}</td>
+                <td>{{getPhysicalParameter(props.item.parameter).name}}</td>
                 <td>{{props.item.specs}}</td>
               </tr>
             </template>
