@@ -1,29 +1,28 @@
 <template>
   <v-layout row wrap justify-center>
-    <v-flex xs5>
+    <v-flex xs12 md5>
       <v-card>
         <v-card-title class="disappCase black--text">
           <v-avatar class="mr-2" color="grey">
             <img src="https://i.postimg.cc/L6Z0cZk3/vue-logo.png" alt="FDA">
           </v-avatar>
-          <span class="display-1 font-weight-thin">Case No.: {{case_details.case_no}}</span>
+          <span class="display-1 font-weight-thin">Case No.: <b>{{case_details.case_no}}</b></span>
         </v-card-title>
         <v-card-text>
           <v-container grid-list-xl>
             <v-layout row wrap class="subheading">
               <v-flex xs6 class="font-weight-light">Application Type:</v-flex>
-              <v-flex xs6 class="font-weight-light">{{ getAppType(certificate_details.application_type, case_details.case_type)}} Application</v-flex>
+              <v-flex xs6 class="font-weight-bold">{{ getAppType(certificate_details.application_type, case_details.case_type)}} Application</v-flex>
               <v-flex xs6 class="font-weight-light">Brand Name:</v-flex>
-              <v-flex xs6 class="font-weight-light"> {{certificate_details.food_product.brand_name}}</v-flex>
+              <v-flex xs6 class="font-weight-bold"> {{certificate_details.food_product.brand_name}}</v-flex>
               <v-flex xs6 class="font-weight-light">Product Name:</v-flex>
-              <v-flex xs6 class="font-weight-light"> {{certificate_details.food_product.product_name}}</v-flex>
+              <v-flex xs6 class="font-weight-bold"> {{certificate_details.food_product.product_name}}</v-flex>
               <v-flex xs6 class="font-weight-light">Company Name:</v-flex>
-              <v-flex xs6 class="font-weight-light"> {{certificate_details.food_product.company}}</v-flex>
+              <v-flex xs6 class="font-weight-bold"> {{certificate_details.food_product.company}}</v-flex>
             </v-layout>
             <br>
             <span class="headline text--center font-weight-light">
-              This application has been
-              <b class="red--text">{{getAppStatus(certificate_details.status).toUpperCase()}}.</b>
+              This application has been <b :class="certificate_details.status === 1 ? 'green--text': 'red--text'">{{getAppStatus(certificate_details.status).toUpperCase()}}.</b>
             </span>
           </v-container>
         </v-card-text>
