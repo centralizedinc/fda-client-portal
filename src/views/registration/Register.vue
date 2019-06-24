@@ -392,7 +392,7 @@ export default {
               this.$store.commit("NEW_APPLICATION");
               this.$router.push("/registration/pay");
               var message =
-                "You have successfully applied for a new license. In order for your application to be processed you have to pay the amount of ₱ " +
+                "You have successfully applied a new license. In order for your application to be processed you have to pay the amount of ₱ " +
                 this.numberWithCommas(this.charges.total) +
                 ". Kindly choose from one of our payment options available.";
               this.$notify({
