@@ -253,8 +253,9 @@ var actions = {
             console.log("WELCOME TO RENEWAL CERTIFICATE" + JSON.stringify(certificate))
             new CertificateAPI(context.rootState.user_session.token).renewCertificate(certificate)
                 .then((result) => {
+                    console.log("renewal cert store")
                     if(result.data.success){
-                        console.log("renewal cert store")
+                        console.log("renewal success" + JSON.stringify(result))
                         context.commit('SET_RENEW_CERTIFICATE', result.data.model);
                         resolve(result.data.model)
                     }else{
@@ -264,6 +265,9 @@ var actions = {
                     reject(err)
                 });
         })
+    },
+    GET_CERTIFICATE_RESULT_BY_KEY(context, key){
+        return new CertificateAPI(context.rootState.user_session.token).retrieveCertificateByKey(key)
     }
 };
 

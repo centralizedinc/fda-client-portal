@@ -255,18 +255,18 @@ export default class CertificateAPI {
 
   renewCertificate(form) {
     console.log("renew certificate data: " + JSON.stringify(form))
-    var certificate = {
-      food_product: form.certificate.food_product,
-      establishment_info: form.certificate.establishment_info,
-      ingredients: form.certificate.ingredients,
-      product_specification: form.certificate.product_specification,
-      shelf: form.certificate.shelf,
-      nutrition_info: form.certificate.nutrition_info,
-      uploaded_files: form.certificate.uploaded_files,
-      output_files: form.certificate.output_files 
-    }
-
-    return axios.post('certificates/renewal', certificate)
+    // var certificate = {
+    //   certificate_no: form.certificate.certificate_no,
+    //   food_product: form.certificate.food_product,
+    //   establishment_info: form.certificate.establishment_info,
+    //   ingredients: form.certificate.ingredients,
+    //   product_specification: form.certificate.product_specification,
+    //   shelf: form.certificate.shelf,
+    //   nutrition_info: form.certificate.nutrition_info,
+    //   uploaded_files: form.certificate.uploaded_files,
+    //   output_files: form.certificate.output_files 
+    // }
+    return axios.post('certificates/renewal', form)
   }
 
   uploadCertificateFiles(case_no, form_data) {
@@ -308,4 +308,8 @@ export default class CertificateAPI {
     })
   }
 
+  retrieveCertificateByKey(key){
+    return axios.get(`public/certificates/result/${key}`)
+  }
+  
 }

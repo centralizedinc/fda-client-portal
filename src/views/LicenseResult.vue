@@ -19,13 +19,13 @@
                         <v-flex xs6 class="font-weight-light"> {{license_details.estab_details.establishment_owner}}</v-flex>
                     </v-layout>
                     <br>
-                    <span class="headline text--center font-weight-light"> This application has been <b class="red--text">DISAPPROVED.</b>
+                    <span class="headline text--center font-weight-light"> This application has been <b class="red--text">{{getAppStatus(certificate_details.status).toUpperCase()}}.</b>
 </span>
                 </v-container>
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions>
-                <v-btn color="primary" block @click="viewLetter">Open Letter</v-btn>
+                <v-btn color="primary" block @click="processLicense">View PDF</v-btn>
             </v-card-actions>
         </v-card>
     </v-flex>
@@ -117,6 +117,53 @@ export default {
         reasons: this.director.remarks
       };
       this.$print(details, "DENIED");
+    },
+    processLicense() {
+      var app = this.deepCopy(this.license_details);
+      if (app.status === 1) {
+        // Approved
+        app.general_info.primary_activity = this.getPrimary(
+          app.general_info.primary_activity
+        );
+        app.application_type = this.getAppType(
+          app.application_type,
+          this.case_details.case_type
+        );
+        app.license_expiry = this.formatDate(app.license_expiry);
+
+        app.officeAddress = app.address_list.find(x => {
+          return x.type === 0;
+        });
+        if (!app.officeAddress) {
+          app.officeAddress = {
+            address: ""
+          };
+        }
+        this.$print(app, "LIC");
+      } else if (app.status === 3) {
+        // Disapproved
+        var address = "";
+        app.address_list.forEach(elem => {
+          if (elem.type === 0) {
+            address = elem.address;
+          }
+        });
+
+        var details = {
+          date_created: this.formatDate(new Date()),
+          name: `${this.getClientUser(this.case_details.client).name.first} ${
+            this.getClientUser(this.case_details.client).name.last
+          }`,
+          establishment_name: app.estab_details.establishment_name,
+          establishment_address: address,
+          application_type:
+            this.getAppType(app.application_type, this.case_details.case_type) +
+            " Application",
+          case_no: this.case_details.case_no,
+          reasons: this.evaluated_case.remarks
+        };
+        this.$print(details, "DENIED");
+      }
     }
   }
 };
