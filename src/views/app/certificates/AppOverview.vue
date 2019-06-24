@@ -309,7 +309,7 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part7">
-          <v-text-field readonly name="name" label="Claims" :value="form.claims.claims"></v-text-field>
+          <v-text-field readonly name="name" label="Claims" :value="healthClaims(form.claims.claims).name"></v-text-field>
           <v-text-field readonly name="name" label="Description" :value="form.claims.desc"></v-text-field>
         </v-card-text>
       </v-card>
