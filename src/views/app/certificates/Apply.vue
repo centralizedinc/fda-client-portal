@@ -82,10 +82,7 @@
                 :form="cert_form"
                 :vitamins="vitamins"
                 :minerals="minerals"
-<<<<<<< HEAD
                 @next="next"
-=======
->>>>>>> 45927ce99f0b3f1018c776d702b6ad698e1ad2d0
                 :nutrition_information="nutrition_information"
               ></step-six>
             </v-card>
