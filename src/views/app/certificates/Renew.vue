@@ -375,50 +375,26 @@
       </v-card>
     </v-flex>
     <!-- PAYMENTS -->
-    <v-flex dark xs12 md4 pa-1>
+    <v-flex xs12 md4 pa-1>
       <v-card>
-        <v-toolbar dark color="primary">Payment</v-toolbar>
-        <v-card-title primary-title class="font-weight-light headline">Payment Summary</v-card-title>
-        <v-container grid-list-xl>
-          <v-layout row wrap align-center justify-center fill-height>
-            <!-- <v-flex xs6> -->
-            <v-flex xs6 v-if="fees_form.lrf != 0">
-              <label class="subheading">Application Fee:</label>
-            </v-flex>
-            <v-flex xs6 v-if="fees_form.lrf != 0">
-              <label class="subheading">₱ {{numberWithCommas(fees_form.fee)}}</label>
-            </v-flex>
-            <v-flex xs6>
-              <label class="subheading"># of year/s applied:</label>
-            </v-flex>
-            <v-flex xs6>
-              <label class="subheading">{{fees_form.yearsApplied}} years</label>
-            </v-flex>
-            <v-flex xs6>
-              <label class="subheading">Legal Research Fund (LRF):</label>
-            </v-flex>
-            <v-flex xs6>
-              <label class="subheading">₱ {{numberWithCommas(fees_form.lrf)}}</label>
-            </v-flex>
-            <v-flex xs6 v-if="fees_form.lrf != 0">
-              <label class="subheading" color="error">Total Payment Due:</label>
-            </v-flex>
-            <v-flex xs6 v-if="fees_form.lrf === 0">
-              <label class="subheading" color="error">Still Due:</label>
-            </v-flex>
-            <v-flex xs6>
-              <label class="subheading">₱ {{numberWithCommas(fees_form.total)}}</label>
-            </v-flex>
-          </v-layout>
-        </v-container>
-        <!-- button -->
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn :disabled="isLoading" outline color="secondary" @click="overview=false">Close</v-btn>
-          <v-btn :loading="isLoading" color="primary" @click="save">Payment</v-btn>
-          <!-- button renewal -->
-        </v-card-actions>
+        <v-toolbar dark color="primary">Renew Fee</v-toolbar>
+        <v-card-text>
+          <v-data-table
+            :loading="isLoading"
+            :headers="[{text: 'Description', sortable:false}, {text: 'Amount', sortable:false}]"
+            :items="fees"
+            hide-actions
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{ props.item.description }}</td>
+              <td>₱ {{ numberWithCommas (props.item.amount) }}</td>
+            </template>
+            <template slot="footer">
+              <td>Total</td>
+              <td class="font-weight-bold">₱ {{ numberWithCommas(total_amount) }}</td>
+            </template>
+          </v-data-table>
+        </v-card-text>
       </v-card>
     </v-flex>
     <!-- DOCUMENTS -->
@@ -494,6 +470,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       loaded: false,
       show_part1: false,
       show_part2: false,
@@ -516,7 +493,8 @@ export default {
       // documentary: [],
       // uploaded_files: [],
       // output_files: [],
-      fees_form: {}
+      fees_form: {},
+      fees: []
     };
   },
   created() {
@@ -524,6 +502,7 @@ export default {
   },
   methods: {
     init() {
+      this.isLoading = true;
       this.form = this.$store.state.certificate.view;
       console.log("app overview form data: " + JSON.stringify(this.form));
       this.case_details = this.$store.state.certificate.cases;
@@ -531,9 +510,41 @@ export default {
         application_type: 2,
         product_type: this.form.food_product.type
       };
-      this.$store.dispatch("GET_CERTIFICATE_FEES", details).then(result => {
-        console.log("get certificate fees: " + JSON.stringify(result));
-      });
+      this.$store
+        .dispatch("GET_CERTIFICATE_FEES", details)
+        .then(result => {
+          console.log("get certificate fees: " + JSON.stringify(result));
+          this.fees = [];
+          this.fees.push({
+            description: "Application Fee",
+            amount: result.fee
+          });
+          this.fees.push({
+            description: "LRF",
+            amount: result.lrf
+          });
+          this.fees.push({
+            description: "Interest",
+            amount: result.interest
+          }),
+            this.fees.push({
+              description: "Surcharge",
+              amount: result.surcharge
+            });
+
+          this.total_amount =
+            result.fee + result.lrf + result.interest + result.surcharge;
+          this.$notify({
+            color: "success",
+            message:
+              "Registration fee computed! For this application you will have to pay the amount of  ₱ " +
+              this.numberWithCommas(this.total_amount)
+          });
+          this.isLoading = false;
+        })
+        .catch(err => {
+          this.isLoading = false;
+        });
       // this.form = this.$store.state.licenses.view_license;
       // this.case_details = this.$store.state.case.view_case;
       // this.$store.dispatch("GET_CERTIFICATE");
