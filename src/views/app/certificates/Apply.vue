@@ -352,56 +352,12 @@ export default {
       this.active_license.address_list.forEach(add => {
         
         if (add.type == 0) {
-          console.log("Active License add", JSON.stringify(add))
           this.cert_form.food_product.address = add.address;
-        }
-      });
-      // this.cert_form.food_product.address = address;
-      console.log("Active License address", JSON.stringify(this.cert_form.food_product.address))
-
-      this.active_license.address_list.forEach(add => {
-        
-        if (add.type == 0) {
-          console.log("Active License add region", JSON.stringify(add))
           this.cert_form.food_product.region = add.region;
         }
       });
-      // this.cert_form.food_product.address = address;
-      console.log("Active License region", JSON.stringify(this.cert_form.food_product.region))
-
-      this.cert_form.food_product.company = this.active_license.estab_details.establishment_name;
-
-      // var region = "";
-      // this.active_license.address_list.forEach(add => {
-      //   if (add.type === 0) {
-      //     region = add.region;
-      //   }
-      //   this.cert_form.food_product.regions = region;
-      // });
       
-
-      //
-
-      // var address = "";
-
-      // this.certificate_details.address_list.forEach(elem => {
-      //   if (elem.type === 0) {
-      //     address = elem.address;
-      //   }
-      // });
-
-      // var notif = [];
-      // this.$store.state.notifications.notifications.forEach(element => {
-      //   if (element.expiry > new Date().getTime()) {
-      //     notif.push(element);
-      //   }
-      // });
-      // if (notif.length === 0) {
-      //   this.$store.commit("REMOVE_NOTIFICATION");
-      // }
-      // return notif;
-
-      // this.cert_form.food_product.region = this.active_license.address_list[0].region;
+      this.cert_form.food_product.company = this.active_license.estab_details.establishment_name;
 
       this.cert_form.food_product.license_no = this.active_license.license_no;
 
