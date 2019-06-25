@@ -82,7 +82,10 @@
                 :form="cert_form"
                 :vitamins="vitamins"
                 :minerals="minerals"
+<<<<<<< HEAD
                 @next="next"
+=======
+>>>>>>> 45927ce99f0b3f1018c776d702b6ad698e1ad2d0
                 :nutrition_information="nutrition_information"
               ></step-six>
             </v-card>
@@ -207,6 +210,7 @@ export default {
         product_name: "",
         company: "",
         address: "",
+        region: "",
         license_no: "",
         license_validity: "",
         years_applied: 0,
@@ -341,6 +345,29 @@ export default {
       this.physical_parameter = this.$store.state.foodCertificate.physical_parameter;
 
       this.company_activity = this.$store.state.foodCertificate.company_activity;
+
+      // var address = "";
+      this.active_license.address_list.forEach(add => {
+        
+        if (add.type == 0) {
+          this.cert_form.food_product.address = add.address;
+          this.cert_form.food_product.region = add.region;
+        }
+      });
+      
+      this.cert_form.food_product.company = this.active_license.estab_details.establishment_name;
+
+      this.cert_form.food_product.license_no = this.active_license.license_no;
+
+      this.cert_form.food_product.license_validity = this.active_license.license_expiry;
+
+      this.cert_form.food_product.contacts.email = this.active_license.estab_details.email;
+
+      this.cert_form.food_product.contacts.landline = this.active_license.estab_details.landline;
+
+      this.cert_form.food_product.contacts.fax = this.active_license.estab_details.fax;
+
+      this.cert_form.food_product.contacts.mobile = this.active_license.estab_details.mobile;
     },
     back() {
       this.e1--;
@@ -380,6 +407,13 @@ export default {
       //   this.e6 = 8
 
       return parseInt(((this.e6 - 1) / 9) * 100);
+    },
+    active_license() {
+      console.log(
+        "ACTIVE LICENSE : ",
+        this.$store.state.licenses.active_license
+      );
+      return this.$store.state.licenses.active_license;
     }
   }
 };

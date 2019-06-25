@@ -69,34 +69,46 @@
             required
             color="green darken-1"
             label="Address (as listed in LTO)"
+<<<<<<< HEAD
+=======
+            v-model="form.food_product.address"
+>>>>>>> 45927ce99f0b3f1018c776d702b6ad698e1ad2d0
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
+          <!-- <v-text-field
+            outline
+            :rules="[rules.required]"
+            readonly=""
+            color="green darken-1"
+            label="Region"
+            v-model="form.food_product.region"
+          ></v-text-field> -->
           <v-autocomplete
             outline
             :rules="[rules.required]"
-            required
+            readonly
             color="green darken-1"
             hide-no-data
             hide-selected
             label="Region"
             item-text="name"
             item-value="_id"
-            v-model="form.food_product.address"
+            v-model="form.food_product.region"
             :items="regions"
           ></v-autocomplete>
         </v-flex>
-        <v-flex xs4>
+        <v-flex xs6>
           <v-text-field
             outline
             :rules="[rules.required]"
-            required
+            readonly=""
             color="green darken-1"
             label="LTO Number"
             v-model="form.food_product.license_no"
           ></v-text-field>
         </v-flex>
-        <v-flex xs4>
+        <v-flex xs6>
           <v-menu
             ref="menu"
             :close-on-content-click="false"
@@ -112,11 +124,12 @@
               outline
               color="green darken-1"
               slot="activator"
+              readonly
               :rules="[rules.required]"
               label="LTO Validity"
               v-model="form.food_product.license_validity"
               append-icon="event"
-              readonly
+              
             ></v-text-field>
             <v-date-picker
               v-model="dateFormatted"
@@ -132,7 +145,7 @@
             </v-date-picker>
           </v-menu>
         </v-flex>
-        <v-flex xs4>
+        <!-- <v-flex xs4>
           <v-autocomplete
             outline
             :rules="[rules.required]"
@@ -145,7 +158,7 @@
             item-text="name"
             item-value="code"
           ></v-autocomplete>
-        </v-flex>
+        </v-flex> -->
         <!-- Contact Information -->
         <v-toolbar
           dark
@@ -158,8 +171,7 @@
         <v-flex xs6>
           <v-text-field
             outline
-            :rules="emailRules"
-            required
+            readonly
             color="green darken-1"
             label="1. Email Address"
             v-model="form.food_product.contacts.email"
@@ -168,8 +180,7 @@
         <v-flex xs6>
           <v-text-field
             outline
-            :rules="[rules.required]"
-            required
+            readonly
             mask="(##)-####-####"
             color="green darken-1"
             v-model="form.food_product.contacts.landline"
@@ -179,8 +190,7 @@
         <v-flex xs6>
           <v-text-field
             outline
-            :rules="[rules.required]"
-            required
+            readonly
             mask="(##)-####-####"
             color="green darken-1"
             label="3. Fax Number"
@@ -190,8 +200,7 @@
         <v-flex xs6>
           <v-text-field
             outline
-            :rules="[rules.required]"
-            required
+            readonly
             mask="(####)-###-####"
             color="green darken-1"
             label="4. Mobile Number"
@@ -207,7 +216,7 @@
 
 <script>
 export default {
-  props: ["form", "foodProduct", "category"],
+  props: ["form", "foodProduct", "category", "regions"],
   data: () => ({
     menu: null,
     isValid: true,
@@ -256,6 +265,7 @@ export default {
     }
   },
   methods: {
+<<<<<<< HEAD
     proceed() {
       if (this.validate()) {
         this.$emit("next", 2);
@@ -277,6 +287,11 @@ export default {
       } else {
         this.$notifyError([{ message: "Fill-up required fields." }]);
       }
+=======
+    validate() {form
+      this.$refs.vform.validate();
+      return this.VALID;
+>>>>>>> 45927ce99f0b3f1018c776d702b6ad698e1ad2d0
     },
     init() {
       // this.product_type = this.$store.state.foodCertificate.food_product

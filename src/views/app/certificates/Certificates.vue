@@ -19,7 +19,7 @@
               <span class="subheading font-weight-light primary--text">Case Details</span>
               <v-spacer></v-spacer>
               <v-tooltip bottom>
-                <v-btn :loading="loading" slot="activator" flat icon @click="viewForm">
+                <v-btn :loading="loading" slot="activator" flat icon @click="loadForm(0)">
                   <v-icon color="primary">launch</v-icon>
                 </v-btn>View Full Details
               </v-tooltip>
@@ -88,17 +88,17 @@
                   </v-tooltip>
                 </template>
                 <v-tooltip top>
-                  <v-btn small slot="activator" fab dark color="fdaBlueGreen" @click="viewForm">
+                  <v-btn small slot="activator" fab dark color="fdaBlueGreen" @click="loadForm(0)">
                     <v-icon>search</v-icon>
                   </v-btn>View Full Certificate
                 </v-tooltip>
                 <v-tooltip top>
-                  <v-btn small slot="activator" fab dark color="fdaOrange" @click="variate">
+                  <v-btn small slot="activator" fab dark color="fdaOrange" @click="loadForm(1)">
                     <v-icon>edit</v-icon>
                   </v-btn>Amendment
                 </v-tooltip>
                 <v-tooltip top>
-                  <v-btn small slot="activator" fab dark color="fdaMed" @click="renew">
+                  <v-btn small slot="activator" fab dark color="fdaMed" @click="loadForm(2)">
                     <v-icon>autorenew</v-icon>
                   </v-btn>Renewal
                 </v-tooltip>
@@ -109,36 +109,28 @@
                 </v-tooltip>
               </v-speed-dial>
             </v-footer>
-
-            <!-- <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn :disabled="loading" outline color="secondary" @click="overview=false">Close</v-btn>
-              <v-btn
-                :loading="loading"
-                color="primary"
-                @click="loadForm(preview_item.application_id)"
-              >View</v-btn>
-            </v-card-actions>-->
           </v-card>
         </v-flex>
       </v-layout>
     </v-navigation-drawer>
 
-    <v-layout row wrap align-end>
-      <v-spacer></v-spacer>
-      <v-flex xs6 pa-2>
-        <v-text-field
-          outline
-          v-model="search"
-          append-icon="search"
-          label="Search"
-          single-line
-          hide-details
-        ></v-text-field>
-      </v-flex>
-    </v-layout>
     <v-flex xs12 p1-2>
       <v-card>
+        <v-card-title>
+          <v-btn color="success" @click="loadItems(true)">
+            REFRESH
+            <v-icon dark right>refresh</v-icon>
+          </v-btn>
+          <v-spacer></v-spacer>
+          <v-text-field
+            outline
+            v-model="search"
+            append-icon="search"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+        </v-card-title>
         <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="closeDecDialog"></undertaking-dialog>
         <v-data-table
           :headers="headers"
@@ -152,15 +144,16 @@
           <template slot="items" slot-scope="props">
             <tr @click="preview(props.item)" style="cursor:pointer">
               <td>{{props.item.case_no}}</td>
+              <td>{{props.item.certificate_no}}</td>
               <td>{{getAppType(props.item.application_type, props.item.case_type)}}</td>
               <td>{{getAppStatus(props.item.status)}}</td>
               <!-- <td>{{props.items.current_task}}</td> -->
               <!-- <td>{{ formatDate (props.item.date_created) }}</td> -->
-              <td>{{ props.item.remarks }}</td>
+              <td>{{ getCertStatus(props.item.certificate_status) }}</td>
             </tr>
           </template>
           <template v-slot:no-data>
-            <v-alert :value="true" color="error" icon="warning">No data found</v-alert>
+            <v-alert :value="!loading" color="error" icon="warning">No data found</v-alert>
           </template>
         </v-data-table>
         <!-- <div class="text-xs-center pt-2">
@@ -213,11 +206,11 @@ export default {
       },
       headers: [
         { text: "Case No", value: "case_no" },
+        { text: "Certificate No", value: "certificate_no" },
         { text: "Application Type", value: "application_type" },
         { text: "Status", value: "status", sortable: true },
-        { text: "Remarks", value: "remarks" }
-      ],
-      items: []
+        { text: "Remarks", value: "certificate_status" }
+      ]
     };
   },
   created() {
@@ -234,6 +227,9 @@ export default {
       return Math.ceil(
         this.pagination.totalItems / this.pagination.rowsPerPage
       );
+    },
+    items() {
+      return this.$store.state.certificate.certificates;
     }
   },
   methods: {
@@ -253,125 +249,19 @@ export default {
       this.$store.dispatch("GET_ORIGIN");
       this.$store.dispatch("GET_PHYSICAL_PARAMETER");
       this.$store.dispatch("GET_COMPANY_ACTIVITY");
+      this.loadItems();
+    },
+    loadItems(refresh) {
+      this.loading = true;
+      this.data_complete = false;
+      console.log("isRefresh :", refresh);
       this.$store
-        .dispatch("GET_CERTIFICATE")
+        .dispatch("GET_CERTIFICATE", refresh)
         .then(results => {
-          this.items = results;
-          console.log(
-            "############## ACTIVE CERTIFICATES: " + JSON.stringify(this.items)
-          );
+          console.log("done in loading");
           this.loading = false;
           this.data_complete = true;
         })
-        //   return this.$store.dispatch("GET_FOOD_PRODUCT");
-        // })
-        // .then(result => {
-        //   // this.food_product = this.$store.state.foodCertificate.food_product
-        //   console.log(
-        //     "####food Product###" +
-        //       JSON.stringify(this.$store.state.foodCertificate.food_product)
-        //   );
-        //   return this.$store.dispatch("GET_FOOD_CATEGORY");
-        // })
-        // .then(result => {
-        //   // this.category = this.$store.state.foodCertificate.food_category
-        //   console.log(
-        //     "####food category###" +
-        //       JSON.stringify(this.$store.state.foodCertificate.food_category)
-        //   );
-        //   return this.$store.dispatch("GET_REGION");
-        // })
-        // .then(result => {
-        //   return this.$store.dispatch("GET_SHELF_LIFE");
-        // })
-        // .then(result => {
-        //   // this.shelf_life = this.$store.state.foodCertificate.shelf_life
-        //   console.log(
-        //     "####shelf life###" +
-        //       JSON.stringify(this.$store.state.foodCertificate.shelf_life)
-        //   );
-        //   return this.$store.dispatch("GET_SOURCE");
-        // })
-        // .then(result => {
-        //   // this.source = this.$store.state.foodCertificate.source
-        //   console.log(
-        //     "####source###" +
-        //       JSON.stringify(this.$store.state.foodCertificate.source)
-        //   );
-        //   return this.$store.dispatch("GET_PRODUCT_SPECIFICATION");
-        // })
-        // .then(result => {
-        //   // this.product_specification = this.$store.state.foodCertificate.product_specification
-        //   console.log(
-        //     "####product specification###" +
-        //       JSON.stringify(
-        //         this.$store.state.foodCertificate.product_specification
-        //       )
-        //   );
-        //   return this.$store.dispatch("GET_NUTRITION_INFORMATION");
-        // })
-        // .then(result => {
-        //   // this.nutrition_information = this.$store.state.foodCertificate.nutrition_information
-        //   console.log(
-        //     "####nutrition information###" +
-        //       JSON.stringify(
-        //         this.$store.state.foodCertificate.nutrition_information
-        //       )
-        //   );
-        //   return this.$store.dispatch("GET_NUTRITION_HEALTH_CLAIMS");
-        // })
-        // .then(result => {
-        //   // this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims
-        //   console.log(
-        //     "####nutrition health claims###" +
-        //       JSON.stringify(
-        //         this.$store.state.foodCertificate.nutrition_health_claims
-        //       )
-        //   );
-        //   return this.$store.dispatch("GET_VITAMINS");
-        // })
-        // .then(result => {
-        //   // this.vitamins = this.$store.state.foodCertificate.vitamins
-        //   console.log(
-        //     "####Vitamins###" +
-        //       JSON.stringify(this.$store.state.foodCertificate.vitamins)
-        //   );
-        //   return this.$store.dispatch("GET_MINERALS");
-        // })
-        // .then(result => {
-        //   // this.minerals = this.$store.state.foodCertificate.minerals
-        //   console.log(
-        //     "####minerals###" +
-        //       JSON.stringify(this.$store.state.foodCertificate.minerals)
-        //   );
-        //   return this.$store.dispatch("GET_ORIGIN");
-        // })
-        // .then(result => {
-        //   // this.origin = this.$store.state.places.origin
-        //   console.log(
-        //     "####origin###" + JSON.stringify(this.$store.state.places.origin)
-        //   );
-        //   return this.$store.dispatch("GET_PHYSICAL_PARAMETER");
-        // })
-        // .then(result => {
-        //   // this.physical_parameter = this.$store.state.foodCertificate.physical_parameter
-        //   console.log(
-        //     "####physical parameter###" +
-        //       JSON.stringify(
-        //         this.$store.state.foodCertificate.physical_parameter
-        //       )
-        //   );
-        //   return this.$store.dispatch("GET_COMPANY_ACTIVITY");
-        // })
-        // .then(result => {
-        //   // this.company_activity = this.$store.state.foodCertificate.company_activity
-        //   console.log(
-        //     "####company activity###" +
-        //       JSON.stringify(this.$store.state.foodCertificate.company_activity)
-        //   );
-        //   this.data_complete = true
-        // })
-
         .catch(error => {
           this.loading = false;
         });
@@ -383,44 +273,44 @@ export default {
     closeDecDialog() {
       this.dialog = false;
     },
-    loadForm(application_id) {
-      console.log("#########loadform");
-
-      // this.preview = item;
+    loadForm(redirect_to) {
       this.loading = true;
-      // this.$store
-      //   .dispatch("GET_CERTIFICATE_BY_CASE_NO", application_id)
-      //   .then(result => {
-      //     this.loading = false;
-      //     if (result.data.success) {
-      //       console.log(
-      //         "certificate preview: " + JSON.stringify(result.data.model)
-      //       );
-      this.$router.push("/app/certificates/overview");
-      //     } else console.log("result.data.errors :", result.data.errors);
-      //   })
-      //   .catch(err => {
-      //     this.loading = false;
-      //     console.log("###loadForm err :", err);
-      //   });
+      this.$store
+        .dispatch("GET_CERTIFICATE_BY_CASE_NO", this.preview_item.case_no)
+        .then(result => {
+          console.log(
+            "this is certificate by case no: " + JSON.stringify(result)
+          );
+          this.loading = false;
+          if (redirect_to === 0) {
+            this.$router.push("/app/certificates/overview");
+          } else if (redirect_to === 1) {
+            this.$router.push("/app/certificates/variation");
+          } else if (redirect_to === 2) {
+            this.$router.push("/app/certificates/renew");
+          }
+        })
+        .catch(err => {
+          this.loading = false;
+          console.log("###loadForm err :", err);
+        });
     },
     preview(item) {
-      console.log("preview data: " + JSON.stringify(item));
-      this.$store.commit("SET_VIEW_CERTIFICATE", item);
       this.preview_item = item;
       this.overview = true;
     },
-    viewForm() {
-      // this.$store.commit("SET_VIEW_LICENSE", this.details.license_details);
-      this.$router.push("/app/certificates/overview");
-    },
-    variate() {
-      console.log("preview data: " + JSON.stringify(this.preview_item));
-      // this.$store.commit("SET_VIEW_CERTIFICATE", item);
-      this.$router.push("/app/certificates/variation");
-    },
-    renew() {
-      this.$router.push("/app/certificates/renew");
+    getCertStatus(status) {
+      var st = [
+        "",
+        "Active",
+        "",
+        "Inactive",
+        "Expired",
+        "",
+        "Inactive",
+        "For Ammendment"
+      ];
+      return st[status];
     }
   }
 };
