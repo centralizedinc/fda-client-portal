@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" v-model="valid">
+  <v-form ref="form" v-model="isValid">
     <v-container grid-list-md>
       <v-layout row wrap>
         <!-- Activity -->
@@ -10,7 +10,7 @@
             hide-no-data
             color="green darken-1"
             outline
-            hide-selected 
+            hide-selected
             :value="activity"
             v-model="form.establishment_info.activity"
             label="Please select the corresponding company activity/ies"
@@ -53,14 +53,14 @@
         </v-flex>
         <!-- Directly Source -->
         <v-flex xs6>
-           <!-- v-model="form.establisment_info.directly_source"
+          <!-- v-model="form.establisment_info.directly_source"
             :items="answer"
             item-text="name"
-            item-value="code"  -->
+          item-value="code"-->
           <v-autocomplete
             outline
             :rules="[rules.required]"
-            color="green darken-1"           
+            color="green darken-1"
             hide-no-data
             hide-selected
             label="Directly Sourced?"
@@ -151,6 +151,8 @@
         </v-flex>
       </v-layout>
     </v-container>
+    <v-btn color="primary" @click="proceed">Continue</v-btn>
+    <v-btn flat @click="cancel">Cancel</v-btn>
   </v-form>
 </template>
 
@@ -162,19 +164,19 @@ export default {
   props: ["form", "source", "origin", "companyActivity"],
   data: () => ({
     uploads: false,
-    valid: true,
+    isValid: true,
     uploadedFiles: [],
     form_data: null,
 
     answer: [
-        {
-          name: "No",
-          code: false
-        },
-        {
-          name: "Yes",
-          code: true
-        }
+      {
+        name: "No",
+        code: false
+      },
+      {
+        name: "Yes",
+        code: true
+      }
     ],
     rules: {
       required: value => !!value || "This field is required"
@@ -186,23 +188,31 @@ export default {
         this.form.uploaded_files = val;
       },
       deep: true
-    },
+    }
   },
-  computed:{
-    activity(){
-      if(this.establishmentInfo(this.form.establishment_info.activity) == "Manufacturer"){
- 
-      }else if(this.establishmentInfo(this.form.establishment_info.activity) == "Manufacturer"){
-        
-      }else if(this.establishmentInfo(this.form.establishment_info.activity) == "Manufacturer"){
-        
-      }else if(this.establishmentInfo(this.form.establishment_info.activity) == "Manufacturer"){
-        
+  computed: {
+    activity() {
+      if (
+        this.establishmentInfo(this.form.establishment_info.activity) ==
+        "Manufacturer"
+      ) {
+      } else if (
+        this.establishmentInfo(this.form.establishment_info.activity) ==
+        "Manufacturer"
+      ) {
+      } else if (
+        this.establishmentInfo(this.form.establishment_info.activity) ==
+        "Manufacturer"
+      ) {
+      } else if (
+        this.establishmentInfo(this.form.establishment_info.activity) ==
+        "Manufacturer"
+      ) {
       }
     }
   },
-  created(){
-    console.log("establishment info data: " + JSON.stringify(this.form))
+  created() {
+    console.log("establishment info data: " + JSON.stringify(this.form));
   },
   methods: {
     init() {
@@ -224,7 +234,9 @@ export default {
       });
     },
     upload(data) {
-      console.log("form data check point: " + JSON.stringify(this.form.establishment_info))
+      console.log(
+        "form data check point: " + JSON.stringify(this.form.establishment_info)
+      );
       this.$emit("upload", data);
       this.form_data = data.formData;
       this.uploadedFiles = data.uploadedFiles;
@@ -232,7 +244,7 @@ export default {
         form_data: this.form_data,
         uploadedFiles: this.uploadedFiles,
         type: "documents"
-      })
+      });
 
       // console.log("this is upload data!!!: " + JSON.stringify(this.form_data));
       // this.$store.dispatch("SAVE_COMPLY_CERTIFICATE", {
@@ -247,16 +259,29 @@ export default {
       //       console.log("GET_COMPLY_CERTIFICATE data result: " + JSON.stringify(result1))
       //     })
 
-
       // this.form.output_files.push({
       //   type: "documents",
       //   data: data
       // })
       this.uploads = true;
     },
+    proceed() {
+      if (this.validate()) {
+        this.$emit("next", 3);
+      } else {
+        this.$notifyError([{ message: "Fill-up required fields." }]);
+      }
+    },
+    cancel() {
+      this.$emit("next", 1);
+    },
     validate() {
-      return this.uploads;
+      this.$refs.form.validate();
+      return this.isValid;
     }
+    // validate() {
+    //   return this.uploads;
+    // }
   }
 };
 </script>

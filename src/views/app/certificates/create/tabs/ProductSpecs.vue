@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" v-model="valid">
+  <v-form ref="form" v-model="isValid">
     <v-container grid-list-md>
       <v-layout row wrap justify-center align-center>
         <!-- <v-flex xs6>
@@ -93,10 +93,22 @@
                     </v-flex>
                     <!-- default -->
                     <v-flex xs12 v-else>
-                      <v-text-field outline name="name" v-model="parameter" label="Parameter" id="id"></v-text-field>
+                      <v-text-field
+                        outline
+                        name="name"
+                        v-model="parameter"
+                        label="Parameter"
+                        id="id"
+                      ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-text-field outline name="name" v-model="specification" label="Specification" id="id"></v-text-field>
+                      <v-text-field
+                        outline
+                        name="name"
+                        v-model="specification"
+                        label="Specification"
+                        id="id"
+                      ></v-text-field>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -117,12 +129,14 @@
         </v-dialog>
       </v-layout>
     </v-container>
+    <v-btn color="primary" @click="proceed">Continue</v-btn>
+    <v-btn flat @click="cancel">Cancel</v-btn>
   </v-form>
 </template>
 
 <script>
 export default {
-  props: ["form", "prodSpecs" , "physicalParameter"],
+  props: ["form", "prodSpecs", "physicalParameter"],
   data: () => ({
     dialogSpecs: false,
     selected_specs: "",
@@ -133,7 +147,7 @@ export default {
     physical: "",
     parameter: "",
     specification: "",
-    valid: true,
+    isValid: true,
     specs_list: [],
     physicalParameter: [],
     prodSpecs: [
@@ -170,22 +184,30 @@ export default {
       this.parameter = "";
       this.specification = "";
     },
+    proceed() {
+      this.$emit("next", 5);
+    },
+    cancel() {
+      this.$emit("next", 3);
+    },
+    validate() {
+      this.$refs.form.validate();
+      return this.isValid;
+    },
     init() {
       // this.prodSpecs = this.$store.state.foodCertificate.product_specification;
-      console.log(
-        "food specification data: " + JSON.stringify(this.prodSpecs)
-      );
+      console.log("food specification data: " + JSON.stringify(this.prodSpecs));
       // this.physicalParameter = this.$store.state.foodCertificate.physical_parameter;
       // console.log("physical parameter: " + JSON.stringify(this.physicalParameter));
       // this.vm_items = this.$store.state.foodCertificate.minerals;
       // console.log("minerals data: " + JSON.stringify(this.minerals));
     },
     saveSpecs() {
-      this.dialogSpecs = false
-      console.log("this spec data: " + JSON.stringify(this.spec)) 
+      this.dialogSpecs = false;
+      console.log("this spec data: " + JSON.stringify(this.spec));
       // if(this.spec.name == "Physical"){
       //   console.log("save specs physical")
-      //   var phy = this.physicalParameter.find(x => x._id === this.parameter) 
+      //   var phy = this.physicalParameter.find(x => x._id === this.parameter)
       //   console.log("selected physical data: " + JSON.stringify(this.parameter))
       //   console.log("physical data: " + JSON.stringify(this.physicalParameter))
       //   console.log("this is phy data: " + JSON.stringify(phy))
@@ -218,25 +240,28 @@ export default {
         type: this.spec._id,
         parameter: this.parameter,
         specification: this.specification
-        })
-        console.log("product specification data: " + JSON.stringify(this.form.product_specification))
+      });
+      console.log(
+        "product specification data: " +
+          JSON.stringify(this.form.product_specification)
+      );
       this.specs_list.push({
         prod_spec: this.spec._id,
         parameter: this.parameter,
         specs: this.specification
-      })
+      });
     }
   },
   watch: {
     selected_specs(val) {
-      this.spec = this.prodSpecs.find(x => x._id === val)
-      console.log("selected data: " + JSON.stringify(this.spec))
+      this.spec = this.prodSpecs.find(x => x._id === val);
+      console.log("selected data: " + JSON.stringify(this.spec));
       if (this.spec.name === "Physical") {
-        console.log("selected specs  true data: " + JSON.stringify(val))
-        this.selected = true
+        console.log("selected specs  true data: " + JSON.stringify(val));
+        this.selected = true;
         // this.physicalParameter = ["Color", "Odor", "Taste", "Texture", "Form"];
       } else {
-        console.log("selected specs false data: " + JSON.stringify(val))
+        console.log("selected specs false data: " + JSON.stringify(val));
         this.selected = false;
       }
     }
