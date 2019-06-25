@@ -412,13 +412,6 @@
           </v-layout>
         </v-container>
         <!-- button -->
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn :disabled="isLoading" outline color="secondary" @click="overview=false">Close</v-btn>
-          <v-btn :loading="isLoading" color="primary" @click="save">Payment</v-btn>
-          <!-- button renewal -->
-        </v-card-actions>
       </v-card>
     </v-flex>
     <!-- DOCUMENTS -->
@@ -484,7 +477,7 @@
       </v-card>
     </v-flex>
 
-    <!-- bottom sheet -->
+       <!-- bottom sheet -->
     <v-bottom-sheet persistent hide-overlay inset v-model="show_action">
              <v-card color="success">
                 <v-list>
@@ -495,18 +488,16 @@
                         </v-list-tile-content>
                         <v-spacer></v-spacer>
                         <v-list-tile-action class="mr-2">
-                            <v-btn :disabled="isLoading" outline color="primary" @click="cancelDialog=true">Cancel</v-btn>
+                            <v-btn outline color="primary" @click="cancelDialog">Cancel</v-btn>
                         </v-list-tile-action>
                         <v-list-tile-action >
-                            <v-btn v-show="curr_step==1" color="primary" @click="curr_step=2">Next</v-btn>
-                            <v-btn :loading="isLoading" v-show="curr_step==2" color="primary" @click="apply">Accept</v-btn>
+                            <!-- <v-btn v-show="curr_step==1" color="primary" @click="curr_step=2">Next</v-btn> -->
+                            <v-btn :loading="isLoading" color="primary" @click="save">Accept</v-btn>
                         </v-list-tile-action>                       
                     </v-list-tile>
                 </v-list>
             </v-card>
          </v-bottom-sheet>
-
-   
   </v-layout>
 </template>
 
@@ -518,6 +509,7 @@ export default {
   },
   data() {
     return {
+      show_action:true,
       loaded: false,
       show_part1: false,
       show_part2: false,
@@ -608,6 +600,14 @@ export default {
       //   this.$notifyError(err);
       // });
     },
+    // apply(){
+
+    // },
+
+    cancelDialog(){
+      this.$router.push("/app/certificates")
+    },
+
     save() {
       this.$store
         .dispatch("RENEWAL_CERTIFICATE", this.form)
