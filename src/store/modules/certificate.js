@@ -173,7 +173,7 @@ var actions = {
                 .getCertificateByCaseNo(case_no)
                 .then((result) => {
                     if (result.data.success) {
-                        this.$store.commit("SET_VIEW_CERTIFICATE", result.data.model);
+                        context.commit("SET_VIEW_CERTIFICATE", result.data.model);
                         resolve(result.data.model)
                     } else reject(result.data.errors)
                 }).catch((err) => {

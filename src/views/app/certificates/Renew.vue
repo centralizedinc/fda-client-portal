@@ -217,7 +217,7 @@
             name="name"
             label="Form"
             :value="form.product_specification.physical.form"
-          ></v-text-field> -->
+          ></v-text-field>-->
           <v-data-table
             :headers="[{text:'Product Specification', sortable: false},
             {text:'Parameter', sortable: false},
@@ -252,7 +252,12 @@
             label="Shelf Life Declaration (in Months)"
             :value="formatDate(form.shelf.declaration_date)"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Type" :value="shelfLifeType(form.shelf.shelf_type).name"></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Type"
+            :value="shelfLifeType(form.shelf.shelf_type).name"
+          ></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -335,12 +340,11 @@
               <td>{{descNutri(props.item.type).name}}</td>
               <td>{{props.item.amount_per_serving}}</td>
               <td>{{props.item.percent}}%</td>
-              
             </template>
           </v-data-table>
         </v-card-text>
         <v-divider></v-divider>
-       
+
         <v-card-title primary-title>
           <span class="subheading font-weight-thin primary--text">Nutrition Health Claims</span>
           <v-spacer></v-spacer>
@@ -354,7 +358,7 @@
         <v-divider></v-divider>
         <v-card-text v-if="show_part7">
           <!-- <v-text-field readonly name="name" label="Claims" :value="form.claims.claims"></v-text-field>
-          <v-text-field readonly name="name" label="Description" :value=" form.claims.desc"></v-text-field> -->
+          <v-text-field readonly name="name" label="Description" :value=" form.claims.desc"></v-text-field>-->
           <v-data-table
             :headers="[{text:'Claims', sortable: false,}, 
                         {text:'Description', sortable: false}]"
@@ -370,8 +374,9 @@
         </v-card-text>
       </v-card>
     </v-flex>
- <!-- PAYMENTS -->
+    <!-- PAYMENTS -->
     <v-flex dark xs12 md4 pa-1>
+<<<<<<< HEAD
         <v-card>
           <v-toolbar dark color="primary">Payment</v-toolbar>
           <v-card-title primary-title class="font-weight-light headline">Payment Summary</v-card-title>
@@ -421,6 +426,52 @@
           <!-- </v-card-action -->
         </v-card>
 
+=======
+      <v-card>
+        <v-toolbar dark color="primary">Payment</v-toolbar>
+        <v-card-title primary-title class="font-weight-light headline">Payment Summary</v-card-title>
+        <v-container grid-list-xl>
+          <v-layout row wrap align-center justify-center fill-height>
+            <!-- <v-flex xs6> -->
+            <v-flex xs6 v-if="fees_form.lrf != 0">
+              <label class="subheading">Application Fee:</label>
+            </v-flex>
+            <v-flex xs6 v-if="fees_form.lrf != 0">
+              <label class="subheading">₱ {{numberWithCommas(fees_form.fee)}}</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading"># of year/s applied:</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading">{{fees_form.yearsApplied}} years</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading">Legal Research Fund (LRF):</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading">₱ {{numberWithCommas(fees_form.lrf)}}</label>
+            </v-flex>
+            <v-flex xs6 v-if="fees_form.lrf != 0">
+              <label class="subheading" color="error">Total Payment Due:</label>
+            </v-flex>
+            <v-flex xs6 v-if="fees_form.lrf === 0">
+              <label class="subheading" color="error">Still Due:</label>
+            </v-flex>
+            <v-flex xs6>
+              <label class="subheading">₱ {{numberWithCommas(fees_form.total)}}</label>
+            </v-flex>
+          </v-layout>
+        </v-container>
+        <!-- button -->
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn :disabled="isLoading" outline color="secondary" @click="overview=false">Close</v-btn>
+          <v-btn :loading="isLoading" color="primary" @click="save">Payment</v-btn>
+          <!-- button renewal -->
+        </v-card-actions>
+      </v-card>
+>>>>>>> 4c2514e1dc23bafeeccfcdec2d8a246742b4e92a
     </v-flex>
     <!-- DOCUMENTS -->
     <v-flex xs12 md8 pa-1>
@@ -484,6 +535,7 @@
         </v-card-text>
       </v-card>
     </v-flex>
+<<<<<<< HEAD
 
     <!-- bottom sheet -->
     <v-bottom-sheet persistent hide-overlay inset v-model="show_action">
@@ -508,6 +560,8 @@
          </v-bottom-sheet>
 
    
+=======
+>>>>>>> 4c2514e1dc23bafeeccfcdec2d8a246742b4e92a
   </v-layout>
 </template>
 
@@ -552,7 +606,13 @@ export default {
       this.form = this.$store.state.certificate.view;
       console.log("app overview form data: " + JSON.stringify(this.form));
       this.case_details = this.$store.state.certificate.cases;
-
+      var details = {
+        application_type: 2,
+        product_type: this.form.food_product.type
+      };
+      this.$store.dispatch("GET_CERTIFICATE_FEES", details).then(result => {
+        console.log("get certificate fees: " + JSON.stringify(result));
+      });
       // this.form = this.$store.state.licenses.view_license;
       // this.case_details = this.$store.state.case.view_case;
       // this.$store.dispatch("GET_CERTIFICATE");
@@ -603,13 +663,14 @@ export default {
       //   this.$notifyError(err);
       // });
     },
-    save(){
-      this.$store.dispatch("RENEWAL_CERTIFICATE", this.form)
-      .then((result) => {
-        console.log("renewal certificate: " + JSON.stringify(result))
-      }).catch((err) => {
-        
-      });
+    save() {
+      this.$store
+        .dispatch("RENEWAL_CERTIFICATE", this.form)
+        .then(result => {
+          console.log("renewal certificate: " + JSON.stringify(result));
+          this.$router.push("/app/certificate/pay");
+        })
+        .catch(err => {});
     }
     // viewFile(url) {
     //   window.open(url, "_blank");
