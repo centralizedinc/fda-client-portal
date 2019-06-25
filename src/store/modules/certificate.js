@@ -126,7 +126,7 @@ const mutations = {
         console.log("store view certificate: " + JSON.stringify(certificate))
         state.view = certificate
     },
-    SET_RENEW_CERTIFICATE(state, certificate){
+    SET_RENEW_CERTIFICATE(state, certificate) {
         state.view = certificate
     }
 };
@@ -147,20 +147,39 @@ var actions = {
             );
         })
     },
-    GET_CERTIFICATE(context) {
+    GET_CERTIFICATE(context, refresh) {
         return new Promise((resolve, reject) => {
-            new CertificateAPI(context.rootState.user_session.token).getCertificates((certificate, err) => {
-                if (!err) {
-                    context.commit('SET_CERTIFICATE', certificate)
-                    resolve(certificate)
-                } else {
-                    reject(err)
-                }
-            })
+            if (refresh || !context.state.certificates || !context.state.certificates.length) {
+                new CertificateAPI(context.rootState.user_session.token)
+                    .getCertificates()
+                    .then((result) => {
+                        if (result.data.success) {
+                            console.log('result.data.model :', result.data.model);
+                            context.commit('SET_CERTIFICATE', result.data.model)
+                            resolve(result.data.model)
+                        } else reject(result.data.errors)
+                    }).catch((err) => {
+                        reject(err)
+                    });
+            } else {
+                console.log('context.state.certificates :', context.state.certificates);
+                resolve(context.state.certificates)
+            }
         })
     },
     GET_CERTIFICATE_BY_CASE_NO(context, case_no) {
-        return new CertificateAPI(context.rootState.user_session.token).getCertificateByCaseNo(case_no);
+        return new Promise((resolve, reject) => {
+            new CertificateAPI(context.rootState.user_session.token)
+                .getCertificateByCaseNo(case_no)
+                .then((result) => {
+                    if (result.data.success) {
+                        this.$store.commit("SET_VIEW_CERTIFICATE", result.data.model);
+                        resolve(result.data.model)
+                    } else reject(result.data.errors)
+                }).catch((err) => {
+                    reject(err)
+                });
+        })
     },
     GET_COMPLY_CERTIFICATE(context) {
         return new Promise((resolve, reject) => {
@@ -248,17 +267,17 @@ var actions = {
                 });
         })
     },
-    RENEWAL_CERTIFICATE(context, certificate){
+    RENEWAL_CERTIFICATE(context, certificate) {
         return new Promise((resolve, reject) => {
             console.log("WELCOME TO RENEWAL CERTIFICATE" + JSON.stringify(certificate))
             new CertificateAPI(context.rootState.user_session.token).renewCertificate(certificate)
                 .then((result) => {
                     console.log("renewal cert store")
-                    if(result.data.success){
+                    if (result.data.success) {
                         console.log("renewal success" + JSON.stringify(result))
                         context.commit('SET_RENEW_CERTIFICATE', result.data.model);
                         resolve(result.data.model)
-                    }else{
+                    } else {
                         reject(result.data.errors)
                     }
                 }).catch((err) => {
@@ -266,7 +285,7 @@ var actions = {
                 });
         })
     },
-    GET_CERTIFICATE_RESULT_BY_KEY(context, key){
+    GET_CERTIFICATE_RESULT_BY_KEY(context, key) {
         return new CertificateAPI(context.rootState.user_session.token).retrieveCertificateByKey(key)
     }
 };
