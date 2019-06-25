@@ -14,17 +14,8 @@ export default class CertificateAPI {
     return axios.post('certificates/', data)
   }
 
-  getCertificates(cb) {
-    axios.get('certificates/')
-      .then(result => {
-        if (result.data.success) {
-          cb(result.data.model)
-        }
-      })
-      .catch(err => {
-        console.log(JSON.stringify(err));
-        cb(null, err)
-      });
+  getCertificates() {
+    return axios.get('certificates/cases')
   }
 
   getCertificateByCaseNo(case_no) {
@@ -45,19 +36,6 @@ export default class CertificateAPI {
       console.log("save certificates: " + JSON.stringify(result))
       return result
     })
-  }
-
-  getCertificates(cb) {
-    axios.get('certificates/')
-      .then(result => {
-        if (result.data.success) {
-          cb(result.data.model)
-        }
-      })
-      .catch(err => {
-        console.log(JSON.stringify(err));
-        cb(null, err)
-      });
   }
 
   getComplyCertificate() {
@@ -308,8 +286,8 @@ export default class CertificateAPI {
     })
   }
 
-  retrieveCertificateByKey(key){
+  retrieveCertificateByKey(key) {
     return axios.get(`public/certificates/result/${key}`)
   }
-  
+
 }
