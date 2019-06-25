@@ -19,15 +19,7 @@ export default class CertificateAPI {
   }
 
   getCertificateByCaseNo(case_no) {
-    axios.get('certificates/case_no/' + case_no)
-      .then((result) => {
-        if (result.data.success) {
-          console.dir(b(result.data.model));
-        }
-      }).catch((err) => {
-        console.log(JSON.stringify(err));
-        cb(null, err)
-      });
+    return axios.get('certificates/case_no/' + case_no)
   }
 
   saveCertificate(data) {
