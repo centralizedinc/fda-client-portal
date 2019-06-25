@@ -459,6 +459,28 @@
         </v-card-text>
       </v-card>
     </v-flex>
+
+    <!-- bottom sheet -->
+    <v-bottom-sheet persistent hide-overlay inset v-model="show_action">
+      <v-card color="success">
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-content>
+              <v-list-tile-title>Certificate Renewal</v-list-tile-title>
+              <v-list-tile-sub-title>Please review your certificate details before submitting for renewal.</v-list-tile-sub-title>
+            </v-list-tile-content>
+            <v-spacer></v-spacer>
+            <v-list-tile-action class="mr-2">
+              <v-btn outline color="primary" @click="cancelDialog">Cancel</v-btn>
+            </v-list-tile-action>
+            <v-list-tile-action>
+              <!-- <v-btn v-show="curr_step==1" color="primary" @click="curr_step=2">Next</v-btn> -->
+              <v-btn :loading="isLoading" color="primary" @click="save">Accept</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+        </v-list>
+      </v-card>
+    </v-bottom-sheet>
   </v-layout>
 </template>
 
@@ -471,6 +493,7 @@ export default {
   data() {
     return {
       isLoading: false,
+      show_action: true,
       loaded: false,
       show_part1: false,
       show_part2: false,
@@ -595,6 +618,14 @@ export default {
       //   this.$notifyError(err);
       // });
     },
+    // apply(){
+
+    // },
+
+    cancelDialog() {
+      this.$router.push("/app/certificates");
+    },
+
     save() {
       this.$store
         .dispatch("RENEWAL_CERTIFICATE", this.form)

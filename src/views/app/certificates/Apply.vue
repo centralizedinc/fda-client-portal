@@ -362,6 +362,14 @@ export default {
       this.cert_form.food_product.license_no = this.active_license.license_no;
 
       this.cert_form.food_product.license_validity = this.active_license.license_expiry;
+
+      this.cert_form.food_product.contacts.email = this.active_license.estab_details.email;
+
+      this.cert_form.food_product.contacts.landline = this.active_license.estab_details.landline;
+
+      this.cert_form.food_product.contacts.fax = this.active_license.estab_details.fax;
+
+      this.cert_form.food_product.contacts.mobile = this.active_license.estab_details.mobile;
     },
     save() {
       // this.cert_form.

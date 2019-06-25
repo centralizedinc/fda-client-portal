@@ -73,14 +73,27 @@
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
-          <v-text-field
+          <!-- <v-text-field
             outline
             :rules="[rules.required]"
             readonly=""
             color="green darken-1"
             label="Region"
             v-model="form.food_product.region"
-          ></v-text-field>
+          ></v-text-field> -->
+          <v-autocomplete
+            outline
+            :rules="[rules.required]"
+            readonly
+            color="green darken-1"
+            hide-no-data
+            hide-selected
+            label="Region"
+            item-text="name"
+            item-value="_id"
+            v-model="form.food_product.region"
+            :items="regions"
+          ></v-autocomplete>
         </v-flex>
         <v-flex xs6>
           <v-text-field
@@ -108,11 +121,12 @@
               outline
               color="green darken-1"
               slot="activator"
+              readonly
               :rules="[rules.required]"
               label="LTO Validity"
               v-model="form.food_product.license_validity"
               append-icon="event"
-              readonly
+              
             ></v-text-field>
             <v-date-picker 
             v-model="dateFormatted"
@@ -153,8 +167,7 @@
         <v-flex xs6>
           <v-text-field
             outline
-            :rules="emailRules"
-            required
+            readonly
             color="green darken-1"
             label="1. Email Address"
             v-model="form.food_product.contacts.email"
@@ -163,8 +176,7 @@
         <v-flex xs6>
           <v-text-field
             outline
-            :rules="[rules.required]"
-            required
+            readonly
             mask="(##)-####-####"
             color="green darken-1"
             v-model="form.food_product.contacts.landline"
@@ -174,8 +186,7 @@
         <v-flex xs6>
           <v-text-field
             outline
-            :rules="[rules.required]"
-            required
+            readonly
             mask="(##)-####-####"
             color="green darken-1"
             label="3. Fax Number"
@@ -185,8 +196,7 @@
         <v-flex xs6>
           <v-text-field
             outline
-            :rules="[rules.required]"
-            required
+            readonly
             mask="(####)-###-####"
             color="green darken-1"
             label="4. Mobile Number"
@@ -200,7 +210,7 @@
 
 <script>
 export default {
-  props: ["form", "foodProduct", "category"],
+  props: ["form", "foodProduct", "category", "regions"],
   data: () => ({
     menu: null,
     valid: true,
@@ -255,10 +265,10 @@ export default {
     init(){
       // this.product_type = this.$store.state.foodCertificate.food_product
       // console.log("product type data: " + JSON.stringify(this.product_type))
-      // this.category = this.$store.state.foodCertificate.food_category
-      // console.log("food category data: " + JSON.stringify(this.food_category))
-      // this.regions = this.$store.state.places.regions
-      // console.log("regions data: " + JSON.stringify(this.regions))
+      this.category = this.$store.state.foodCertificate.food_category
+      console.log("food category data: " + JSON.stringify(this.food_category))
+      this.regions = this.$store.state.places.regions
+      console.log("regions data: " + JSON.stringify(this.regions))
     }
   }
 };
