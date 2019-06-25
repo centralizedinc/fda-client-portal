@@ -69,35 +69,30 @@
             required
             color="green darken-1"
             label="Address (as listed in LTO)"
-            
+            v-model="form.food_product.address"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
-          <v-autocomplete
-            outline
-            :rules="[rules.required]"
-            required
-            color="green darken-1"
-            hide-no-data
-            hide-selected
-            label="Region"
-            item-text="name"
-            item-value="_id"
-            v-model="form.food_product.address"
-            :items="regions"
-          ></v-autocomplete>
-        </v-flex>
-        <v-flex xs4>
           <v-text-field
             outline
             :rules="[rules.required]"
-            required
+            readonly=""
+            color="green darken-1"
+            label="Region"
+            v-model="form.food_product.region"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs6>
+          <v-text-field
+            outline
+            :rules="[rules.required]"
+            readonly=""
             color="green darken-1"
             label="LTO Number"
             v-model="form.food_product.license_no"
           ></v-text-field>
         </v-flex>
-        <v-flex xs4>
+        <v-flex xs6>
           <v-menu
             ref="menu"
             :close-on-content-click="false"
@@ -132,7 +127,7 @@
             </v-date-picker>
           </v-menu>
         </v-flex>
-        <v-flex xs4>
+        <!-- <v-flex xs4>
           <v-autocomplete
             outline
             :rules="[rules.required]"
@@ -145,7 +140,7 @@
             item-text="name"
             item-value="code"
           ></v-autocomplete>
-        </v-flex>
+        </v-flex> -->
         <!-- Contact Information -->
         <v-toolbar
           dark
@@ -253,17 +248,17 @@ export default {
     }
   },
   methods: {
-    validate() {
+    validate() {form
       this.$refs.vform.validate();
       return this.VALID;
     },
     init(){
       // this.product_type = this.$store.state.foodCertificate.food_product
       // console.log("product type data: " + JSON.stringify(this.product_type))
-      this.category = this.$store.state.foodCertificate.food_category
-      console.log("food category data: " + JSON.stringify(this.food_category))
-      this.regions = this.$store.state.places.regions
-      console.log("regions data: " + JSON.stringify(this.regions))
+      // this.category = this.$store.state.foodCertificate.food_category
+      // console.log("food category data: " + JSON.stringify(this.food_category))
+      // this.regions = this.$store.state.places.regions
+      // console.log("regions data: " + JSON.stringify(this.regions))
     }
   }
 };

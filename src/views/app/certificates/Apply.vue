@@ -212,6 +212,7 @@ export default {
         product_name: "",
         company: "",
         address: "",
+        region: "",
         license_no: "",
         license_validity: "",
         years_applied: 0,
@@ -347,16 +348,28 @@ export default {
 
       this.company_activity = this.$store.state.foodCertificate.company_activity;
 
-      this.cert_form.food_product.company = this.active_license.estab_details.establishment_name;
-
-      var address = "";
+      // var address = "";
       this.active_license.address_list.forEach(add => {
-        if (add.type === 0) {
-          address = add.address;
+        
+        if (add.type == 0) {
+          console.log("Active License add", JSON.stringify(add))
+          this.cert_form.food_product.address = add.address;
         }
       });
-      this.cert_form.food_product.address = address;
-      
+      // this.cert_form.food_product.address = address;
+      console.log("Active License address", JSON.stringify(this.cert_form.food_product.address))
+
+      this.active_license.address_list.forEach(add => {
+        
+        if (add.type == 0) {
+          console.log("Active License add region", JSON.stringify(add))
+          this.cert_form.food_product.region = add.region;
+        }
+      });
+      // this.cert_form.food_product.address = address;
+      console.log("Active License region", JSON.stringify(this.cert_form.food_product.region))
+
+      this.cert_form.food_product.company = this.active_license.estab_details.establishment_name;
 
       // var region = "";
       // this.active_license.address_list.forEach(add => {
