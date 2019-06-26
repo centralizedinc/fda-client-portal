@@ -50,10 +50,10 @@
               ></v-text-field>
               <v-text-field
                 name="name"
-                label="Status"
+                label="Evaluation Result"
                 id="id"
                 readonly
-                :value="getAppStatusCert(preview_item.status)"
+                :value="getAppStatus(preview_item.status)"
               ></v-text-field>
               <!-- <v-text-field
                 name="name"
@@ -209,7 +209,7 @@ export default {
         { text: "Case No", value: "case_no" },
         { text: "Certificate No", value: "certificate_no" },
         { text: "Application Type", value: "application_type" },
-        { text: "Status", value: "status", sortable: true },
+        { text: "Evaluation Result", value: "status", sortable: true },
         { text: "Remarks", value: "certificate_status" }
       ]
     };
