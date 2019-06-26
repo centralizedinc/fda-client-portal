@@ -350,13 +350,12 @@ export default {
 
       // var address = "";
       this.active_license.address_list.forEach(add => {
-        
         if (add.type == 0) {
           this.cert_form.food_product.address = add.address;
           this.cert_form.food_product.region = add.region;
         }
       });
-      
+
       this.cert_form.food_product.company = this.active_license.estab_details.establishment_name;
 
       this.cert_form.food_product.license_no = this.active_license.license_no;
@@ -378,6 +377,43 @@ export default {
 
       console.log("submit clicked: " + JSON.stringify(this.cert_form));
       this.$store.dispatch("SAVE_CERTIFICATE", this.cert_form);
+      var details = {
+        application_type: 2,
+        product_type: this.cert_form.food_product.type
+      };
+      this.$store
+        .dispatch("GET_CERTIFICATE_FEES", details)
+        .then(result => {
+          console.log("get certificate fees: " + JSON.stringify(result));
+          this.fees = [];
+          this.fees.push({
+            description: "Application Fee",
+            amount: result.fee
+          });
+          this.fees.push({
+            description: "LRF",
+            amount: result.lrf
+          });
+          this.fees.push({
+            description: "Interest",
+            amount: result.interest
+          }),
+            this.fees.push({
+              description: "Surcharge",
+              amount: result.surcharge
+            });
+
+          this.total_amount =
+            result.fee + result.lrf + result.interest + result.surcharge;
+          this.$notify({
+            color: "success",
+            message:
+              "Registration fee computed! For this application you will have to pay the amount of  ₱ " +
+              this.numberWithCommas(this.total_amount)
+          });
+        })
+        .catch(err => {});
+      // this.$router.push("/app/certificates/overview");
       this.$router.push("/app/certificate/pay");
     }
   },
