@@ -196,6 +196,7 @@ export default {
       loading: false,
       dialog: false,
       rowsPerPageItems: [10, 20, 30, 40],
+      pass_to: 0,
       pagination: {
         sortBy: "date_created",
         descending: true
@@ -268,7 +269,13 @@ export default {
     },
     launchAppForm() {
       console.log("launch application form");
-      this.$router.push("/app/certificates/apply");
+      if (this.pass_to === 1) {
+        this.$router.push("/app/certificates/variation");
+      } else if (this.pass_to === 2) {
+        this.$router.push("/app/certificates/renew");
+      } else {
+        this.$router.push("/app/certificates/apply");
+      }
     },
     closeDecDialog() {
       this.dialog = false;
@@ -284,10 +291,9 @@ export default {
           this.loading = false;
           if (redirect_to === 0) {
             this.$router.push("/app/certificates/overview");
-          } else if (redirect_to === 1) {
-            this.$router.push("/app/certificates/variation");
-          } else if (redirect_to === 2) {
-            this.$router.push("/app/certificates/renew");
+          } else {
+            this.dialog = true;
+            this.pass_to = redirect_to;
           }
         })
         .catch(err => {
