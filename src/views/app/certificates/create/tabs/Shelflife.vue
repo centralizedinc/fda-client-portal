@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="valid">
+  <v-form v-model="isValid" ref="form">
     <v-container grid-list-md>
       <v-layout row wrap justify-center align-center>
         <v-flex xs4>
@@ -39,13 +39,13 @@
             color="green darken-1" 
             no-title 
             scrollable
-            :min="new Date().toISOString().substr(0, 10)"> -->
-              <!-- <v-spacer></v-spacer>
+        :min="new Date().toISOString().substr(0, 10)">-->
+        <!-- <v-spacer></v-spacer>
               <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn> -->
-            <!-- </v-date-picker>
+        <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn>-->
+        <!-- </v-date-picker>
           </v-menu>
-        </v-flex> -->
+        </v-flex>-->
         <v-flex xs4>
           <v-autocomplete
             :rules="[rules.required]"
@@ -112,7 +112,12 @@
           ></v-text-field>
         </v-flex>
         <v-flex xs4>
-          <v-text-field :rules="[rules.required]" outline label="Open Date Marking/ Expiry Date" v-model="form.shelf.date"></v-text-field>
+          <v-text-field
+            :rules="[rules.required]"
+            outline
+            label="Open Date Marking/ Expiry Date"
+            v-model="form.shelf.date"
+          ></v-text-field>
         </v-flex>
         <!-- <v-flex xs4>
           <v-menu
@@ -142,15 +147,17 @@
             color="green darken-1" 
             no-title 
             scrollable
-            :min="new Date().toISOString().substr(0, 10)"> -->
-              <!-- <v-spacer></v-spacer>
+        :min="new Date().toISOString().substr(0, 10)">-->
+        <!-- <v-spacer></v-spacer>
               <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn> -->
-            <!-- </v-date-picker>
+        <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn>-->
+        <!-- </v-date-picker>
           </v-menu>
-        </v-flex> -->
+        </v-flex>-->
       </v-layout>
     </v-container>
+    <v-btn color="primary" @click="proceed">Continue</v-btn>
+    <v-btn flat @click="cancel">Cancel</v-btn>
   </v-form>
 </template>
 
@@ -158,7 +165,7 @@
 export default {
   props: ["form", "shelfLifeType"],
   data: () => ({
-    valid: true,
+    isValid: true,
     shelfLifeType: [],
     rules: {
       required: value => !!value || "This field is required"
@@ -176,23 +183,30 @@ export default {
   },
   watch: {
     dateFormatted(val) {
-    this.form.shelf.date = this.formatDate(val);
+      this.form.shelf.date = this.formatDate(val);
     },
     dateFormatted1(val) {
-    this.form.shelf.declaration_date = this.formatDate(val);
+      this.form.shelf.declaration_date = this.formatDate(val);
     }
   },
   methods: {
+    proceed() {
+      if (this.validate()) {
+        this.$emit("next", 6);
+      } else {
+        this.$notifyError([{ message: "Fill-up required fields." }]);
+      }
+    },
+    cancel() {
+      this.$emit("next", 4);
+    },
     validate() {
-      this.$refs.vform.validate();
-      return this.VALID;
+      this.$refs.form.validate();
+      return this.isValid;
     },
     init() {
       this.shelfLifeType = this.$store.state.foodCertificate.shelf_life;
-      console.log(
-        "Shelf life type data: " +
-          JSON.stringify(this.form)
-      );
+      console.log("Shelf life type data: " + JSON.stringify(this.form));
     }
   }
 };

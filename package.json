@@ -1,6 +1,6 @@
 {
   "name": "fda-client-portal",
-  "version": "0.1.89",
+  "version": "0.1.90",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -41,7 +41,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-pwa": "^3.0.1",
-    "@vue/cli-service": "^3.8.0",
+    "@vue/cli-service": "^3.8.4",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "mocha": "^6.1.4",
