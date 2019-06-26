@@ -51,7 +51,7 @@
             readonly
             name="name"
             label="Region"
-            :value="getRegionName(form.food_product.address)"
+            :value="getRegionName(form.food_product.region)"
           ></v-text-field>
           <v-text-field
             readonly

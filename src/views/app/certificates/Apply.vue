@@ -360,9 +360,12 @@ export default {
 
       this.cert_form.food_product.contacts.email = this.active_license.estab_details.email;
 
+      this.cert_form.food_product.contacts.fax = this.active_license.estab_details.fax;
+
+      console.log("FOOD PRODUCT FAX:", this.cert_form.food_product.contacts.fax )
+
       this.cert_form.food_product.contacts.landline = this.active_license.estab_details.landline;
 
-      this.cert_form.food_product.contacts.fax = this.active_license.estab_details.fax;
 
       this.cert_form.food_product.contacts.mobile = this.active_license.estab_details.mobile;
     },
