@@ -117,7 +117,8 @@
     <v-flex xs12 p1-2>
       <v-card>
         <v-card-title>
-          <v-btn color="success" @click="loadItems(true)">REFRESH 
+          <v-btn color="success" @click="loadItems(true)">
+            REFRESH
             <v-icon dark right>refresh</v-icon>
           </v-btn>
           <v-spacer></v-spacer>
@@ -127,8 +128,8 @@
             append-icon="search"
             label="Search"
             single-line
-            hide-details>
-          </v-text-field>
+            hide-details
+          ></v-text-field>
         </v-card-title>
         <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="closeDecDialog"></undertaking-dialog>
         <v-data-table
@@ -277,19 +278,17 @@ export default {
       this.$store
         .dispatch("GET_CERTIFICATE_BY_CASE_NO", this.preview_item.case_no)
         .then(result => {
+          console.log(
+            "this is certificate by case no: " + JSON.stringify(result)
+          );
           this.loading = false;
-          if (result.data.success) {
-            console.log(
-              "certificate preview: " + JSON.stringify(result.data.model)
-            );
-            if (redirect_to === 0) {
-              this.$router.push("/app/certificates/overview");
-            } else if (redirect_to === 1) {
-              this.$router.push("/app/certificates/variation");
-            } else if (redirect_to === 2) {
-              this.$router.push("/app/certificates/renew");
-            }
-          } else console.log("result.data.errors :", result.data.errors);
+          if (redirect_to === 0) {
+            this.$router.push("/app/certificates/overview");
+          } else if (redirect_to === 1) {
+            this.$router.push("/app/certificates/variation");
+          } else if (redirect_to === 2) {
+            this.$router.push("/app/certificates/renew");
+          }
         })
         .catch(err => {
           this.loading = false;
