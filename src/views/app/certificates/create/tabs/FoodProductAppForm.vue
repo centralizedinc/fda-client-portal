@@ -69,6 +69,7 @@
             required
             color="green darken-1"
             label="Address (as listed in LTO)"
+            v-model="form.food_product.address"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
