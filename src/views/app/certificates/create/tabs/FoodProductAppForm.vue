@@ -69,10 +69,6 @@
             required
             color="green darken-1"
             label="Address (as listed in LTO)"
-<<<<<<< HEAD
-=======
-            v-model="form.food_product.address"
->>>>>>> 45927ce99f0b3f1018c776d702b6ad698e1ad2d0
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -265,7 +261,6 @@ export default {
     }
   },
   methods: {
-<<<<<<< HEAD
     proceed() {
       if (this.validate()) {
         this.$emit("next", 2);
@@ -287,11 +282,6 @@ export default {
       } else {
         this.$notifyError([{ message: "Fill-up required fields." }]);
       }
-=======
-    validate() {form
-      this.$refs.vform.validate();
-      return this.VALID;
->>>>>>> 45927ce99f0b3f1018c776d702b6ad698e1ad2d0
     },
     init() {
       // this.product_type = this.$store.state.foodCertificate.food_product
