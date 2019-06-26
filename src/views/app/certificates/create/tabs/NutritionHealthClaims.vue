@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="valid">
+  <v-form v-model="isValid" ref="form">
     <v-container grid-list-md>
       <v-layout row wrap align-center justify-center>
         <template v-for="(item, index) in form.claims">
@@ -38,6 +38,8 @@
         </template>
       </v-layout>
     </v-container>
+    <v-btn color="primary" @click="proceed">Continue</v-btn>
+    <v-btn flat @click="cancel">Cancel</v-btn>
   </v-form>
 </template>
 
@@ -45,7 +47,7 @@
 export default {
   props: ["form", "nutritionHealthClaims"],
   data: () => ({
-    valid: true,
+    isValid: true,
     nutrition_health_claims: [],
     claims: "",
     description: "",
@@ -67,6 +69,20 @@ export default {
       this.claims = ""
       this.description = ""
       console.log("add item claim data: " + JSON.stringify(this.form.claims))
+    },
+    proceed() {
+      if (this.validate()) {
+        this.$emit("next", 8);
+      } else {
+        this.$notifyError([{ message: "Fill-up required fields." }]);
+      }
+    },
+    cancel() {
+      this.$emit("next", 6);
+    },
+    validate() {
+      this.$refs.form.validate();
+      return this.isValid;
     },
     removeItem(index) {
       this.form.claims.splice(index, 1);

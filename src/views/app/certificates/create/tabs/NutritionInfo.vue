@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="valid">
+  <v-form ref="form" v-model="isValid">
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs6>
@@ -77,7 +77,7 @@
               </template>
             </v-data-table>
           </v-card>
-        </v-flex> -->
+        </v-flex>-->
         <v-snackbar :top="y === 'top'" v-model="snack" :timeout="3000" :color="snackColor">
           {{ snackText }}
           <v-btn flat @click="snack = false">Close</v-btn>
@@ -97,21 +97,20 @@
         </v-flex>
 
         <v-flex xs12>
-          <v-data-table :headers="headers" :items="form.nutrition_info.servings" hide-actions class="elevation-1">
+          <v-data-table
+            :headers="headers"
+            :items="form.nutrition_info.servings"
+            hide-actions
+            class="elevation-1"
+          >
             <template slot="items" slot-scope="props">
               <!-- <tr @click="viewItem(props.item, props.index)" style="cursor:pointer"> -->
-                <td>{{descNutri(props.item.type).name}}</td>
-                <td>{{props.item.amount_per_serving}}</td>
-                <td>{{props.item.percent}}</td>
-                <td>
-                  <v-icon
-                    small
-                    class="mr-2"
-                    @click="editItem(props.item)"
-                  >
-                    edit
-                  </v-icon>
-                </td>
+              <td>{{descNutri(props.item.type).name}}</td>
+              <td>{{props.item.amount_per_serving}}</td>
+              <td>{{props.item.percent}}</td>
+              <td>
+                <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
+              </td>
               <!-- </tr> -->
             </template>
           </v-data-table>
@@ -156,7 +155,13 @@
                       ></v-autocomplete>
                     </v-flex>
                     <v-flex xs12>
-                      <v-text-field outline name="name" v-model="amount_per_serving" label="Amount per Serving" id="id"></v-text-field>
+                      <v-text-field
+                        outline
+                        name="name"
+                        v-model="amount_per_serving"
+                        label="Amount per Serving"
+                        id="id"
+                      ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
                       <v-text-field
@@ -184,16 +189,16 @@
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-text-field
-                        label="Nutrision"
-                        :value="type"
-                        v-model="type"
-                        disabled
-                        outline
-                      ></v-text-field>
+                      <v-text-field label="Nutrision" :value="type" v-model="type" disabled outline></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-text-field outline name="name" v-model="amount_per_serving" label="Amount per Serving" id="id"></v-text-field>
+                      <v-text-field
+                        outline
+                        name="name"
+                        v-model="amount_per_serving"
+                        label="Amount per Serving"
+                        id="id"
+                      ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
                       <v-text-field
@@ -224,6 +229,8 @@
         </v-dialog>
       </v-layout>
     </v-container>
+    <v-btn color="primary" @click="proceed">Continue</v-btn>
+    <v-btn flat @click="back">Cancel</v-btn>
   </v-form>
 </template>
 
@@ -232,6 +239,7 @@ export default {
   props: ["form", "vitamins", "minerals", "nutrition_information"],
   data: () => ({
     add: false,
+    isValid: true,
     dialogVm: false,
     pagination: {},
     y: "top",
@@ -363,6 +371,16 @@ export default {
       this.add = true;
       this.dialogVm = true;
     },
+    proceed() {
+      this.$emit("next", 7);
+    },
+    back() {
+      this.$emit("next", 5);
+    },
+    validate() {
+      this.$refs.form.validate();
+      return this.isValid;
+    },
     addVitMin() {
       this.dialogVm = false;
       this.form.nutrition_info.servings.push({
@@ -370,17 +388,17 @@ export default {
         kind: this.choice,
         amount_per_serving: this.amount_per_serving,
         percent: this.percent
-      })
+      });
     },
-    editItem(item){
+    editItem(item) {
       this.add = true;
       this.dialogVm = true;
-      this.valid = false
-      console.log("edit item data: " + JSON.stringify(item))
-      this.choice = item.type
-      this.type = item.kind
-      this.amount_per_serving = item.amount_per_serving
-      this.percent = item.percent
+      this.valid = false;
+      console.log("edit item data: " + JSON.stringify(item));
+      this.choice = item.type;
+      this.type = item.kind;
+      this.amount_per_serving = item.amount_per_serving;
+      this.percent = item.percent;
     },
     save() {
       this.snack = true;
@@ -403,8 +421,7 @@ export default {
     init() {
       // this.nutritionServing = this.$store.state.foodCertificate.nutrition_information;
       console.log(
-        "nutrition information data: " +
-          JSON.stringify(this.nutritionServing)
+        "nutrition information data: " + JSON.stringify(this.nutritionServing)
       );
       // this.vitamins = this.$store.state.foodCertificate.vitamins;
       console.log("vitamins data: " + JSON.stringify(this.vitamins));
@@ -413,16 +430,16 @@ export default {
     }
   },
   watch: {
-    choice(val){
-      this.vitMinHolder = {}
-      if(val == 0){
-        this.vitMinHolder = this.vitamins
-      }else if(val == 1){
-        this.vitMinHolder = this.minerals
-      }else if(val == 2){
-        this.vitMinHolder = this.nutrition_information
+    choice(val) {
+      this.vitMinHolder = {};
+      if (val == 0) {
+        this.vitMinHolder = this.vitamins;
+      } else if (val == 1) {
+        this.vitMinHolder = this.minerals;
+      } else if (val == 2) {
+        this.vitMinHolder = this.nutrition_information;
       }
-    },
+    }
     // nutrition_information(val){
     //   console.log("nutrition_information data: " + JSON.stringify(val))
 
@@ -430,11 +447,11 @@ export default {
     //     this.form.nutrition_info.servings.push({
     //     type: element._id,
     //     kind: "2",
-    //     amount_per_serving: "0",  
+    //     amount_per_serving: "0",
     //     percent: "NOT APPLICABLE"
     //     })
-    //   }); 
-      
+    //   });
+
     // }
   }
 };

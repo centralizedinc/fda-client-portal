@@ -51,7 +51,7 @@
             readonly
             name="name"
             label="Region"
-            :value="getRegionName(form.food_product.address)"
+            :value="getRegionName(form.food_product.region)"
           ></v-text-field>
           <v-text-field
             readonly
@@ -375,50 +375,26 @@
       </v-card>
     </v-flex>
     <!-- PAYMENTS -->
-    <v-flex dark xs12 md4 pa-1>
+    <v-flex xs12 md4 pa-1>
       <v-card>
-        <v-toolbar dark color="primary">Payment</v-toolbar>
-        <v-card-title primary-title class="font-weight-light headline">Payment Summary</v-card-title>
-        <v-container grid-list-xl>
-          <v-layout row wrap align-center justify-center fill-height>
-            <!-- <v-flex xs6> -->
-            <v-flex xs6 v-if="fees_form.lrf != 0">
-              <label class="subheading">Application Fee:</label>
-            </v-flex>
-            <v-flex xs6 v-if="fees_form.lrf != 0">
-              <label class="subheading">₱ {{numberWithCommas(fees_form.fee)}}</label>
-            </v-flex>
-            <v-flex xs6>
-              <label class="subheading"># of year/s applied:</label>
-            </v-flex>
-            <v-flex xs6>
-              <label class="subheading">{{fees_form.yearsApplied}} years</label>
-            </v-flex>
-            <v-flex xs6>
-              <label class="subheading">Legal Research Fund (LRF):</label>
-            </v-flex>
-            <v-flex xs6>
-              <label class="subheading">₱ {{numberWithCommas(fees_form.lrf)}}</label>
-            </v-flex>
-            <v-flex xs6 v-if="fees_form.lrf != 0">
-              <label class="subheading" color="error">Total Payment Due:</label>
-            </v-flex>
-            <v-flex xs6 v-if="fees_form.lrf === 0">
-              <label class="subheading" color="error">Still Due:</label>
-            </v-flex>
-            <v-flex xs6>
-              <label class="subheading">₱ {{numberWithCommas(fees_form.total)}}</label>
-            </v-flex>
-          </v-layout>
-        </v-container>
-        <!-- button -->
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn :disabled="isLoading" outline color="secondary" @click="overview=false">Close</v-btn>
-          <v-btn :loading="isLoading" color="primary" @click="save">Payment</v-btn>
-          <!-- button renewal -->
-        </v-card-actions>
+        <v-toolbar dark color="primary">Renew Fee</v-toolbar>
+        <v-card-text>
+          <v-data-table
+            :loading="isLoading"
+            :headers="[{text: 'Description', sortable:false}, {text: 'Amount', sortable:false}]"
+            :items="fees"
+            hide-actions
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{ props.item.description }}</td>
+              <td>₱ {{ numberWithCommas (props.item.amount) }}</td>
+            </template>
+            <template slot="footer">
+              <td>Total</td>
+              <td class="font-weight-bold">₱ {{ numberWithCommas(total_amount) }}</td>
+            </template>
+          </v-data-table>
+        </v-card-text>
       </v-card>
     </v-flex>
     <!-- DOCUMENTS -->
@@ -486,27 +462,25 @@
 
     <!-- bottom sheet -->
     <v-bottom-sheet persistent hide-overlay inset v-model="show_action">
-             <v-card color="success">
-                <v-list>
-                    <v-list-tile>
-                        <v-list-tile-content>
-                        <v-list-tile-title>Certificate Renewal</v-list-tile-title>
-                        <v-list-tile-sub-title>Please review your certificate details before submitting for renewal.</v-list-tile-sub-title>
-                        </v-list-tile-content>
-                        <v-spacer></v-spacer>
-                        <v-list-tile-action class="mr-2">
-                            <v-btn :disabled="isLoading" outline color="primary" @click="cancelDialog=true">Cancel</v-btn>
-                        </v-list-tile-action>
-                        <v-list-tile-action >
-                            <v-btn v-show="curr_step==1" color="primary" @click="curr_step=2">Next</v-btn>
-                            <v-btn :loading="isLoading" v-show="curr_step==2" color="primary" @click="apply">Accept</v-btn>
-                        </v-list-tile-action>                       
-                    </v-list-tile>
-                </v-list>
-            </v-card>
-         </v-bottom-sheet>
-
-   
+      <v-card color="success">
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-content>
+              <v-list-tile-title>Certificate Renewal</v-list-tile-title>
+              <v-list-tile-sub-title>Please review your certificate details before submitting for renewal.</v-list-tile-sub-title>
+            </v-list-tile-content>
+            <v-spacer></v-spacer>
+            <v-list-tile-action class="mr-2">
+              <v-btn outline color="primary" @click="cancelDialog">Cancel</v-btn>
+            </v-list-tile-action>
+            <v-list-tile-action>
+              <!-- <v-btn v-show="curr_step==1" color="primary" @click="curr_step=2">Next</v-btn> -->
+              <v-btn :loading="isLoading" color="primary" @click="save">Accept</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+        </v-list>
+      </v-card>
+    </v-bottom-sheet>
   </v-layout>
 </template>
 
@@ -518,6 +492,8 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
+      show_action: true,
       loaded: false,
       show_part1: false,
       show_part2: false,
@@ -540,7 +516,8 @@ export default {
       // documentary: [],
       // uploaded_files: [],
       // output_files: [],
-      fees_form: {}
+      fees_form: {},
+      fees: []
     };
   },
   created() {
@@ -548,6 +525,7 @@ export default {
   },
   methods: {
     init() {
+      this.isLoading = true;
       this.form = this.$store.state.certificate.view;
       console.log("app overview form data: " + JSON.stringify(this.form));
       this.case_details = this.$store.state.certificate.cases;
@@ -555,9 +533,41 @@ export default {
         application_type: 2,
         product_type: this.form.food_product.type
       };
-      this.$store.dispatch("GET_CERTIFICATE_FEES", details).then(result => {
-        console.log("get certificate fees: " + JSON.stringify(result));
-      });
+      this.$store
+        .dispatch("GET_CERTIFICATE_FEES", details)
+        .then(result => {
+          console.log("get certificate fees: " + JSON.stringify(result));
+          this.fees = [];
+          this.fees.push({
+            description: "Application Fee",
+            amount: result.fee
+          });
+          this.fees.push({
+            description: "LRF",
+            amount: result.lrf
+          });
+          this.fees.push({
+            description: "Interest",
+            amount: result.interest
+          }),
+            this.fees.push({
+              description: "Surcharge",
+              amount: result.surcharge
+            });
+
+          this.total_amount =
+            result.fee + result.lrf + result.interest + result.surcharge;
+          this.$notify({
+            color: "success",
+            message:
+              "Registration fee computed! For this application you will have to pay the amount of  ₱ " +
+              this.numberWithCommas(this.total_amount)
+          });
+          this.isLoading = false;
+        })
+        .catch(err => {
+          this.isLoading = false;
+        });
       // this.form = this.$store.state.licenses.view_license;
       // this.case_details = this.$store.state.case.view_case;
       // this.$store.dispatch("GET_CERTIFICATE");
@@ -608,6 +618,14 @@ export default {
       //   this.$notifyError(err);
       // });
     },
+    // apply(){
+
+    // },
+
+    cancelDialog() {
+      this.$router.push("/app/certificates");
+    },
+
     save() {
       this.$store
         .dispatch("RENEWAL_CERTIFICATE", this.form)

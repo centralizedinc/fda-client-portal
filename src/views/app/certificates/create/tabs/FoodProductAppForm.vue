@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="valid" ref="form">
+  <v-form v-model="isValid" ref="form">
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs6>
@@ -128,16 +128,17 @@
               append-icon="event"
               
             ></v-text-field>
-            <v-date-picker 
-            v-model="dateFormatted"
-            @input="validity=false"
-            color="green darken-1" 
-            no-title 
-            scrollable
-            :min="new Date().toISOString().substr(0, 10)">
+            <v-date-picker
+              v-model="dateFormatted"
+              @input="validity=false"
+              color="green darken-1"
+              no-title
+              scrollable
+              :min="new Date().toISOString().substr(0, 10)"
+            >
               <!-- <v-spacer></v-spacer>
               <v-btn flat color="secondary" outline @click="menu = false">Cancel</v-btn>
-              <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn> -->
+              <v-btn flat color="primary" @click="$refs.menu.save(form.food_product.license_validity)">OK</v-btn>-->
             </v-date-picker>
           </v-menu>
         </v-flex>
@@ -190,7 +191,7 @@
             mask="(##)-####-####"
             color="green darken-1"
             label="3. Fax Number"
-            v-mode="form.food_product.contacts.fax"
+            v-model="form.food_product.contacts.fax"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -205,6 +206,8 @@
         </v-flex>
       </v-layout>
     </v-container>
+    <v-btn color="primary" @click="proceed">Continue</v-btn>
+    <v-btn flat @click="cancel">Cancel</v-btn>
   </v-form>
 </template>
 
@@ -213,7 +216,7 @@ export default {
   props: ["form", "foodProduct", "category", "regions"],
   data: () => ({
     menu: null,
-    valid: true,
+    isValid: true,
     contact: {},
     rules: {
       required: value => !!value || "This field is required"
@@ -225,50 +228,69 @@ export default {
         "E-mail must be valid"
     ],
     validity: false,
-      dateFormatted: "",
-      product_type: [],
-      category: [],
-      regions: [],
-      years: [
-        { 
-          code: 2,
-          name: "2 years"
-        },
-        {
-          code: 3,
-          name:"3 years"
-        },
-        {
-          code: 4,
-          name: "4 years"
-        },
-        {
-         code: 5,
-         name: "5 years"
-        }],
-        dateFormatted: null,
-        expiry_date: null
+    dateFormatted: "",
+    product_type: [],
+    category: [],
+    regions: [],
+    years: [
+      {
+        code: 2,
+        name: "2 years"
+      },
+      {
+        code: 3,
+        name: "3 years"
+      },
+      {
+        code: 4,
+        name: "4 years"
+      },
+      {
+        code: 5,
+        name: "5 years"
+      }
+    ],
+    dateFormatted: null,
+    expiry_date: null
   }),
-  created(){
-    this.init()
+  created() {
+    this.init();
   },
   watch: {
     dateFormatted(val) {
-    this.form.food_product.license_validity = this.formatDate(val);
+      this.form.food_product.license_validity = this.formatDate(val);
     }
   },
   methods: {
-    validate() {form
-      this.$refs.vform.validate();
-      return this.VALID;
+    proceed() {
+      if (this.validate()) {
+        this.$emit("next", 2);
+        } else {
+        this.$notifyError([{ message: "Fill-up required fields." }]);
+      }
     },
-    init(){
+    cancel(){
+      this.$emit('next', 1)
+    },
+    validate() {
+      this.$refs.form.validate();
+      return this.isValid;
+    },
+    submit() {
+      this.$refs.form.validate();
+      if (this.isValid) {
+        this.isValid = false;
+      } else {
+        this.$notifyError([{ message: "Fill-up required fields." }]);
+      }
+    },
+    init() {
       // this.product_type = this.$store.state.foodCertificate.food_product
       // console.log("product type data: " + JSON.stringify(this.product_type))
-      this.category = this.$store.state.foodCertificate.food_category
-      console.log("food category data: " + JSON.stringify(this.food_category))
-      this.regions = this.$store.state.places.regions
-      console.log("regions data: " + JSON.stringify(this.regions))
+      this.category = this.$store.state.foodCertificate.food_category;
+      console.log("food category data: " + JSON.stringify(this.food_category));
+      this.regions = this.$store.state.places.regions;
+      console.log("regions data: " + JSON.stringify(this.regions));
     }
   }
 };
