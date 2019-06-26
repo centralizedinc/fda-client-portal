@@ -191,7 +191,7 @@
             mask="(##)-####-####"
             color="green darken-1"
             label="3. Fax Number"
-            v-mode="form.food_product.contacts.fax"
+            v-model="form.food_product.contacts.fax"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
