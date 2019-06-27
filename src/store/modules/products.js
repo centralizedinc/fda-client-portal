@@ -1,6 +1,6 @@
 import ProductApi from '../../api/ProductApi';
 
-const state = {
+var initialState = {
     productType: [],
     primaryActivity: [],
     secondaryActivity: [],
@@ -9,6 +9,8 @@ const state = {
     declaredCapital: [],
     prod_line: []
 }
+
+const state = JSON.parse(JSON.stringify(initialState))
 
 const mutations = {
     SET_PRODUCT_TYPE(state, productType) {
@@ -33,13 +35,9 @@ const mutations = {
         state.prod_line = prod_line;
     },
     CLEAR_DATA(state) {
-        state.productType = []
-        state.primaryActivity = []
-        state.secondaryActivity = []
-        state.additional = []
-        state.declared = []
-        state.declaredCapital = []
-        state.prod_line = []
+      Object.keys(initialState).forEach(key => {
+        state[key] = initialState[key]
+      })
     }
 }
 
