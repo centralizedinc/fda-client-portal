@@ -52,8 +52,10 @@ var actions = {
     },
     GET_ONE_CASE(context, details) {
         return new Promise((resolve, reject) => {
-            new CaseAPI(context.rootState.user_session.token).getCaseByCaseNumber(details)
-                .then((result) => {
+            console.log('details :', details);
+            var action = new CaseAPI(context.rootState.user_session.token).getCaseByCaseNumber(details);
+            if(action){
+                action.then((result) => {
                     if (result.data.success) {
                         // context.commit('SET_ONE_CASE', result.data.model);
                         resolve(result.data.model)
@@ -65,6 +67,10 @@ var actions = {
                     console.log('err :', err);
                     reject(err)
                 });
+            } else {
+                console.log('Invalid details');
+                reject()
+            }
         })
     },
     GET_COMPLY(context) {
