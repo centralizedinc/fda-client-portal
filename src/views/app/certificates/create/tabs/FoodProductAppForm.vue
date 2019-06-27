@@ -8,7 +8,7 @@
             :rules="[rules.required]"
             required
             color="green darken-1"
-            v-model="form.food_product.type"
+            v-model="foodProductType"
             :items="foodProduct"
             item-text="name"
             item-value="_id"
@@ -26,7 +26,7 @@
             hide-no-data
             hide-selected
             v-model="form.food_product.categorization"
-            :items="category"
+            :items="categoryHolder"
             item-text="name"
             item-value="_id"
             label="Food Category"
@@ -231,6 +231,8 @@ export default {
     dateFormatted: "",
     product_type: [],
     category: [],
+    foodProductType: "",
+    categoryHolder: [],
     regions: [],
     years: [
       {
@@ -259,6 +261,18 @@ export default {
   watch: {
     dateFormatted(val) {
       this.form.food_product.license_validity = this.formatDate(val);
+    },
+    foodProductType() {
+      this.form.food_product.type = this.foodProductType
+      this.categoryHolder = [];
+      console.log("type", this.form.food_product.type)
+      this.category.forEach(data =>{
+        console.log("foodProductType:", data)
+        if (data.food_product == this.form.food_product.type) {
+        this.categoryHolder.push(data);
+      } 
+      })
+      
     }
   },
   methods: {
@@ -287,8 +301,8 @@ export default {
     init() {
       // this.product_type = this.$store.state.foodCertificate.food_product
       // console.log("product type data: " + JSON.stringify(this.product_type))
-      this.category = this.$store.state.foodCertificate.food_category;
-      console.log("food category data: " + JSON.stringify(this.food_category));
+      // this.category = this.$store.state.foodCertificate.food_category;
+      // console.log("food category data: " + JSON.stringify(this.category));
       this.regions = this.$store.state.places.regions;
       console.log("regions data: " + JSON.stringify(this.regions));
     }
