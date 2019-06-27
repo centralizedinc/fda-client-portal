@@ -4,7 +4,7 @@ import LicenseAPI from "../../api/LicenseApi";
 import CaseAPI from "../../api/CaseAPI";
 import RegistrationAPI from "../../api/RegistrationAPI";
 
-const state = {
+var initialState = {
   active_license: {},
   licenses: [],
   view_license: {},
@@ -66,6 +66,8 @@ const state = {
   applicationAccount: {}
 };
 
+const state = JSON.parse(JSON.stringify(initialState))
+
 const mutations = {
   SET_LICENSES(state, licenses) {
     state.licenses = null;
@@ -86,15 +88,6 @@ const mutations = {
   VERIFIED_LICENSES(state, license) {
     state.existingLicense = license;
   },
-  CLEAR_DATA(state) {
-    state.licenses = [];
-    state.renewal_license = {};
-    state.variation_license = {};
-    state.details = {};
-    state.form = null;
-    state.uploaded = null;
-    state.existingLicense = null;
-  },
   SET_VIEW_LICENSE(state, license) {
     state.view_license = license;
   },
@@ -110,6 +103,11 @@ const mutations = {
   },
   SET_ACTIVE_LICENSE(state, data) {
     state.active_license = data;
+  },
+  CLEAR_DATA(state) {
+    Object.keys(initialState).forEach(key => {
+      state[key] = initialState[key]
+    })
   }
 };
 

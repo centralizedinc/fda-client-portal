@@ -140,9 +140,10 @@
           :loading="loading"
           :rows-per-page-items="rowsPerPageItems"
           :search="search"
+          :custom-sort="customSort"
         >
           <template slot="items" slot-scope="props">
-            <tr @click="preview(props.item)" style="cursor:pointer">
+            <tr @click="preview(props.item)" :style="`cursor:pointer;${getCertColor(props.item.certificate_status)}`">
               <td>{{props.item.case_no}}</td>
               <td>{{props.item.certificate_no}}</td>
               <td>{{getAppType(props.item.application_type, props.item.case_type)}}</td>
@@ -317,6 +318,21 @@ export default {
         "For Ammendment"
       ];
       return st[status];
+    },
+    getCertColor(status){
+      if(status === 1){
+        return 'color:green'
+      } else if(status === 7){
+        return 'color:red'
+      }
+    },
+    customSort(items, index, isDesc){
+      items.sort((a, b) => {
+        // return a.certificate_status === 7 || a.certificate_status === 1
+        // console.log(b.certificate_status - a.certificate_status);
+        return b.certificate_status - a.certificate_status
+      })
+      return items
     }
   }
 };

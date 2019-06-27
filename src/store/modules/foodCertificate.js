@@ -1,6 +1,6 @@
 import CertificateAPI from "../../api/FoodCertificateApi";
 
-const state = {
+var initialState = {
   food_product: [],
   food_category: [],
   shelf_life: [],
@@ -13,6 +13,8 @@ const state = {
   minerals: [],
   company_activity: []
 };
+
+const state = JSON.parse(JSON.stringify(initialState))
 
 const mutations = {
   SET_FOOD_PRODUCT(state, food_product) {
@@ -58,6 +60,11 @@ const mutations = {
   SET_COMPANY_ACTIVITY(state, company_activity) {
     console.log("STORE:" + "##COMPANY ACTIVITY" + JSON.stringify(company_activity))
     state.company_activity = company_activity;
+  },
+  CLEAR_DATA(state) {
+      Object.keys(initialState).forEach(key => {
+          state[key] = initialState[key]
+      })
   }
 };
 

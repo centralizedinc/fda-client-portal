@@ -1,16 +1,20 @@
 import TaskApi from '../../api/TaskApi';
 import LicenseAPI from '../../api/LicenseApi';
 
-const state = {
+var initialState = {
     tasks: []
 }
+
+const state = JSON.parse(JSON.stringify(initialState))
 
 const mutations = {
     SET_TASKS(state, task) {
         state.tasks = task;
     },
     CLEAR_DATA(state) {
-        state.tasks = []
+      Object.keys(initialState).forEach(key => {
+        state[key] = initialState[key]
+      })
     }
 }
 
