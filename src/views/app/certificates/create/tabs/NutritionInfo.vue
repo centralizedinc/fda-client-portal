@@ -144,7 +144,7 @@
                     <v-flex xs12>
                       <v-autocomplete
                         outline
-                        label="Nutrision"
+                        label="Nutrition"
                         hint="Choose one"
                         persistent-hint
                         :items="vitMinHolder"
@@ -189,7 +189,7 @@
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-text-field label="Nutrision" :value="type" v-model="type" disabled outline></v-text-field>
+                      <v-text-field label="Nutrition" :value="type" v-model="type" disabled outline></v-text-field>
                     </v-flex>
                     <v-flex xs12>
                       <v-text-field

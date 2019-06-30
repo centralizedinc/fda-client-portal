@@ -47,12 +47,7 @@
             label="Company Name (as listed in LTO)"
             :value="form.food_product.company"
           ></v-text-field>
-          <v-text-field
-            readonly
-            name="name"
-            label="Region"
-            :value="getRegionName(form.food_product.address)"
-          ></v-text-field>
+          <v-text-field readonly name="name" label="Region" :value="form.food_product.address"></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -357,13 +352,18 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part7">
-          <v-text-field
-            readonly
-            name="name"
-            label="Claims"
-            :value="healthClaims(form.claims.claims).name"
-          ></v-text-field>
-          <v-text-field readonly name="name" label="Description" :value="form.claims.desc"></v-text-field>
+          <v-data-table
+            :headers="[{text:'Claims', sortable: false,}, 
+                        {text:'Description', sortable: false}]"
+            :items="form.claims"
+            hide-actions
+            class="elevation-1"
+          >
+            <template slot="items" slot-scope="props">
+              <td>{{healthClaims(props.item.claim).name}}</td>
+              <td>{{props.item.desc}}</td>
+            </template>
+          </v-data-table>
         </v-card-text>
       </v-card>
     </v-flex>

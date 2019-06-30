@@ -50,10 +50,10 @@
               ></v-text-field>
               <v-text-field
                 name="name"
-                label="Status"
+                label="Evaluation Result"
                 id="id"
                 readonly
-                :value="getAppStatusCert(preview_item.status)"
+                :value="getAppStatus(preview_item.status)"
               ></v-text-field>
               <!-- <v-text-field
                 name="name"
@@ -140,9 +140,10 @@
           :loading="loading"
           :rows-per-page-items="rowsPerPageItems"
           :search="search"
+          :custom-sort="customSort"
         >
           <template slot="items" slot-scope="props">
-            <tr @click="preview(props.item)" style="cursor:pointer">
+            <tr @click="preview(props.item)" :style="`cursor:pointer;${getCertColor(props.item.certificate_status)}`">
               <td>{{props.item.case_no}}</td>
               <td>{{props.item.certificate_no}}</td>
               <td>{{getAppType(props.item.application_type, props.item.case_type)}}</td>
@@ -196,6 +197,7 @@ export default {
       loading: false,
       dialog: false,
       rowsPerPageItems: [10, 20, 30, 40],
+      pass_to: 0,
       pagination: {
         sortBy: "date_created",
         descending: true
@@ -208,7 +210,7 @@ export default {
         { text: "Case No", value: "case_no" },
         { text: "Certificate No", value: "certificate_no" },
         { text: "Application Type", value: "application_type" },
-        { text: "Status", value: "status", sortable: true },
+        { text: "Evaluation Result", value: "status", sortable: true },
         { text: "Remarks", value: "certificate_status" }
       ]
     };
@@ -268,7 +270,13 @@ export default {
     },
     launchAppForm() {
       console.log("launch application form");
-      this.$router.push("/app/certificates/apply");
+      if (this.pass_to === 1) {
+        this.$router.push("/app/certificates/variation");
+      } else if (this.pass_to === 2) {
+        this.$router.push("/app/certificates/renew");
+      } else {
+        this.$router.push("/app/certificates/apply");
+      }
     },
     closeDecDialog() {
       this.dialog = false;
@@ -284,10 +292,9 @@ export default {
           this.loading = false;
           if (redirect_to === 0) {
             this.$router.push("/app/certificates/overview");
-          } else if (redirect_to === 1) {
-            this.$router.push("/app/certificates/variation");
-          } else if (redirect_to === 2) {
-            this.$router.push("/app/certificates/renew");
+          } else {
+            this.dialog = true;
+            this.pass_to = redirect_to;
           }
         })
         .catch(err => {
@@ -311,6 +318,21 @@ export default {
         "For Ammendment"
       ];
       return st[status];
+    },
+    getCertColor(status){
+      if(status === 1){
+        return 'color:green'
+      } else if(status === 7){
+        return 'color:red'
+      }
+    },
+    customSort(items, index, isDesc){
+      items.sort((a, b) => {
+        // return a.certificate_status === 7 || a.certificate_status === 1
+        // console.log(b.certificate_status - a.certificate_status);
+        return b.certificate_status - a.certificate_status
+      })
+      return items
     }
   }
 };

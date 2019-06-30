@@ -13,17 +13,21 @@ export default new Vuex.Store({
   // plugins: [createPersistedState()]
   plugins: [
     createPersistedState({
-      key:'fda-client-reference',
-      paths:['breadcrumbs','case', 'licenses', 'notifications', 'payments', 'products','products', 'references', 'tasks']
+      key: 'fda-client-reference',
+      paths: ['breadcrumbs', 'case', 'certificate', 'foodCertificate', 'licenses', 'notifications', 'payments', 'places', 'products', '', 'references', 'tasks']
     }),
-  //store user session in cookiess
-  createPersistedState({
-    key:'fda-client-session',
-    paths:['user_session'],
-    storage: {
-      getItem: key =>  Cookies.get(key),
-      setItem: (key, value) => Cookies.set(key, value, {expires:1, secure:false}),
-      removeItem: key => Cookies.remove(key)
-    }
-  })]
+    //store user session in cookiess
+    createPersistedState({
+      key: 'fda-client-session',
+      paths: ['user_session'],
+      storage: {
+        getItem: key => Cookies.get(key),
+        setItem: (key, value) => Cookies.set(key, value, {
+          expires: 1,
+          secure: false
+        }),
+        removeItem: key => Cookies.remove(key)
+      }
+    })
+  ]
 })

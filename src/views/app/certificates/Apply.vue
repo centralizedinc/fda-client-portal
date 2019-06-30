@@ -4,7 +4,7 @@
       <v-flex xs12>
         <v-progress-linear :value="completion" color="primary" background-color="primary"></v-progress-linear>
         <v-stepper v-model="e6" vertical>
-          <v-stepper-step @click="proceed(1)" :complete="e6 > 1" :step="1" editable>
+          <v-stepper-step :complete="e6 > 1" step="1" editable>
             Food Product Application
             <small>Fill out all necessary information</small>
           </v-stepper-step>
@@ -20,7 +20,7 @@
             </v-card>
           </v-stepper-content>
 
-          <v-stepper-step @click="proceed(2)" :complete="e6 > 2" :step="2" editable>
+          <v-stepper-step :complete="e6 > 2" step="2" editable>
             Establishment Information
             <small>Select the corresponding company activity/activities</small>
           </v-stepper-step>
@@ -36,7 +36,7 @@
             </v-card>
           </v-stepper-content>
 
-          <v-stepper-step @click="proceed(3)" :complete="e6 > 3" :step="3" editable>
+          <v-stepper-step :complete="e6 > 3" step="3" editable>
             Complete List of Ingredients
             <small>Please indicate one ingredient per data entry.</small>
           </v-stepper-step>
@@ -46,7 +46,7 @@
             </v-card>
           </v-stepper-content>
 
-          <v-stepper-step @click="proceed(4)" :complete="e6 > 4" step="4" editable>
+          <v-stepper-step :complete="e6 > 4" step="4" editable>
             Product Specifications
             <small>Ensure the completeness and accuracy of the details for the parameters and specifications in coherence with FDA Standards (eg, Philippine National Standards, Administrative Orders, and other relevant issuances)</small>
           </v-stepper-step>
@@ -61,7 +61,7 @@
             </v-card>
           </v-stepper-content>
 
-          <v-stepper-step @click="proceed(5)" :complete="e6 > 5" step="5" editable>
+          <v-stepper-step :complete="e6 > 5" step="5" editable>
             Shelf Life and Other information
             <small>The length of time that a commodity may be stored without becoming unfit for use, consumption, or sale.</small>
           </v-stepper-step>
@@ -400,6 +400,9 @@ export default {
       if (type.name == "Raw Material") {
         this.stp = 2;
         this.typ = false;
+      } else {
+        this.stp = 0;
+        this.typ = true;
       }
     },
     save() {

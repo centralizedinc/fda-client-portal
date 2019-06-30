@@ -9,25 +9,12 @@ export default class CertificateAPI {
     axios.defaults.headers.common['access_token'] = token;
   }
 
-  saveCertificate(data) {
-    console.log("save licenses data: " + JSON.stringify(data))
-    return axios.post('certificates/', data)
-  }
-
   getCertificates() {
     return axios.get('certificates/cases')
   }
 
   getCertificateByCaseNo(case_no) {
     return axios.get('certificates/case_no/' + case_no)
-  }
-
-  saveCertificate(data) {
-    console.log("save licenses data: " + JSON.stringify(data))
-    axios.post('certificates/', data).then(result => {
-      console.log("save certificates: " + JSON.stringify(result))
-      return result
-    })
   }
 
   getComplyCertificate() {
@@ -229,17 +216,6 @@ export default class CertificateAPI {
 
   renewCertificate(form) {
     console.log("renew certificate data: " + JSON.stringify(form))
-    // var certificate = {
-    //   certificate_no: form.certificate.certificate_no,
-    //   food_product: form.certificate.food_product,
-    //   establishment_info: form.certificate.establishment_info,
-    //   ingredients: form.certificate.ingredients,
-    //   product_specification: form.certificate.product_specification,
-    //   shelf: form.certificate.shelf,
-    //   nutrition_info: form.certificate.nutrition_info,
-    //   uploaded_files: form.certificate.uploaded_files,
-    //   output_files: form.certificate.output_files 
-    // }
     return axios.post('certificates/renewal', form)
   }
 

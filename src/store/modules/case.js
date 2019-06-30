@@ -1,12 +1,13 @@
 import CaseAPI from '../../api/CaseAPI';
 
-const state = {
+var initialState = {
     cases: [],
     complied: [],
     view_case: {},
     active_case_activities: []
-    // getCase: {}
 }
+
+const state = JSON.parse(JSON.stringify(initialState))
 
 const mutations = {
     SET_CASES(state, cases) {
@@ -15,14 +16,16 @@ const mutations = {
     SET_COMPLY(state, cases) {
         state.complied = cases;
     },
-    CLEAR_DATA(state) {
-        state.cases = [];
-    },
     SET_VIEW_CASE(state, case_details) {
         state.view_case = case_details
     },
     SET_ACTIVE_ACTIVITIES(state, activities) {
         state.active_case_activities = activities;
+    },
+    CLEAR_DATA(state) {
+        Object.keys(initialState).forEach(key => {
+            state[key] = initialState[key]
+        })
     }
     // SET_ONE_CASE(state, cases){
     //     state.getCase = cases;
@@ -49,8 +52,10 @@ var actions = {
     },
     GET_ONE_CASE(context, details) {
         return new Promise((resolve, reject) => {
-            new CaseAPI(context.rootState.user_session.token).getCaseByCaseNumber(details)
-                .then((result) => {
+            console.log('details :', details);
+            var action = new CaseAPI(context.rootState.user_session.token).getCaseByCaseNumber(details);
+            if(action){
+                action.then((result) => {
                     if (result.data.success) {
                         // context.commit('SET_ONE_CASE', result.data.model);
                         resolve(result.data.model)
@@ -62,6 +67,10 @@ var actions = {
                     console.log('err :', err);
                     reject(err)
                 });
+            } else {
+                console.log('Invalid details');
+                reject()
+            }
         })
     },
     GET_COMPLY(context) {

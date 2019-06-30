@@ -1,8 +1,10 @@
 
-var state = {
+var initialState = {
     notifications:[],
-    id:0,
+    id:0
 }
+
+const state = JSON.parse(JSON.stringify(initialState))
 
 var mutations = {
     ADD_NOTIFICATION: (state, payload)=>{
@@ -23,6 +25,11 @@ var mutations = {
     },
     REMOVE_NOTIFICATION: (state, payload)=>{
         state.notifications = [];
+    },
+    CLEAR_DATA(state) {
+      Object.keys(initialState).forEach(key => {
+        state[key] = initialState[key]
+      })
     }
 }
 

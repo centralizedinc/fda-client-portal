@@ -73,11 +73,7 @@ export default {
       console.log("add item claim data: " + JSON.stringify(this.form.claims));
     },
     proceed() {
-      if (this.validate()) {
-        this.$emit("next", 8);
-      } else {
-        this.$notifyError([{ message: "Fill-up required fields." }]);
-      }
+      this.$emit("next", 8);
     },
     cancel() {
       this.$emit("next", 6);
