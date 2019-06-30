@@ -34,7 +34,7 @@
                 <v-icon>far fa-minus-square</v-icon>
               </v-btn>Remove
             </v-tooltip>
-          </v-flex>        
+          </v-flex>
         </template>
       </v-layout>
     </v-container>
@@ -55,20 +55,22 @@ export default {
       required: value => !!value || "This field is required"
     }
   }),
-  created(){
-    this.init()
+  created() {
+    this.init();
   },
 
   methods: {
     addItem() {
-      console.log("add item claim first data: " + JSON.stringify(this.form.claims))
+      console.log(
+        "add item claim first data: " + JSON.stringify(this.form.claims)
+      );
       this.form.claims.push({
-        claim: this.claims,
-        desc: this.description
+        claim: "",
+        desc: ""
       });
-      this.claims = ""
-      this.description = ""
-      console.log("add item claim data: " + JSON.stringify(this.form.claims))
+      // this.claims = ""
+      // this.description = ""
+      console.log("add item claim data: " + JSON.stringify(this.form.claims));
     },
     proceed() {
       if (this.validate()) {
@@ -87,9 +89,12 @@ export default {
     removeItem(index) {
       this.form.claims.splice(index, 1);
     },
-    init(){
+    init() {
       // this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims
-      console.log("nutrition health claims data: " + JSON.stringify(this.nutrition_health_claims))
+      console.log(
+        "nutrition health claims data: " +
+          JSON.stringify(this.nutrition_health_claims)
+      );
     }
   }
 };

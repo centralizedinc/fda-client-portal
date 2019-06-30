@@ -142,9 +142,14 @@ var actions = {
             //     // var CaseApi = new CaseAPI(context.rootState.user_session.token);
             //     // CaseApi.uploadFile(comply)
             // })
-            return new CertificateAPI(context.rootState.user_session.token).applyCertificate(
-                certificate
-            );
+            // return 
+            new CertificateAPI(context.rootState.user_session.token).applyCertificate(
+                    certificate
+                )
+                .then(result => {
+                    console.log("save certificate data: " + JSON.stringify(result))
+                    resolve(result)
+                })
         })
     },
     GET_CERTIFICATE(context, refresh) {

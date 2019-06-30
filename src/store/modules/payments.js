@@ -56,6 +56,7 @@ const mutations = {
         state.providerDetails = details
     },
     SET_FORM(state, form) {
+        console.log("set form store data!!!")
         state.form = form
     }
 }

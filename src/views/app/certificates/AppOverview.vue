@@ -217,7 +217,7 @@
             name="name"
             label="Form"
             :value="form.product_specification.physical.form"
-          ></v-text-field> -->
+          ></v-text-field>-->
           <v-data-table
             :headers="[{text:'Product Specification', sortable: false},
             {text:'Parameter', sortable: false},
@@ -252,7 +252,12 @@
             label="Shelf Life Declaration (in Months)"
             :value="formatDate(form.shelf.declaration_date)"
           ></v-text-field>
-          <v-text-field readonly name="name" label="Type" :value="shelfLifeType(form.shelf.shelf_type).name"></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Type"
+            :value="shelfLifeType(form.shelf.shelf_type).name"
+          ></v-text-field>
           <v-text-field
             readonly
             name="name"
@@ -335,12 +340,11 @@
               <td>{{descNutri(props.item.type).name}}</td>
               <td>{{props.item.amount_per_serving}}</td>
               <td>{{props.item.percent}}%</td>
-              
             </template>
           </v-data-table>
         </v-card-text>
         <v-divider></v-divider>
-       
+
         <v-card-title primary-title>
           <span class="subheading font-weight-thin primary--text">Nutrition Health Claims</span>
           <v-spacer></v-spacer>
@@ -353,7 +357,12 @@
         </v-card-title>
         <v-divider></v-divider>
         <v-card-text v-if="show_part7">
-          <v-text-field readonly name="name" label="Claims" :value="healthClaims(form.claims.claims).name"></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Claims"
+            :value="healthClaims(form.claims.claims).name"
+          ></v-text-field>
           <v-text-field readonly name="name" label="Description" :value="form.claims.desc"></v-text-field>
         </v-card-text>
       </v-card>
@@ -393,7 +402,7 @@
         </v-flex>
 
         <v-flex xs12 pa-1>
-          <v-card>
+          <v-card v-if="!initial">
             <v-toolbar dark color="primary">
               Payments
               <v-spacer></v-spacer>
@@ -432,6 +441,26 @@
               Remaining Balance: ₱ {{formatCurrency(remainingBalance())}}
               <v-spacer></v-spacer>
             </v-footer>
+          </v-card>
+          <v-card v-else>
+            <v-toolbar dark color="primary">Certificate Fee</v-toolbar>
+            <v-card-text>
+              <v-data-table
+                :loading="isLoading"
+                :headers="[{text: 'Description', sortable:false}, {text: 'Amount', sortable:false}]"
+                :items="fees"
+                hide-actions
+              >
+                <template slot="items" slot-scope="props">
+                  <td>{{ props.item.description }}</td>
+                  <td>₱ {{ numberWithCommas (props.item.amount) }}</td>
+                </template>
+                <template slot="footer">
+                  <td>Total</td>
+                  <td class="font-weight-bold">₱ {{ numberWithCommas(total_amount) }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
           </v-card>
         </v-flex>
 
@@ -509,6 +538,27 @@
         </v-flex>
       </v-layout>
     </v-flex>
+    <!-- bootom sheet -->
+    <v-bottom-sheet persistent hide-overlay inset v-model="initial">
+      <v-card color="success">
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-content>
+              <v-list-tile-title>Initial Certificate</v-list-tile-title>
+              <v-list-tile-sub-title>Please review your certificate details before submitting.</v-list-tile-sub-title>
+            </v-list-tile-content>
+            <v-spacer></v-spacer>
+            <v-list-tile-action class="mr-2">
+              <v-btn outline color="primary" @click="cancelDialog">Cancel</v-btn>
+            </v-list-tile-action>
+            <v-list-tile-action>
+              <!-- <v-btn v-show="curr_step==1" color="primary" @click="curr_step=2">Next</v-btn> -->
+              <v-btn :loading="isLoading" color="primary" @click="save">Accept</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+        </v-list>
+      </v-card>
+    </v-bottom-sheet>
   </v-layout>
 </template>
 
@@ -521,6 +571,7 @@ export default {
   data() {
     return {
       loaded: false,
+      initial: false,
       show_part1: false,
       show_part2: false,
       show_part3: false,
@@ -543,7 +594,9 @@ export default {
       },
       case_details: {},
       payments: [],
-      transaction: []
+      transaction: [],
+      fees: [],
+      total_amount: 0
     };
   },
   created() {
@@ -552,8 +605,43 @@ export default {
   methods: {
     init() {
       this.form = this.$store.state.certificate.view;
-      console.log("app overview form data: " + JSON.stringify(this.form));
+      console.log(
+        "app overview form data: " +
+          JSON.stringify(this.$store.state.certificate.view)
+      );
       this.case_details = this.$store.state.certificate.cases;
+      var pay = this.$store.state.payments.fee;
+      console.log(
+        "get certificate fee: " + JSON.stringify(this.$store.state.payments.fee)
+      );
+      if (this.form.application_type == 0) {
+        this.initial = true;
+        this.fees.push({
+          description: "Application Fee",
+          amount: pay.fee
+        });
+        this.fees.push({
+          description: "LRF",
+          amount: pay.lrf
+        });
+        this.fees.push({
+          description: "Interest",
+          amount: pay.interest
+        }),
+          this.fees.push({
+            description: "Surcharge",
+            amount: pay.surcharge
+          });
+
+        this.total_amount = pay.fee + pay.lrf + pay.interest + pay.surcharge;
+        this.$notify({
+          color: "success",
+          message:
+            "Registration fee computed! For this application you will have to pay the amount of  ₱ " +
+            this.numberWithCommas(this.total_amount)
+        });
+      }
+
       // this.$store.dispatch("GET_CERTIFICATE_BY_CASE_NO");
       //get uploaded documents
       //     if (this.form.uploaded_files) {
@@ -673,6 +761,14 @@ export default {
       //       fee: 0.0
       //     });
       //     this.$router.push("/app/licenses/pay");
+    },
+    cancelDialog() {
+      this.$router.push("/app/certificates");
+    },
+    save() {
+      this.$store.dispatch("SAVE_CERTIFICATE", this.form).then(result => {
+        this.$router.push("/app/certificate/pay");
+      });
     }
   }
 };
