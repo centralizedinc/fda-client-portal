@@ -275,7 +275,7 @@ export default {
       // change claims to array nalang
       claims: [
         {
-          cliam: "",
+          claim: "",
           desc: ""
         }
       ],

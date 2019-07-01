@@ -34,13 +34,22 @@
           </v-tooltip>
         </v-toolbar>
         <v-flex xs12>
-          <v-data-table :headers="headers" :items="specs_list" hide-actions class="elevation-1">
+          <v-data-table
+            :headers="headers"
+            :items="form.product_specification"
+            hide-actions
+            class="elevation-1"
+          >
             <template slot="items" slot-scope="props">
-              <tr @click="viewItem(props.item, props.index)" style="cursor:pointer">
-                <td>{{productSpecs(props.item.prod_spec).name}}</td>
-                <td>{{getPhysicalParameter(props.item.parameter).name}}</td>
-                <td>{{props.item.specs}}</td>
-              </tr>
+              <!-- <tr @click="viewItem(props.item, props.index)" style="cursor:pointer"> -->
+              <td>{{productSpecs(props.item.type).name}}</td>
+              <td>{{getPhysicalParameter(props.item.parameter)}}</td>
+              <td>{{props.item.specification}}</td>
+              <td>
+                <v-icon small class="mr-2" @click="editItem(props.item, props.index)">edit</v-icon>
+                <v-icon small @click="deleteItem(props.index)">delete</v-icon>
+              </td>
+              <!-- </tr> -->
             </template>
           </v-data-table>
         </v-flex>
@@ -169,6 +178,7 @@ export default {
         value: "specs"
       }
     ],
+    editedIndex: -1,
     rules: {
       required: value => !!value || "This field is required"
     }
@@ -188,6 +198,7 @@ export default {
       this.$emit("next", 5);
     },
     cancel() {
+      this.editedIndex = -1;
       this.$emit("next", 3);
     },
     validate() {
@@ -236,20 +247,47 @@ export default {
       //   })
       //   console.log("save specs microbiological")
       // }
-      this.form.product_specification.push({
-        type: this.spec._id,
-        parameter: this.parameter,
-        specification: this.specification
-      });
+      if (this.editedIndex > -1) {
+        console.log("editedIndex!!!");
+        Object.assign(this.form.product_specification[this.editedIndex], {
+          type: this.spec._id,
+          parameter: this.parameter,
+          specification: this.specification
+        });
+        this.editedIndex = -1;
+        console.log(
+          "product specification data: " +
+            JSON.stringify(this.form.product_specification)
+        );
+      } else {
+        this.form.product_specification.push({
+          type: this.spec._id,
+          parameter: this.parameter,
+          specification: this.specification
+        });
+      }
+
       console.log(
         "product specification data: " +
           JSON.stringify(this.form.product_specification)
       );
-      this.specs_list.push({
-        prod_spec: this.spec._id,
-        parameter: this.parameter,
-        specs: this.specification
-      });
+      // this.specs_list.push({
+      //   prod_spec: this.spec._id,
+      //   parameter: this.parameter,
+      //   specs: this.specification
+      // });
+    },
+    editItem(item, index) {
+      console.log("editItem data: " + JSON.stringify(index));
+      this.editedIndex = this.form.product_specification.indexOf(item);
+      this.add = true;
+      this.dialogSpecs = true;
+      this.selected_specs = item.type;
+      this.parameter = item.parameter;
+      this.specification = item.specification;
+    },
+    deleteItem(index) {
+      this.form.product_specification.splice(index, 1);
     }
   },
   watch: {

@@ -73,6 +73,9 @@ export default {
       console.log("add item claim data: " + JSON.stringify(this.form.claims));
     },
     proceed() {
+      this.addItem();
+
+      console.log("check claims data: " + JSON.stringify(this.form.claims));
       this.$emit("next", 8);
     },
     cancel() {

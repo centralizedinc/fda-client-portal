@@ -223,7 +223,7 @@
           >
             <template slot="items" slot-scope="props">
               <td>{{productSpecs(props.item.type).name}}</td>
-              <td>{{getPhysicalParameter(props.item.parameter).name}}</td>
+              <td>{{getPhysicalParameter(props.item.parameter)}}</td>
               <td>{{props.item.specification}}</td>
             </template>
           </v-data-table>
