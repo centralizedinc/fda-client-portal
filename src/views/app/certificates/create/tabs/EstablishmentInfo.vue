@@ -20,7 +20,7 @@
           ></v-autocomplete>
         </v-flex>
         <!-- Source Type -->
-        <v-flex xs6>
+        <v-flex xs6 v-if="sourceType">
           <!-- v-model="form.establisment_info.type" -->
           <v-autocomplete
             color="green darken-1"
@@ -28,6 +28,8 @@
             outline
             hide-no-data
             hide-selected
+            :disabled="sourceType"
+            :value="form.establishment_info.type"
             label="Source Type"
             v-model="form.establishment_info.type"
             :items="source"
@@ -36,7 +38,7 @@
           ></v-autocomplete>
         </v-flex>
         <!-- Country Origin -->
-        <v-flex xs6>
+        <v-flex xs6 v-if="countryOrigin">
           <!-- v-model="form.establisment_info.origin_country" -->
           <v-autocomplete
             :rules="[rules.required]"
@@ -52,7 +54,7 @@
           ></v-autocomplete>
         </v-flex>
         <!-- Directly Source -->
-        <v-flex xs6>
+        <v-flex xs6 v-if="directlySourced">
           <!-- v-model="form.establisment_info.directly_source"
             :items="answer"
             item-text="name"
@@ -63,6 +65,7 @@
             color="green darken-1"
             hide-no-data
             hide-selected
+            value
             label="Directly Sourced?"
             v-model="form.establishment_info.directly_source"
             :items="answer"
@@ -71,7 +74,7 @@
           ></v-autocomplete>
         </v-flex>
         <!-- Documents Upload -->
-        <v-flex xs12>
+        <v-flex xs12 v-if="documentUpload">
           <v-toolbar
             dark
             class="sheetStyle elevation-10 mt-3 mb-4 subheading"
@@ -80,14 +83,15 @@
             width="calc(100% - 10px)"
           >Documents Upload</v-toolbar>
         </v-flex>
-        <v-flex xs6 class="pt-5 mt-3">
+        <v-flex xs6 class="pt-5 mt-3" v-if="documentUpload">
           <uploader @upload="upload"></uploader>
         </v-flex>
-        <v-flex xs6>
+        <!-- instruction -->
+        <v-flex xs6 v-if="instruction">
           <span
             class="caption font-weight-light"
           >Documentary Requirements/ Substantiation of Claims/ Product Label (Maximum upload file size 2MB)</span>
-          <span class="caption font-weight-light">
+          <span class="caption font-weight-light" v-if="!form.establishment_info.directly_source">
             For products sourced from supplier, upload ANY of the following scanned copy of the original documents:
             <ul>
               <li>Foreign Agency Agreement, or</li>
@@ -97,7 +101,17 @@
               <li>Memorandum of Agreement from each supplier</li>
             </ul>
           </span>
-          <br>
+          <span class="caption font-weight-light" v-if="form.establishment_info.directly_source">
+            For products sourced from the manufacturer, upload ANY of the following scanned copy of the original documents
+            <ul>
+              <li>Foreign Agency Agreement, or</li>
+              <li>Certificate of Distributorship, or</li>
+              <li>Appointment Letter, or</li>
+              <li>Proforma Invoice, or</li>
+              <li>Memorandum of Agreement from the manufacturer</li>
+            </ul>
+          </span>
+          <br />
           <span class="caption font-weight-light">
             AND ANY of the following documents issued by the Regulatory/ Health Authority/ Attested by recognized Association or duly authenticated by the Philippine Consulate from the country of origin:
             <ul>
@@ -111,8 +125,31 @@
             </ul>
           </span>
         </v-flex>
+        <!-- instruction 2 -->
+        <v-flex xs6 v-if="instruction2">
+          <span
+            class="caption font-weight-light"
+          >Documentary Requirements/ Substantiation of Claims/ Product Label (Maximum upload file size 2MB)</span>
+          <span class="caption font-weight-light">
+            For products sourced from supplier/manufacturer, upload ANY of the following scanned copy of the original documents:
+            <ul>
+              <li>Valid notarized distributorship agreement,</li>
+              <li>Letter of appointment between applicant and FDA-licensed source, or</li>
+              <li>Valid Certificate of Product Registration (CPR) of product to be distributed</li>
+            </ul>
+          </span>
+        </v-flex>
+        <!-- instruction 3 -->
+        <v-flex xs6 v-if="instruction3">
+          <span
+            class="caption font-weight-light"
+          >Documentary Requirements/ Substantiation of Claims/ Product Label (Maximum upload file size 2MB)</span>
+          <span
+            class="caption font-weight-light"
+          >For products sourced from toll manufacturer, upload the scanned copy of the Valid and notarized Toll Manufacturing and/or repacking agreement with FDA-licensed toll manufacturer and/or repacker</span>
+        </v-flex>
         <!-- Supplier -->
-        <v-flex xs6>
+        <v-flex xs6 v-if="supplier">
           <v-text-field
             color="green darken-1"
             :rules="[rules.required]"
@@ -121,7 +158,7 @@
             v-model="form.establishment_info.supplier_name"
           ></v-text-field>
         </v-flex>
-        <v-flex xs6>
+        <v-flex xs6 v-if="supplier">
           <v-text-field
             color="green darken-1"
             :rules="[rules.required]"
@@ -131,7 +168,7 @@
           ></v-text-field>
         </v-flex>
         <!-- Manufacturer -->
-        <v-flex xs6>
+        <v-flex xs6 v-if="manufacturer">
           <v-text-field
             color="green darken-1"
             :rules="[rules.required]"
@@ -140,7 +177,7 @@
             v-model="form.establishment_info.manufacturer_name"
           ></v-text-field>
         </v-flex>
-        <v-flex xs6>
+        <v-flex xs6 v-if="manufacturer">
           <v-text-field
             color="green darken-1"
             :rules="[rules.required]"
@@ -167,7 +204,16 @@ export default {
     isValid: true,
     uploadedFiles: [],
     form_data: null,
-
+    company_activity: "",
+    sourceType: false,
+    countryOrigin: false,
+    directlySourced: false,
+    instruction: false,
+    instruction2: false,
+    instruction3: false,
+    documentUpload: false,
+    supplier: false,
+    manufacturer: false,
     answer: [
       {
         name: "No",
@@ -188,6 +234,65 @@ export default {
         this.form.uploaded_files = val;
       },
       deep: true
+    },
+    "form.establishment_info.activity": function(val) {
+      // this.sourceType = true
+      //   this.countryOrigin = true
+      //   this.directlySourced = true
+      //   this.instruction = true
+      //   this.instruction2 = true
+      //   this.instruction3 = true
+      //   this.documentUpload = true
+      //   this.supplier = true
+      //   this.manufacturer = true
+      this.sourceType = false;
+      this.countryOrigin = false;
+      this.directlySourced = false;
+      this.instruction = false;
+      this.instruction2 = false;
+      this.instruction3 = false;
+      this.documentUpload = false;
+      this.supplier = false;
+      this.manufacturer = false;
+      this.form.establishment_info.type = "";
+      this.form.establishment_info.manufacturer_address = "";
+      this.form.establishment_info.origin_country = "";
+      this.form.establishment_info.directly_source = "";
+      this.form.establishment_info.supplier_name = "";
+      this.form.establishment_info.supplier_address = "";
+      this.form.establishment_info.manufacturer_name = "";
+      this.form.establishment_info.manufacturer_address = "";
+      console.log("estab info activity: " + JSON.stringify(val));
+      var activity = this.establishmentInfo(val).name;
+      if (activity == "Manufacturer") {
+      } else if (activity == "Importer, Distributor, Wholesaler") {
+        this.sourceType = true;
+        this.countryOrigin = true;
+        this.instruction = true;
+        this.directlySourced = true;
+        this.documentUpload = true;
+        console.log("source data: " + JSON.stringify(this.source));
+
+        this.form.establishment_info.directly_source = this.source[0]._id;
+        console.log();
+      } else if (activity == "Distributor, Wholesaler") {
+        this.directlySourced = true;
+        this.documentUpload = true;
+        this.instruction2 = true;
+      } else if (activity == "Trader") {
+        this.directlySourced = true;
+        this.instruction3 = true;
+        this.documentUpload = true;
+      }
+    },
+    "form.establishment_info.directly_source": function(val) {
+      if (val) {
+        this.supplier = false;
+        this.manufacturer = true;
+      } else {
+        this.supplier = true;
+        this.manufacturer = true;
+      }
     }
   },
   computed: {

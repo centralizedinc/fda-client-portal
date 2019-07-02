@@ -4,7 +4,7 @@
       <v-flex xs12>
         <v-progress-linear :value="completion" color="primary" background-color="primary"></v-progress-linear>
         <v-stepper v-model="e6" vertical>
-          <v-stepper-step @click="proceed(1)" :complete="e6 > 1" step="1" editable>
+          <v-stepper-step :complete="e6 > 1" step="1" editable>
             Food Product Application
             <small>Fill out all necessary information</small>
           </v-stepper-step>
@@ -20,7 +20,7 @@
             </v-card>
           </v-stepper-content>
 
-          <v-stepper-step @click="proceed(2)" :complete="e6 > 2" step="2" editable>
+          <v-stepper-step :complete="e6 > 2" step="2" editable>
             Establishment Information
             <small>Select the corresponding company activity/activities</small>
           </v-stepper-step>
@@ -36,7 +36,7 @@
             </v-card>
           </v-stepper-content>
 
-          <v-stepper-step @click="proceed(3)" :complete="e6 > 3" step="3" editable>
+          <v-stepper-step :complete="e6 > 3" step="3" editable>
             Complete List of Ingredients
             <small>Please indicate one ingredient per data entry.</small>
           </v-stepper-step>
@@ -46,7 +46,7 @@
             </v-card>
           </v-stepper-content>
 
-          <v-stepper-step @click="proceed(4)" :complete="e6 > 4" step="4" editable>
+          <v-stepper-step :complete="e6 > 4" step="4" editable>
             Product Specifications
             <small>Ensure the completeness and accuracy of the details for the parameters and specifications in coherence with FDA Standards (eg, Philippine National Standards, Administrative Orders, and other relevant issuances)</small>
           </v-stepper-step>
@@ -61,7 +61,7 @@
             </v-card>
           </v-stepper-content>
 
-          <v-stepper-step @click="proceed(5)" :complete="e6 > 5" step="5" editable>
+          <v-stepper-step :complete="e6 > 5" step="5" editable>
             Shelf Life and Other information
             <small>The length of time that a commodity may be stored without becoming unfit for use, consumption, or sale.</small>
           </v-stepper-step>
@@ -71,7 +71,7 @@
             </v-card>
           </v-stepper-content>
 
-          <v-stepper-step @click="proceed(6)" :complete="e6> 6" step="6" editable>
+          <v-stepper-step @click="proceed(6)" :complete="e6> 6" v-if="typ" step="6" editable>
             Nutrition Information
             <small>Vitamins and Minerals shall be declared as applicable to product claims.</small>
             <small>Click the table to input the corresponding fields and hit enter or save.</small>
@@ -88,7 +88,7 @@
             </v-card>
           </v-stepper-content>
 
-          <v-stepper-step @click="proceed(7)" :complete="e6 > 7" step="7" editable>
+          <v-stepper-step @click="proceed(7)" :complete="e6 > 7" v-if="typ" step="7" editable>
             Nutrition Health Claims
             <small>Select which to claim. Add new if necessary.</small>
           </v-stepper-step>
@@ -102,7 +102,7 @@
             </v-card>
           </v-stepper-content>
 
-          <v-stepper-step @click="proceed(8)" :complete="e6 > 8" step="8" editable>
+          <v-stepper-step @click="proceed(8)" :complete="e6 > 8" :step="8 - stp" editable>
             Document Upload
             <small>Please upload documents to determine conformance to the standard/s of product identity. For food supplement (if applicable), please upload safety data (e.g. LD50 toxicity tests). For the list of standards or issuances (e.g. PNS, Codex standards, FDA Issuances, local or international standards) please refer to the CFRR Product Registration Manual of Procedure/ Handbook.</small>
           </v-stepper-step>
@@ -176,6 +176,9 @@ export default {
   data: () => ({
     e6: 1,
     loading: false,
+    stp: 0,
+    typ: true,
+    total_amount: 0,
     confirmDialog: false,
     food_product: [],
     category: [],
@@ -190,6 +193,7 @@ export default {
     physical_parameter: [],
     company_activity: [],
     cert_form: {
+      application_type: 0,
       //   general_info: {
       //     application_type: 0,
       //     for_ammendment_renewal: {
@@ -271,7 +275,7 @@ export default {
       // change claims to array nalang
       claims: [
         {
-          cliam: "",
+          claim: "",
           desc: ""
         }
       ],
@@ -382,6 +386,7 @@ export default {
       this.tab = 0;
     },
     proceed(step) {
+      console.log("procced");
       if (this.$refs.curr_step.validate()) {
         this.e1 = step;
       } else {
@@ -390,52 +395,68 @@ export default {
     },
     next(page) {
       this.e6 = page;
+      var type = this.foodProductType(this.cert_form.food_product.type);
+      console.log("next type data: " + JSON.stringify(type));
+      if (type.name == "Raw Material") {
+        this.stp = 2;
+        this.typ = false;
+      } else {
+        this.stp = 0;
+        this.typ = true;
+      }
     },
     save() {
-      // this.cert_form.
       this.showAppOverview = false;
       this.confirmDialog = true;
 
-      console.log("submit clicked: " + JSON.stringify(this.cert_form));
-      this.$store.dispatch("SAVE_CERTIFICATE", this.cert_form);
-      var details = {
-        application_type: 2,
+      console.log(
+        "submit clicked: " + JSON.stringify(this.cert_form.food_product.type)
+      );
+      // this.$store
+      //   .dispatch("SAVE_CERTIFICATE", this.cert_form)
+      //   .then(result => {
+      //     console.log("save certificate result: " + JSON.stringify(result));
+      //     var payDetails = {
+      //       application_type: 0,
+      //       product_type: this.cert_form.food_product.type
+      //     };
+      //     return this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails);
+      //   })
+      var payDetails = {
+        application_type: 0,
         product_type: this.cert_form.food_product.type
       };
-      this.$store
-        .dispatch("GET_CERTIFICATE_FEES", details)
-        .then(result => {
-          console.log("get certificate fees: " + JSON.stringify(result));
-          this.fees = [];
+      this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails).then(result => {
+        console.log("get certificate fees: " + JSON.stringify(result));
+        this.fees = [];
+        this.fees.push({
+          description: "Application Fee",
+          amount: result.fee
+        });
+        this.fees.push({
+          description: "LRF",
+          amount: result.lrf
+        });
+        this.fees.push({
+          description: "Interest",
+          amount: result.interest
+        }),
           this.fees.push({
-            description: "Application Fee",
-            amount: result.fee
+            description: "Surcharge",
+            amount: result.surcharge
           });
-          this.fees.push({
-            description: "LRF",
-            amount: result.lrf
-          });
-          this.fees.push({
-            description: "Interest",
-            amount: result.interest
-          }),
-            this.fees.push({
-              description: "Surcharge",
-              amount: result.surcharge
-            });
-
-          this.total_amount =
-            result.fee + result.lrf + result.interest + result.surcharge;
-          this.$notify({
-            color: "success",
-            message:
-              "Registration fee computed! For this application you will have to pay the amount of  ₱ " +
-              this.numberWithCommas(this.total_amount)
-          });
-        })
-        .catch(err => {});
-      // this.$router.push("/app/certificates/overview");
-      this.$router.push("/app/certificate/pay");
+        this.total_amount =
+          result.fee + result.lrf + result.interest + result.surcharge;
+        this.$store.commit("SET_VIEW_CERTIFICATE", this.cert_form);
+        this.$store.commit("SET_FORM", this.cert_form);
+        this.$router.push("/app/certificates/overview");
+        this.$notify({
+          color: "success",
+          message:
+            "Registration fee computed! For this application you will have to pay the amount of  ₱ " +
+            this.numberWithCommas(this.total_amount)
+        });
+      });
     }
   },
   computed: {

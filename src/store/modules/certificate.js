@@ -2,7 +2,7 @@ import CertificateAPI from "../../api/CertificateApi";
 // import FoodCertificateApi from "../../api/FoodCertificateApi";
 import CaseAPI from '../../api/CaseAPI';
 
-const state = {
+var initialState = {
     certificates: [],
     cases: [],
     init_form: {
@@ -115,6 +115,8 @@ const state = {
     renew_certificate: []
 };
 
+const state = JSON.parse(JSON.stringify(initialState))
+
 const mutations = {
     SET_CERTIFICATE(state, certificates) {
         state.certificates = certificates;
@@ -128,6 +130,11 @@ const mutations = {
     },
     SET_RENEW_CERTIFICATE(state, certificate) {
         state.view = certificate
+    },
+    CLEAR_DATA(state) {
+        Object.keys(initialState).forEach(key => {
+            state[key] = initialState[key]
+        })
     }
 };
 
@@ -142,9 +149,14 @@ var actions = {
             //     // var CaseApi = new CaseAPI(context.rootState.user_session.token);
             //     // CaseApi.uploadFile(comply)
             // })
-            return new CertificateAPI(context.rootState.user_session.token).applyCertificate(
-                certificate
-            );
+            // return 
+            new CertificateAPI(context.rootState.user_session.token).applyCertificate(
+                    certificate
+                )
+                .then(result => {
+                    console.log("save certificate data: " + JSON.stringify(result))
+                    resolve(result)
+                })
         })
     },
     GET_CERTIFICATE(context, refresh) {

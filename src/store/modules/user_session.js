@@ -6,7 +6,7 @@ import UserAPI from "@/api/UserAPI";
 import PasswordApi from '../../api/PasswordAPI';
 import ProductAPI from "../../api/ProductApi";
 
-const state = {
+var initialState = {
   isAuthenticated: false,
   token: null,
   user: {},
@@ -14,17 +14,14 @@ const state = {
   registration_details: {}
 };
 
+const state = JSON.parse(JSON.stringify(initialState))
+
 const mutations = {
   LOGIN: function (state, payload) {
     state.user = payload.user;
     state.token = payload.token;
     state.isAuthenticated = payload.isMatch;
     new UserAPI(payload.token);
-  },
-  LOGOUT: function (state) {
-    state.user = {};
-    state.token = false;
-    state.isAuthenticated = false;
   },
   CURRENT_TASK: function (state, payload) {
     state.task = payload;
@@ -34,6 +31,11 @@ const mutations = {
   },
   UPDATE_USER: (state, user) => {
     state.user = user;
+  },
+  CLEAR_DATA(state) {
+    Object.keys(initialState).forEach(key => {
+      state[key] = initialState[key]
+    })
   }
 };
 
@@ -100,9 +102,8 @@ var actions = {
    * @description remove user session and breadcrumbs history stored in cache
    */
   LOGOUT: (context) => {
+    console.log('Logging out...');
     context.commit("CLEAR_DATA")
-    context.commit('LOGOUT')
-    context.commit('PICKUP_BREADCRUMBS')
   },
 
   /**

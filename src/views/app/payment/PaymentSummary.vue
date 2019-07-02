@@ -246,8 +246,7 @@ export default {
     init() {
       console.log("FORM: " + JSON.stringify(this.$store.state.payments.form));
       this.app_form = this.deepCopy(this.$store.state.payments.form);
-      // original .form ? if it will affect license payment if changed to .fee
-      this.form = this.deepCopy(this.$store.state.payments.fee);
+      this.form = this.deepCopy(this.$store.state.payments.form);
       this.$store
         .dispatch("GET_ONE_CASE", {
           case_no: this.form.case_no,

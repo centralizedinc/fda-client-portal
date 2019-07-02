@@ -1,11 +1,13 @@
 import PlacesApi from '../../api/PlacesApi';
 
-const state = {
+var initialState = {
     regions: [],
     provinces: [],
     city: [],
     origin: [],
 }
+
+const state = JSON.parse(JSON.stringify(initialState))
 
 const mutations = {
     //SET REGION
@@ -26,9 +28,9 @@ const mutations = {
         state.origin = data
     },
     CLEAR_DATA(state) {
-        state.regions = []
-        state.provinces = []
-        state.city = []
+      Object.keys(initialState).forEach(key => {
+        state[key] = initialState[key]
+      })
     }
 }
 

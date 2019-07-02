@@ -56,136 +56,139 @@ export default class CertificateAPI {
             return axios.all(docs)
           } else {
             console.log("save cert data failed!!!")
-            resolve(save_cert.data)
+            // resolve(save_cert.data)
           }
         })
         .then(axios.spread(function (result1, result2, result3, result4, result5, result6) {
           var uploads = []
-          for (var x = 0; x <= output_files.length; x++) {
-            if (x === 0) {
-              result1.data.model.forEach(element => {
-                console.log("this element data 1: " + JSON.stringify(output_files[x].type))
-                // element.type = output_files[x].type
-                // element.originalname = output_files[x].originalname
-                // element.mimetype = output_files[x].mimetype
-                // element.contentType = output_files[x].mimetype
-                // element.location = output_files[x].location
-                // element.key = output_files[x].key
-                save_certificate.uploaded_files.push({
-                  file_type: output_files[x].type,
-                  originalname: element.originalname,
-                  mimetype: element.mimetype,
-                  contentType: element.contentType,
-                  location: element.location,
-                  key: element.key,
-                })
-              });
-              // save_certificate.uploaded_files.push(result1.data.model)
-              // result1.data.type = output_files[x].type
-            } else if (x === 1) {
-              result2.data.model.forEach(element => {
-                console.log("this element data 2: " + JSON.stringify(element))
-                // element.type = output_files[x].type
-                save_certificate.uploaded_files.push({
-                  // file_type: output_files[x].type,
-                  // originalname: output_files[x].originalname,
-                  // mimetype: output_files[x].mimetype,
-                  // contentType: output_files[x].mimetype,
-                  // location: output_files[x].location,
-                  // key: output_files[x].key,
-                  file_type: output_files[x].type,
-                  originalname: element.originalname,
-                  mimetype: element.mimetype,
-                  contentType: element.contentType,
-                  location: element.location,
-                  key: element.key,
-                })
-              });
-              // save_certificate.uploaded_files.push(result2.data.model)
-              // result2.data.type = output_files[x].type
-            } else if (x === 2) {
-              result3.data.model.forEach(element => {
-                console.log("this element data 3: " + JSON.stringify(element))
-                // element.type = output_files[x].type
-                save_certificate.uploaded_files.push({
-                  // file_type: output_files[x].type,
-                  // originalname: output_files[x].originalname,
-                  // mimetype: output_files[x].mimetype,
-                  // contentType: output_files[x].mimetype,
-                  // location: output_files[x].location,
-                  // key: output_files[x].key,
-                  file_type: output_files[x].type,
-                  originalname: element.originalname,
-                  mimetype: element.mimetype,
-                  contentType: element.contentType,
-                  location: element.location,
-                  key: element.key,
-                })
-              });
-              // save_certificate.uploaded_files.push(result3.data.model)
-              // result3.data.type = output_files[x].type
-            } else if (x === 3) {
-              result4.data.model.forEach(element => {
-                console.log("this element data 4: " + JSON.stringify(element))
-                // element.type = output_files[x].type
-                save_certificate.uploaded_files.push({
-                  // file_type: output_files[x].type,
-                  // originalname: output_files[x].originalname,
-                  // mimetype: output_files[x].mimetype,
-                  // contentType: output_files[x].mimetype,
-                  // location: output_files[x].location,
-                  // key: output_files[x].key,
-                  file_type: output_files[x].type,
-                  originalname: element.originalname,
-                  mimetype: element.mimetype,
-                  contentType: element.contentType,
-                  location: element.location,
-                  key: element.key,
-                })
-              });
-              // save_certificate.uploaded_files.push(result4.data.model)
-            } else if (x === 4) {
-              result5.data.model.forEach(element => {
-                console.log("this element data 5: " + JSON.stringify(element))
-                // element.type = output_files[x].type
-                save_certificate.uploaded_files.push({
-                  // file_type: output_files[x].type,
-                  // originalname: output_files[x].originalname,
-                  // mimetype: output_files[x].mimetype,
-                  // contentType: output_files[x].mimetype,
-                  // location: output_files[x].location,
-                  // key: output_files[x].key,
-                  file_type: output_files[x].type,
-                  originalname: element.originalname,
-                  mimetype: element.mimetype,
-                  contentType: element.contentType,
-                  location: element.location,
-                  key: element.key,
-                })
-              });
-              // save_certificate.uploaded_files.push(result5.data.model)
-            } else if (x === 5) {
-              result6.data.model.forEach(element => {
-                console.log("this element data 6: " + JSON.stringify(element))
-                // element.type = output_files[x].type
-                save_certificate.uploaded_files.push({
-                  // file_type: output_files[x].type,
-                  // originalname: output_files[x].originalname,
-                  // mimetype: output_files[x].mimetype,
-                  // contentType: output_files[x].mimetype,
-                  // location: output_files[x].location,
-                  // key: output_files[x].key,
-                  file_type: output_files[x].type,
-                  originalname: element.originalname,
-                  mimetype: element.mimetype,
-                  contentType: element.contentType,
-                  location: element.location,
-                  key: element.key,
-                })
-              });
-              // save_certificate.uploaded_files.push(result6.data.model)
+          if (output_files.length != 0) {
+            for (var x = 0; x <= output_files.length; x++) {
+              if (x === 0) {
+                result1.data.model.forEach(element => {
+                  console.log("this element data 1: " + JSON.stringify(output_files[x].type))
+                  // element.type = output_files[x].type
+                  // element.originalname = output_files[x].originalname
+                  // element.mimetype = output_files[x].mimetype
+                  // element.contentType = output_files[x].mimetype
+                  // element.location = output_files[x].location
+                  // element.key = output_files[x].key
+                  save_certificate.uploaded_files.push({
+                    file_type: output_files[x].type,
+                    originalname: element.originalname,
+                    mimetype: element.mimetype,
+                    contentType: element.contentType,
+                    location: element.location,
+                    key: element.key,
+                  })
+                });
+                // save_certificate.uploaded_files.push(result1.data.model)
+                // result1.data.type = output_files[x].type
+              } else if (x === 1) {
+                result2.data.model.forEach(element => {
+                  console.log("this element data 2: " + JSON.stringify(element))
+                  // element.type = output_files[x].type
+                  save_certificate.uploaded_files.push({
+                    // file_type: output_files[x].type,
+                    // originalname: output_files[x].originalname,
+                    // mimetype: output_files[x].mimetype,
+                    // contentType: output_files[x].mimetype,
+                    // location: output_files[x].location,
+                    // key: output_files[x].key,
+                    file_type: output_files[x].type,
+                    originalname: element.originalname,
+                    mimetype: element.mimetype,
+                    contentType: element.contentType,
+                    location: element.location,
+                    key: element.key,
+                  })
+                });
+                // save_certificate.uploaded_files.push(result2.data.model)
+                // result2.data.type = output_files[x].type
+              } else if (x === 2) {
+                result3.data.model.forEach(element => {
+                  console.log("this element data 3: " + JSON.stringify(element))
+                  // element.type = output_files[x].type
+                  save_certificate.uploaded_files.push({
+                    // file_type: output_files[x].type,
+                    // originalname: output_files[x].originalname,
+                    // mimetype: output_files[x].mimetype,
+                    // contentType: output_files[x].mimetype,
+                    // location: output_files[x].location,
+                    // key: output_files[x].key,
+                    file_type: output_files[x].type,
+                    originalname: element.originalname,
+                    mimetype: element.mimetype,
+                    contentType: element.contentType,
+                    location: element.location,
+                    key: element.key,
+                  })
+                });
+                // save_certificate.uploaded_files.push(result3.data.model)
+                // result3.data.type = output_files[x].type
+              } else if (x === 3) {
+                result4.data.model.forEach(element => {
+                  console.log("this element data 4: " + JSON.stringify(element))
+                  // element.type = output_files[x].type
+                  save_certificate.uploaded_files.push({
+                    // file_type: output_files[x].type,
+                    // originalname: output_files[x].originalname,
+                    // mimetype: output_files[x].mimetype,
+                    // contentType: output_files[x].mimetype,
+                    // location: output_files[x].location,
+                    // key: output_files[x].key,
+                    file_type: output_files[x].type,
+                    originalname: element.originalname,
+                    mimetype: element.mimetype,
+                    contentType: element.contentType,
+                    location: element.location,
+                    key: element.key,
+                  })
+                });
+                // save_certificate.uploaded_files.push(result4.data.model)
+              } else if (x === 4) {
+                result5.data.model.forEach(element => {
+                  console.log("this element data 5: " + JSON.stringify(element))
+                  // element.type = output_files[x].type
+                  save_certificate.uploaded_files.push({
+                    // file_type: output_files[x].type,
+                    // originalname: output_files[x].originalname,
+                    // mimetype: output_files[x].mimetype,
+                    // contentType: output_files[x].mimetype,
+                    // location: output_files[x].location,
+                    // key: output_files[x].key,
+                    file_type: output_files[x].type,
+                    originalname: element.originalname,
+                    mimetype: element.mimetype,
+                    contentType: element.contentType,
+                    location: element.location,
+                    key: element.key,
+                  })
+                });
+                // save_certificate.uploaded_files.push(result5.data.model)
+              } else if (x === 5) {
+                result6.data.model.forEach(element => {
+                  console.log("this element data 6: " + JSON.stringify(element))
+                  // element.type = output_files[x].type
+                  save_certificate.uploaded_files.push({
+                    // file_type: output_files[x].type,
+                    // originalname: output_files[x].originalname,
+                    // mimetype: output_files[x].mimetype,
+                    // contentType: output_files[x].mimetype,
+                    // location: output_files[x].location,
+                    // key: output_files[x].key,
+                    file_type: output_files[x].type,
+                    originalname: element.originalname,
+                    mimetype: element.mimetype,
+                    contentType: element.contentType,
+                    location: element.location,
+                    key: element.key,
+                  })
+                });
+                // save_certificate.uploaded_files.push(result6.data.model)
+              }
             }
           }
+
           console.log("uploads data: " + JSON.stringify(uploads))
           // console.log('result1.data :', result1.data);
           // console.log('result2.data :', result2.data);
@@ -199,6 +202,7 @@ export default class CertificateAPI {
         }))
         .then(new_cert => {
           console.log("this is new cert data: " + JSON.stringify(new_cert))
+          resolve(new_cert.data.model)
         })
         .catch((err) => {
           reject(err)

@@ -2,7 +2,7 @@ import PaymentAPI from '../../api/PaymentApi';
 import LicenseAPI from '../../api/LicenseApi';
 import CertificateAPI from '../../api/CertificateApi'
 
-const state = {
+var initialState = {
     credit_card: null,
     cvv: null,
     expiry: null,
@@ -14,6 +14,8 @@ const state = {
     providerDetails: null,
     form: {}
 }
+
+const state = JSON.parse(JSON.stringify(initialState))
 
 const mutations = {
     CREDIT_CARD(state, form) {
@@ -56,7 +58,13 @@ const mutations = {
         state.providerDetails = details
     },
     SET_FORM(state, form) {
+        console.log("set form store data!!!")
         state.form = form
+    },
+    CLEAR_DATA(state) {
+      Object.keys(initialState).forEach(key => {
+        state[key] = initialState[key]
+      })
     }
 }
 

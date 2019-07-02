@@ -1,9 +1,11 @@
 import ReferenceAPI from '../../api/ReferenceAPI';
 
-const state = {
+var initialState = {
     id_types: [],
     designations: []
 }
+
+const state = JSON.parse(JSON.stringify(initialState))
 
 const mutations = {
     INITIALIZE(state, token) {
@@ -17,9 +19,10 @@ const mutations = {
     SET_DESIGNATIONS(state, data) {
         state.designations = data;
     },
-    CLEAR_REFERENCES(state) {
-        state.id_types = [];
-        state.designations = [];
+    CLEAR_DATA(state) {
+      Object.keys(initialState).forEach(key => {
+        state[key] = initialState[key]
+      })
     }
 }
 

@@ -1,182 +1,162 @@
 <template>
-<v-container grid-list-md>
+  <v-container grid-list-md>
     <v-layout row wrap>
-        <v-flex xs12 md8 pa-1 v-if="show_page(1)">
-            <v-card>
-                <v-toolbar dark color="primary">
-                    Select variation category then click next
-                </v-toolbar>
-                <v-progress-linear v-show="isLoading" :indeterminate="true"></v-progress-linear>
-                <v-card-text v-show="!isLoading">
-                    <v-checkbox 
-                        color="primary"
-                        v-for="(item, index) in variations" 
-                        :key="index"
-                        :label="item.description" 
-                        v-model="selected_variations"
-                        :value="item.code">
-                    </v-checkbox>
-                </v-card-text>
-            </v-card>
-        </v-flex>
-        
-        <v-flex xs12 md8 pa-1 v-else-if="show_page(2)">
-            <v-card class="ma-1" v-if="show_section('VR1')">
-                <v-toolbar dark color="primary">
-                  {{variations[0].description}}
-               </v-toolbar>
-               <v-card-text>
-                   <v-text-field
-                       label="Brand Name"
-                       v-model="form.food_product.brand_name"
-                       outline
-                   ></v-text-field>
-               </v-card-text>
-            </v-card>
-            
-            <v-card class="ma-1" v-if="show_section('VR2')">
-                <v-toolbar dark color="primary">
-                  {{variations[1].description}}
-               </v-toolbar>
-               <v-card-text>
-                   <v-text-field
-                       label="Product Name"
-                       v-model="form.food_product.product_name"
-                       outline
-                   ></v-text-field>
-               </v-card-text>
-            </v-card>
-            
-            <!-- Company Name -->
-            <v-card class="ma-1" v-if="show_section('VR3')">
-                <v-toolbar dark color="primary">
-                  {{variations[2].description}}
-               </v-toolbar>
-               <v-card-text>
-                   <v-text-field
-                       label="Company Name"
-                       v-model="form.food_product.company"
-                       outline
-                   ></v-text-field>
-               </v-card-text>
-            </v-card>
+      <v-flex xs12 md8 pa-1 v-if="show_page(1)">
+        <v-card>
+          <v-toolbar dark color="primary">Select variation category then click next</v-toolbar>
+          <v-progress-linear v-show="isLoading" :indeterminate="true"></v-progress-linear>
+          <v-card-text v-show="!isLoading">
+            <v-checkbox
+              color="primary"
+              v-for="(item, index) in variations"
+              :key="index"
+              :label="item.description"
+              v-model="selected_variations"
+              :value="item.code"
+            ></v-checkbox>
+          </v-card-text>
+        </v-card>
+      </v-flex>
 
-            <v-card class="ma-1" v-if="show_section('VR4')">
-                <v-toolbar dark color="primary">
-                  {{variations[3].description}}
-               </v-toolbar>
-               <v-card-text>
-                   <v-text-field
-                       label="Supplier Name"
-                       v-model="form.establishment_info.supplier_name"
-                       outline
-                   ></v-text-field>
-                   <v-text-field
-                       label="Supplier Address"
-                       v-model="form.establishment_info.supplier_address"
-                       outline
-                   ></v-text-field>
-               </v-card-text>
-            </v-card>
+      <v-flex xs12 md8 pa-1 v-else-if="show_page(2)">
+        <v-card class="ma-1" v-if="show_section('VR1')">
+          <v-toolbar dark color="primary">{{variations[0].description}}</v-toolbar>
+          <v-card-text>
+            <v-text-field label="Brand Name" v-model="form.food_product.brand_name" outline></v-text-field>
+          </v-card-text>
+        </v-card>
 
-            <v-card class="ma-1" v-if="show_section('VR5')">
-                <v-toolbar dark color="primary">
-                  {{variations[4].description}}
-               </v-toolbar>
-               <v-card-text>
-                   <span class="caption">*eg. Glass Bottle; Polyethylene Terephthalate (PET); Polyethylene; Polypropylene; Cellophane; Paper (such as Glassine, Vegetable Parchment); Can coated with Oleoresinous, Phenolic, Epoxy or Vinyl; Polyamide;Aluminum; etc</span>
-                   <v-text-field
-                       label="Product Commercial Presentation"
-                       v-model="form.shelf.packaging_material"
-                       outline
-                   ></v-text-field>
-               </v-card-text>
-            </v-card>
-            
-            <v-card class="ma-1" v-if="show_section('VR6')">
-                <v-toolbar dark color="primary">
-                  {{variations[5].description}}
-               </v-toolbar>
-               <v-card-text>
-                    <span class="caption">*eg. Individually Wrapped in Pillow Packs inside Laminated Plastic Pack, In Bottle, In Box, In 90g (2sachets x 45g) carton box</span>
-                    <v-text-field
-                       label="Product Commercial Presentation"
-                       v-model="form.shelf.description"
-                       outline
-                    ></v-text-field>
-               </v-card-text>
-            </v-card>
-            
-            <v-card class="ma-1" v-if="show_section('VR7')">
-                <v-toolbar dark color="primary">
-                  {{variations[6].description}}
-               </v-toolbar>
-               <v-card-text>
-                   <span class="caption">*For Alcoholic Beverages without Shelf Life, indicate 0 (Zero)</span>
-                   <v-text-field
-                       label="Shelf Life Declaration (in Months)"
-                       v-model="form.shelf.declaration_date"
-                       outline
-                    ></v-text-field>
-               </v-card-text>
-            </v-card>
+        <v-card class="ma-1" v-if="show_section('VR2')">
+          <v-toolbar dark color="primary">{{variations[1].description}}</v-toolbar>
+          <v-card-text>
+            <v-text-field label="Product Name" v-model="form.food_product.product_name" outline></v-text-field>
+          </v-card-text>
+        </v-card>
 
-            <v-card class="ma-1" v-if="show_section('VR8')">
-                <v-toolbar dark color="primary">
-                  {{variations[7].description}}
-               </v-toolbar>
-               <v-card-text>
-                <uploader @upload="uploadFile"></uploader>
-               </v-card-text>
-            </v-card>
-        </v-flex>
-        
-        <v-flex xs12 md4 pa-1>
-            <v-card >
-                <v-toolbar dark color="primary">
-                    Variation Fee
-                </v-toolbar>
-                <v-card-text>
-                    <v-data-table
-                        :loading="isLoading"
-                        :headers="[{text: 'Description', sortable:false}, {text: 'Amount', sortable:false}]"
-                        :items="fees"
-                        hide-actions>
-                        <template slot="items" slot-scope="props">
-                            <td>{{ props.item.description }}</td>
-                            <td>₱ {{ numberWithCommas (props.item.amount) }}</td>
-                        </template>
-                        <template slot="footer">
-                            <td >Total</td>
-                            <td class="font-weight-bold" >₱ {{ numberWithCommas(total_amount) }}</td> 
-                        </template>
-                    </v-data-table>                     
-                </v-card-text>
-            </v-card>
-        </v-flex>
+        <!-- Company Name -->
+        <v-card class="ma-1" v-if="show_section('VR3')">
+          <v-toolbar dark color="primary">{{variations[2].description}}</v-toolbar>
+          <v-card-text>
+            <v-text-field label="Company Name" v-model="form.food_product.company" outline></v-text-field>
+          </v-card-text>
+        </v-card>
+
+        <v-card class="ma-1" v-if="show_section('VR4')">
+          <v-toolbar dark color="primary">{{variations[3].description}}</v-toolbar>
+          <v-card-text>
+            <v-text-field
+              label="Supplier Name"
+              v-model="form.establishment_info.supplier_name"
+              outline
+            ></v-text-field>
+            <v-text-field
+              label="Supplier Address"
+              v-model="form.establishment_info.supplier_address"
+              outline
+            ></v-text-field>
+          </v-card-text>
+        </v-card>
+
+        <v-card class="ma-1" v-if="show_section('VR5')">
+          <v-toolbar dark color="primary">{{variations[4].description}}</v-toolbar>
+          <v-card-text>
+            <span
+              class="caption"
+            >*eg. Glass Bottle; Polyethylene Terephthalate (PET); Polyethylene; Polypropylene; Cellophane; Paper (such as Glassine, Vegetable Parchment); Can coated with Oleoresinous, Phenolic, Epoxy or Vinyl; Polyamide;Aluminum; etc</span>
+            <v-text-field
+              label="Product Commercial Presentation"
+              v-model="form.shelf.packaging_material"
+              outline
+            ></v-text-field>
+          </v-card-text>
+        </v-card>
+
+        <v-card class="ma-1" v-if="show_section('VR6')">
+          <v-toolbar dark color="primary">{{variations[5].description}}</v-toolbar>
+          <v-card-text>
+            <span
+              class="caption"
+            >*eg. Individually Wrapped in Pillow Packs inside Laminated Plastic Pack, In Bottle, In Box, In 90g (2sachets x 45g) carton box</span>
+            <v-text-field
+              label="Product Commercial Presentation"
+              v-model="form.shelf.description"
+              outline
+            ></v-text-field>
+          </v-card-text>
+        </v-card>
+
+        <v-card class="ma-1" v-if="show_section('VR7')">
+          <v-toolbar dark color="primary">{{variations[6].description}}</v-toolbar>
+          <v-card-text>
+            <span class="caption">*For Alcoholic Beverages without Shelf Life, indicate 0 (Zero)</span>
+            <v-text-field
+              label="Shelf Life Declaration (in Months)"
+              v-model="form.shelf.declaration_date"
+              outline
+            ></v-text-field>
+          </v-card-text>
+        </v-card>
+
+        <v-card class="ma-1" v-if="show_section('VR8')">
+          <v-toolbar dark color="primary">{{variations[7].description}}</v-toolbar>
+          <v-card-text>
+            <uploader @upload="uploadFile"></uploader>
+          </v-card-text>
+        </v-card>
+      </v-flex>
+
+      <v-flex xs12 md4 pa-1>
+        <v-card>
+          <v-toolbar dark color="primary">Variation Fee</v-toolbar>
+          <v-card-text>
+            <v-data-table
+              :loading="isLoading"
+              :headers="[{text: 'Description', sortable:false}, {text: 'Amount', sortable:false}]"
+              :items="fees"
+              hide-actions
+            >
+              <template slot="items" slot-scope="props">
+                <td>{{ props.item.description }}</td>
+                <td>₱ {{ numberWithCommas (props.item.amount) }}</td>
+              </template>
+              <template slot="footer">
+                <td>Total</td>
+                <td class="font-weight-bold">₱ {{ numberWithCommas(total_amount) }}</td>
+              </template>
+            </v-data-table>
+          </v-card-text>
+        </v-card>
+      </v-flex>
     </v-layout>
     <v-bottom-sheet dark persistent hide-overlay :value="true">
-        <v-card dark color="success">
-            <v-list>
-                <v-list-tile>
-                    <v-list-tile-content>
-                    <v-list-tile-title>License Variation</v-list-tile-title>
-                    <v-list-tile-sub-title v-if="show_page(1)">Step 1 - Select variation category then click next</v-list-tile-sub-title>
-                    <v-list-tile-sub-title v-else-if="show_page(2)">Step 2 - Update License Details</v-list-tile-sub-title>
-                    </v-list-tile-content>
-                    <v-spacer></v-spacer>
-                    <v-list-tile-action class="mr-2">
-                        <v-btn :disabled="isLoading" outline @click="page=1">Cancel</v-btn>
-                    </v-list-tile-action>
-                    <v-list-tile-action >
-                        <v-btn :loading="isLoading" v-show="show_page(1)" color="primary" @click="next()">Next</v-btn>
-                        <v-btn :loading="isLoading" v-show="show_page(2)" color="primary" @click="submit()">Accept</v-btn>
-                    </v-list-tile-action>                       
-                </v-list-tile>
-            </v-list>
-        </v-card>
+      <v-card dark color="success">
+        <v-list>
+          <v-list-tile>
+            <v-list-tile-content>
+              <v-list-tile-title>License Variation</v-list-tile-title>
+              <v-list-tile-sub-title
+                v-if="show_page(1)"
+              >Step 1 - Select variation category then click next</v-list-tile-sub-title>
+              <v-list-tile-sub-title v-else-if="show_page(2)">Step 2 - Update License Details</v-list-tile-sub-title>
+            </v-list-tile-content>
+            <v-spacer></v-spacer>
+            <v-list-tile-action class="mr-2">
+              <v-btn :disabled="isLoading" outline @click="page=1">Cancel</v-btn>
+            </v-list-tile-action>
+            <v-list-tile-action>
+              <v-btn :loading="isLoading" v-show="show_page(1)" color="primary" @click="next()">Next</v-btn>
+              <v-btn
+                :loading="isLoading"
+                v-show="show_page(2)"
+                color="primary"
+                @click="submit()"
+              >Accept</v-btn>
+            </v-list-tile-action>
+          </v-list-tile>
+        </v-list>
+      </v-card>
     </v-bottom-sheet>
-</v-container>
+  </v-container>
 </template>
 
 <script>
@@ -374,6 +354,9 @@ export default {
             color: "success",
             icon: "check_circle"
           });
+          console.log(
+            "set form to be passed data: " + JSON.stringify(model.certificate)
+          );
           this.$store.commit("SET_FORM", model.certificate);
           this.$router.push("/app/certificate/pay");
         })
