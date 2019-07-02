@@ -186,7 +186,7 @@
     >
       <v-card>
         <v-toolbar dark color="fdaGreen">
-          <span class="font-weight-light headline">What product do you want to register?</span>
+          <span class="font-weight-light headline">Product to register</span>
           <v-spacer></v-spacer>
           <v-tooltip top>
             <v-btn slot="activator" flat icon color="black" @click="close">
@@ -197,6 +197,7 @@
         <v-divider></v-divider>
         <v-card-text>
           <v-autocomplete
+            outline
             v-model="selectedProdType"
             :items="product_type"
             hide-no-data
