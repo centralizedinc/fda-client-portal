@@ -94,7 +94,11 @@
           </v-stepper-step>
           <v-stepper-content step="7">
             <v-card flat class="mb-5" height="auto">
-              <step-seven @next="next" :form="cert_form" :nutritionHealthClaims="nutrition_health_claims"></step-seven>
+              <step-seven
+                @next="next"
+                :form="cert_form"
+                :nutritionHealthClaims="nutrition_health_claims"
+              ></step-seven>
             </v-card>
           </v-stepper-content>
 
@@ -361,10 +365,12 @@ export default {
 
       this.cert_form.food_product.contacts.fax = this.active_license.estab_details.fax;
 
-      console.log("FOOD PRODUCT FAX:", this.cert_form.food_product.contacts.fax )
+      console.log(
+        "FOOD PRODUCT FAX:",
+        this.cert_form.food_product.contacts.fax
+      );
 
       this.cert_form.food_product.contacts.landline = this.active_license.estab_details.landline;
-
 
       this.cert_form.food_product.contacts.mobile = this.active_license.estab_details.mobile;
     },

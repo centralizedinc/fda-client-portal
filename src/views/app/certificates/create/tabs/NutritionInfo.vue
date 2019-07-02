@@ -96,25 +96,6 @@
           </v-toolbar>
         </v-flex>
 
-        <v-flex xs12>
-          <v-data-table
-            :headers="headers"
-            :items="form.nutrition_info.servings"
-            hide-actions
-            class="elevation-1"
-          >
-            <template slot="items" slot-scope="props">
-              <!-- <tr @click="viewItem(props.item, props.index)" style="cursor:pointer"> -->
-              <td>{{descNutri(props.item.type).name}}</td>
-              <td>{{props.item.amount_per_serving}}</td>
-              <td>{{props.item.percent}}</td>
-              <td>
-                <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-              </td>
-              <!-- </tr> -->
-            </template>
-          </v-data-table>
-        </v-flex>
         <v-dialog v-model="dialogVm" scrollable max-width="500px" transition="dialog-transition">
           <v-card>
             <v-toolbar dark color="primary">

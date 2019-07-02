@@ -1,53 +1,82 @@
 <template>
-  <v-layout row wrap>
-    <v-flex xs3 pa-1>
-      <v-card>
-        <v-card-title primary-title>
-          <span class="title font-weight-thin">Progress</span>
-          <v-spacer></v-spacer>
-          <v-progress-circular :value="20" color="primary"></v-progress-circular>
-        </v-card-title>
-        <v-divider></v-divider>
-        <v-card-text>
-          <v-stepper v-model="e6" vertical>
-            <v-stepper-step :complete="e6 > 1" step="1">
-              Select an app
-              <small>Summarize if needed</small>
-            </v-stepper-step>
+  <v-container grid-list-md>
+    <v-layout row wrap>
+      <v-progress-linear color="primary" background-color="primary"></v-progress-linear>
+      <!-- stepper -->
+      <v-stepper v-model="e6" vertical>
+        <v-stepper-step :complete="e6 > 1" step="1">
+          Product Particulars
+          <small>Fill out all necessary information</small>
+        </v-stepper-step>
 
-            <v-stepper-content step="1"></v-stepper-content>
+        <v-stepper-content step="1">
+          <v-card flat class="mb-5">
+            <stepOne></stepOne>
+          </v-card>
+          <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
+          <v-btn flat>Cancel</v-btn>
+        </v-stepper-content>
 
-            <v-stepper-step :complete="e6 > 2" step="2">Configure analytics for this app</v-stepper-step>
+        <v-stepper-step :complete="e6 > 2" step="2">
+          Establishment Information
+          <small>Local Company Responsible for Placing the Product in the Market</small>
+        </v-stepper-step>
 
-            <v-stepper-content step="2">
-              <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
-              <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
-              <v-btn flat>Cancel</v-btn>
-            </v-stepper-content>
+        <v-stepper-content step="2">
+          <v-card flat class="mb-5">
+            <stepTwo></stepTwo>
+          </v-card>
+          <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
+          <v-btn flat>Cancel</v-btn>
+        </v-stepper-content>
 
-            <v-stepper-step :complete="e6 > 3" step="3">Select an ad format and name ad unit</v-stepper-step>
+        <v-stepper-step step="3">Person Representing the Local Company</v-stepper-step>
+        <v-stepper-content step="3">
+          <v-card flat class="mb-5">
+            <stepThree></stepThree>
+          </v-card>
+          <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
+          <v-btn flat>Cancel</v-btn>
+        </v-stepper-content>
 
-            <v-stepper-content step="3">
-              <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
-              <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
-              <v-btn flat>Cancel</v-btn>
-            </v-stepper-content>
-
-            <v-stepper-step step="4">View setup instructions</v-stepper-step>
-            <v-stepper-content step="4">
-              <v-card color="grey lighten-1" class="mb-5" height="200px"></v-card>
-              <v-btn color="primary" @click="e6 = 1">Continue</v-btn>
-              <v-btn flat>Cancel</v-btn>
-            </v-stepper-content>
-          </v-stepper>
-        </v-card-text>
-      </v-card>
-    </v-flex>
-  </v-layout>
+        <v-stepper-step step="4">Product Ingredient List</v-stepper-step>
+        <v-stepper-content step="4">
+          <v-card flat class="mb-5">
+            <stepFour></stepFour>
+          </v-card>
+          <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
+          <v-btn flat>Cancel</v-btn>
+        </v-stepper-content>
+      </v-stepper>
+    </v-layout>
+  </v-container>
 </template>
 
 <script>
-export default {};
+import ProductParticulars from "./cosmetic/ProductParticulars";
+import EstablishmentInfo from "./cosmetic/EstablishmentInfo";
+import Representative from "./cosmetic/Representative";
+import ProductIngredients from "./cosmetic/ProdIngredient";
+
+export default {
+  components: {
+    stepOne: () => ({
+      component: import("./cosmetic/ProductParticulars")
+    }),
+    stepTwo: () => ({
+      component: import("./cosmetic/EstablishmentInfo")
+    }),
+    stepThree: () => ({
+      component: import("./cosmetic/Representative")
+    }),
+    stepFour: () => ({
+      component: import("./cosmetic/ProdIngredient")
+    })
+  },
+  data: () => ({
+    e6: 1
+  })
+};
 </script>
 
 <style>
