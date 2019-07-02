@@ -197,9 +197,9 @@
       </v-list>
     </v-card-text>
 
-    <!-- Person Representing the Local Company -->
+    <!-- Ingredients -->
     <v-card-title primary-title>
-      <span class="subheading font-weight-thin primary--text">Person Representing the Local Company</span>
+      <span class="subheading font-weight-thin primary--text">Ingredients</span>
       <v-spacer></v-spacer>
       <v-btn v-if="show_part3" flat icon color="primary" @click="show_part3=false">
         <v-icon>expand_less</v-icon>
