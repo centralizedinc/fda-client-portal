@@ -82,7 +82,7 @@
           {{ snackText }}
           <v-btn flat @click="snack = false">Close</v-btn>
         </v-snackbar>
-        <br />
+        <br>
         <!-- Vitamins & Minerals -->
         <v-flex xs12>
           <v-toolbar dark flat color="primary" class="elevation-5">
