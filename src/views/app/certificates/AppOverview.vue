@@ -1,6 +1,7 @@
 <template>
   <v-layout row wrap>
-    <v-flex dark xs12 md6 pa-1>
+    <!-- For Food Products -->
+    <v-flex dark xs12 md6 pa-1 v-if="form.certificate_type === 0">
       <v-card>
         <v-toolbar dark color="primary">Application Details</v-toolbar>
         <v-card-title primary-title>
@@ -367,6 +368,18 @@
         </v-card-text>
       </v-card>
     </v-flex>
+
+    <!-- For Toys Products -->
+    <v-flex dark xs12 md6 pa-1 v-else-if="form.certificate_type === 1">
+      
+    </v-flex>
+
+    <!-- For Cosmetics Products -->
+    <v-flex dark xs12 md6 pa-1 v-else-if="form.certificate_type === 2">
+      
+    </v-flex>
+
+    <!-- Activities | Payments | Uploaded Files | Output Files -->
     <v-flex dark xs12 md6 pa-1>
       <v-layout row wrap>
         <v-flex xs12 pa-1>
