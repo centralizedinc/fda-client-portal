@@ -171,12 +171,7 @@ var router = new Router({
         },
         {
           path: 'certificates',
-<<<<<<< HEAD
-          name: 'Certificate of Product Registration',
-          beforeEnter: dropBreadcrumbs,
-=======
           name: 'Product Registration',
->>>>>>> 2769ee7a3115ae827a2b5661f3acb4cf343973e8
           component: () => import('@/views/app/certificates/Certificates.vue'),
           // beforeEnter: isAuthorized
         },
@@ -195,12 +190,6 @@ var router = new Router({
           // beforeEnter: isAuthorized
         },
         {
-<<<<<<< HEAD
-          path: 'notification',
-          name: 'Product Notification',
-          beforeEnter: dropBreadcrumbs,
-          component: () => import('@/views/app/notification/Notification.vue'),
-=======
           path: 'notification/cosmetic',
           name: 'ASEAN Cosmetic Notification ',
           component: () => import('@/views/app/notification/Apply.vue'),
@@ -210,7 +199,6 @@ var router = new Router({
           path: 'notification/toys',
           name: 'Toys and Childcare Articles Notification ',
           component: () => import('@/views/app/notification/ApplyToys.vue'),
->>>>>>> 2769ee7a3115ae827a2b5661f3acb4cf343973e8
           // beforeEnter: isAuthorized
         },
         {
