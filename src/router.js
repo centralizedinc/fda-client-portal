@@ -123,36 +123,42 @@ var router = new Router({
         {
           path: 'licenses',
           name: 'License to Operate',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/licenses/Licenses.vue'),
           // beforeEnter: isAuthorized
         },
         {
           path: 'licenses/view',
           name: 'View License Application',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/licenses/View.vue'),
           // beforeEnter: isAuthorized
         },
         {
           path: 'licenses/renew',
           name: 'Renewal License Application',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/licenses/Renew.vue'),
           // beforeEnter: isAuthorized
         },
         {
           path: 'licenses/variation',
           name: 'Variate License Application',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/licenses/Variation.vue'),
           // beforeEnter: isAuthorized
         },
         {
           path: 'licenses/pay',
           name: 'Pay License',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/payment/PaymentSummary.vue'),
           // beforeEnter: isAuthorized
         },
         {
           path: 'certificate/pay',
           name: 'Pay Certificate',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/payment/PaymentSummary.vue'),
           // beforeEnter: isAuthorized
         },
@@ -165,23 +171,36 @@ var router = new Router({
         },
         {
           path: 'certificates',
+<<<<<<< HEAD
+          name: 'Certificate of Product Registration',
+          beforeEnter: dropBreadcrumbs,
+=======
           name: 'Product Registration',
+>>>>>>> 2769ee7a3115ae827a2b5661f3acb4cf343973e8
           component: () => import('@/views/app/certificates/Certificates.vue'),
           // beforeEnter: isAuthorized
         },
         {
           path: 'certificates/renew',
           name: 'Renewal Certificate of Product Registration',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/certificates/Renew.vue'),
           // beforeEnter: isAuthorized
         },
         {
           path: 'certificates/apply',
           name: 'New Certificate of Product Registration',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/certificates/Apply.vue'),
           // beforeEnter: isAuthorized
         },
         {
+<<<<<<< HEAD
+          path: 'notification',
+          name: 'Product Notification',
+          beforeEnter: dropBreadcrumbs,
+          component: () => import('@/views/app/notification/Notification.vue'),
+=======
           path: 'notification/cosmetic',
           name: 'ASEAN Cosmetic Notification ',
           component: () => import('@/views/app/notification/Apply.vue'),
@@ -191,35 +210,41 @@ var router = new Router({
           path: 'notification/toys',
           name: 'Toys and Childcare Articles Notification ',
           component: () => import('@/views/app/notification/ApplyToys.vue'),
+>>>>>>> 2769ee7a3115ae827a2b5661f3acb4cf343973e8
           // beforeEnter: isAuthorized
         },
         {
           path: 'notification/apply',
           name: 'New Product Notification',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/notification/Apply.vue'),
           // beforeEnter: isAuthorized
         },
         {
           path: 'certificates/overview',
           name: 'Application Overview',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/certificates/AppOverview.vue'),
           // beforeEnter: isAuthorized
         },
         {
           path: 'certificates/variation',
           name: 'Application Amendment',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/certificates/Variation.vue'),
           // beforeEnter: isAuthorized
         },
         {
           path: 'payments',
           name: 'Payments',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/payment/Payment.vue'),
           // beforeEnter: isAuthorized
         },
         {
           path: 'payments/paylater',
           name: 'Pay Later',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/payment/PayLater.vue'),
           // beforeEnter: isAuthorized
         },
@@ -227,6 +252,7 @@ var router = new Router({
         {
           path: 'payments/creditcard',
           name: 'Credit Card Payment',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/payment/CreditCardPayment.vue'),
           // beforeEnter: isAuthorized
         },
@@ -252,6 +278,7 @@ var router = new Router({
         {
           path: 'logout',
           name: 'Logout',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/UserPortfolio.vue')
         },
       ]
