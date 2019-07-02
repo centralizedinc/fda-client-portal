@@ -16,6 +16,11 @@
     <v-divider></v-divider>
     <v-card-text class="compact-form" v-if="show_part1">
       <v-text-field
+        label="Application Type"
+        readonly
+        :value="getAppType(form.application_type, form.case_type)"
+      ></v-text-field>
+      <v-text-field
         readonly
         label="Brand Name"
         :value="form.cosmetic_certificate.particular_product.brand_name"
