@@ -1,12 +1,24 @@
 <template>
-  <v-form>
+  <v-form ref="form">
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs5>
-          <v-text-field name="name" label="Brand Name" outline color="green darken-1"></v-text-field>
+          <v-text-field
+            name="name"
+            v-model="form.particular_product.brand_name"
+            label="Brand Name"
+            outline
+            color="green darken-1"
+          ></v-text-field>
         </v-flex>
         <v-flex xs5>
-          <v-text-field name="name" label="Product Name" outline color="green darken-1"></v-text-field>
+          <v-text-field
+            name="name"
+            v-model="form.particular_product.product_name"
+            label="Product Name"
+            outline
+            color="green darken-1"
+          ></v-text-field>
         </v-flex>
         <v-flex xs2>
           <v-autocomplete
@@ -15,6 +27,7 @@
             item-text="name"
             item-value="_id"
             hide-no-data
+            v-model="form.particular_product.years_applied"
             :items="noOfYearsApplied"
             hide-selected
             label="Years"
@@ -33,7 +46,7 @@
           </v-tooltip>
         </v-toolbar>
         <v-flex xs12 pb-4>
-          <v-data-table :headers="headersVariants" :items="variants" class="elevation-1">
+          <v-data-table :headers="headersVariants" :items="form.product_variants" class="elevation-1">
             <template v-slot:items="props">
               <td>{{ props.item.name }}</td>
               <td class="justify-center">
@@ -81,6 +94,7 @@
           <v-autocomplete
             outline
             pa-2
+            v-model="form.particular_product.product_type"
             :items="prod_lines"
             item-text="name"
             item-value="_id"
@@ -91,13 +105,14 @@
         </v-flex>
 
         <v-flex xs6>
-          <v-text-field name="name" label="Intended Use" outline color="green darken-1"></v-text-field>
+          <v-text-field name="name" v-model="form.particular_product.intended_use" label="Intended Use" outline color="green darken-1"></v-text-field>
         </v-flex>
 
         <v-flex xs6>
           <v-autocomplete
             outline
             pa-2
+            v-model="form.particular_product.product_presentation"
             :items="prodPresentation"
             item-text="name"
             item-value="_id"
@@ -118,11 +133,11 @@
           </v-tooltip>
         </v-toolbar>
         <v-flex xs12 pb-4>
-          <v-data-table :headers="headersProdInfo" :items="prod_info" class="elevation-1">
+          <v-data-table :headers="headersProdInfo" :items="form.additional_information" class="elevation-1">
             <template v-slot:items="props">
-              <td>{{ props.item.size }}</td>
-              <td>{{ props.item.type }}</td>
-              <td>{{ props.item.GTIN }}</td>
+              <td>{{ props.item.packaging_size }}</td>
+              <td>{{ props.item.packaging_type }}</td>
+              <td>{{ props.item.gtin }}</td>
               <td class="justify-center">
                 <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
                 <v-icon small @click="deleteItem(props.item)">delete</v-icon>
@@ -152,13 +167,13 @@
                       class="caption font-weight-light pb-3"
                     >Product information, including existing packaging sizes and their corresponding Global Trade Identification Number (GTIN) may be updated here. Please note that once information has been submitted, it will no longer be modifiable. Hence, any change to the provided information would merit a new notification application.</span>
                     <v-flex xs12>
-                      <v-text-field outline name="name" label="Packaging Size" id="id"></v-text-field>
+                      <v-text-field outline name="name" v-model="form.particular_product.packaging_size" label="Packaging Size" id="id"></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-text-field outline name="name" label="Packaging Type" id="id"></v-text-field>
+                      <v-text-field outline name="name" v-model="form.particular_product.packaging_type" label="Packaging Type" id="id"></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-text-field outline name="name" label="GTIN" id="id"></v-text-field>
+                      <v-text-field outline name="name" v-model="form.particular_product.gtin" label="GTIN" id="id"></v-text-field>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -179,10 +194,13 @@
 
 <script>
 export default {
+  props: ["form"],
   data: () => ({
+    isValid: true,
     add: false,
     dialogForVariant: false,
     dialogProdInfo: false,
+    product_variants: "",
     headersVariants: [
       {
         text: "Variants/Shade Name",
@@ -248,6 +266,13 @@ export default {
   computed: {
     prod_lines() {
       return this.$store.state.products.prod_line;
+    }
+  },
+  watch: {
+    particular(val) {
+      console.log(
+        "particular data: " + JSON.stringify(this.form.cosmetic_certificate)
+      );
     }
   },
   methods: {

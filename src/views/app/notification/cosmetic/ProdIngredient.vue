@@ -1,5 +1,5 @@
 <template>
-  <v-form>
+  <v-form ref="form">
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-toolbar dark flat color="primary" class="elevation-5">
@@ -12,7 +12,7 @@
           </v-tooltip>
         </v-toolbar>
         <v-flex xs12 pb-4>
-          <v-data-table :headers="headersProdIng" :items="prod_ing" class="elevation-1">
+          <v-data-table :headers="headersProdIng" :items="form.ingredients" class="elevation-1">
             <template v-slot:items="props">
               <td>{{ props.item.variant }}</td>
               <td>{{ props.item.name }}</td>
@@ -60,13 +60,13 @@
                       </ul>
                     </span>
                     <v-flex xs6>
-                      <v-text-field outline name="name" label="Variant" id="id"></v-text-field>
+                      <v-text-field outline name="name" v-model="form.ingredients.variant" label="Variant" id="id"></v-text-field>
                     </v-flex>
                     <v-flex xs6>
-                      <v-text-field outline name="name" label="Full Ingredient Name" id="id"></v-text-field>
+                      <v-text-field outline name="name" v-model="form.ingredients.name" label="Full Ingredient Name" id="id"></v-text-field>
                     </v-flex>
                     <v-flex xs6>
-                      <v-text-field outline name="name" label="Function" id="id"></v-text-field>
+                      <v-text-field outline name="name" v-model="form.ingredients.function" label="Function" id="id"></v-text-field>
                     </v-flex>
                     <v-flex xs6>
                       <v-text-field
@@ -74,6 +74,7 @@
                         name="name"
                         hint="Function Percentage (%) of Ingredient "
                         label="Function % of Ingredient "
+                        v-model="form.ingredients.percentage"
                         id="id"
                       ></v-text-field>
                     </v-flex>
@@ -96,6 +97,7 @@
 
 <script>
 export default {
+  props: ["form"],
   data: () => ({
     dialogProdIng: false,
     headersProdIng: [
