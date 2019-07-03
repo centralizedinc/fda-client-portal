@@ -371,12 +371,12 @@
 
     <!-- For Toys Products -->
     <v-flex dark xs12 md6 pa-1 v-else-if="form.certificate_type === 1">
-      
+      <toys-products :form="form"></toys-products>
     </v-flex>
 
     <!-- For Cosmetics Products -->
     <v-flex dark xs12 md6 pa-1 v-else-if="form.certificate_type === 2">
-      
+      <cosmetics-products :form="form"></cosmetics-products>
     </v-flex>
 
     <!-- Activities | Payments | Uploaded Files | Output Files -->
@@ -577,9 +577,14 @@
 
 <script>
 import pdf from "vue-pdf";
+import ToysProducts from "./overview/ToysProducts"
+import CosmeticsProducts from './overview/CosmeticsProducts'
+
 export default {
   components: {
-    pdf
+    pdf,
+    ToysProducts,
+    CosmeticsProducts
   },
   data() {
     return {
