@@ -11,7 +11,7 @@
 
         <v-stepper-content step="1">
           <v-card flat class="mb-5">
-            <stepOne :form="certificate_form"></stepOne>
+            <stepOne :form="cosmetic_certificate"></stepOne>
           </v-card>
           <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -24,7 +24,7 @@
 
         <v-stepper-content step="2">
           <v-card flat class="mb-5">
-            <stepTwo></stepTwo>
+            <stepTwo :form="cosmetic_certificate"></stepTwo>
           </v-card>
           <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -33,7 +33,7 @@
         <v-stepper-step step="3">Person Representing the Local Company</v-stepper-step>
         <v-stepper-content step="3">
           <v-card flat class="mb-5">
-            <stepThree></stepThree>
+            <stepThree :form="cosmetic_certificate"></stepThree>
           </v-card>
           <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -42,7 +42,7 @@
         <v-stepper-step step="4">Product Ingredient List</v-stepper-step>
         <v-stepper-content step="4">
           <v-card flat class="mb-5">
-            <stepFour></stepFour>
+            <stepFour :form="cosmetic_certificate"></stepFour>
           </v-card>
           <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -75,15 +75,89 @@ export default {
   },
   data: () => ({
     e6: 1,
-    certificate_form: {
-      cosmetic_certificate: {
-        particular_product: {
-          brand_name: "",
-          product_name: ""
+    loading: false,
+    particular_product: [],
+    additional_information: [],
+    establishment_info: [],
+    company_representative: [],
+    ingredients: [],
+    cosmetic_certificate: {
+      particular_product: {
+        brand_name: "",
+        product_name: "",
+        years_applied: 0,
+        product_variants: [],
+        product_type: "",
+        product_specify: "",
+        intended_use: "",
+        product_presentation: "",
+        presentation_component: "",
+        presentation_specify: "",
+        additional_information: {
+          packaging_size: 0,
+          packaging_type: "",
+          gtin: ""
         }
-      }
+      },
+      establishment_info: {
+        activity: "",
+        origin_country: "",
+        directly_source: "",
+        manufacturer_name: "",
+        manufacturer_address: "",
+        company: "",
+        address: "",
+        region: "",
+        license_no: "",
+        license_validity: "",
+        contact_info: {}
+      },
+      company_representative: {
+        name: "",
+        designation: "",
+        contact_info: {}
+      },
+      ingredients: [{
+        variant: "",
+        name: "",
+        function: "",
+        percentage: ""
+      }]
     }
-  })
+  }),
+  created() {
+    console.log("apply cosmetic");
+    this.init();
+  },
+  methods: {
+    init() {
+      console.log("Apply Notification");
+      this.cosmetic_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
+      // this.cosmetic_certificate.establishment_info.address = this.active_license.estab_details.address;
+      this.active_license.address_list.forEach(add => {
+        if (add.type == 0) {
+          this.cosmetic_certificate.establishment_info.address = add.address;
+          this.cosmetic_certificate.establishment_info.region = add.region;
+        }
+      });
+      this.cosmetic_certificate.establishment_info.license_no = this.active_license.license_no;
+      this.cosmetic_certificate.establishment_info.primary_activity = this.getPrimary(this.active_license.general_info.primary_activity)
+      this.cosmetic_certificate.establishment_info.contact_info.email = this.active_license.estab_details.email;
+      this.cosmetic_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
+      this.cosmetic_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
+      this.cosmetic_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
+      // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
+    }
+  },
+  computed: {
+    active_license() {
+      console.log(
+        "ACTIVE LICENSE : " + JSON.stringify(
+        this.$store.state.licenses.active_license
+      ));
+      return this.$store.state.licenses.active_license;
+    }
+  }
 };
 </script>
 

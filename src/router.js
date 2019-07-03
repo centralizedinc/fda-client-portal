@@ -172,6 +172,7 @@ var router = new Router({
         {
           path: 'certificates',
           name: 'Product Registration',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/certificates/Certificates.vue'),
           // beforeEnter: isAuthorized
         },
@@ -192,12 +193,14 @@ var router = new Router({
         {
           path: 'notification/cosmetic',
           name: 'ASEAN Cosmetic Notification ',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/notification/Apply.vue'),
           // beforeEnter: isAuthorized
         },
         {
           path: 'notification/toys',
           name: 'Toys and Childcare Articles Notification ',
+          beforeEnter: dropBreadcrumbs,
           component: () => import('@/views/app/notification/ApplyToys.vue'),
           // beforeEnter: isAuthorized
         },
