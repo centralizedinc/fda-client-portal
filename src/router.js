@@ -172,10 +172,7 @@ var router = new Router({
         {
           path: 'certificates',
           name: 'Product Registration',
-<<<<<<< HEAD
           beforeEnter: dropBreadcrumbs,
-=======
->>>>>>> 5010f2c0de73a11a05e78845421d5d0a8b7bc8a9
           component: () => import('@/views/app/certificates/Certificates.vue'),
           // beforeEnter: isAuthorized
         },

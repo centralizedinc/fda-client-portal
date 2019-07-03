@@ -117,12 +117,12 @@ export default {
         designation: "",
         contact_info: {}
       },
-      ingredients: {
+      ingredients: [{
         variant: "",
         name: "",
         function: "",
         percentage: ""
-      }
+      }]
     }
   }),
   created() {
@@ -141,11 +141,12 @@ export default {
         }
       });
       this.cosmetic_certificate.establishment_info.license_no = this.active_license.license_no;
-      this.cosmetic_certificate.establishment_info.primary_activity = this.active_license.general_info.primary_activity;
+      this.cosmetic_certificate.establishment_info.primary_activity = this.getPrimary(this.active_license.general_info.primary_activity)
       this.cosmetic_certificate.establishment_info.contact_info.email = this.active_license.estab_details.email;
       this.cosmetic_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
       this.cosmetic_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
       this.cosmetic_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
+      // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
     }
   },
   computed: {
