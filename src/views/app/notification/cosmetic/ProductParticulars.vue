@@ -265,7 +265,30 @@ export default {
   },
   computed: {
     prod_lines() {
-      return this.$store.state.products.prod_line;
+      console.log(
+        "this.$store.state.products.productType" +
+          JSON.stringify(this.$store.state.products.productType)
+      );
+      console.log(
+        "this.$store.state.products.prod_line" +
+          JSON.stringify(this.$store.state.products.prod_line)
+      );
+      var prod_line = "";
+      var cosme = [];
+      this.$store.state.products.productType.forEach(element => {
+        if (element.name == "Cosmetic") {
+          prod_line = element._id;
+        }
+      });
+      console.log("5c106cb7b19f7a29c4096ad0: " + JSON.stringify(prod_line));
+      this.$store.state.products.prod_line.forEach(line => {
+        if (line.product_type == prod_line) {
+          console.log("prod_line: " + JSON.stringify(line.product_type));
+          cosme.push(line);
+        }
+      });
+      console.log("cosme data: " + JSON.stringify(cosme));
+      return cosme;
     }
   },
   watch: {
