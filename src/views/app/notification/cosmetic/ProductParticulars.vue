@@ -3,7 +3,7 @@
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs5>
-          <v-text-field name="name" label="Brand Name" outline color="green darken-1"></v-text-field>
+          <v-text-field v-model="form.cosmetic_certificate.particular_product.brand_name" label="Brand Name" outline color="green darken-1"></v-text-field>
         </v-flex>
         <v-flex xs5>
           <v-text-field name="name" label="Product Name" outline color="green darken-1"></v-text-field>
@@ -179,6 +179,7 @@
 
 <script>
 export default {
+  props: ["form"],
   data: () => ({
     add: false,
     dialogForVariant: false,

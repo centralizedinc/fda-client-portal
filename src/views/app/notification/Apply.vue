@@ -11,7 +11,7 @@
 
         <v-stepper-content step="1">
           <v-card flat class="mb-5">
-            <stepOne></stepOne>
+            <stepOne :form="certificate_form"></stepOne>
           </v-card>
           <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -74,7 +74,15 @@ export default {
     })
   },
   data: () => ({
-    e6: 1
+    e6: 1,
+    certificate_form: {
+      cosmetic_certificate: {
+        particular_product: {
+          brand_name: "",
+          product_name: ""
+        }
+      }
+    }
   })
 };
 </script>
