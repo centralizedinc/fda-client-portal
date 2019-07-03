@@ -219,11 +219,17 @@
         @proceed="launchAppCosmetics"
         @close="dialog=false"
       ></undertaking-cosmetics>
+      <undertaking-toys
+        :show="dialogToys"
+        @proceed="launchAppToys"
+        @close="dialog=false"
+      ></undertaking-toys>
     </v-dialog>
   </v-layout>
 </template>
 
 <script>
+import UndertakingToys from "../notification/toys/DialogUndertaking";
 import UndertakingCosmetics from "../notification/cosmetic/UndertakingDialog";
 import UndertakingCert from "./create/tabs/UndertakingDialog";
 import { log } from "util";
@@ -233,7 +239,9 @@ export default {
   components: {
     UndertakingCert: () => import("./create/tabs/UndertakingDialog"),
     UndertakingCosmetics: () =>
-      import("../notification/cosmetic/UndertakingDialog")
+      import("../notification/cosmetic/UndertakingDialog"),
+    UndertakingToys: () =>
+      import("../notification/toys/DialogUndertaking")
   },
   data() {
     return {
@@ -243,6 +251,7 @@ export default {
       selectProdType: false,
       dialogCert: false,
       dialogCosmetics: false,
+      dialogToys: false,
       selectedProdType: null,
       search: "",
       preview_item: {},
@@ -346,7 +355,7 @@ export default {
       } else if (this.selectedProdType == 1) {
         this.dialogCert = true;
       } else if (this.selectedProdType == 2) {
-        this.dialogCosmetics = true;
+        this.dialogToys = true;
       }
     },
     loadItems(refresh) {
@@ -376,6 +385,9 @@ export default {
     },
     launchAppCosmetics() {
       this.$router.push("notification/cosmetic");
+    },
+    launchAppToys() {
+      this.$router.push("notification/toys");
     },
     closeDecDialog() {
       this.dialog = false;
