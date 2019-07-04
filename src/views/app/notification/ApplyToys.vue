@@ -1,0 +1,172 @@
+<template>
+  <v-container grid-list-md>
+    <v-layout row wrap>
+      <v-progress-linear color="primary" background-color="primary"></v-progress-linear>
+      <!-- stepper -->
+      <v-stepper v-model="e6" vertical>
+        <v-stepper-step :complete="e6 > 1" step="1">
+          Product Particulars
+          <small>Fill out all necessary information</small>
+        </v-stepper-step>
+
+        <v-stepper-content step="1">
+          <v-card flat class="mb-5">
+            <stepOne :form="toy_certificate"></stepOne>
+          </v-card>
+          <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
+          <v-btn flat>Cancel</v-btn>
+        </v-stepper-content>
+
+        <v-stepper-step :complete="e6 > 2" step="2">
+          Establishment Information
+          <small>Local Company Responsible for Placing the Product in the Market</small>
+        </v-stepper-step>
+
+        <v-stepper-content step="2">
+          <v-card flat class="mb-5">
+            <stepTwo :form="toy_certificate"></stepTwo>
+          </v-card>
+          <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
+          <v-btn flat>Cancel</v-btn>
+        </v-stepper-content>
+
+        <v-stepper-step step="3">Person Representing the Local Company</v-stepper-step>
+        <v-stepper-content step="3">
+          <v-card flat class="mb-5">
+            <stepThree :form="toy_certificate"></stepThree>
+          </v-card>
+          <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
+          <v-btn flat>Cancel</v-btn>
+        </v-stepper-content>
+
+        <v-stepper-step step="4">
+          Document Upload
+          <small>Please upload documents to determine conformance to the standard/s of product identity. For food supplement (if applicable), please upload safety data (e.g. LD50 toxicity tests). For the list of standards or issuances (e.g. PNS, Codex standards, FDA Issuances, local or international standards) please refer to the CFRR Product Registration Manual of Procedure/ Handbook.</small>
+        </v-stepper-step>
+        <v-stepper-content step="4">
+          <v-card flat class="mb-5">
+            <stepFour :form="toy_certificate"></stepFour>
+          </v-card>
+          <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
+          <v-btn flat>Cancel</v-btn>
+        </v-stepper-content>
+      </v-stepper>
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+import ParticularProduct from "./toys/ParticularProduct";
+import LocalCompany from "./toys/LocalCompany";
+import PersonRepresentatvive from "./toys/PersonRepresentatvive";
+import UploadDocument from "./toys/UploadDocument";
+
+export default {
+  components: {
+    stepOne: () => ({
+      component: import("./toys/ParticularProduct")
+    }),
+    stepTwo: () => ({
+      component: import("./toys/LocalCompany")
+    }),
+    stepThree: () => ({
+      component: import("./toys/PersonRepresentatvive")
+    }),
+    stepFour: () => ({
+      component: import("./toys/UploadDocument")
+    })
+  },
+  data: () => ({
+    e6: 1,
+    loading: false,
+    particular_product: [],
+    additional_information: [],
+    establishment_info: [],
+    company_representative: [],
+    ingredients: [],
+    toy_certificate: {
+      particular_product: {
+        brand_name: "",
+        product_name: "",
+        years_applied: 0,
+        product_variants: [],
+        product_type: "",
+        product_specify: "",
+        intended_use: "",
+        product_presentation: "",
+        presentation_component: "",
+        presentation_specify: "",
+        additional_information: {
+          packaging_size: 0,
+          packaging_type: "",
+          gtin: ""
+        }
+      },
+      establishment_info: {
+        activity: "",
+        origin_country: "",
+        directly_source: "",
+        manufacturer_name: "",
+        manufacturer_address: "",
+        company: "",
+        address: "",
+        region: "",
+        license_no: "",
+        license_validity: "",
+        contact_info: {}
+      },
+      company_representative: {
+        name: "",
+        designation: "",
+        contact_info: {}
+      },
+      ingredients: [
+        {
+          variant: "",
+          name: "",
+          function: "",
+          percentage: ""
+        }
+      ]
+    }
+  }),
+  created() {
+    console.log("apply toys");
+    this.init();
+  },
+  methods: {
+    init() {
+      console.log("Apply Notification Toys");
+      this.toy_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
+      // this.toy_certificate.establishment_info.address = this.active_license.estab_details.address;
+      this.active_license.address_list.forEach(add => {
+        if (add.type == 0) {
+          this.toy_certificate.establishment_info.address = add.address;
+          this.toy_certificate.establishment_info.region = add.region;
+        }
+      });
+      this.toy_certificate.establishment_info.license_no = this.active_license.license_no;
+      this.toy_certificate.establishment_info.primary_activity = this.getPrimary(
+        this.active_license.general_info.primary_activity
+      );
+      this.toy_certificate.establishment_info.contact_info.email = this.active_license.estab_details.email;
+      this.toy_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
+      this.toy_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
+      this.toy_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
+      // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
+    }
+  },
+  computed: {
+    active_license() {
+      console.log(
+        "ACTIVE LICENSE : " +
+          JSON.stringify(this.$store.state.licenses.active_license)
+      );
+      return this.$store.state.licenses.active_license;
+    }
+  }
+};
+</script>
+
+<style>
+</style>
