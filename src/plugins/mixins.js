@@ -313,15 +313,15 @@ export default {
         //   return establishType ? establishType : {}
         // },
 
-        getEstablishSource(data){
+        getEstablishSource(data) {
           var sources = this.$store.state.foodCertificate.source
           console.log("MIXIN DATA ESTABLISHMENTSOURCE:" + JSON.stringify(sources))
           if (!sources) return {}
-          var source = sources  .find(x => x._id === data)
+          var source = sources.find(x => x._id === data)
           return source ? source : {}
         },
 
-        establishplacesOrigin(data){
+        establishplacesOrigin(data) {
           var placesOrigin = this.$store.state.places.origin
           console.log("MIXIN DATA ESTABLISHMENTORIGIN:" + JSON.stringify(placesOrigin))
           if (!placesOrigin) return {}
@@ -354,7 +354,9 @@ export default {
           var phyParams = this.deepCopy(this.$store.state.foodCertificate.physical_parameter)
           if (!phyParams || !phyParams.length) return {}
           var phyParam = phyParams.find(x => x._id === spec)
-          return phyParam ? phyParam : spec
+          console.log("phyParam data: " + JSON.stringify(phyParam));
+          console.log("spec data: " + JSON.stringify(spec))
+          return phyParam ? phyParam.name : spec
         },
         shelfLife(spec) {
           var sLifes = this.deepCopy(this.$store.state.foodCertificate.shelf_life)
@@ -363,21 +365,21 @@ export default {
           return sLife ? sLife : {}
         },
         descNutri(data) {
-          var infos= []
+          var infos = []
           var nutrInfos = this.$store.state.foodCertificate.nutrition_information
           var vitInfos = this.$store.state.foodCertificate.vitamins
           var minInfo = this.$store.state.foodCertificate.minerals
           console.log("nutri: " + JSON.stringify(nutrInfos))
           console.log("vit: " + JSON.stringify(vitInfos))
           console.log("min: " + JSON.stringify(minInfo))
-          nutrInfos.forEach(nutri =>{
+          nutrInfos.forEach(nutri => {
             // console.log("for each data nutriInfoz:")
             infos.push(nutri)
           })
-          vitInfos.forEach(vit =>{
+          vitInfos.forEach(vit => {
             infos.push(vit)
           })
-          minInfo.forEach(min =>{
+          minInfo.forEach(min => {
             infos.push(min)
           })
 
@@ -396,7 +398,7 @@ export default {
         },
         // Certificate
         getAppTypeCert(type) {
-          var app_type = ["Initial", "Ammendment", "Renewal", "Reapplication" ]
+          var app_type = ["Initial", "Ammendment", "Renewal", "Reapplication"]
           console.log("get app cert type: " + JSON.stringify(type))
           console.log("get app cert type return: " + JSON.stringify(app_type[type]))
           return app_type[type];
@@ -407,6 +409,7 @@ export default {
         },
         vitMin(data) {
           var minVit = ["Vitamin", "Minerals", "Nutrition"]
+          console.log("vitMin data: " + JSON.stringify(minVit[data]))
           return minVit[data]
         }
       }

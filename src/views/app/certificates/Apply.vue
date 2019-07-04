@@ -275,7 +275,7 @@ export default {
       // change claims to array nalang
       claims: [
         {
-          cliam: "",
+          claim: "",
           desc: ""
         }
       ],
@@ -327,6 +327,15 @@ export default {
 
       console.log("apply certificates");
 
+      if (this.cert_form.certificate_type === 0) {
+        this.loadFoodReferences();
+      } else if (this.cert_form.certificate_type === 1) {
+        this.loadToysReferences();
+      } else if (this.cert_form.certificate_type === 2) {
+        this.loadCosmeticsReferences();
+      }
+    },
+    loadFoodReferences() {
       this.food_product = this.$store.state.foodCertificate.food_product;
 
       this.category = this.$store.state.foodCertificate.food_category;
@@ -351,14 +360,12 @@ export default {
 
       this.company_activity = this.$store.state.foodCertificate.company_activity;
 
-      // var address = "";
       this.active_license.address_list.forEach(add => {
         if (add.type == 0) {
           this.cert_form.food_product.address = add.address;
           this.cert_form.food_product.region = add.region;
         }
       });
-
       this.cert_form.food_product.company = this.active_license.estab_details.establishment_name;
 
       this.cert_form.food_product.license_no = this.active_license.license_no;
@@ -369,14 +376,76 @@ export default {
 
       this.cert_form.food_product.contacts.fax = this.active_license.estab_details.fax;
 
-      console.log(
-        "FOOD PRODUCT FAX:",
-        this.cert_form.food_product.contacts.fax
-      );
-
       this.cert_form.food_product.contacts.landline = this.active_license.estab_details.landline;
 
       this.cert_form.food_product.contacts.mobile = this.active_license.estab_details.mobile;
+    },
+    loadToysReferences() {
+      this.active_license.address_list.forEach(add => {
+        if (add.type == 0) {
+          this.cert_form.toy_certificate.establishment_info.address =
+            add.address;
+          this.cert_form.toy_certificate.establishment_info.region = add.region;
+        }
+      });
+      this.cert_form.toy_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
+
+      this.cert_form.toy_certificate.establishment_info.license_no = this.active_license.license_no;
+
+      this.cert_form.toy_certificate.establishment_info.license_validity = this.active_license.license_expiry;
+
+      this.cert_form.toy_certificate.establishment_info.contact_info = [
+        {
+          type: 0,
+          details: this.active_license.estab_details.email
+        },
+        {
+          type: 1,
+          details: this.active_license.estab_details.mobile
+        },
+        {
+          type: 2,
+          details: this.active_license.estab_details.landline
+        },
+        {
+          type: 3,
+          details: this.active_license.estab_details.fax
+        }
+      ];
+    },
+    loadCosmeticsReferences() {
+      this.active_license.address_list.forEach(add => {
+        if (add.type == 0) {
+          this.cert_form.cosmetic_certificate.establishment_info.address =
+            add.address;
+          this.cert_form.cosmetic_certificate.establishment_info.region =
+            add.region;
+        }
+      });
+      this.cert_form.cosmetic_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
+
+      this.cert_form.cosmetic_certificate.establishment_info.license_no = this.active_license.license_no;
+
+      this.cert_form.cosmetic_certificate.establishment_info.license_validity = this.active_license.license_expiry;
+
+      this.cert_form.cosmetic_certificate.establishment_info.contact_info = [
+        {
+          type: 0,
+          details: this.active_license.estab_details.email
+        },
+        {
+          type: 1,
+          details: this.active_license.estab_details.mobile
+        },
+        {
+          type: 2,
+          details: this.active_license.estab_details.landline
+        },
+        {
+          type: 3,
+          details: this.active_license.estab_details.fax
+        }
+      ];
     },
     back() {
       this.e1--;

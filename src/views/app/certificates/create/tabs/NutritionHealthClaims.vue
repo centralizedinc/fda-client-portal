@@ -1,7 +1,7 @@
 <template>
   <v-form v-model="isValid" ref="form">
     <v-container grid-list-md>
-      <v-layout row wrap align-center justify-center>
+      <v-layout row wrap>
         <template v-for="(item, index) in form.claims">
           <v-flex xs6 :key="`a${index}`">
             <v-autocomplete
@@ -73,6 +73,9 @@ export default {
       console.log("add item claim data: " + JSON.stringify(this.form.claims));
     },
     proceed() {
+      this.addItem();
+
+      console.log("check claims data: " + JSON.stringify(this.form.claims));
       this.$emit("next", 8);
     },
     cancel() {

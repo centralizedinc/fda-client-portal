@@ -131,7 +131,8 @@
             hide-details
           ></v-text-field>
         </v-card-title>
-        <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="closeDecDialog"></undertaking-dialog>
+
+        <!-- <undertaking-dialog :show="dialog" @proceed="launchAppForm" @close="closeDecDialog"></undertaking-dialog> -->
         <v-data-table
           :headers="headers"
           :items="items"
@@ -143,7 +144,10 @@
           :custom-sort="customSort"
         >
           <template slot="items" slot-scope="props">
-            <tr @click="preview(props.item)" :style="`cursor:pointer;${getCertColor(props.item.certificate_status)}`">
+            <tr
+              @click="preview(props.item)"
+              :style="`cursor:pointer;${getCertColor(props.item.certificate_status)}`"
+            >
               <td>{{props.item.case_no}}</td>
               <td>{{props.item.certificate_no}}</td>
               <td>{{getAppType(props.item.application_type, props.item.case_type)}}</td>
@@ -166,26 +170,89 @@
     <!-- NEW CERTIFICATE -->
     <v-layout column class="fab-container pb-5">
       <v-tooltip top>
-        <v-btn slot="activator" fab elevation-15 color="fdaLight" @click="dialog=true">
+        <v-btn slot="activator" fab elevation-15 color="fdaLight" @click="selectProdType=true">
           <v-icon large color="fdaSilver">add</v-icon>
         </v-btn>Apply New
       </v-tooltip>
     </v-layout>
+
+    <!-- SELECT PRODUCT TYPE -->
+    <v-dialog
+      v-model="selectProdType"
+      scrollable
+      persistent
+      max-width="500px"
+      transition="dialog-transition"
+    >
+      <v-card>
+        <v-toolbar dark color="fdaGreen">
+          <span class="font-weight-light headline">Product to register</span>
+          <v-spacer></v-spacer>
+          <v-tooltip top>
+            <v-btn slot="activator" flat icon color="black" @click="close">
+              <v-icon>fas fa-times-circle fa-1x</v-icon>
+            </v-btn>Close
+          </v-tooltip>
+        </v-toolbar>
+        <v-divider></v-divider>
+        <v-card-text>
+          <v-autocomplete
+            outline
+            v-model="selectedProdType"
+            :items="product_type"
+            hide-no-data
+            hide-selected
+            color="green darken-1"
+            label="Select Product Type"
+            item-text="name"
+            item-value="_id"
+          ></v-autocomplete>
+        </v-card-text>
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn block flat color="primary" @click="selected">Proceed</v-btn>
+        </v-card-actions>
+      </v-card>
+      <undertaking-cert :show="dialogCert" @proceed="launchAppCert" @close="dialog=false"></undertaking-cert>
+      <undertaking-cosmetics
+        :show="dialogCosmetics"
+        @proceed="launchAppCosmetics"
+        @close="dialog=false"
+      ></undertaking-cosmetics>
+      <undertaking-toys
+        :show="dialogToys"
+        @proceed="launchAppToys"
+        @close="dialog=false"
+      ></undertaking-toys>
+    </v-dialog>
   </v-layout>
 </template>
 
 <script>
-import Undertaking from "./create/tabs/UndertakingDialog";
+import UndertakingToys from "../notification/toys/DialogUndertaking";
+import UndertakingCosmetics from "../notification/cosmetic/UndertakingDialog";
+import UndertakingCert from "./create/tabs/UndertakingDialog";
 import { log } from "util";
 
 export default {
+  props: ["form"],
   components: {
-    UndertakingDialog: () => import("./create/tabs/UndertakingDialog")
+    UndertakingCert: () => import("./create/tabs/UndertakingDialog"),
+    UndertakingCosmetics: () =>
+      import("../notification/cosmetic/UndertakingDialog"),
+    UndertakingToys: () =>
+      import("../notification/toys/DialogUndertaking")
   },
   data() {
     return {
       // preview: {},
       // isLoading: false,
+
+      selectProdType: false,
+      dialogCert: false,
+      dialogCosmetics: false,
+      dialogToys: false,
+      selectedProdType: null,
       search: "",
       preview_item: {},
       overview: null,
@@ -212,13 +279,41 @@ export default {
         { text: "Application Type", value: "application_type" },
         { text: "Evaluation Result", value: "status", sortable: true },
         { text: "Remarks", value: "certificate_status" }
+      ],
+      product_type: [
+        {
+          name: "Cosmetic",
+          _id: 0
+        },
+        {
+          name: "Food",
+          _id: 1
+        },
+        {
+          name: "Toys & Childcare Article",
+          _id: 2
+        }
       ]
     };
   },
   created() {
     this.init();
   },
+  watch: {
+    // selectedProdType(val) {
+    //   if (val == 0) {
+    //     this.dialogCosmetics = true;
+    //   } else if (val == 1) {
+    //     this.dialogCert = true;
+    //   } else if (val == 2) {
+    //     this.dialogCosmetics = true;
+    //   }
+    // }
+  },
   computed: {
+    // product_items() {
+    //   return this.$store.state.products.productType;
+    // },
     pages() {
       if (
         this.pagination.rowsPerPage == null ||
@@ -251,7 +346,17 @@ export default {
       this.$store.dispatch("GET_ORIGIN");
       this.$store.dispatch("GET_PHYSICAL_PARAMETER");
       this.$store.dispatch("GET_COMPANY_ACTIVITY");
+      this.$store.dispatch("GET_PRODUCT_REFERENCE");
       this.loadItems();
+    },
+    selected() {
+      if (this.selectedProdType == 0) {
+        this.dialogCosmetics = true;
+      } else if (this.selectedProdType == 1) {
+        this.dialogCert = true;
+      } else if (this.selectedProdType == 2) {
+        this.dialogToys = true;
+      }
     },
     loadItems(refresh) {
       this.loading = true;
@@ -268,7 +373,7 @@ export default {
           this.loading = false;
         });
     },
-    launchAppForm() {
+    launchAppCert() {
       console.log("launch application form");
       if (this.pass_to === 1) {
         this.$router.push("/app/certificates/variation");
@@ -277,6 +382,12 @@ export default {
       } else {
         this.$router.push("/app/certificates/apply");
       }
+    },
+    launchAppCosmetics() {
+      this.$router.push("notification/cosmetic");
+    },
+    launchAppToys() {
+      this.$router.push("notification/toys");
     },
     closeDecDialog() {
       this.dialog = false;
@@ -319,20 +430,23 @@ export default {
       ];
       return st[status];
     },
-    getCertColor(status){
-      if(status === 1){
-        return 'color:green'
-      } else if(status === 7){
-        return 'color:red'
+    close() {
+      this.selectProdType = false;
+    },
+    getCertColor(status) {
+      if (status === 1) {
+        return "color:green";
+      } else if (status === 7) {
+        return "color:red";
       }
     },
-    customSort(items, index, isDesc){
+    customSort(items, index, isDesc) {
       items.sort((a, b) => {
         // return a.certificate_status === 7 || a.certificate_status === 1
         // console.log(b.certificate_status - a.certificate_status);
-        return b.certificate_status - a.certificate_status
-      })
-      return items
+        return b.certificate_status - a.certificate_status;
+      });
+      return items;
     }
   }
 };

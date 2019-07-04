@@ -11,7 +11,7 @@
 
         <v-stepper-content step="1">
           <v-card flat class="mb-5">
-            <stepOne :form="cosmetic_certificate"></stepOne>
+            <stepOne :form="toy_certificate"></stepOne>
           </v-card>
           <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -24,7 +24,7 @@
 
         <v-stepper-content step="2">
           <v-card flat class="mb-5">
-            <stepTwo :form="cosmetic_certificate"></stepTwo>
+            <stepTwo :form="toy_certificate"></stepTwo>
           </v-card>
           <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -33,16 +33,19 @@
         <v-stepper-step step="3">Person Representing the Local Company</v-stepper-step>
         <v-stepper-content step="3">
           <v-card flat class="mb-5">
-            <stepThree :form="cosmetic_certificate"></stepThree>
+            <stepThree :form="toy_certificate"></stepThree>
           </v-card>
           <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
         </v-stepper-content>
 
-        <v-stepper-step step="4">Product Ingredient List</v-stepper-step>
+        <v-stepper-step step="4">
+          Document Upload
+          <small>Please upload documents to determine conformance to the standard/s of product identity. For food supplement (if applicable), please upload safety data (e.g. LD50 toxicity tests). For the list of standards or issuances (e.g. PNS, Codex standards, FDA Issuances, local or international standards) please refer to the CFRR Product Registration Manual of Procedure/ Handbook.</small>
+        </v-stepper-step>
         <v-stepper-content step="4">
           <v-card flat class="mb-5">
-            <stepFour :form="cosmetic_certificate"></stepFour>
+            <stepFour :form="toy_certificate"></stepFour>
           </v-card>
           <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -53,24 +56,24 @@
 </template>
 
 <script>
-import ProductParticulars from "./cosmetic/ProductParticulars";
-import EstablishmentInfo from "./cosmetic/EstablishmentInfo";
-import Representative from "./cosmetic/Representative";
-import ProductIngredients from "./cosmetic/ProdIngredient";
+import ParticularProduct from "./toys/ParticularProduct";
+import LocalCompany from "./toys/LocalCompany";
+import PersonRepresentatvive from "./toys/PersonRepresentatvive";
+import UploadDocument from "./toys/UploadDocument";
 
 export default {
   components: {
     stepOne: () => ({
-      component: import("./cosmetic/ProductParticulars")
+      component: import("./toys/ParticularProduct")
     }),
     stepTwo: () => ({
-      component: import("./cosmetic/EstablishmentInfo")
+      component: import("./toys/LocalCompany")
     }),
     stepThree: () => ({
-      component: import("./cosmetic/Representative")
+      component: import("./toys/PersonRepresentatvive")
     }),
     stepFour: () => ({
-      component: import("./cosmetic/ProdIngredient")
+      component: import("./toys/UploadDocument")
     })
   },
   data: () => ({
@@ -81,7 +84,7 @@ export default {
     establishment_info: [],
     company_representative: [],
     ingredients: [],
-    cosmetic_certificate: {
+    toy_certificate: {
       particular_product: {
         brand_name: "",
         product_name: "",
@@ -117,44 +120,48 @@ export default {
         designation: "",
         contact_info: {}
       },
-      ingredients: [{
-        variant: "",
-        name: "",
-        function: "",
-        percentage: ""
-      }]
+      ingredients: [
+        {
+          variant: "",
+          name: "",
+          function: "",
+          percentage: ""
+        }
+      ]
     }
   }),
   created() {
-    console.log("apply cosmetic");
+    console.log("apply toys");
     this.init();
   },
   methods: {
     init() {
-      console.log("Apply Notification");
-      this.cosmetic_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
-      // this.cosmetic_certificate.establishment_info.address = this.active_license.estab_details.address;
+      console.log("Apply Notification Toys");
+      this.toy_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
+      // this.toy_certificate.establishment_info.address = this.active_license.estab_details.address;
       this.active_license.address_list.forEach(add => {
         if (add.type == 0) {
-          this.cosmetic_certificate.establishment_info.address = add.address;
-          this.cosmetic_certificate.establishment_info.region = add.region;
+          this.toy_certificate.establishment_info.address = add.address;
+          this.toy_certificate.establishment_info.region = add.region;
         }
       });
-      this.cosmetic_certificate.establishment_info.license_no = this.active_license.license_no;
-      this.cosmetic_certificate.establishment_info.primary_activity = this.getPrimary(this.active_license.general_info.primary_activity)
-      this.cosmetic_certificate.establishment_info.contact_info.email = this.active_license.estab_details.email;
-      this.cosmetic_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
-      this.cosmetic_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
-      this.cosmetic_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
+      this.toy_certificate.establishment_info.license_no = this.active_license.license_no;
+      this.toy_certificate.establishment_info.primary_activity = this.getPrimary(
+        this.active_license.general_info.primary_activity
+      );
+      this.toy_certificate.establishment_info.contact_info.email = this.active_license.estab_details.email;
+      this.toy_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
+      this.toy_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
+      this.toy_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
     }
   },
   computed: {
     active_license() {
       console.log(
-        "ACTIVE LICENSE : " + JSON.stringify(
-        this.$store.state.licenses.active_license
-      ));
+        "ACTIVE LICENSE : " +
+          JSON.stringify(this.$store.state.licenses.active_license)
+      );
       return this.$store.state.licenses.active_license;
     }
   }

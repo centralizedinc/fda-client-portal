@@ -1,6 +1,7 @@
 <template>
   <v-layout row wrap>
-    <v-flex dark xs12 md6 pa-1>
+    <!-- For Food Products -->
+    <v-flex dark xs12 md6 pa-1 v-if="form.certificate_type === 0">
       <v-card>
         <v-toolbar dark color="primary">Application Details</v-toolbar>
         <v-card-title primary-title>
@@ -223,7 +224,7 @@
           >
             <template slot="items" slot-scope="props">
               <td>{{productSpecs(props.item.type).name}}</td>
-              <td>{{getPhysicalParameter(props.item.parameter).name}}</td>
+              <td>{{getPhysicalParameter(props.item.parameter)}}</td>
               <td>{{props.item.specification}}</td>
             </template>
           </v-data-table>
@@ -367,6 +368,18 @@
         </v-card-text>
       </v-card>
     </v-flex>
+
+    <!-- For Toys Products -->
+    <v-flex dark xs12 md6 pa-1 v-else-if="form.certificate_type === 1">
+      <toys-products :form="form"></toys-products>
+    </v-flex>
+
+    <!-- For Cosmetics Products -->
+    <v-flex dark xs12 md6 pa-1 v-else-if="form.certificate_type === 2">
+      <cosmetics-products :form="form"></cosmetics-products>
+    </v-flex>
+
+    <!-- Activities | Payments | Uploaded Files | Output Files -->
     <v-flex dark xs12 md6 pa-1>
       <v-layout row wrap>
         <v-flex xs12 pa-1>
@@ -564,9 +577,14 @@
 
 <script>
 import pdf from "vue-pdf";
+import ToysProducts from "./overview/ToysProducts"
+import CosmeticsProducts from './overview/CosmeticsProducts'
+
 export default {
   components: {
-    pdf
+    pdf,
+    ToysProducts,
+    CosmeticsProducts
   },
   data() {
     return {

@@ -105,11 +105,14 @@
           >
             <template slot="items" slot-scope="props">
               <!-- <tr @click="viewItem(props.item, props.index)" style="cursor:pointer"> -->
+              <td>{{vitMin(props.item.kind)}}</td>
               <td>{{descNutri(props.item.type).name}}</td>
+
               <td>{{props.item.amount_per_serving}}</td>
               <td>{{props.item.percent}}</td>
               <td>
-                <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
+                <v-icon small class="mr-2" @click="editItem(props.item, props.index)">edit</v-icon>
+                <v-icon small @click="deleteItem(props.index)">delete</v-icon>
               </td>
               <!-- </tr> -->
             </template>
@@ -125,7 +128,8 @@
               </v-btn>
             </v-toolbar>
             <v-card-text>
-              <v-form v-if="valid">
+              <!-- v-if="valid" -->
+              <v-form>
                 <v-container grid-list-md>
                   <v-layout row wrap>
                     <v-flex xs12>
@@ -135,7 +139,7 @@
                         hint="Choose one"
                         persistent-hint
                         v-model="choice"
-                        :items="vitMin"
+                        :items="vitMinFacts"
                         item-text="name"
                         item-value="_id"
                         autocomplete
@@ -176,15 +180,14 @@
                   </v-layout>
                 </v-container>
               </v-form>
-              <v-form v-else>
+              <!-- <v-form v-else>
                 <v-container grid-list-md>
                   <v-layout row wrap>
                     <v-flex xs12>
                       <v-text-field
                         label="Vitamins or Minerals"
-                        :value="choice"
                         disabled
-                        v-model="kind"
+                        v-model="choice"
                         outline
                       ></v-text-field>
                     </v-flex>
@@ -212,7 +215,7 @@
                     </v-flex>
                   </v-layout>
                 </v-container>
-              </v-form>
+              </v-form>-->
             </v-card-text>
             <v-divider></v-divider>
             <v-card-actions v-if="add">
@@ -252,7 +255,8 @@ export default {
     amount_per_serving: "",
     percent: "",
     choice: null,
-    vitMin: [
+    editedIndex: -1,
+    vitMinFacts: [
       {
         name: "Vitamin",
         _id: 0
@@ -272,7 +276,14 @@ export default {
     },
     headers: [
       {
-        text: "Nutrition Information",
+        text: "Nutrition Facts",
+        align: "left",
+        value: "nut_info",
+        sortable: false,
+        width: "1px"
+      },
+      {
+        text: "Type",
         align: "left",
         value: "nut_info",
         sortable: false,
@@ -370,6 +381,11 @@ export default {
     addNew() {
       this.add = true;
       this.dialogVm = true;
+      this.valid = true;
+      this.choice = "";
+      this.type = "";
+      this.amount_per_serving = "";
+      this.percent = "";
     },
     proceed() {
       this.$emit("next", 7);
@@ -383,22 +399,37 @@ export default {
     },
     addVitMin() {
       this.dialogVm = false;
-      this.form.nutrition_info.servings.push({
-        type: this.type,
-        kind: this.choice,
-        amount_per_serving: this.amount_per_serving,
-        percent: this.percent
-      });
+      if (this.editedIndex > -1) {
+        Object.assign(this.form.nutrition_info.servings[this.editedIndex], {
+          kind: this.choice,
+          type: this.type,
+          amount_per_serving: this.amount_per_serving,
+          percent: this.percent
+        });
+        this.editedIndex = -1;
+      } else {
+        this.form.nutrition_info.servings.push({
+          kind: this.choice,
+          type: this.type,
+          amount_per_serving: this.amount_per_serving,
+          percent: this.percent
+        });
+      }
     },
     editItem(item) {
       this.add = true;
       this.dialogVm = true;
       this.valid = false;
+      this.editedIndex = this.form.nutrition_info.servings.indexOf(item);
       console.log("edit item data: " + JSON.stringify(item));
-      this.choice = item.type;
-      this.type = item.kind;
+      this.choice = item.kind;
+      this.type = item.type;
       this.amount_per_serving = item.amount_per_serving;
       this.percent = item.percent;
+      console.log("edit choice data: " + JSON.stringify(this.choice));
+    },
+    deleteItem(index) {
+      this.form.nutrition_info.servings.splice(index, 1);
     },
     save() {
       this.snack = true;

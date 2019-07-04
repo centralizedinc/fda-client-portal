@@ -68,17 +68,17 @@
           <v-list-tile
             @click="goTo('/app/certificates')"
             class="ma-1"
-            :style="activeRoute('Certificate of Product Registration')"
+            :style="activeRoute('Product Registration')"
           >
             <v-list-tile-action>
               <v-tooltip top>
                 <v-btn slot="activator" icon>
-                  <v-icon color="fdaBlueGreen">fas fa-certificate</v-icon>
-                </v-btn>Certificates
+                  <v-icon color="fdaBlueGreen">far fa-list-alt</v-icon>
+                </v-btn>Product Registration
               </v-tooltip>
             </v-list-tile-action>
             <v-list-tile-content>
-              <v-list-tile-title class="body-1 font-weight-light">Certificates</v-list-tile-title>
+              <v-list-tile-title class="body-1 font-weight-light">Product Registration</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
           <!-- <v-list-tile
