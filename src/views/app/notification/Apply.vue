@@ -1,4 +1,4 @@
-<template>
+  <template>
   <v-container grid-list-md>
     <v-layout row wrap>
       <v-progress-linear color="primary" background-color="primary"></v-progress-linear>
@@ -44,7 +44,7 @@
           <v-card flat class="mb-5">
             <stepFour :form="cosmetic_certificate"></stepFour>
           </v-card>
-          <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
+          <v-btn color="primary" @click="next">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
         </v-stepper-content>
       </v-stepper>
@@ -93,11 +93,13 @@ export default {
         product_presentation: "",
         presentation_component: "",
         presentation_specify: "",
-        additional_information: {
-          packaging_size: 0,
-          packaging_type: "",
-          gtin: ""
-        }
+        additional_information: [
+          // {
+          //   packaging_size: 0,
+          //   packaging_type: "",
+          //   gtin: ""
+          // }
+        ]
       },
       establishment_info: {
         activity: "",
@@ -117,12 +119,14 @@ export default {
         designation: "",
         contact_info: {}
       },
-      ingredients: [{
-        variant: "",
-        name: "",
-        function: "",
-        percentage: ""
-      }]
+      ingredients: [
+        // {
+        //   variant: "",
+        //   name: "",
+        //   function: "",
+        //   percentage: ""
+        // }
+      ]
     }
   }),
   created() {
@@ -141,20 +145,27 @@ export default {
         }
       });
       this.cosmetic_certificate.establishment_info.license_no = this.active_license.license_no;
-      this.cosmetic_certificate.establishment_info.primary_activity = this.getPrimary(this.active_license.general_info.primary_activity)
+      this.cosmetic_certificate.establishment_info.primary_activity = this.getPrimary(
+        this.active_license.general_info.primary_activity
+      );
       this.cosmetic_certificate.establishment_info.contact_info.email = this.active_license.estab_details.email;
       this.cosmetic_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
       this.cosmetic_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
       this.cosmetic_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
+    },
+    next() {
+      this.$store.commit("SET_VIEW_CERTIFICATE", this.cosmetic_certificate);
+      this.$store.commit("SET_FORM", this.cosmetic_certificate);
+      this.$router.push("/app/certificates/overview");
     }
   },
   computed: {
     active_license() {
       console.log(
-        "ACTIVE LICENSE : " + JSON.stringify(
-        this.$store.state.licenses.active_license
-      ));
+        "ACTIVE LICENSE : " +
+          JSON.stringify(this.$store.state.licenses.active_license)
+      );
       return this.$store.state.licenses.active_license;
     }
   }

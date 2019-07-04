@@ -16,7 +16,7 @@ const mutations = {
 var actions = {
     GET_TOYS_EXEMPTION() {
         return new Promise((resolve, reject) => {
-            new CosmeticCertificateAPI(context.rootState.user_session.token).toyExemption((exemption, err) => {
+            new ToysCertificateAPI(context.rootState.user_session.token).toyExemption((exemption, err) => {
                 if (!err) {
                     console.log("GET_TOYS_EXEMPTION data: " + JSON.stringify(exemption))
                     context.commit('SET_PRODUCT_PRESENTATION', exemption)
