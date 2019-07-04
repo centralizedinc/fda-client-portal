@@ -11,7 +11,7 @@
 
         <v-stepper-content step="1">
           <v-card flat class="mb-5">
-            <stepOne :form="cosmetic_certificate"></stepOne>
+            <stepOne :form="cosmetic_certificate" :product_presentation="product_presentation"></stepOne>
           </v-card>
           <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -81,6 +81,7 @@ export default {
     establishment_info: [],
     company_representative: [],
     ingredients: [],
+    product_presentation: [],
     cosmetic_certificate: {
       particular_product: {
         brand_name: "",
@@ -152,6 +153,10 @@ export default {
       this.cosmetic_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
       this.cosmetic_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
       this.cosmetic_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
+      this.product_presentation = this.$store.state.cosmeticCertificate.product_presentation;
+      console.log(
+        "product presentation: " + JSON.stringify(this.product_presentation)
+      );
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
     },
     next() {
