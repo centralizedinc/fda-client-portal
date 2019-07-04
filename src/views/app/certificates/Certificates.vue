@@ -219,11 +219,7 @@
         @proceed="launchAppCosmetics"
         @close="dialog=false"
       ></undertaking-cosmetics>
-      <undertaking-toys
-        :show="dialogToys"
-        @proceed="launchAppToys"
-        @close="dialog=false"
-      ></undertaking-toys>
+      <undertaking-toys :show="dialogToys" @proceed="launchAppToys" @close="dialog=false"></undertaking-toys>
     </v-dialog>
   </v-layout>
 </template>
@@ -240,8 +236,7 @@ export default {
     UndertakingCert: () => import("./create/tabs/UndertakingDialog"),
     UndertakingCosmetics: () =>
       import("../notification/cosmetic/UndertakingDialog"),
-    UndertakingToys: () =>
-      import("../notification/toys/DialogUndertaking")
+    UndertakingToys: () => import("../notification/toys/DialogUndertaking")
   },
   data() {
     return {
@@ -347,6 +342,8 @@ export default {
       this.$store.dispatch("GET_PHYSICAL_PARAMETER");
       this.$store.dispatch("GET_COMPANY_ACTIVITY");
       this.$store.dispatch("GET_PRODUCT_REFERENCE");
+      this.$store.dispatch("GET_PRODUCT_PRESENTATION");
+      this.$store.dispatch("GET_TOYS_EXEMPTION");
       this.loadItems();
     },
     selected() {

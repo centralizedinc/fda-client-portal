@@ -8,7 +8,7 @@ const state = JSON.parse(JSON.stringify(initialState))
 
 const mutations = {
     SET_TOYS_EXEMPTION(state, exemption) {
-        console.log("STORE: " + "##PRODUCT: " + JSON.stringify(exemption))
+        console.log("STORE: " + "##TOYS: " + JSON.stringify(exemption))
         state.toys_exemption = exemption
     }
 }
