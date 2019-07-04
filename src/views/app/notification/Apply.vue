@@ -160,42 +160,44 @@ export default {
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
     },
     next() {
-      // var payDetails = {
-      //   application_type: 0,
-      //   product_type: this.cert_form.food_product.type
-      // };
-      // this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails).then(result => {
-      //   console.log("get certificate fees: " + JSON.stringify(result));
-      //   this.fees = [];
-      //   this.fees.push({
-      //     description: "Application Fee",
-      //     amount: result.fee
-      //   });
-      //   this.fees.push({
-      //     description: "LRF",
-      //     amount: result.lrf
-      //   });
-      //   this.fees.push({
-      //     description: "Interest",
-      //     amount: result.interest
-      //   }),
-      //     this.fees.push({
-      //       description: "Surcharge",
-      //       amount: result.surcharge
-      //     });
-      //   this.total_amount =
-      //     result.fee + result.lrf + result.interest + result.surcharge;
-      //   this.$store.commit("SET_VIEW_CERTIFICATE", this.cert_form);
-      //   this.$store.commit("SET_FORM", this.cert_form);
-      //   this.$router.push("/app/certificates/overview");
-      //   this.$notify({
-      //     color: "success",
-      //     message:
-      //       "Registration fee computed! For this application you will have to pay the amount of  ₱ " +
-      //       this.numberWithCommas(this.total_amount)
-      //   });
-      // });
-      this.$store.dispatch("SAVE_CERTIFICATE", this.cosmetic_certificate);
+      var payDetails = {
+        application_type: 0,
+        product_type: this.cosmetic_certificate.product_presentation
+      };
+      this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails).then(result => {
+        console.log("get certificate fees: " + JSON.stringify(result));
+        this.fees = [];
+        this.fees.push({
+          description: "Application Fee",
+          amount: result.fee
+        });
+        this.fees.push({
+          description: "LRF",
+          amount: result.lrf
+        });
+        this.fees.push({
+          description: "Interest",
+          amount: result.interest
+        }),
+          this.fees.push({
+            description: "Surcharge",
+            amount: result.surcharge
+          });
+        this.total_amount =
+          result.fee + result.lrf + result.interest + result.surcharge;
+        this.$store.commit("SET_VIEW_CERTIFICATE", this.cosmetic_certificate);
+        this.$store.commit("SET_FORM", this.cosmetic_certificate);
+        this.$router.push("/app/certificates/overview");
+        this.$notify({
+          color: "success",
+          message:
+            "Registration fee computed! For this application you will have to pay the amount of  ₱ " +
+            this.numberWithCommas(this.total_amount)
+        });
+      });
+
+
+      // this.$store.dispatch("SAVE_CERTIFICATE", this.cosmetic_certificate);
     }
   },
   computed: {
