@@ -154,6 +154,46 @@ export default {
       this.toy_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
       this.toy_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
+    },
+    next() {
+      var payDetails = {
+        application_type: 0,
+        product_type: this.toy_certificate.sku
+      };
+      this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails).then(result => {
+        console.log("get certificate fees: " + JSON.stringify(result));
+        this.fees = [];
+        this.fees.push({
+          description: "Application Fee",
+          amount: result.fee
+        });
+        this.fees.push({
+          description: "LRF",
+          amount: result.lrf
+        });
+        this.fees.push({
+          description: "Interest",
+          amount: result.interest
+        }),
+          this.fees.push({
+            description: "Surcharge",
+            amount: result.surcharge
+          });
+        this.total_amount =
+          result.fee + result.lrf + result.interest + result.surcharge;
+        this.$store.commit("SET_VIEW_CERTIFICATE", this.toy_certificate);
+        this.$store.commit("SET_FORM", this.toy_certificate);
+        this.$router.push("/app/certificates/overview");
+        this.$notify({
+          color: "success",
+          message:
+            "Registration fee computed! For this application you will have to pay the amount of  ₱ " +
+            this.numberWithCommas(this.total_amount)
+        });
+      });
+
+
+      // this.$store.dispatch("SAVE_CERTIFICATE", this.cosmetic_certificate);
     }
   },
   computed: {
