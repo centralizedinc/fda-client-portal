@@ -343,7 +343,8 @@ export default {
       this.$store.dispatch("GET_COMPANY_ACTIVITY");
       this.$store.dispatch("GET_PRODUCT_REFERENCE");
       this.$store.dispatch("GET_PRODUCT_PRESENTATION");
-      this.$store.dispatch("GET_TOYS_EXEMPTION");
+      this.$store.dispatch("GET_TOYS_EXEMPTION")
+      console.log("dispatch end");
       this.loadItems();
     },
     selected() {
