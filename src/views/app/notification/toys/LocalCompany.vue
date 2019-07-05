@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form">
+  <v-form ref="form" v-model="isValid">
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs12>
@@ -37,8 +37,8 @@
             disabled
             outline
             name="name"
-            v-model="form.establishment_info.primary_activity"
-            label="Primary Activity as reflected in License"
+            v-model="form.establishment_info.license_validity"
+            label="LTO Validity"
             id="id"
           ></v-text-field>
         </v-flex>
@@ -93,12 +93,32 @@
         </v-flex>
       </v-layout>
     </v-container>
+    <v-btn color="primary" @click="proceed">Continue</v-btn>
+    <v-btn flat @click="cancel">Cancel</v-btn>
   </v-form>
 </template>
 
 <script>
 export default {
-  props: ["form"]
+  props: ["form"],
+  data: () => ({
+    isValid: true
+  }),
+  methods: {
+    proceed() {
+      this.$emit("next", 3);
+    },
+    cancel() {
+      this.$emit("next", 1);
+    },
+    validate() {
+      this.$refs.form.validate();
+      return this.isValid;
+    }
+    // validate() {
+    //   return this.uploads;
+    // }
+  }
 };
 </script>
 

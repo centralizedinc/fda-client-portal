@@ -11,7 +11,7 @@
 
         <v-stepper-content step="1">
           <v-card flat class="mb-5">
-            <stepOne :form="cosmetic_certificate"></stepOne>
+            <stepOne :form="cosmetic_certificate" @next="next"></stepOne>
           </v-card>
           <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -24,7 +24,7 @@
 
         <v-stepper-content step="2">
           <v-card flat class="mb-5">
-            <stepTwo :form="cosmetic_certificate"></stepTwo>
+            <stepTwo :form="cosmetic_certificate" @next="next"></stepTwo>
           </v-card>
           <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -33,7 +33,7 @@
         <v-stepper-step step="3">Person Representing the Local Company</v-stepper-step>
         <v-stepper-content step="3">
           <v-card flat class="mb-5">
-            <stepThree :form="cosmetic_certificate"></stepThree>
+            <stepThree :form="cosmetic_certificate" @next="next"></stepThree>
           </v-card>
           <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>

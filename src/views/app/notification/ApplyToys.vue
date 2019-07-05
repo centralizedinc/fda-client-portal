@@ -4,42 +4,36 @@
       <v-progress-linear color="primary" background-color="primary"></v-progress-linear>
       <!-- stepper -->
       <v-stepper v-model="e6" vertical>
-        <v-stepper-step :complete="e6 > 1" step="1">
+        <v-stepper-step :complete="e6 > 1" step="1" editable>
           Product Particulars
           <small>Fill out all necessary information</small>
         </v-stepper-step>
 
         <v-stepper-content step="1">
           <v-card flat class="mb-5">
-            <stepOne :form="toy_certificate"></stepOne>
+            <stepOne :form="toy_certificate" @next="next"></stepOne>
           </v-card>
-          <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
-          <v-btn flat>Cancel</v-btn>
         </v-stepper-content>
 
-        <v-stepper-step :complete="e6 > 2" step="2">
+        <v-stepper-step :complete="e6 > 2" step="2" editable>
           Establishment Information
           <small>Local Company Responsible for Placing the Product in the Market</small>
         </v-stepper-step>
 
         <v-stepper-content step="2">
           <v-card flat class="mb-5">
-            <stepTwo :form="toy_certificate"></stepTwo>
+            <stepTwo :form="toy_certificate" @next="next"></stepTwo>
           </v-card>
-          <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
-          <v-btn flat>Cancel</v-btn>
         </v-stepper-content>
 
         <v-stepper-step step="3">Person Representing the Local Company</v-stepper-step>
-        <v-stepper-content step="3">
+        <v-stepper-content step="3" editable>
           <v-card flat class="mb-5">
-            <stepThree :form="toy_certificate"></stepThree>
+            <stepThree :form="toy_certificate" @next="next"></stepThree>
           </v-card>
-          <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
-          <v-btn flat>Cancel</v-btn>
         </v-stepper-content>
 
-        <v-stepper-step step="4">
+        <v-stepper-step step="4" editable>
           Document Upload
           <small>Please upload documents to determine conformance to the standard/s of product identity. For food supplement (if applicable), please upload safety data (e.g. LD50 toxicity tests). For the list of standards or issuances (e.g. PNS, Codex standards, FDA Issuances, local or international standards) please refer to the CFRR Product Registration Manual of Procedure/ Handbook.</small>
         </v-stepper-step>
@@ -80,27 +74,23 @@ export default {
     e6: 1,
     loading: false,
     particular_product: [],
-    additional_information: [],
+    product_details: [],
     establishment_info: [],
     company_representative: [],
-    ingredients: [],
     toy_certificate: {
       particular_product: {
         brand_name: "",
-        product_name: "",
-        years_applied: 0,
-        product_variants: [],
+        product_details: {
+          item: "",
+          model: "",
+          sku: "",
+          age_grading: ""
+        },
         product_type: "",
-        product_specify: "",
-        intended_use: "",
-        product_presentation: "",
-        presentation_component: "",
-        presentation_specify: "",
-        additional_information: {
-          packaging_size: 0,
-          packaging_type: "",
-          gtin: ""
-        }
+        product_use: 0,
+        mass_of_child: 0,
+        if_appropriate: 0,
+        exemption_reason: ""
       },
       establishment_info: {
         activity: "",
@@ -119,15 +109,7 @@ export default {
         name: "",
         designation: "",
         contact_info: {}
-      },
-      ingredients: [
-        {
-          variant: "",
-          name: "",
-          function: "",
-          percentage: ""
-        }
-      ]
+      }
     }
   }),
   created() {
@@ -135,10 +117,16 @@ export default {
     this.init();
   },
   methods: {
+    next(page) {
+      this.e6 = page;
+    },
     init() {
       console.log("Apply Notification Toys");
       this.toy_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
-      // this.toy_certificate.establishment_info.address = this.active_license.estab_details.address;
+      this.toy_certificate.establishment_info.license_validity = this.formatDate(
+        this.active_license.license_expiry
+      );
+      // console.log("License validity: " + JSON.stringify(this.active_license.license_expiry))
       this.active_license.address_list.forEach(add => {
         if (add.type == 0) {
           this.toy_certificate.establishment_info.address = add.address;
@@ -146,9 +134,9 @@ export default {
         }
       });
       this.toy_certificate.establishment_info.license_no = this.active_license.license_no;
-      this.toy_certificate.establishment_info.primary_activity = this.getPrimary(
-        this.active_license.general_info.primary_activity
-      );
+      // this.toy_certificate.establishment_info.primary_activity = this.getPrimary(
+      //   this.active_license.general_info.primary_activity
+      // );
       this.toy_certificate.establishment_info.contact_info.email = this.active_license.estab_details.email;
       this.toy_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
       this.toy_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
