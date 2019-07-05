@@ -11,7 +11,7 @@
 
         <v-stepper-content step="1">
           <v-card flat class="mb-5">
-            <stepOne :form="cosmetic_certificate" @next="next"></stepOne>
+            <stepOne :form="cosmetic_certificate" :product_presentation="product_presentation"></stepOne>
           </v-card>
           <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
@@ -81,6 +81,8 @@ export default {
     establishment_info: [],
     company_representative: [],
     ingredients: [],
+    product_presentation: [],
+
     cosmetic_certificate: {
       particular_product: {
         brand_name: "",
@@ -152,12 +154,21 @@ export default {
       this.cosmetic_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
       this.cosmetic_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
       this.cosmetic_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
+      this.product_presentation = this.$store.state.cosmeticCertificate.product_presentation;
+      console.log(
+        "product presentation: " + JSON.stringify(this.product_presentation)
+      );
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
     },
     next() {
+      console.log(
+        "this.cosmetic_certificate: " +
+          JSON.stringify(this.cosmetic_certificate)
+      );
       var payDetails = {
         application_type: 0,
-        product_type: this.cosmetic_certificate.product_presentation
+        product_type: this.cosmetic_certificate.particular_product
+          .product_presentation
       };
       this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails).then(result => {
         console.log("get certificate fees: " + JSON.stringify(result));
@@ -180,8 +191,16 @@ export default {
           });
         this.total_amount =
           result.fee + result.lrf + result.interest + result.surcharge;
-        this.$store.commit("SET_VIEW_CERTIFICATE", this.cosmetic_certificate);
-        this.$store.commit("SET_FORM", this.cosmetic_certificate);
+        this.$store.commit("SET_VIEW_CERTIFICATE", {
+          cosmetic_certificate: this.cosmetic_certificate,
+          certificate_type: 2,
+          application_type: 0
+        });
+        this.$store.commit("SET_FORM", {
+          cosmetic_certificate: this.cosmetic_certificate,
+          certificate_type: 2,
+          application_type: 0
+        });
         this.$router.push("/app/certificates/overview");
         this.$notify({
           color: "success",
@@ -191,8 +210,11 @@ export default {
         });
       });
 
-
-      // this.$store.dispatch("SAVE_CERTIFICATE", this.cosmetic_certificate);
+      // this.$store.dispatch("SAVE_CERTIFICATE", {
+      //   cosmetic_certificate: this.cosmetic_certificate,
+      //   certificate_type: 2,
+      //   application_type: 0
+      // });
     }
   },
   computed: {

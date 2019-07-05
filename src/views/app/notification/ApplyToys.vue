@@ -149,7 +149,7 @@ export default {
     save() {
       var payDetails = {
         application_type: 0,
-        product_type: this.toy_certificate.sku
+        product_type: this.toy_certificate.product_type
       };
       this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails).then(result => {
         console.log("get certificate fees: " + JSON.stringify(result));

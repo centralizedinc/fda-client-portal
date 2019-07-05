@@ -10,8 +10,10 @@ export default class CertificateAPI {
     }
 
     productPresentation(cb) {
+        console.log("start product presentation")
         axios.get('core/product/presentation')
             .then(result => {
+                console.log("product presentation data: " + JSON.stringify(result))
                 if (result.data.success) {
                     cb(result.data.model)
                 }

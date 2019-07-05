@@ -129,7 +129,7 @@
             outline
             pa-2
             v-model="form.particular_product.product_presentation"
-            :items="prodPresentation"
+            :items="product_presentation"
             item-text="name"
             item-value="_id"
             hide-no-data
@@ -227,7 +227,7 @@
 
 <script>
 export default {
-  props: ["form"],
+  props: ["form", "product_presentation"],
   data: () => ({
     isValid: true,
     add: false,
@@ -274,13 +274,13 @@ export default {
         value: "actions"
       }
     ],
-    prodPresentation: [
-      "Single product",
-      "A range of product variants similar in composition for the same use but differs in colours, flavours etc",
-      "Palette(s) in a range of one product type",
-      "Combination products in a single kit",
-      "Others"
-    ],
+    // prodPresentation: [
+    //   "Single product",
+    //   "A range of product variants similar in composition for the same use but differs in colours, flavours etc",
+    //   "Palette(s) in a range of one product type",
+    //   "Combination products in a single kit",
+    //   "Others"
+    // ],
     noOfYearsApplied: ["1", "2", "3"],
     variants: [],
     prod_info: [],

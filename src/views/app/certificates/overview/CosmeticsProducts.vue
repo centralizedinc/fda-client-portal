@@ -128,7 +128,30 @@
         label="License Validity"
         :value="form.cosmetic_certificate.establishment_info.license_validity"
       ></v-text-field>
-      <v-list dense>
+      <v-text-field
+        readonly
+        label="Email Address"
+        :value="form.cosmetic_certificate.establishment_info.contact_info.email"
+      ></v-text-field>
+      <v-text-field
+        readonly
+        label="Landline Number"
+        mask="(##)-####-####"
+        :value="form.cosmetic_certificate.establishment_info.contact_info.landline"
+      ></v-text-field>
+      <v-text-field
+        readonly
+        label="Fax Number"
+        mask="(##)-####-####"
+        :value="form.cosmetic_certificate.establishment_info.contact_info.fax"
+      ></v-text-field>
+      <v-text-field
+        readonly
+        label="Mobile Number"
+        mask="(####)-###-####"
+        :value="form.cosmetic_certificate.establishment_info.contact_info.mobile"
+      ></v-text-field>
+      <!-- <v-list dense>
         <v-list-tile
           v-for="(item, index) in form.cosmetic_certificate.establishment_info.contact_info"
           :key="index"
@@ -136,7 +159,7 @@
           <v-list-tile-content>{{item.type}}:</v-list-tile-content>
           <v-list-tile-content class="align-end">{{ item.details }}</v-list-tile-content>
         </v-list-tile>
-      </v-list>
+      </v-list> -->
       <v-text-field
         readonly
         label="Please select the corresponding company activity/activities"
