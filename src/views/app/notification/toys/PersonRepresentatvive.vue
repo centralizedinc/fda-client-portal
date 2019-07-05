@@ -4,6 +4,7 @@
       <v-layout row wrap>
         <v-flex xs12>
           <v-text-field
+            disabled
             outline
             name="name"
             v-model="form.company_representative.name"
@@ -14,6 +15,7 @@
         </v-flex>
         <v-flex xs12>
           <v-text-field
+            disabled
             outline
             name="name"
             v-model="form.company_representative.designation"
@@ -89,7 +91,11 @@ export default {
   }),
   methods: {
     proceed() {
-      this.$emit("next", 4);
+      if (this.validate()) {
+        this.$emit("next", 4);
+      } else {
+        this.$notifyError([{ message: "Fill-up required fields." }]);
+      }
     },
     cancel() {
       this.$emit("next", 2);

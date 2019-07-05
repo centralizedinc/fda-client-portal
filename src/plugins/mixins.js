@@ -261,6 +261,7 @@ export default {
         },
         getDesignation(id) {
           var designations = this.$store.state.references.designations;
+          // console.log("get designation data: " + JSON.stringify(designations))
           if (!designations) return {}
           var designation = designations.find(x => x._id === id)
           return designation ? designation : {}

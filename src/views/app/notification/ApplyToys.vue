@@ -26,8 +26,8 @@
           </v-card>
         </v-stepper-content>
 
-        <v-stepper-step step="3">Person Representing the Local Company</v-stepper-step>
-        <v-stepper-content step="3" editable>
+        <v-stepper-step :complete="e6 > 3" step="3" editable>Person Representing the Local Company</v-stepper-step>
+        <v-stepper-content step="3">
           <v-card flat class="mb-5">
             <stepThree :form="toy_certificate" @next="next"></stepThree>
           </v-card>
@@ -41,7 +41,7 @@
           <v-card flat class="mb-5">
             <stepFour :form="toy_certificate"></stepFour>
           </v-card>
-          <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
+          <v-btn color="primary" @click="save">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
         </v-stepper-content>
       </v-stepper>
@@ -141,9 +141,12 @@ export default {
       this.toy_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
       this.toy_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
       this.toy_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
+      this.toy_certificate.company_representative.name = this.active_license.auth_officer.firstname + ' ' + this.active_license.auth_officer.middlename + ' ' + this.active_license.auth_officer.lastname;
+      this.toy_certificate.company_representative.designation = this.getDesignation(this.active_license.auth_officer.designation).name;
+      // console.log("toys designation: " + JSON.stringify(this.getDesignation(this.active_license.auth_officer.designation)))
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
     },
-    next() {
+    save() {
       var payDetails = {
         application_type: 0,
         product_type: this.toy_certificate.sku

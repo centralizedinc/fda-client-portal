@@ -64,6 +64,7 @@
                     <v-flex xs12>
                       <v-text-field
                         outline
+                        :rules="[rules.required]"
                         name="name"
                         v-model="form.particular_product.item"
                         label="Packaging Item"
@@ -73,6 +74,7 @@
                     <v-flex xs12>
                       <v-text-field
                         outline
+                        :rules="[rules.required]"
                         name="name"
                         v-model="form.particular_product.model"
                         label="Packaging Model"
@@ -82,13 +84,26 @@
                     <v-flex xs12>
                       <v-text-field
                         outline
+                        :rules="[rules.required]"
                         name="name"
                         v-model="form.particular_product.sku"
-                        label="SKU"
+                        label="Stock Keeping Unit (SKU)"
                         id="id"
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
+                      <v-autocomplete
+                        ref="grading"
+                        :rules="[rules.required]"
+                        v-model="grading"
+                        :items="age"
+                        label="Age Grading"
+                        placeholder="Select Age Grading"
+                        required
+                        outline
+                      ></v-autocomplete>
+                    </v-flex>
+                    <!-- <v-flex xs12>
                       <v-text-field
                         outline
                         name="name"
@@ -96,7 +111,7 @@
                         label="Age Grading"
                         id="id"
                       ></v-text-field>
-                    </v-flex>
+                    </v-flex>-->
                   </v-layout>
                 </v-container>
               </v-form>
@@ -109,17 +124,34 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-        <v-flex xs5>
-          <v-text-field
-            name="name"
-            :rules="[rules.required]"
-            v-model="form.particular_product.product_name"
-            label="Product Name"
+        <v-flex xs12>
+          <v-autocomplete
             outline
+            :rules="[rules.required]"
+            required
             color="green darken-1"
-          ></v-text-field>
+            v-model="form.particular_product.product_type"
+            :items="toyProduct"
+            item-text="name"
+            item-value="_id"
+            hide-no-data
+            hide-selected
+            label="Product Type"
+          ></v-autocomplete>
         </v-flex>
         <v-flex xs5>
+          <v-autocomplete
+            ref="use"
+            :rules="[rules.required]"
+            v-model="use"
+            :items="prodUse"
+            label="Product Use"
+            placeholder="Select Product Use"
+            required
+            outline
+          ></v-autocomplete>
+        </v-flex>
+        <!-- <v-flex xs5>
           <v-text-field
             name="name"
             :rules="[rules.required]"
@@ -128,7 +160,7 @@
             outline
             color="green darken-1"
           ></v-text-field>
-        </v-flex>
+        </v-flex>-->
         <v-flex xs5>
           <v-text-field
             name="name"
@@ -149,7 +181,7 @@
             color="green darken-1"
           ></v-text-field>
         </v-flex>
-        <v-flex xs12>
+        <!-- <v-flex xs12>
           <v-text-field
             name="name"
             :rules="[rules.required]"
@@ -158,6 +190,18 @@
             outline
             color="green darken-1"
           ></v-text-field>
+        </v-flex>-->
+        <v-flex xs5>
+          <v-autocomplete
+            ref="exemption"
+            :rules="[rules.required]"
+            v-model="exemption"
+            :items="exempt"
+            label="Product Exemption Reason"
+            placeholder="Select Product Exemption Reason"
+            required
+            outline
+          ></v-autocomplete>
         </v-flex>
       </v-layout>
     </v-container>
@@ -168,7 +212,7 @@
 
 <script>
 export default {
-  props: ["form"],
+  props: ["form", "toyProduct"],
   data: () => ({
     isValid: true,
     add: false,
@@ -178,6 +222,28 @@ export default {
     dialogForVariant: false,
     dialogProdInfo: false,
     product_details: "",
+    toyProductType: "",
+    age: [
+      "0 Months+",
+      "1 Months+",
+      "2 Months+",
+      "3 Months+",
+      "1+",
+      "2+",
+      "3+",
+      "4+"
+    ],
+    grading: null,
+    prodUse: ["For Indoor Use", "For Outdoor Use"],
+    use: null,
+    exemption: null,
+    exempt: [
+      "The toy is intended for children fourteen(14)years and above",
+      "The toy is for display or exhibit purposes and is not to be marketed in the Philippines",
+      "The toy is for adult collectors use",
+      "The toy is for personal use",
+      "The toy is intended for donations/charity/missionary work"
+    ],
     headersProdInfo: [
       {
         text: "Product Item",
@@ -204,14 +270,6 @@ export default {
         value: "age_grading"
       }
     ],
-    prodPresentation: [
-      "Single product",
-      "A range of product variants similar in composition for the same use but differs in colours, flavours etc",
-      "Palette(s) in a range of one product type",
-      "Combination products in a single kit",
-      "Others"
-    ],
-    prod_info: [],
     editedIndex: -1,
     editedItem: {
       name: ""
@@ -225,6 +283,32 @@ export default {
     this.initialize();
   },
   computed: {
+    toyProduct() {
+      console.log(
+        "this.$store.state.products.productType" +
+          JSON.stringify(this.$store.state.products.productType)
+      );
+      console.log(
+        "this.$store.state.products.prod_line" +
+          JSON.stringify(this.$store.state.products.prod_line)
+      );
+      var prod_line = "";
+      var toys = [];
+      this.$store.state.products.productType.forEach(element => {
+        if (element.name == "Toy and Child Care Article") {
+          prod_line = element._id;
+        }
+      });
+      console.log("5c106cb7b19f7a29c4096ad0: " + JSON.stringify(prod_line));
+      this.$store.state.products.prod_line.forEach(line => {
+        if (line.product_type == prod_line) {
+          console.log("prod_line: " + JSON.stringify(line.product_type));
+          toys.push(line);
+        }
+      });
+      console.log("toys data: " + JSON.stringify(toys));
+      return toys;
+    },
     prod_lines() {
       console.log(
         "this.$store.state.products.productType" +
@@ -257,18 +341,26 @@ export default {
       console.log(
         "particular data: " + JSON.stringify(this.form.toy_certificate)
       );
+    },
+    toyProductType() {
+      this.form.particular_product.product_line = this.toyProductType;
+      console.log("type", this.form.particular_product.type);
+      this.category.forEach(data => {
+        console.log("foodProductType:", data);
+      });
     }
   },
   methods: {
     proceed() {
+
       if (this.validate()) {
         this.$emit("next", 2);
-        } else {
+      } else {
         this.$notifyError([{ message: "Fill-up required fields." }]);
       }
     },
-    cancel(){
-      this.$emit('next', 1)
+    cancel() {
+      this.$emit("next", 1);
     },
     validate() {
       this.$refs.form.validate();

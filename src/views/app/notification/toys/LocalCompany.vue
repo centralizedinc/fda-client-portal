@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form" v-model="isValid">
+  <v-form ref="form">
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs12>
