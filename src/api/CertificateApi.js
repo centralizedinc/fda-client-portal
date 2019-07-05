@@ -36,6 +36,7 @@ export default class CertificateAPI {
       cert_data.output_files = []
       axios.post('certificates/', cert_data)
         .then(save_cert => {
+
           if (save_cert.data.success) {
             cert_case = save_cert.data.model.case_details
             save_certificate = save_cert.data.model.certificate
