@@ -172,8 +172,16 @@ export default {
           });
         this.total_amount =
           result.fee + result.lrf + result.interest + result.surcharge;
-        this.$store.commit("SET_VIEW_CERTIFICATE", this.toy_certificate);
-        this.$store.commit("SET_FORM", this.toy_certificate);
+        this.$store.commit("SET_VIEW_CERTIFICATE",{
+          toy_certificate: this.toy_certificate,
+          certificate_type: 1,
+          application_type: 0
+        });
+        this.$store.commit("SET_FORM", {
+          toy_certificate: this.toy_certificate,
+          certificate_type: 1,
+          application_type: 0
+        });
         this.$router.push("/app/certificates/overview");
         this.$notify({
           color: "success",
