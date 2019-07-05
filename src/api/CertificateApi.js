@@ -61,7 +61,8 @@ export default class CertificateAPI {
         })
         .then(axios.spread(function (result1, result2, result3, result4, result5, result6) {
           var uploads = []
-          if (output_files.length != 0) {
+
+          if (output_files && output_files.length != 0) {
             for (var x = 0; x <= output_files.length; x++) {
               if (x === 0) {
                 result1.data.model.forEach(element => {

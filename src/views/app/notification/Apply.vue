@@ -82,6 +82,7 @@ export default {
     company_representative: [],
     ingredients: [],
     product_presentation: [],
+
     cosmetic_certificate: {
       particular_product: {
         brand_name: "",
@@ -160,9 +161,14 @@ export default {
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
     },
     next() {
+      console.log(
+        "this.cosmetic_certificate: " +
+          JSON.stringify(this.cosmetic_certificate)
+      );
       var payDetails = {
         application_type: 0,
-        product_type: this.cosmetic_certificate.product_presentation
+        product_type: this.cosmetic_certificate.particular_product
+          .product_presentation
       };
       this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails).then(result => {
         console.log("get certificate fees: " + JSON.stringify(result));
@@ -185,8 +191,16 @@ export default {
           });
         this.total_amount =
           result.fee + result.lrf + result.interest + result.surcharge;
-        this.$store.commit("SET_VIEW_CERTIFICATE", this.cosmetic_certificate);
-        this.$store.commit("SET_FORM", this.cosmetic_certificate);
+        this.$store.commit("SET_VIEW_CERTIFICATE", {
+          cosmetic_certificate: this.cosmetic_certificate,
+          certificate_type: 2,
+          application_type: 0
+        });
+        this.$store.commit("SET_FORM", {
+          cosmetic_certificate: this.cosmetic_certificate,
+          certificate_type: 2,
+          application_type: 0
+        });
         this.$router.push("/app/certificates/overview");
         this.$notify({
           color: "success",
@@ -196,7 +210,11 @@ export default {
         });
       });
 
-      // this.$store.dispatch("SAVE_CERTIFICATE", this.cosmetic_certificate);
+      // this.$store.dispatch("SAVE_CERTIFICATE", {
+      //   cosmetic_certificate: this.cosmetic_certificate,
+      //   certificate_type: 2,
+      //   application_type: 0
+      // });
     }
   },
   computed: {

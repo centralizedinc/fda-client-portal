@@ -55,6 +55,7 @@ export default class PaymentAPI {
     }
 
     getCertificateFees(details) {
+        console.log("getCertificateFees data: " + JSON.stringify(details))
         return axios.post("payments/fees/certificate", details)
     }
 
@@ -72,7 +73,7 @@ export default class PaymentAPI {
             cb(null, err)
         })
     }
-    
+
     saveTransaction(details, cb) {
         console.log("details data: " + JSON.stringify(details))
         axios.post('payments/transactions/initiate', {
