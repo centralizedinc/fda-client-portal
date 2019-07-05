@@ -28,7 +28,6 @@
             outline
             hide-no-data
             hide-selected
-            :disabled="sourceType"
             :value="form.establishment_info.type"
             label="Source Type"
             v-model="form.establishment_info.type"

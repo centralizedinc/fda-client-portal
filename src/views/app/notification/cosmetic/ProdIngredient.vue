@@ -19,8 +19,8 @@
               <td>{{ props.item.function }}</td>
               <td>{{ props.item.percentage }}</td>
               <td class="justify-center">
-                <v-icon small class="mr-2">edit</v-icon>
-                <v-icon small>delete</v-icon>
+                <v-icon small class="mr-2" @click="editItem(props.index)">edit</v-icon>
+                <v-icon small @click="deleteItem(props.index)">delete</v-icon>
               </td>
             </template>
           </v-data-table>
@@ -35,7 +35,7 @@
             <v-toolbar dark color="primary">
               <span class="title font-weight-light">Add New Product Ingredient</span>
               <v-spacer></v-spacer>
-              <v-btn flat icon @click="dialogProdIng=false">
+              <v-btn flat icon @click="close">
                 <v-icon>close</v-icon>
               </v-btn>
             </v-toolbar>
@@ -60,13 +60,25 @@
                       </ul>
                     </span>
                     <v-flex xs6>
-                      <v-text-field outline name="name" v-model="form.ingredients.variant" label="Variant" id="id"></v-text-field>
+                      <v-text-field outline name="name" v-model="variant" label="Variant" id="id"></v-text-field>
                     </v-flex>
                     <v-flex xs6>
-                      <v-text-field outline name="name" v-model="form.ingredients.name" label="Full Ingredient Name" id="id"></v-text-field>
+                      <v-text-field
+                        outline
+                        name="name"
+                        v-model="name"
+                        label="Full Ingredient Name"
+                        id="id"
+                      ></v-text-field>
                     </v-flex>
                     <v-flex xs6>
-                      <v-text-field outline name="name" v-model="form.ingredients.function" label="Function" id="id"></v-text-field>
+                      <v-text-field
+                        outline
+                        name="name"
+                        v-model="functions"
+                        label="Function"
+                        id="id"
+                      ></v-text-field>
                     </v-flex>
                     <v-flex xs6>
                       <v-text-field
@@ -74,7 +86,7 @@
                         name="name"
                         hint="Function Percentage (%) of Ingredient "
                         label="Function % of Ingredient "
-                        v-model="form.ingredients.percentage"
+                        v-model="percentage"
                         id="id"
                       ></v-text-field>
                     </v-flex>
@@ -85,8 +97,8 @@
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn outline color="primary" @click="dialogProdIng=false">Cancel</v-btn>
-              <v-btn color="primary">Save</v-btn>
+              <v-btn outline color="primary" @click="close()">Cancel</v-btn>
+              <v-btn color="primary" @click="save()">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -132,8 +144,60 @@ export default {
         value: "actions"
       }
     ],
-    prod_ing: []
-  })
+    prod_ing: [],
+    variant: "",
+    name: "",
+    functions: "",
+    percentage: "",
+    editedIndex: -1
+  }),
+  methods: {
+    close() {
+      this.dialogProdIng = false;
+      this.variant = "";
+      this.name = "";
+      this.functions = "";
+      this.percentage = "";
+      this.editedIndex = -1;
+    },
+    save() {
+      if (
+        !this.isEmpty(this.variant) &&
+        !this.isEmpty(this.name) &&
+        !this.isEmpty(this.functions) &&
+        !this.isEmpty(this.percentage) &&
+        this.editedIndex > -1
+      ) {
+        Object.assign(this.form.ingredients[this.editedIndex]);
+        this.close();
+      } else if (
+        !this.isEmpty(this.variant) &&
+        !this.isEmpty(this.name) &&
+        !this.isEmpty(this.functions) &&
+        !this.isEmpty(this.percentage)
+      ) {
+        this.form.ingredients.push({
+          variant: this.variant,
+          name: this.name,
+          function: this.functions,
+          percentage: this.percentage
+        });
+        this.close();
+      }
+    },
+    editItem(index) {
+      this.dialogProdIng = true;
+      this.editedIndex = index;
+      var data = this.form.ingredients[index];
+      this.variant = data.variant;
+      this.name = data.name;
+      this.functions = data.function;
+      this.percentage = data.percentage;
+    },
+    deleteItem(index) {
+      this.form.ingredients.splice(index, 1);
+    }
+  }
 };
 </script>
 

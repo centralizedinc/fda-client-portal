@@ -46,12 +46,16 @@
           </v-tooltip>
         </v-toolbar>
         <v-flex xs12 pb-4>
-          <v-data-table :headers="headersVariants" :items="form.product_variants" class="elevation-1">
+          <v-data-table
+            :headers="headersVariants"
+            :items="form.particular_product.product_variants"
+            class="elevation-1"
+          >
             <template v-slot:items="props">
-              <td>{{ props.item.name }}</td>
+              <td>{{ props.item }}</td>
               <td class="justify-center">
-                <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-                <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+                <v-icon small class="mr-2" @click="editItem(props.item, props.index, 1)">edit</v-icon>
+                <v-icon small @click="deleteItem(props.index, 1)">delete</v-icon>
               </td>
             </template>
           </v-data-table>
@@ -75,7 +79,13 @@
                 <v-container grid-list-md>
                   <v-layout row wrap>
                     <v-flex xs12>
-                      <v-text-field outline name="name" label="Variant/Shade Name" id="id"></v-text-field>
+                      <v-text-field
+                        outline
+                        name="name"
+                        v-model="variant"
+                        label="Variant/Shade Name"
+                        id="id"
+                      ></v-text-field>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -85,7 +95,7 @@
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn outline color="primary" @click="close">Cancel</v-btn>
-              <v-btn color="primary" @click="save">Save</v-btn>
+              <v-btn color="primary" @click="save(1)">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -105,7 +115,13 @@
         </v-flex>
 
         <v-flex xs6>
-          <v-text-field name="name" v-model="form.particular_product.intended_use" label="Intended Use" outline color="green darken-1"></v-text-field>
+          <v-text-field
+            name="name"
+            v-model="form.particular_product.intended_use"
+            label="Intended Use"
+            outline
+            color="green darken-1"
+          ></v-text-field>
         </v-flex>
 
         <v-flex xs6>
@@ -133,14 +149,18 @@
           </v-tooltip>
         </v-toolbar>
         <v-flex xs12 pb-4>
-          <v-data-table :headers="headersProdInfo" :items="form.additional_information" class="elevation-1">
+          <v-data-table
+            :headers="headersProdInfo"
+            :items="form.particular_product.additional_information"
+            class="elevation-1"
+          >
             <template v-slot:items="props">
               <td>{{ props.item.packaging_size }}</td>
               <td>{{ props.item.packaging_type }}</td>
               <td>{{ props.item.gtin }}</td>
               <td class="justify-center">
-                <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-                <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+                <v-icon small class="mr-2" @click="editItem(props.item, props.index, 2)">edit</v-icon>
+                <v-icon small @click="deleteItem(props.index, 2)">delete</v-icon>
               </td>
             </template>
           </v-data-table>
@@ -167,13 +187,26 @@
                       class="caption font-weight-light pb-3"
                     >Product information, including existing packaging sizes and their corresponding Global Trade Identification Number (GTIN) may be updated here. Please note that once information has been submitted, it will no longer be modifiable. Hence, any change to the provided information would merit a new notification application.</span>
                     <v-flex xs12>
-                      <v-text-field outline name="name" v-model="form.particular_product.packaging_size" label="Packaging Size" id="id"></v-text-field>
+                      <v-text-field
+                        outline
+                        name="name"
+                        v-model="packaging_size"
+                        label="Packaging Size"
+                        id="id"
+                        type="number"
+                      ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-text-field outline name="name" v-model="form.particular_product.packaging_type" label="Packaging Type" id="id"></v-text-field>
+                      <v-text-field
+                        outline
+                        name="name"
+                        v-model="packaging_type"
+                        label="Packaging Type"
+                        id="id"
+                      ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-text-field outline name="name" v-model="form.particular_product.gtin" label="GTIN" id="id"></v-text-field>
+                      <v-text-field outline name="name" v-model="gtin" label="GTIN" id="id"></v-text-field>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -182,8 +215,8 @@
             <v-divider></v-divider>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn outline color="primary" @click="dialogProdInfo =false">Cancel</v-btn>
-              <v-btn color="primary" @click="save">Save</v-btn>
+              <v-btn outline color="primary" @click="dialogProdInfo = false">Cancel</v-btn>
+              <v-btn color="primary" @click="save(2)">Save</v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -251,6 +284,10 @@ export default {
     noOfYearsApplied: ["1", "2", "3"],
     variants: [],
     prod_info: [],
+    variant: "",
+    packaging_size: "",
+    packaging_type: "",
+    gtin: "",
     editedIndex: -1,
     editedItem: {
       name: ""
@@ -264,6 +301,9 @@ export default {
     this.initialize();
   },
   computed: {
+    variants_items() {
+      return this.form.particular_product.product_variants;
+    },
     prod_lines() {
       console.log(
         "this.$store.state.products.productType" +
@@ -300,30 +340,101 @@ export default {
   },
   methods: {
     initialize() {},
-    editItem(item) {
-      this.editedIndex = this.variants.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogForVariant = true;
+    editItem(item, index, val) {
+      this.editedIndex = index;
+      if (val == 1) {
+        this.variant = this.form.particular_product.product_variants[index];
+        this.dialogForVariant = true;
+      } else if (val == 2) {
+        this.editedIndex = index;
+        var data = this.form.particular_product.additional_information[index];
+        this.packaging_size = data.packaging_size;
+        this.packaging_type = data.packaging_type;
+        this.gtin = data.gtin;
+        this.dialogProdInfo = true;
+      }
     },
-    deleteItem(item) {
-      const index = this.variants.indexOf(item);
-      this.$notify("Are you sure you want to delete this item?") &&
-        this.variants.splice(index, 1);
+    deleteItem(index, val) {
+      if (val == 1) {
+        // const index = this.variants.indexOf(item);
+        // this.$notify("Are you sure you want to delete this item?") &&
+        this.form.particular_product.product_variants.splice(index, 1);
+        console.log(
+          "delete item data product variants: " +
+            JSON.stringify(this.form.particular_product.product_variants)
+        );
+      } else if (val == 2) {
+        this.form.particular_product.additional_information.splice(index, 1);
+        console.log(
+          "delete item data additional information: " +
+            JSON.stringify(this.form.particular_product.additional_information)
+        );
+      }
     },
     close() {
       this.dialogForVariant = false;
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      }, 300);
+      this.dialogProdInfo = false;
+      this.variant = "";
+      this.packaging_size = "";
+      this.packaging_type = "";
+      this.gtin = "";
+      // setTimeout(() => {
+      //   this.editedItem = Object.assign({}, this.defaultItem);
+      //   this.editedIndex = -1;
+      // }, 300);
     },
-    save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.variants[this.editedIndex], this.editedItem);
-      } else {
-        this.variants.push(this.editedItem);
+    save(val) {
+      if (val == 1) {
+        if (!this.isEmpty(this.variant) && this.editedIndex > -1) {
+          console;
+          // Object.assign(
+          // this.form.particular_product.product_variants[
+          //   this.editedIndex
+          // ].replace("", this.variant);
+          this.form.particular_product.product_variants[
+            this.editedIndex
+          ] = this.variant;
+          // );
+          console.log(
+            "edit this data: " +
+              JSON.stringify(this.form.particular_product.product_variants)
+          );
+          this.editedIndex = -1;
+        } else if (!this.isEmpty(this.variant)) {
+          console.log("variant push data: " + JSON.stringify(this.variant));
+          this.form.particular_product.product_variants.push(this.variant);
+        }
+        this.close();
+      } else if (val == 2) {
+        // console.log("isempty: " + !this.isEmpty(this.packaging_size));
+        if (
+          !this.isEmpty(this.packaging_size) &&
+          !this.isEmpty(this.packaging_type) &&
+          !this.isEmpty(this.gtin)
+        ) {
+          console.log(
+            "val data: " +
+              JSON.stringify(val) +
+              " size: " +
+              JSON.stringify(this.packaging_size) +
+              " type: " +
+              JSON.stringify(this.packaging_type) +
+              " gtin: " +
+              JSON.stringify(this.gtin)
+          );
+          this.form.particular_product.additional_information.push({
+            packaging_size: this.packaging_size,
+            packaging_type: this.packaging_type,
+            gtin: this.gtin
+          });
+          this.packaging_size = "";
+          this.packaging_type = "";
+          this.gtin = "";
+
+          // this.dialogProdInfo = false;
+          this.close();
+        }
       }
-      this.close();
     }
   }
 };

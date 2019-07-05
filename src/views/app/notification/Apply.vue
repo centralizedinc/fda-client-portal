@@ -1,4 +1,4 @@
-<template>
+  <template>
   <v-container grid-list-md>
     <v-layout row wrap>
       <v-progress-linear color="primary" background-color="primary"></v-progress-linear>
@@ -44,7 +44,7 @@
           <v-card flat class="mb-5">
             <stepFour :form="cosmetic_certificate"></stepFour>
           </v-card>
-          <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
+          <v-btn color="primary" @click="next">Continue</v-btn>
           <v-btn flat>Cancel</v-btn>
         </v-stepper-content>
       </v-stepper>
@@ -93,11 +93,13 @@ export default {
         product_presentation: "",
         presentation_component: "",
         presentation_specify: "",
-        additional_information: {
-          packaging_size: 0,
-          packaging_type: "",
-          gtin: ""
-        }
+        additional_information: [
+          // {
+          //   packaging_size: 0,
+          //   packaging_type: "",
+          //   gtin: ""
+          // }
+        ]
       },
       establishment_info: {
         activity: "",
@@ -117,12 +119,14 @@ export default {
         designation: "",
         contact_info: {}
       },
-      ingredients: [{
-        variant: "",
-        name: "",
-        function: "",
-        percentage: ""
-      }]
+      ingredients: [
+        // {
+        //   variant: "",
+        //   name: "",
+        //   function: "",
+        //   percentage: ""
+        // }
+      ]
     }
   }),
   created() {
@@ -141,20 +145,62 @@ export default {
         }
       });
       this.cosmetic_certificate.establishment_info.license_no = this.active_license.license_no;
-      this.cosmetic_certificate.establishment_info.primary_activity = this.getPrimary(this.active_license.general_info.primary_activity)
+      this.cosmetic_certificate.establishment_info.primary_activity = this.getPrimary(
+        this.active_license.general_info.primary_activity
+      );
       this.cosmetic_certificate.establishment_info.contact_info.email = this.active_license.estab_details.email;
       this.cosmetic_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
       this.cosmetic_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
       this.cosmetic_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
+    },
+    next() {
+      var payDetails = {
+        application_type: 0,
+        product_type: this.cosmetic_certificate.product_presentation
+      };
+      this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails).then(result => {
+        console.log("get certificate fees: " + JSON.stringify(result));
+        this.fees = [];
+        this.fees.push({
+          description: "Application Fee",
+          amount: result.fee
+        });
+        this.fees.push({
+          description: "LRF",
+          amount: result.lrf
+        });
+        this.fees.push({
+          description: "Interest",
+          amount: result.interest
+        }),
+          this.fees.push({
+            description: "Surcharge",
+            amount: result.surcharge
+          });
+        this.total_amount =
+          result.fee + result.lrf + result.interest + result.surcharge;
+        this.$store.commit("SET_VIEW_CERTIFICATE", this.cosmetic_certificate);
+        this.$store.commit("SET_FORM", this.cosmetic_certificate);
+        this.$router.push("/app/certificates/overview");
+        this.$notify({
+          color: "success",
+          message:
+            "Registration fee computed! For this application you will have to pay the amount of  ₱ " +
+            this.numberWithCommas(this.total_amount)
+        });
+      });
+
+
+      // this.$store.dispatch("SAVE_CERTIFICATE", this.cosmetic_certificate);
     }
   },
   computed: {
     active_license() {
       console.log(
-        "ACTIVE LICENSE : " + JSON.stringify(
-        this.$store.state.licenses.active_license
-      ));
+        "ACTIVE LICENSE : " +
+          JSON.stringify(this.$store.state.licenses.active_license)
+      );
       return this.$store.state.licenses.active_license;
     }
   }
