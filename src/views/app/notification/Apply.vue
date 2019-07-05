@@ -162,7 +162,7 @@ export default {
     next() {
       var payDetails = {
         application_type: 0,
-        product_type: this.cosmetic_certificate.product_presentation
+        product_type: this.cosmetic_certificate.particular_product.product_presentation
       };
       this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails).then(result => {
         console.log("get certificate fees: " + JSON.stringify(result));
