@@ -1,138 +1,18 @@
 <template>
-  <v-form ref="form">
+  <v-form v-model="isValid" ref="form">
     <v-container grid-list-md>
       <v-layout row wrap>
-        <v-flex xs5>
+        <v-flex xs12>
           <v-text-field
             name="name"
             v-model="form.particular_product.brand_name"
+            :rules="[rules.required]"
             label="Brand Name"
             outline
             color="green darken-1"
           ></v-text-field>
         </v-flex>
-        <v-flex xs5>
-          <v-text-field
-            name="name"
-            v-model="form.particular_product.product_name"
-            label="Product Name"
-            outline
-            color="green darken-1"
-          ></v-text-field>
-        </v-flex>
-        <v-flex xs2>
-          <v-autocomplete
-            outline
-            color="green darken-1"
-            item-text="name"
-            item-value="_id"
-            hide-no-data
-            v-model="form.particular_product.years_applied"
-            :items="noOfYearsApplied"
-            hide-selected
-            label="Years"
-            hint="Number of Years applied"
-          ></v-autocomplete>
-        </v-flex>
-
-        <!-- Product Variants -->
-        <v-toolbar dark flat color="primary" class="elevation-5">
-          <span class="title font-weight-light">Variant/Shade Name</span>
-          <v-spacer></v-spacer>
-          <v-tooltip top>
-            <v-btn slot="activator" outline small icon @click="dialogForVariant=true">
-              <v-icon>edit</v-icon>
-            </v-btn>Add New
-          </v-tooltip>
-        </v-toolbar>
-        <v-flex xs12 pb-4>
-          <v-data-table
-            :headers="headersVariants"
-            :items="form.product_variants"
-            class="elevation-1"
-          >
-            <template v-slot:items="props">
-              <td>{{ props.item.name }}</td>
-              <td class="justify-center">
-                <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-                <v-icon small @click="deleteItem(props.item)">delete</v-icon>
-              </td>
-            </template>
-          </v-data-table>
-        </v-flex>
-        <v-dialog
-          v-model="dialogForVariant"
-          scrollable
-          max-width="500px"
-          transition="dialog-transition"
-        >
-          <v-card>
-            <v-toolbar dark color="primary">
-              <span class="title font-weight-light">Add New Variant/Shade</span>
-              <v-spacer></v-spacer>
-              <v-btn flat icon @click="dialogForVariant=false">
-                <v-icon>close</v-icon>
-              </v-btn>
-            </v-toolbar>
-            <v-card-text>
-              <v-form>
-                <v-container grid-list-md>
-                  <v-layout row wrap>
-                    <v-flex xs12>
-                      <v-text-field outline name="name" label="Variant/Shade Name" id="id"></v-text-field>
-                    </v-flex>
-                  </v-layout>
-                </v-container>
-              </v-form>
-            </v-card-text>
-            <v-divider></v-divider>
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn outline color="primary" @click="close">Cancel</v-btn>
-              <v-btn color="primary" @click="save">Save</v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog>
-
-        <v-flex xs12>
-          <v-autocomplete
-            outline
-            pa-2
-            v-model="form.particular_product.product_type"
-            :items="prod_lines"
-            item-text="name"
-            item-value="_id"
-            hide-no-data
-            hide-selected
-            label="Product Line"
-          ></v-autocomplete>
-        </v-flex>
-
-        <v-flex xs6>
-          <v-text-field
-            name="name"
-            v-model="form.particular_product.intended_use"
-            label="Intended Use"
-            outline
-            color="green darken-1"
-          ></v-text-field>
-        </v-flex>
-
-        <v-flex xs6>
-          <v-autocomplete
-            outline
-            pa-2
-            v-model="form.particular_product.product_presentation"
-            :items="prodPresentation"
-            item-text="name"
-            item-value="_id"
-            hide-no-data
-            hide-selected
-            label="Product Presentation"
-          ></v-autocomplete>
-        </v-flex>
-
-        <!-- Additional Prod Info -->
+        <!-- Product Details Info -->
         <v-toolbar dark flat color="primary" class="elevation-5">
           <span class="title font-weight-light">Additional Product Information</span>
           <v-spacer></v-spacer>
@@ -145,13 +25,14 @@
         <v-flex xs12 pb-4>
           <v-data-table
             :headers="headersProdInfo"
-            :items="form.additional_information"
+            :items="form.product_details"
             class="elevation-1"
           >
             <template v-slot:items="props">
-              <td>{{ props.item.packaging_size }}</td>
-              <td>{{ props.item.packaging_type }}</td>
-              <td>{{ props.item.gtin }}</td>
+              <td>{{ props.item.item }}</td>
+              <td>{{ props.item.model }}</td>
+              <td>{{ props.item.sku }}</td>
+              <td>{{ props.item.age_grading }}</td>
               <td class="justify-center">
                 <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
                 <v-icon small @click="deleteItem(props.item)">delete</v-icon>
@@ -184,8 +65,8 @@
                       <v-text-field
                         outline
                         name="name"
-                        v-model="form.particular_product.packaging_size"
-                        label="Packaging Size"
+                        v-model="form.particular_product.item"
+                        label="Packaging Item"
                         id="id"
                       ></v-text-field>
                     </v-flex>
@@ -193,8 +74,8 @@
                       <v-text-field
                         outline
                         name="name"
-                        v-model="form.particular_product.packaging_type"
-                        label="Packaging Type"
+                        v-model="form.particular_product.model"
+                        label="Packaging Model"
                         id="id"
                       ></v-text-field>
                     </v-flex>
@@ -202,8 +83,17 @@
                       <v-text-field
                         outline
                         name="name"
-                        v-model="form.particular_product.gtin"
-                        label="GTIN"
+                        v-model="form.particular_product.sku"
+                        label="SKU"
+                        id="id"
+                      ></v-text-field>
+                    </v-flex>
+                    <v-flex xs12>
+                      <v-text-field
+                        outline
+                        name="name"
+                        v-model="form.particular_product.age_grading"
+                        label="Age Grading"
                         id="id"
                       ></v-text-field>
                     </v-flex>
@@ -219,8 +109,60 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
+        <v-flex xs5>
+          <v-text-field
+            name="name"
+            :rules="[rules.required]"
+            v-model="form.particular_product.product_name"
+            label="Product Name"
+            outline
+            color="green darken-1"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs5>
+          <v-text-field
+            name="name"
+            :rules="[rules.required]"
+            v-model="form.particular_product.product_use"
+            label="Product Use"
+            outline
+            color="green darken-1"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs5>
+          <v-text-field
+            name="name"
+            :rules="[rules.required]"
+            v-model="form.particular_product.mass_of_child"
+            label="Product Mass of Child"
+            outline
+            color="green darken-1"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs5>
+          <v-text-field
+            name="name"
+            :rules="[rules.required]"
+            v-model="form.particular_product.if_appropriate"
+            label="if Appropriate"
+            outline
+            color="green darken-1"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-text-field
+            name="name"
+            :rules="[rules.required]"
+            v-model="form.particular_product.exemption_reason"
+            label="Product Exemption Reason"
+            outline
+            color="green darken-1"
+          ></v-text-field>
+        </v-flex>
       </v-layout>
     </v-container>
+    <v-btn color="primary" @click="proceed">Continue</v-btn>
+    <v-btn flat @click="cancel">Cancel</v-btn>
   </v-form>
 </template>
 
@@ -230,47 +172,36 @@ export default {
   data: () => ({
     isValid: true,
     add: false,
+    rules: {
+      required: value => !!value || "This field is required"
+    },
     dialogForVariant: false,
     dialogProdInfo: false,
-    product_variants: "",
-    headersVariants: [
-      {
-        text: "Variants/Shade Name",
-        align: "left",
-        sortable: false,
-        value: "name"
-      },
-      {
-        text: "Actions",
-        align: "left",
-        sortable: false,
-        value: "actions"
-      }
-    ],
+    product_details: "",
     headersProdInfo: [
       {
-        text: "Product Size",
+        text: "Product Item",
         align: "left",
         sortable: false,
-        value: "size"
+        value: "item"
       },
       {
-        text: "Product Type",
+        text: "Product Model",
         align: "left",
         sortable: false,
-        value: "type"
+        value: "model"
       },
       {
-        text: "GTIN",
+        text: "SKU",
         align: "left",
         sortable: false,
-        value: "gtin"
+        value: "sku"
       },
       {
-        text: "Actions",
+        text: "Age Grading",
         align: "left",
         sortable: false,
-        value: "actions"
+        value: "age_grading"
       }
     ],
     prodPresentation: [
@@ -280,8 +211,6 @@ export default {
       "Combination products in a single kit",
       "Others"
     ],
-    noOfYearsApplied: ["1", "2", "3"],
-    variants: [],
     prod_info: [],
     editedIndex: -1,
     editedItem: {
@@ -331,6 +260,28 @@ export default {
     }
   },
   methods: {
+    proceed() {
+      if (this.validate()) {
+        this.$emit("next", 2);
+        } else {
+        this.$notifyError([{ message: "Fill-up required fields." }]);
+      }
+    },
+    cancel(){
+      this.$emit('next', 1)
+    },
+    validate() {
+      this.$refs.form.validate();
+      return this.isValid;
+    },
+    submit() {
+      this.$refs.form.validate();
+      if (this.isValid) {
+        this.isValid = false;
+      } else {
+        this.$notifyError([{ message: "Fill-up required fields." }]);
+      }
+    },
     initialize() {},
     editItem(item) {
       this.editedIndex = this.variants.indexOf(item);
