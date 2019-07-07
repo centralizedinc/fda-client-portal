@@ -82,7 +82,7 @@ export default {
     company_representative: [],
     ingredients: [],
     product_presentation: [],
-
+    product_line: [],
     cosmetic_certificate: {
       particular_product: {
         brand_name: "",
@@ -155,6 +155,7 @@ export default {
       this.cosmetic_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
       this.cosmetic_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
       this.product_presentation = this.$store.state.cosmeticCertificate.product_presentation;
+      this.product_line = this.active_license.estab_details.products;
       console.log(
         "product presentation: " + JSON.stringify(this.product_presentation)
       );
