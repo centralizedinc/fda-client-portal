@@ -352,7 +352,6 @@ export default {
   },
   methods: {
     proceed() {
-
       if (this.validate()) {
         this.$emit("next", 2);
       } else {

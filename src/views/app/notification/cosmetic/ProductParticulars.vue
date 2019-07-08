@@ -1,10 +1,11 @@
 <template>
-  <v-form ref="form">
+  <v-form v-model="isValid" ref="form">
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs5>
           <v-text-field
             name="name"
+            :rules="[rules.required]"
             v-model="form.particular_product.brand_name"
             label="Brand Name"
             outline
@@ -14,6 +15,7 @@
         <v-flex xs5>
           <v-text-field
             name="name"
+            :rules="[rules.required]"
             v-model="form.particular_product.product_name"
             label="Product Name"
             outline
@@ -23,6 +25,7 @@
         <v-flex xs2>
           <v-autocomplete
             outline
+            :rules="[rules.required]"
             color="green darken-1"
             item-text="name"
             item-value="_id"
@@ -81,6 +84,7 @@
                     <v-flex xs12>
                       <v-text-field
                         outline
+                        :rules="[rules.required]"
                         name="name"
                         v-model="variant"
                         label="Variant/Shade Name"
@@ -111,6 +115,7 @@
             hide-no-data
             hide-selected
             label="Product Line"
+            :rules="[rules.required]"
           ></v-autocomplete>
         </v-flex>
 
@@ -121,6 +126,7 @@
             label="Intended Use"
             outline
             color="green darken-1"
+            :rules="[rules.required]"
           ></v-text-field>
         </v-flex>
 
@@ -135,6 +141,7 @@
             hide-no-data
             hide-selected
             label="Product Presentation"
+            :rules="[rules.required]"
           ></v-autocomplete>
         </v-flex>
 
@@ -194,6 +201,7 @@
                         label="Packaging Size"
                         id="id"
                         type="number"
+                        :rules="[rules.required]"
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
@@ -203,10 +211,18 @@
                         v-model="packaging_type"
                         label="Packaging Type"
                         id="id"
+                        :rules="[rules.required]"
                       ></v-text-field>
                     </v-flex>
                     <v-flex xs12>
-                      <v-text-field outline name="name" v-model="gtin" label="GTIN" id="id"></v-text-field>
+                      <v-text-field
+                        outline
+                        name="name"
+                        v-model="gtin"
+                        label="GTIN"
+                        id="id"
+                        :rules="[rules.required]"
+                      ></v-text-field>
                     </v-flex>
                   </v-layout>
                 </v-container>
@@ -222,6 +238,8 @@
         </v-dialog>
       </v-layout>
     </v-container>
+    <v-btn color="primary" @click="proceed">Continue</v-btn>
+    <v-btn flat @click="cancel">Cancel</v-btn>
   </v-form>
 </template>
 
@@ -231,6 +249,9 @@ export default {
   data: () => ({
     isValid: true,
     add: false,
+    rules: {
+      required: value => !!value || "This field is required"
+    },
     dialogForVariant: false,
     dialogProdInfo: false,
     product_variants: "",
@@ -339,6 +360,20 @@ export default {
     }
   },
   methods: {
+    proceed() {
+      if (this.validate()) {
+        this.$emit("next", 2);
+      } else {
+        this.$notifyError([{ message: "Fill-up required fields." }]);
+      }
+    },
+    cancel() {
+      this.$emit("next", 1);
+    },
+    validate() {
+      this.$refs.form.validate();
+      return this.isValid;
+    },
     initialize() {},
     editItem(item, index, val) {
       this.editedIndex = index;

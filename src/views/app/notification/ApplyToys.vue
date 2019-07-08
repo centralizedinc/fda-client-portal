@@ -42,7 +42,7 @@
             <stepFour :form="toy_certificate"></stepFour>
           </v-card>
           <v-btn color="primary" @click="save">Continue</v-btn>
-          <v-btn flat>Cancel</v-btn>
+          <v-btn flat @click="cancel">Cancel</v-btn>
         </v-stepper-content>
       </v-stepper>
     </v-layout>
@@ -120,6 +120,9 @@ export default {
     next(page) {
       this.e6 = page;
     },
+    cancel() {
+      this.$emit("next", 2);
+    },
     init() {
       console.log("Apply Notification Toys");
       this.toy_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
@@ -141,8 +144,15 @@ export default {
       this.toy_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
       this.toy_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
       this.toy_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
-      this.toy_certificate.company_representative.name = this.active_license.auth_officer.firstname + ' ' + this.active_license.auth_officer.middlename + ' ' + this.active_license.auth_officer.lastname;
-      this.toy_certificate.company_representative.designation = this.getDesignation(this.active_license.auth_officer.designation).name;
+      this.toy_certificate.company_representative.name =
+        this.active_license.auth_officer.firstname +
+        " " +
+        this.active_license.auth_officer.middlename +
+        " " +
+        this.active_license.auth_officer.lastname;
+      this.toy_certificate.company_representative.designation = this.getDesignation(
+        this.active_license.auth_officer.designation
+      ).name;
       // console.log("toys designation: " + JSON.stringify(this.getDesignation(this.active_license.auth_officer.designation)))
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
     },
@@ -172,7 +182,7 @@ export default {
           });
         this.total_amount =
           result.fee + result.lrf + result.interest + result.surcharge;
-        this.$store.commit("SET_VIEW_CERTIFICATE",{
+        this.$store.commit("SET_VIEW_CERTIFICATE", {
           toy_certificate: this.toy_certificate,
           certificate_type: 1,
           application_type: 0
@@ -190,7 +200,6 @@ export default {
             this.numberWithCommas(this.total_amount)
         });
       });
-
 
       // this.$store.dispatch("SAVE_CERTIFICATE", this.cosmetic_certificate);
     }

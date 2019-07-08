@@ -1,5 +1,5 @@
 <template>
-  <v-form ref="form">
+  <v-form v-model="isValid" ref="form">
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs12>
@@ -13,10 +13,24 @@
           ></v-text-field>
         </v-flex>
         <v-flex xs12>
-          <v-text-field disabled outline name="name" v-model="form.establishment_info.address" label="Address (As listed in License)" id="id"></v-text-field>
+          <v-text-field
+            disabled
+            outline
+            name="name"
+            v-model="form.establishment_info.address"
+            label="Address (As listed in License)"
+            id="id"
+          ></v-text-field>
         </v-flex>
         <v-flex xs6>
-          <v-text-field disabled outline name="name" v-model="form.establishment_info.license_no" label="License Number" id="id"></v-text-field>
+          <v-text-field
+            disabled
+            outline
+            name="name"
+            v-model="form.establishment_info.license_no"
+            label="License Number"
+            id="id"
+          ></v-text-field>
         </v-flex>
         <v-flex xs6>
           <v-text-field
@@ -39,7 +53,13 @@
           >Contact Information as listed in License</v-toolbar>
         </v-flex>
         <v-flex xs6>
-          <v-text-field outline disabled color="green darken-1" v-model="form.establishment_info.contact_info.email" label="1. Email Address"></v-text-field>
+          <v-text-field
+            outline
+            disabled
+            color="green darken-1"
+            v-model="form.establishment_info.contact_info.email"
+            label="1. Email Address"
+          ></v-text-field>
         </v-flex>
         <v-flex xs6>
           <v-text-field
@@ -73,12 +93,32 @@
         </v-flex>
       </v-layout>
     </v-container>
+    <v-btn color="primary" @click="proceed">Continue</v-btn>
+    <v-btn flat @click="cancel">Cancel</v-btn>
   </v-form>
 </template>
 
 <script>
 export default {
-  props: ["form"]
+  props: ["form"],
+  data: () => ({
+    isValid: true
+  }),
+  methods: {
+    proceed() {
+      this.$emit("next", 3);
+    },
+    cancel() {
+      this.$emit("next", 1);
+    },
+    validate() {
+      this.$refs.form.validate();
+      return this.isValid;
+    }
+    // validate() {
+    //   return this.uploads;
+    // }
+  }
 };
 </script>
 

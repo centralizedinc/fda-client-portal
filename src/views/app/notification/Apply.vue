@@ -4,20 +4,22 @@
       <v-progress-linear color="primary" background-color="primary"></v-progress-linear>
       <!-- stepper -->
       <v-stepper v-model="e6" vertical>
-        <v-stepper-step :complete="e6 > 1" step="1">
+        <v-stepper-step :complete="e6 > 1" step="1" editable>
           Product Particulars
           <small>Fill out all necessary information</small>
         </v-stepper-step>
 
         <v-stepper-content step="1">
           <v-card flat class="mb-5">
-            <stepOne :form="cosmetic_certificate" :product_presentation="product_presentation"></stepOne>
+            <stepOne
+              :form="cosmetic_certificate"
+              :product_presentation="product_presentation"
+              @next="next"
+            ></stepOne>
           </v-card>
-          <v-btn color="primary" @click="e6 = 2">Continue</v-btn>
-          <v-btn flat>Cancel</v-btn>
         </v-stepper-content>
 
-        <v-stepper-step :complete="e6 > 2" step="2">
+        <v-stepper-step :complete="e6 > 2" step="2" editable>
           Establishment Information
           <small>Local Company Responsible for Placing the Product in the Market</small>
         </v-stepper-step>
@@ -26,26 +28,22 @@
           <v-card flat class="mb-5">
             <stepTwo :form="cosmetic_certificate" @next="next"></stepTwo>
           </v-card>
-          <v-btn color="primary" @click="e6 = 3">Continue</v-btn>
-          <v-btn flat>Cancel</v-btn>
         </v-stepper-content>
 
-        <v-stepper-step step="3">Person Representing the Local Company</v-stepper-step>
+        <v-stepper-step :complete="e6 > 3" step="3" editable>Person Representing the Local Company</v-stepper-step>
         <v-stepper-content step="3">
           <v-card flat class="mb-5">
             <stepThree :form="cosmetic_certificate" @next="next"></stepThree>
           </v-card>
-          <v-btn color="primary" @click="e6 = 4">Continue</v-btn>
-          <v-btn flat>Cancel</v-btn>
         </v-stepper-content>
 
-        <v-stepper-step step="4">Product Ingredient List</v-stepper-step>
+        <v-stepper-step step="4" editable>Product Ingredient List</v-stepper-step>
         <v-stepper-content step="4">
           <v-card flat class="mb-5">
             <stepFour :form="cosmetic_certificate"></stepFour>
           </v-card>
-          <v-btn color="primary" @click="next">Continue</v-btn>
-          <v-btn flat>Cancel</v-btn>
+          <v-btn color="primary" @click="save">Continue</v-btn>
+          <v-btn flat @click="cancel">Cancel</v-btn>
         </v-stepper-content>
       </v-stepper>
     </v-layout>
@@ -136,6 +134,12 @@ export default {
     this.init();
   },
   methods: {
+    next(page) {
+      this.e6 = page;
+    },
+    cancel() {
+      this.$emit("next", 3);
+    },
     init() {
       console.log("Apply Notification");
       this.cosmetic_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
@@ -160,7 +164,7 @@ export default {
       );
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
     },
-    next() {
+    save() {
       console.log(
         "this.cosmetic_certificate: " +
           JSON.stringify(this.cosmetic_certificate)
