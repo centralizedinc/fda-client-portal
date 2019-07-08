@@ -80,12 +80,14 @@ export default {
     toy_certificate: {
       particular_product: {
         brand_name: "",
-        product_details: {
-          item: "",
-          model: "",
-          sku: "",
-          age_grading: ""
-        },
+        product_details: [
+          // {
+          //   item: "",
+          //   model: "",
+          //   sku: "",
+          //   age_grading: ""
+          // }
+        ],
         product_type: "",
         product_use: 0,
         mass_of_child: 0,
@@ -159,7 +161,7 @@ export default {
     save() {
       var payDetails = {
         application_type: 0,
-        product_type: this.toy_certificate.product_type
+        product_type: this.toy_certificate.particular_product.product_type
       };
       this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails).then(result => {
         console.log("get certificate fees: " + JSON.stringify(result));

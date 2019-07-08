@@ -25,7 +25,7 @@
         <v-flex xs12 pb-4>
           <v-data-table
             :headers="headersProdInfo"
-            :items="form.product_details"
+            :items="form.particular_product.product_details"
             class="elevation-1"
           >
             <template v-slot:items="props">
@@ -34,8 +34,8 @@
               <td>{{ props.item.sku }}</td>
               <td>{{ props.item.age_grading }}</td>
               <td class="justify-center">
-                <v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-                <v-icon small @click="deleteItem(props.item)">delete</v-icon>
+                <v-icon small class="mr-2" @click="editItem(props.index)">edit</v-icon>
+                <v-icon small @click="deleteItem(props.index)">delete</v-icon>
               </td>
             </template>
           </v-data-table>
@@ -66,7 +66,7 @@
                         outline
                         :rules="[rules.required]"
                         name="name"
-                        v-model="form.particular_product.item"
+                        v-model="item"
                         label="Packaging Item"
                         id="id"
                       ></v-text-field>
@@ -76,7 +76,7 @@
                         outline
                         :rules="[rules.required]"
                         name="name"
-                        v-model="form.particular_product.model"
+                        v-model="model"
                         label="Packaging Model"
                         id="id"
                       ></v-text-field>
@@ -86,7 +86,7 @@
                         outline
                         :rules="[rules.required]"
                         name="name"
-                        v-model="form.particular_product.sku"
+                        v-model="sku"
                         label="Stock Keeping Unit (SKU)"
                         id="id"
                       ></v-text-field>
@@ -223,6 +223,10 @@ export default {
     dialogProdInfo: false,
     product_details: "",
     toyProductType: "",
+    item: "",
+    model: "",
+    sku: "",
+    grading: "",
     age: [
       "0 Months+",
       "1 Months+",
@@ -233,7 +237,6 @@ export default {
       "3+",
       "4+"
     ],
-    grading: null,
     prodUse: ["For Indoor Use", "For Outdoor Use"],
     use: null,
     exemption: null,
@@ -374,30 +377,87 @@ export default {
       }
     },
     initialize() {},
-    editItem(item) {
-      this.editedIndex = this.variants.indexOf(item);
-      this.editedItem = Object.assign({}, item);
-      this.dialogForVariant = true;
+    editItem(index) {
+      this.editedIndex = index;
+      this.dialogProdInfo = true;
+      var data = this.form.particular_product.product_details[index];
+      this.item = data.item;
+      this.model = data.model;
+      this.sku = data.sku;
+      this.grading = data.age_grading;
+
+      // this.editedIndex = this.variants.indexOf(item);
+      // this.editedItem = Object.assign({}, item);
+      // this.dialogForVariant = true;
     },
-    deleteItem(item) {
-      const index = this.variants.indexOf(item);
-      this.$notify("Are you sure you want to delete this item?") &&
-        this.variants.splice(index, 1);
+    deleteItem(index) {
+      this.form.particular_product.product_details.splice(index, 1);
+      // const index = this.variants.indexOf(item);
+      // this.$notify("Are you sure you want to delete this item?") &&
+      //   this.variants.splice(index, 1);
     },
     close() {
-      this.dialogForVariant = false;
-      setTimeout(() => {
-        this.editedItem = Object.assign({}, this.defaultItem);
-        this.editedIndex = -1;
-      }, 300);
+      this.item = "";
+      this.model = "";
+      this.sku = "";
+      this.grading = "";
+      this.dialogProdInfo = false;
+      // setTimeout(() => {
+      //   this.editedItem = Object.assign({}, this.defaultItem);
+      //   this.editedIndex = -1;
+      // }, 300);
     },
     save() {
-      if (this.editedIndex > -1) {
-        Object.assign(this.variants[this.editedIndex], this.editedItem);
-      } else {
-        this.variants.push(this.editedItem);
+      if (
+        !this.isEmpty(this.item) &&
+        !this.isEmpty(this.model) &&
+        !this.isEmpty(this.sku) &&
+        !this.isEmpty(this.grading) &&
+        this.editedIndex > -1
+      ) {
+        console.log("edit save");
+        this.form.particular_product.product_details[
+          this.editedIndex
+        ].item = this.item;
+        this.form.particular_product.product_details[
+          this.editedIndex
+        ].model = this.model;
+        this.form.particular_product.product_details[
+          this.editedIndex
+        ].sku = this.sku;
+        this.form.particular_product.product_details[
+          this.editedIndex
+        ].age_grading = this.grading;
+        console.log(
+          "edit data: " +
+            JSON.stringify(
+              this.form.particular_product.product_details[this.editedIndex]
+            )
+        );
+        this.editedIndex = -1;
+        this.close();
+      } else if (
+        !this.isEmpty(this.item) &&
+        !this.isEmpty(this.model) &&
+        !this.isEmpty(this.sku) &&
+        !this.isEmpty(this.grading)
+      ) {
+        console.log("save data:");
+        this.form.particular_product.product_details.push({
+          item: this.item,
+          model: this.model,
+          sku: this.sku,
+          age_grading: this.grading
+        });
+        this.close();
       }
-      this.close();
+      //   if (this.editedIndex > -1) {
+      //     Object.assign(this.variants[this.editedIndex], this.editedItem);
+      //   } else {
+      //     this.variants.push(this.editedItem);
+      //   }
+      //   this.close();
+      // }
     }
   }
 };
