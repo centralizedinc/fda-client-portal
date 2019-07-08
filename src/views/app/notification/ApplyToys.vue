@@ -80,12 +80,14 @@ export default {
     toy_certificate: {
       particular_product: {
         brand_name: "",
-        product_details: {
-          item: "",
-          model: "",
-          sku: "",
-          age_grading: ""
-        },
+        product_details: [
+          // {
+          //   item: "",
+          //   model: "",
+          //   sku: "",
+          //   age_grading: ""
+          // }
+        ],
         product_type: "",
         product_use: 0,
         mass_of_child: 0,
@@ -141,15 +143,22 @@ export default {
       this.toy_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
       this.toy_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
       this.toy_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
-      this.toy_certificate.company_representative.name = this.active_license.auth_officer.firstname + ' ' + this.active_license.auth_officer.middlename + ' ' + this.active_license.auth_officer.lastname;
-      this.toy_certificate.company_representative.designation = this.getDesignation(this.active_license.auth_officer.designation).name;
+      this.toy_certificate.company_representative.name =
+        this.active_license.auth_officer.firstname +
+        " " +
+        this.active_license.auth_officer.middlename +
+        " " +
+        this.active_license.auth_officer.lastname;
+      this.toy_certificate.company_representative.designation = this.getDesignation(
+        this.active_license.auth_officer.designation
+      ).name;
       // console.log("toys designation: " + JSON.stringify(this.getDesignation(this.active_license.auth_officer.designation)))
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
     },
     save() {
       var payDetails = {
         application_type: 0,
-        product_type: this.toy_certificate.product_type
+        product_type: this.toy_certificate.particular_product.product_type
       };
       this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails).then(result => {
         console.log("get certificate fees: " + JSON.stringify(result));
@@ -172,7 +181,7 @@ export default {
           });
         this.total_amount =
           result.fee + result.lrf + result.interest + result.surcharge;
-        this.$store.commit("SET_VIEW_CERTIFICATE",{
+        this.$store.commit("SET_VIEW_CERTIFICATE", {
           toy_certificate: this.toy_certificate,
           certificate_type: 1,
           application_type: 0
@@ -190,7 +199,6 @@ export default {
             this.numberWithCommas(this.total_amount)
         });
       });
-
 
       // this.$store.dispatch("SAVE_CERTIFICATE", this.cosmetic_certificate);
     }
