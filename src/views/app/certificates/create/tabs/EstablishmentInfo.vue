@@ -244,19 +244,21 @@ export default {
       //   this.documentUpload = true
       //   this.supplier = true
       //   this.manufacturer = true
+
       this.sourceType = false;
       this.countryOrigin = false;
       this.directlySourced = false;
+      this.documentUpload = false;
       this.instruction = false;
       this.instruction2 = false;
       this.instruction3 = false;
-      this.documentUpload = false;
       this.supplier = false;
       this.manufacturer = false;
+
       this.form.establishment_info.type = "";
       this.form.establishment_info.manufacturer_address = "";
       this.form.establishment_info.origin_country = "";
-      this.form.establishment_info.directly_source = "";
+      this.form.establishment_info.directly_source = null;
       this.form.establishment_info.supplier_name = "";
       this.form.establishment_info.supplier_address = "";
       this.form.establishment_info.manufacturer_name = "";
@@ -264,12 +266,19 @@ export default {
       console.log("estab info activity: " + JSON.stringify(val));
       var activity = this.establishmentInfo(val).name;
       if (activity == "Manufacturer") {
+        this.supplier = false;
+        this.manufacturer = false;
       } else if (activity == "Importer, Distributor, Wholesaler") {
         this.sourceType = true;
         this.countryOrigin = true;
         this.instruction = true;
         this.directlySourced = true;
         this.documentUpload = true;
+        this.supplier = false;
+        this.manufacturer = false;
+        this.instruction2 = false;
+        this.instruction3 = false;
+
         console.log("source data: " + JSON.stringify(this.source));
 
         this.form.establishment_info.directly_source = this.source[0]._id;
@@ -278,19 +287,34 @@ export default {
         this.directlySourced = true;
         this.documentUpload = true;
         this.instruction2 = true;
+        this.sourceType = false;
+        this.countryOrigin = false;
+        this.instruction = false;
+        this.instruction3 = false;
+        this.supplier = false;
+        this.manufacturer = false;
       } else if (activity == "Trader") {
         this.directlySourced = true;
         this.instruction3 = true;
         this.documentUpload = true;
+        this.sourceType = false;
+        this.countryOrigin = false;
+        this.instruction = false;
+        this.instruction2 = false;
+        this.supplier = false;
+        this.manufacturer = false;
       }
     },
     "form.establishment_info.directly_source": function(val) {
-      if (val) {
+      if (val == true) {
         this.supplier = false;
         this.manufacturer = true;
-      } else {
+      } else if (val == false) {
         this.supplier = true;
         this.manufacturer = true;
+      } else {
+        this.supplier = false;
+        this.manufacturer = false;
       }
     }
   },

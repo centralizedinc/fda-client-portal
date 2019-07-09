@@ -75,7 +75,7 @@ export default class PaymentAPI {
     }
 
     saveTransaction(details, cb) {
-        console.log("details data: " + JSON.stringify(details))
+        console.log("details data: " + JSON.stringify(details.case.application_type))
         axios.post('payments/transactions/initiate', {
             payment_details: {
                 status: details.case.application_type,

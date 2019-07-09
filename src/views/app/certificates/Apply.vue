@@ -228,7 +228,7 @@ export default {
         type: "",
         // change country origin to string
         origin_country: "",
-        directly_source: false,
+        directly_source: null,
         manufacturer_name: "",
         manufacturer_address: "",
         supplier_name: "",
@@ -321,6 +321,53 @@ export default {
 
   methods: {
     init() {
+      this.food_product = this.$store.state.foodCertificate.food_product;
+
+      this.category = this.$store.state.foodCertificate.food_category;
+
+      this.shelf_life = this.$store.state.foodCertificate.shelf_life;
+
+      this.source = this.$store.state.foodCertificate.source;
+
+      this.product_specification = this.$store.state.foodCertificate.product_specification;
+
+      this.nutrition_information = this.$store.state.foodCertificate.nutrition_information;
+
+      this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims;
+
+      this.vitamins = this.$store.state.foodCertificate.vitamins;
+
+      this.minerals = this.$store.state.foodCertificate.minerals;
+
+      this.origin = this.$store.state.places.origin;
+
+      this.physical_parameter = this.$store.state.foodCertificate.physical_parameter;
+
+      this.company_activity = this.$store.state.foodCertificate.company_activity;
+      console.log(
+        "active license data: " + JSON.stringify(this.active_lincense)
+      );
+      this.active_license.address_list.forEach(add => {
+        if (add.type == 0) {
+          this.cert_form.food_product.address = add.address;
+          this.cert_form.food_product.region = add.region;
+        }
+      });
+
+      this.cert_form.food_product.company = this.active_license.estab_details.establishment_name;
+
+      this.cert_form.food_product.license_no = this.active_license.license_no;
+
+      this.cert_form.food_product.license_validity = this.active_license.license_expiry;
+
+      this.cert_form.food_product.contacts.email = this.active_license.estab_details.email;
+
+      this.cert_form.food_product.contacts.fax = this.active_license.estab_details.fax;
+
+      this.cert_form.food_product.contacts.landline = this.active_license.estab_details.landline;
+
+      this.cert_form.food_product.contacts.mobile = this.active_license.estab_details.mobile;
+
       //       console.log("this.$store.state.certificate.init_form: " + JSON.stringify(this.$store.state.certificate.init_form));
       // this.cert_form = this.$store.state.certificate.init_form
       //     console.log("created porps: " + JSON.stringify(this.cert_form));
@@ -336,7 +383,7 @@ export default {
       }
     },
     loadFoodReferences() {
-      console.log("load food references:")
+      console.log("load food references:");
       this.food_product = this.$store.state.foodCertificate.food_product;
 
       this.category = this.$store.state.foodCertificate.food_category;
@@ -382,7 +429,7 @@ export default {
       this.cert_form.food_product.contacts.mobile = this.active_license.estab_details.mobile;
     },
     loadToysReferences() {
-      console.log("load toys references")
+      console.log("load toys references");
       this.active_license.address_list.forEach(add => {
         if (add.type == 0) {
           this.cert_form.toy_certificate.establishment_info.address =
@@ -414,13 +461,9 @@ export default {
           details: this.active_license.estab_details.fax
         }
       ];
-      console.log(
-        "toys product exempt data: " +
-          JSON.stringify(this.$store.state.toysCertifiacte.toys_exemption)
-      );
     },
     loadCosmeticsReferences() {
-      console.log("load cosmetic references")
+      console.log("load cosmetic references");
       this.active_license.address_list.forEach(add => {
         if (add.type == 0) {
           this.cert_form.cosmetic_certificate.establishment_info.address =

@@ -20,17 +20,19 @@
           >
             <template slot="items" slot-scope="props">
               <tr @click="viewItem(props.item, props.index)" style="cursor:pointer">
-                <td>{{props.item}}</td>
-                <td class="justify-center layout px-0">
-                  <!-- <v-icon
+                <td>
+                  {{props.item}}
+                  <v-icon small @click="deleteIngredients(props.index)" class="ml-5">delete</v-icon>
+                </td>
+                <!-- <td> -->
+                <!-- <v-icon
               small
               class="mr-2"
               @click="editIngredients(props.item)"
             >
               edit
-                  </v-icon>-->
-                  <v-icon small @click="deleteIngredients(props.index)">delete</v-icon>
-                </td>
+                </v-icon>-->
+                <!-- </td> -->
               </tr>
             </template>
           </v-data-table>
@@ -57,12 +59,12 @@
                     <v-text-field outline name="name" label="Ingredient Name" v-model="ingredient"></v-text-field>
                   </v-flex>
                   <v-divider></v-divider>
-                  <br>
+                  <br />
                   <span
                     class="caption font-weight-light"
                   >In descending order of proportion. Product formulation must be consistent with the Ingredient List on the label. Declaration of Food additives should specify its common name not the functional name only and indicate levels eg. LECITHIN (EMULSIFIER) 0.1%.</span>
-                  <br>
-                  <br>
+                  <br />
+                  <br />
                   <span class="caption font-weight-light pa-1">
                     For multi-component ingredients declaration:
                     <ul>
@@ -71,10 +73,10 @@
                       <li>Hydrogenated Vegetable Fat</li>
                     </ul>
                   </span>
-                  <br>
+                  <br />
                   <span class="caption font-weight-light pa-1">
                     For food supplement, ingredients declaration should be in the following format:
-                    <br>
+                    <br />
                     <span
                       class="caption font-weight-light pa-1"
                     >Specific Name of Ingredient Amount per Serving</span>
@@ -82,10 +84,10 @@
                       <li>Example: Zeaxanthin 1 mg</li>
                     </ul>
                   </span>
-                  <br>
+                  <br />
                   <span class="caption font-weight-light pa-1">
                     For Vitamins and minerals as Food Supplement, ingredients declaration should be in the following format:
-                    <br>
+                    <br />
                     <span
                       class="caption font-weight-light pa-1"
                     >Specific Name (Form/ Chemical nature of Vitamin or Mineral) Amount per Serving</span>
@@ -93,19 +95,19 @@
                       <li>Example: Vitamin A (Beta-carotene) 300 µgRE</li>
                     </ul>
                   </span>
-                  <br>
+                  <br />
                   <span class="caption font-weight-light pa-1">
                     For Amino acids as Food Supplement, ingredients declaration should be in the following format:
-                    <br>
+                    <br />
                     <span class="caption font-weight-light pa-1">Specific Name Amount per Serving</span>
                     <ul>
                       <li>Example: Leucine 50 mg</li>
                     </ul>
                   </span>
-                  <br>
+                  <br />
                   <span class="caption font-weight-light pa-1">
                     For Herbs and Botanicals as Food Supplement, ingredients declaration should be in the following format:
-                    <br>
+                    <br />
                     <span
                       class="caption font-weight-light pa-1"
                     >Specific Name (Scientific name) Plant Part Used Amount per Serving</span>
@@ -113,10 +115,10 @@
                       <li>Example: Guyabano (Annona muricata) Fruit 100 mg</li>
                     </ul>
                   </span>
-                  <br>
+                  <br />
                   <span class="caption font-weight-light pa-1">
                     For Products with Nutritional Substances (plant or animal origin) as Food Supplement, ingredients declaration should be in the following format:
-                    <br>
+                    <br />
                     <span
                       class="caption font-weight-light pa-1"
                     >Specific name Plant or animal source Amount per Serving</span>
