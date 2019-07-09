@@ -16,7 +16,8 @@ const mutations = {
 var actions = {
     GET_TOYS_EXEMPTION(context) {
         return new Promise((resolve, reject) => {
-            new ToysCertificateAPI(context.rootState.user_session.token).toyExemption((exemption, err) => {
+            console.log("toys exemption data: ")
+            new ToysCertificateAPI(context.rootState.user_session.token).toysExemption((exemption, err) => {
                 if (!err) {
                     console.log("GET_TOYS_EXEMPTION data: " + JSON.stringify(exemption))
                     context.commit('SET_TOYS_EXEMPTION', exemption)

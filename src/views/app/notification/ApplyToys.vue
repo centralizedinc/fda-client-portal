@@ -11,7 +11,7 @@
 
         <v-stepper-content step="1">
           <v-card flat class="mb-5">
-            <stepOne :form="toy_certificate" @next="next"></stepOne>
+            <stepOne :form="toy_certificate" :exempt="exempt" @next="next"></stepOne>
           </v-card>
         </v-stepper-content>
 
@@ -77,6 +77,7 @@ export default {
     product_details: [],
     establishment_info: [],
     company_representative: [],
+    exempt: [],
     toy_certificate: {
       particular_product: {
         brand_name: "",
@@ -155,14 +156,22 @@ export default {
       this.toy_certificate.company_representative.designation = this.getDesignation(
         this.active_license.auth_officer.designation
       ).name;
+      this.exempt = this.$store.state.toysCertificate.toys_exemption;
+      console.log(
+        "toys product exempt data: " +
+          JSON.stringify(this.$store.state.toysCertificate.toys_exemption)
+      );
       // console.log("toys designation: " + JSON.stringify(this.getDesignation(this.active_license.auth_officer.designation)))
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
     },
     save() {
       var payDetails = {
         application_type: 0,
-        product_type: this.toy_certificate.particular_product.product_type
+        product_type: this.toy_certificate.particular_product.exemption_reason
       };
+      console.log(
+        "toy certificate data: " + JSON.stringify(this.toy_certificate)
+      );
       this.$store.dispatch("GET_CERTIFICATE_FEES", payDetails).then(result => {
         console.log("get certificate fees: " + JSON.stringify(result));
         this.fees = [];

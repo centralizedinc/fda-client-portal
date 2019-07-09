@@ -195,8 +195,10 @@
           <v-autocomplete
             ref="exemption"
             :rules="[rules.required]"
-            v-model="exemption"
+            v-model="form.particular_product.exemption_reason"
             :items="exempt"
+            item-text="name"
+            item-value="_id"
             label="Product Exemption Reason"
             placeholder="Select Product Exemption Reason"
             required
@@ -212,7 +214,7 @@
 
 <script>
 export default {
-  props: ["form", "toyProduct"],
+  props: ["form", "toyProduct", "exempt"],
   data: () => ({
     isValid: true,
     add: false,
@@ -240,13 +242,13 @@ export default {
     prodUse: ["For Indoor Use", "For Outdoor Use"],
     use: null,
     exemption: null,
-    exempt: [
-      "The toy is intended for children fourteen(14)years and above",
-      "The toy is for display or exhibit purposes and is not to be marketed in the Philippines",
-      "The toy is for adult collectors use",
-      "The toy is for personal use",
-      "The toy is intended for donations/charity/missionary work"
-    ],
+    // exempt: [
+    // "The toy is intended for children fourteen(14)years and above",
+    // "The toy is for display or exhibit purposes and is not to be marketed in the Philippines",
+    // "The toy is for adult collectors use",
+    // "The toy is for personal use",
+    // "The toy is intended for donations/charity/missionary work"
+    // ],
     headersProdInfo: [
       {
         text: "Product Item",
@@ -338,6 +340,13 @@ export default {
       console.log("toys data: " + JSON.stringify(toys));
       return toys;
     }
+    // exempt() {
+    //   console.log(
+    //     "exempt toys certificate: " +
+    //       JSON.stringify(this.$store.state.toysCertifiacte.toys_exemption)
+    //   );
+    //   return this.$store.state.toysCertifiacte.toys_exemption;
+    // }
   },
   watch: {
     particular(val) {

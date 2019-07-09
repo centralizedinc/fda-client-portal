@@ -336,6 +336,7 @@ export default {
       }
     },
     loadFoodReferences() {
+      console.log("load food references:")
       this.food_product = this.$store.state.foodCertificate.food_product;
 
       this.category = this.$store.state.foodCertificate.food_category;
@@ -381,6 +382,7 @@ export default {
       this.cert_form.food_product.contacts.mobile = this.active_license.estab_details.mobile;
     },
     loadToysReferences() {
+      console.log("load toys references")
       this.active_license.address_list.forEach(add => {
         if (add.type == 0) {
           this.cert_form.toy_certificate.establishment_info.address =
@@ -412,8 +414,13 @@ export default {
           details: this.active_license.estab_details.fax
         }
       ];
+      console.log(
+        "toys product exempt data: " +
+          JSON.stringify(this.$store.state.toysCertifiacte.toys_exemption)
+      );
     },
     loadCosmeticsReferences() {
+      console.log("load cosmetic references")
       this.active_license.address_list.forEach(add => {
         if (add.type == 0) {
           this.cert_form.cosmetic_certificate.establishment_info.address =

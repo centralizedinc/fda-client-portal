@@ -10,9 +10,12 @@ export default class CertificateAPI {
     }
 
     toysExemption(cb) {
+        console.log("toys exemption")
         axios.get('core/toy/exemption')
             .then(result => {
+                console.log("inside result: " + JSON.stringify(result))
                 if (result.data.success) {
+                    console.log("result data success: " + JSON.stringify(result))
                     cb(result.data.model)
                 }
             })
