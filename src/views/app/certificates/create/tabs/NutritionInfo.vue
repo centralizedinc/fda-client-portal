@@ -3,13 +3,19 @@
     <v-container grid-list-md>
       <v-layout row wrap>
         <v-flex xs6>
-          <v-text-field outline :rules="[rules.required]" label="Serving Size (grams or ml)"></v-text-field>
+          <v-text-field
+            outline
+            :rules="[rules.required]"
+            label="Serving Size (grams or ml)"
+            v-model="form.nutrition_info.serving_size"
+          ></v-text-field>
         </v-flex>
         <v-flex xs6>
           <v-text-field
             outline
             :rules="[rules.required]"
             label="Number of Serving per Container/Pack"
+            v-model="form.nutrition_info.serving_per_pack"
           ></v-text-field>
         </v-flex>
         <!-- amt per serving -->
@@ -82,7 +88,7 @@
           {{ snackText }}
           <v-btn flat @click="snack = false">Close</v-btn>
         </v-snackbar>
-        <br>
+        <br />
         <!-- Vitamins & Minerals -->
         <v-flex xs12>
           <v-toolbar dark flat color="primary" class="elevation-5">
