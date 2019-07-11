@@ -53,7 +53,7 @@
               </v-btn>
             </v-toolbar>
             <v-card-text>
-              <v-form v-model="valid">
+              <v-form v-model="isValid">
                 <v-layout row wrap>
                   <v-flex xs12>
                     <v-text-field outline name="name" label="Ingredient Name" v-model="ingredient"></v-text-field>

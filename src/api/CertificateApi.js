@@ -65,7 +65,7 @@ export default class CertificateAPI {
 
           if (output_files && output_files.length != 0) {
             for (var x = 0; x <= output_files.length; x++) {
-              if (x === 0) {
+              if (x === 0 && result1 && result1.data.model) {
                 result1.data.model.forEach(element => {
                   console.log("this element data 1: " + JSON.stringify(output_files[x].type))
                   // element.type = output_files[x].type
@@ -85,7 +85,7 @@ export default class CertificateAPI {
                 });
                 // save_certificate.uploaded_files.push(result1.data.model)
                 // result1.data.type = output_files[x].type
-              } else if (x === 1) {
+              } else if (x === 1 && result2 && result2.data.model) {
                 result2.data.model.forEach(element => {
                   console.log("this element data 2: " + JSON.stringify(element))
                   // element.type = output_files[x].type
@@ -106,7 +106,7 @@ export default class CertificateAPI {
                 });
                 // save_certificate.uploaded_files.push(result2.data.model)
                 // result2.data.type = output_files[x].type
-              } else if (x === 2) {
+              } else if (x === 2 && result3 && result3.data.model) {
                 result3.data.model.forEach(element => {
                   console.log("this element data 3: " + JSON.stringify(element))
                   // element.type = output_files[x].type
@@ -127,7 +127,7 @@ export default class CertificateAPI {
                 });
                 // save_certificate.uploaded_files.push(result3.data.model)
                 // result3.data.type = output_files[x].type
-              } else if (x === 3) {
+              } else if (x === 3 && result4 && result4.data.model) {
                 result4.data.model.forEach(element => {
                   console.log("this element data 4: " + JSON.stringify(element))
                   // element.type = output_files[x].type
@@ -147,7 +147,7 @@ export default class CertificateAPI {
                   })
                 });
                 // save_certificate.uploaded_files.push(result4.data.model)
-              } else if (x === 4) {
+              } else if (x === 4 && result5 && result5.data.model) {
                 result5.data.model.forEach(element => {
                   console.log("this element data 5: " + JSON.stringify(element))
                   // element.type = output_files[x].type
@@ -167,7 +167,7 @@ export default class CertificateAPI {
                   })
                 });
                 // save_certificate.uploaded_files.push(result5.data.model)
-              } else if (x === 5) {
+              } else if (x === 5 && result6 && result6.data.model) {
                 result6.data.model.forEach(element => {
                   console.log("this element data 6: " + JSON.stringify(element))
                   // element.type = output_files[x].type

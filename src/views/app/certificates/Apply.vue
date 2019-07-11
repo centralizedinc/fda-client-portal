@@ -14,8 +14,6 @@
               <step-one
                 :form="cert_form"
                 @next="next"
-                :foodProduct="food_product"
-                :category="category"
               ></step-one>
             </v-card>
           </v-stepper-content>
@@ -28,10 +26,7 @@
             <v-card flat class="mb-5" height="auto">
               <step-two
                 :form="cert_form"
-                :source="source"
-                :origin="origin"
                 @next="next"
-                :companyActivity="company_activity"
               ></step-two>
             </v-card>
           </v-stepper-content>
@@ -54,8 +49,6 @@
             <v-card flat class="mb-5" height="auto">
               <step-four
                 :form="cert_form"
-                :prodSpecs="product_specification"
-                :physicalParameter="physical_parameter"
                 @next="next"
               ></step-four>
             </v-card>
@@ -80,10 +73,7 @@
             <v-card flat class="mb-5" height="auto">
               <step-six
                 :form="cert_form"
-                :vitamins="vitamins"
-                :minerals="minerals"
                 @next="next"
-                :nutrition_information="nutrition_information"
               ></step-six>
             </v-card>
           </v-stepper-content>
@@ -97,7 +87,6 @@
               <step-seven
                 @next="next"
                 :form="cert_form"
-                :nutritionHealthClaims="nutrition_health_claims"
               ></step-seven>
             </v-card>
           </v-stepper-content>
@@ -180,19 +169,10 @@ export default {
     typ: true,
     total_amount: 0,
     confirmDialog: false,
-    food_product: [],
-    category: [],
-    source: [],
     shelf_life: [],
-    product_specification: [],
-    nutrition_information: [],
-    nutrition_health_claims: [],
-    vitamins: [],
-    minerals: [],
-    origin: [],
-    physical_parameter: [],
-    company_activity: [],
     cert_form: {
+      case_type: 1,
+      certificate_type: 0,
       application_type: 0,
       //   general_info: {
       //     application_type: 0,
@@ -321,29 +301,8 @@ export default {
 
   methods: {
     init() {
-      this.food_product = this.$store.state.foodCertificate.food_product;
+      this.shelf_life = this.deepCopy(this.$store.state.foodCertificate.shelf_life);
 
-      this.category = this.$store.state.foodCertificate.food_category;
-
-      this.shelf_life = this.$store.state.foodCertificate.shelf_life;
-
-      this.source = this.$store.state.foodCertificate.source;
-
-      this.product_specification = this.$store.state.foodCertificate.product_specification;
-
-      this.nutrition_information = this.$store.state.foodCertificate.nutrition_information;
-
-      this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims;
-
-      this.vitamins = this.$store.state.foodCertificate.vitamins;
-
-      this.minerals = this.$store.state.foodCertificate.minerals;
-
-      this.origin = this.$store.state.places.origin;
-
-      this.physical_parameter = this.$store.state.foodCertificate.physical_parameter;
-
-      this.company_activity = this.$store.state.foodCertificate.company_activity;
       console.log(
         "active license data: " + JSON.stringify(this.active_lincense)
       );
@@ -374,39 +333,19 @@ export default {
 
       console.log("apply certificates");
 
-      if (this.cert_form.certificate_type === 0) {
-        this.loadFoodReferences();
-      } else if (this.cert_form.certificate_type === 1) {
-        this.loadToysReferences();
-      } else if (this.cert_form.certificate_type === 2) {
-        this.loadCosmeticsReferences();
-      }
+      // if (this.cert_form.certificate_type === 0) {
+      // this.loadFoodReferences();
+      // } else if (this.cert_form.certificate_type === 1) {
+      //   this.loadToysReferences();
+      // } else if (this.cert_form.certificate_type === 2) {
+      //   this.loadCosmeticsReferences();
+      // }
     },
     loadFoodReferences() {
       console.log("load food references:");
-      this.food_product = this.$store.state.foodCertificate.food_product;
-
-      this.category = this.$store.state.foodCertificate.food_category;
-
       this.shelf_life = this.$store.state.foodCertificate.shelf_life;
 
       this.source = this.$store.state.foodCertificate.source;
-
-      this.product_specification = this.$store.state.foodCertificate.product_specification;
-
-      this.nutrition_information = this.$store.state.foodCertificate.nutrition_information;
-
-      this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims;
-
-      this.vitamins = this.$store.state.foodCertificate.vitamins;
-
-      this.minerals = this.$store.state.foodCertificate.minerals;
-
-      this.origin = this.$store.state.places.origin;
-
-      this.physical_parameter = this.$store.state.foodCertificate.physical_parameter;
-
-      this.company_activity = this.$store.state.foodCertificate.company_activity;
 
       this.active_license.address_list.forEach(add => {
         if (add.type == 0) {
@@ -428,75 +367,75 @@ export default {
 
       this.cert_form.food_product.contacts.mobile = this.active_license.estab_details.mobile;
     },
-    loadToysReferences() {
-      console.log("load toys references");
-      this.active_license.address_list.forEach(add => {
-        if (add.type == 0) {
-          this.cert_form.toy_certificate.establishment_info.address =
-            add.address;
-          this.cert_form.toy_certificate.establishment_info.region = add.region;
-        }
-      });
-      this.cert_form.toy_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
+    // loadToysReferences() {
+    //   console.log("load toys references");
+    //   this.active_license.address_list.forEach(add => {
+    //     if (add.type == 0) {
+    //       this.cert_form.toy_certificate.establishment_info.address =
+    //         add.address;
+    //       this.cert_form.toy_certificate.establishment_info.region = add.region;
+    //     }
+    //   });
+    //   this.cert_form.toy_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
 
-      this.cert_form.toy_certificate.establishment_info.license_no = this.active_license.license_no;
+    //   this.cert_form.toy_certificate.establishment_info.license_no = this.active_license.license_no;
 
-      this.cert_form.toy_certificate.establishment_info.license_validity = this.active_license.license_expiry;
+    //   this.cert_form.toy_certificate.establishment_info.license_validity = this.active_license.license_expiry;
 
-      this.cert_form.toy_certificate.establishment_info.contact_info = [
-        {
-          type: 0,
-          details: this.active_license.estab_details.email
-        },
-        {
-          type: 1,
-          details: this.active_license.estab_details.mobile
-        },
-        {
-          type: 2,
-          details: this.active_license.estab_details.landline
-        },
-        {
-          type: 3,
-          details: this.active_license.estab_details.fax
-        }
-      ];
-    },
-    loadCosmeticsReferences() {
-      console.log("load cosmetic references");
-      this.active_license.address_list.forEach(add => {
-        if (add.type == 0) {
-          this.cert_form.cosmetic_certificate.establishment_info.address =
-            add.address;
-          this.cert_form.cosmetic_certificate.establishment_info.region =
-            add.region;
-        }
-      });
-      this.cert_form.cosmetic_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
+    //   this.cert_form.toy_certificate.establishment_info.contact_info = [
+    //     {
+    //       type: 0,
+    //       details: this.active_license.estab_details.email
+    //     },
+    //     {
+    //       type: 1,
+    //       details: this.active_license.estab_details.mobile
+    //     },
+    //     {
+    //       type: 2,
+    //       details: this.active_license.estab_details.landline
+    //     },
+    //     {
+    //       type: 3,
+    //       details: this.active_license.estab_details.fax
+    //     }
+    //   ];
+    // },
+    // loadCosmeticsReferences() {
+    //   console.log("load cosmetic references");
+    //   this.active_license.address_list.forEach(add => {
+    //     if (add.type == 0) {
+    //       this.cert_form.cosmetic_certificate.establishment_info.address =
+    //         add.address;
+    //       this.cert_form.cosmetic_certificate.establishment_info.region =
+    //         add.region;
+    //     }
+    //   });
+    //   this.cert_form.cosmetic_certificate.establishment_info.company = this.active_license.estab_details.establishment_name;
 
-      this.cert_form.cosmetic_certificate.establishment_info.license_no = this.active_license.license_no;
+    //   this.cert_form.cosmetic_certificate.establishment_info.license_no = this.active_license.license_no;
 
-      this.cert_form.cosmetic_certificate.establishment_info.license_validity = this.active_license.license_expiry;
+    //   this.cert_form.cosmetic_certificate.establishment_info.license_validity = this.active_license.license_expiry;
 
-      this.cert_form.cosmetic_certificate.establishment_info.contact_info = [
-        {
-          type: 0,
-          details: this.active_license.estab_details.email
-        },
-        {
-          type: 1,
-          details: this.active_license.estab_details.mobile
-        },
-        {
-          type: 2,
-          details: this.active_license.estab_details.landline
-        },
-        {
-          type: 3,
-          details: this.active_license.estab_details.fax
-        }
-      ];
-    },
+    //   this.cert_form.cosmetic_certificate.establishment_info.contact_info = [
+    //     {
+    //       type: 0,
+    //       details: this.active_license.estab_details.email
+    //     },
+    //     {
+    //       type: 1,
+    //       details: this.active_license.estab_details.mobile
+    //     },
+    //     {
+    //       type: 2,
+    //       details: this.active_license.estab_details.landline
+    //     },
+    //     {
+    //       type: 3,
+    //       details: this.active_license.estab_details.fax
+    //     }
+    //   ];
+    // },
     back() {
       this.e1--;
       if (this.e1 == 0) {

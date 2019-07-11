@@ -45,20 +45,20 @@
 
 <script>
 export default {
-  props: ["form", "nutritionHealthClaims"],
+  props: ["form"],
   data: () => ({
     isValid: true,
-    nutrition_health_claims: [],
     claims: "",
     description: "",
     rules: {
       required: value => !!value || "This field is required"
     }
   }),
-  created() {
-    this.init();
+  computed: {
+    nutritionHealthClaims(){
+      return this.deepCopy(this.$store.state.foodCertificate.nutrition_health_claims);
+    }
   },
-
   methods: {
     addItem() {
       console.log(
@@ -87,13 +87,6 @@ export default {
     },
     removeItem(index) {
       this.form.claims.splice(index, 1);
-    },
-    init() {
-      // this.nutrition_health_claims = this.$store.state.foodCertificate.nutrition_health_claims
-      console.log(
-        "nutrition health claims data: " +
-          JSON.stringify(this.nutrition_health_claims)
-      );
     }
   }
 };

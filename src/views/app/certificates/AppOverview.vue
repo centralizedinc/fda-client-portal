@@ -614,7 +614,8 @@ export default {
       payments: [],
       transaction: [],
       fees: [],
-      total_amount: 0
+      total_amount: 0,
+      isLoading: false
     };
   },
   created() {
@@ -622,13 +623,13 @@ export default {
   },
   methods: {
     init() {
-      this.form = this.$store.state.certificate.view;
+      this.form = this.deepCopy(this.$store.state.certificate.view)
       console.log(
         "app overview form data: " +
           JSON.stringify(this.$store.state.certificate.view)
       );
-      this.case_details = this.$store.state.certificate.cases;
-      var pay = this.$store.state.payments.fee;
+      this.case_details = this.deepCopy(this.$store.state.certificate.cases);
+      var pay = this.deepCopy(this.$store.state.payments.fee)
       console.log(
         "get certificate fee: " + JSON.stringify(this.$store.state.payments.fee)
       );

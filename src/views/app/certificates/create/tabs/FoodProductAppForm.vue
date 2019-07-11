@@ -8,8 +8,8 @@
             :rules="[rules.required]"
             required
             color="green darken-1"
-            v-model="foodProductType"
-            :items="foodProduct"
+            v-model="foodProduct"
+            :items="foodProducts"
             item-text="name"
             item-value="_id"
             hide-no-data
@@ -80,7 +80,7 @@
             color="green darken-1"
             label="Region"
             v-model="form.food_product.region"
-          ></v-text-field> -->
+          ></v-text-field>-->
           <v-autocomplete
             outline
             :rules="[rules.required]"
@@ -99,7 +99,7 @@
           <v-text-field
             outline
             :rules="[rules.required]"
-            readonly=""
+            readonly
             color="green darken-1"
             label="LTO Number"
             v-model="form.food_product.license_no"
@@ -126,7 +126,6 @@
               label="LTO Validity"
               v-model="form.food_product.license_validity"
               append-icon="event"
-              
             ></v-text-field>
             <v-date-picker
               v-model="dateFormatted"
@@ -155,7 +154,7 @@
             item-text="name"
             item-value="code"
           ></v-autocomplete>
-        </v-flex> -->
+        </v-flex>-->
         <!-- Contact Information -->
         <v-toolbar
           dark
@@ -213,7 +212,7 @@
 
 <script>
 export default {
-  props: ["form", "foodProduct", "category", "regions"],
+  props: ["form"],
   data: () => ({
     menu: null,
     isValid: true,
@@ -230,10 +229,8 @@ export default {
     validity: false,
     dateFormatted: "",
     product_type: [],
-    category: [],
-    foodProductType: "",
+    foodProduct: "",
     categoryHolder: [],
-    regions: [],
     years: [
       {
         code: 2,
@@ -255,36 +252,42 @@ export default {
     dateFormatted: null,
     expiry_date: null
   }),
-  created() {
-    this.init();
-  },
   watch: {
     dateFormatted(val) {
       this.form.food_product.license_validity = this.formatDate(val);
     },
-    foodProductType() {
-      this.form.food_product.type = this.foodProductType
+    foodProduct(val) {
+      this.form.food_product.type = val;
       this.categoryHolder = [];
-      console.log("type", this.form.food_product.type)
-      this.category.forEach(data =>{
-        console.log("foodProductType:", data)
+      console.log("type", this.form.food_product.type);
+      this.category.forEach(data => {
         if (data.food_product == this.form.food_product.type) {
-        this.categoryHolder.push(data);
-      } 
-      })
-      
+          this.categoryHolder.push(data);
+        }
+      });
+    }
+  },
+  computed: {
+    regions() {
+      return this.deepCopy(this.$store.state.places.regions);
+    },
+    foodProducts() {
+      return this.deepCopy(this.$store.state.foodCertificate.food_product);
+    },
+    category() {
+      return this.deepCopy(this.$store.state.foodCertificate.food_category);
     }
   },
   methods: {
     proceed() {
       if (this.validate()) {
         this.$emit("next", 2);
-        } else {
+      } else {
         this.$notifyError([{ message: "Fill-up required fields." }]);
       }
     },
-    cancel(){
-      this.$emit('next', 1)
+    cancel() {
+      this.$emit("next", 1);
     },
     validate() {
       this.$refs.form.validate();
@@ -297,14 +300,6 @@ export default {
       } else {
         this.$notifyError([{ message: "Fill-up required fields." }]);
       }
-    },
-    init() {
-      // this.product_type = this.$store.state.foodCertificate.food_product
-      // console.log("product type data: " + JSON.stringify(this.product_type))
-      // this.category = this.$store.state.foodCertificate.food_category;
-      // console.log("food category data: " + JSON.stringify(this.category));
-      this.regions = this.$store.state.places.regions;
-      console.log("regions data: " + JSON.stringify(this.regions));
     }
   }
 };
