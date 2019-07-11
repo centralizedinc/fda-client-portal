@@ -173,7 +173,9 @@ export default {
     cert_form: {
       case_type: 1,
       certificate_type: 0,
+      case_no: "",
       application_type: 0,
+      certificate_type: 0,
       //   general_info: {
       //     application_type: 0,
       //     for_ammendment_renewal: {
@@ -304,15 +306,16 @@ export default {
       this.shelf_life = this.deepCopy(this.$store.state.foodCertificate.shelf_life);
 
       console.log(
-        "active license data: " + JSON.stringify(this.active_lincense)
+        "active license data: " + JSON.stringify(this.active_license)
       );
       this.active_license.address_list.forEach(add => {
         if (add.type == 0) {
           this.cert_form.food_product.address = add.address;
           this.cert_form.food_product.region = add.region;
         }
-      });
 
+      });
+      this.cert_form.case_no = this.active_license.case_no;
       this.cert_form.food_product.company = this.active_license.estab_details.establishment_name;
 
       this.cert_form.food_product.license_no = this.active_license.license_no;
@@ -468,7 +471,7 @@ export default {
       this.confirmDialog = true;
 
       console.log(
-        "submit clicked: " + JSON.stringify(this.cert_form.food_product.type)
+        "submit clicked: " + JSON.stringify(this.cert_form)
       );
       // this.$store
       //   .dispatch("SAVE_CERTIFICATE", this.cert_form)

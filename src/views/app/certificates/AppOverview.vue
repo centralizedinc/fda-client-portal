@@ -382,7 +382,7 @@
     <!-- Activities | Payments | Uploaded Files | Output Files -->
     <v-flex dark xs12 md6 pa-1>
       <v-layout row wrap>
-        <v-flex xs12 pa-1>
+        <v-flex xs12 pa-1 v-if="!initial">
           <v-card>
             <v-toolbar dark color="primary">
               Activities
@@ -577,8 +577,8 @@
 
 <script>
 import pdf from "vue-pdf";
-import ToysProducts from "./overview/ToysProducts"
-import CosmeticsProducts from './overview/CosmeticsProducts'
+import ToysProducts from "./overview/ToysProducts";
+import CosmeticsProducts from "./overview/CosmeticsProducts";
 
 export default {
   components: {
