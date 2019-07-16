@@ -36,7 +36,7 @@ export default class CertificateAPI {
       cert_data.output_files = []
       axios.post('certificates/', cert_data)
         .then(save_cert => {
-
+          console.log("save_cert data: " + JSON.stringify(save_cert))
           if (save_cert.data.success) {
             cert_case = save_cert.data.model.case_details
             save_certificate = save_cert.data.model.certificate
@@ -47,12 +47,16 @@ export default class CertificateAPI {
             // console.log('save_certificate.output_files[0] :', cert_data.output_files[0]);
             // docs.push(axios.post('documents/uploads?account_id=' + cert_case.case_no, cert_data.output_files[0].form_data))
             // }
-            output_files.forEach(file => {
-              docs.push(axios.post('documents/uploads?account_id=' + cert_case.case_no, file.form_data))
-              // output_files.push({
-              //   type: file.type
-              // })
-            })
+            // console.log("output_files.length : " + JSON.stringify(output_files.length))
+            if (output_files !== undefined) {
+              console.log("output_files data: " + JSON.stringify(output_files))
+              output_files.forEach(file => {
+                docs.push(axios.post('documents/uploads?account_id=' + cert_case.case_no, file.form_data))
+                // output_files.push({
+                //   type: file.type
+                // })
+              })
+            }
             console.log("this docs data: " + JSON.stringify(docs))
             return axios.all(docs)
           } else {

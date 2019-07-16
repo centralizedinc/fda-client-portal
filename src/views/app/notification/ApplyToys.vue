@@ -11,7 +11,7 @@
 
         <v-stepper-content step="1">
           <v-card flat class="mb-5">
-            <stepOne :form="toy_certificate" :exempt="exempt" @next="next"></stepOne>
+            <stepOne :form="toy_certificate" :exempt="exempt" :sku_total="sku_total" @next="next"></stepOne>
           </v-card>
         </v-stepper-content>
 
@@ -78,6 +78,7 @@ export default {
     establishment_info: [],
     company_representative: [],
     exempt: [],
+    sku_total: 0,
     toy_certificate: {
       particular_product: {
         brand_name: "",
@@ -98,7 +99,6 @@ export default {
       establishment_info: {
         activity: "",
         origin_country: "",
-        directly_source: "",
         manufacturer_name: "",
         manufacturer_address: "",
         company: "",
@@ -188,9 +188,14 @@ export default {
       // console.log("primary activity: " + JSON.stringify(this.cosmetic_certificate.establishment_info.primary_activity))
     },
     save() {
+      this.toy_certificate.particular_product.product_details.forEach(data => {
+        this.sku_total += data.sku * 1;
+        console.log("this is sku data: " + JSON.stringify(this.sku_total));
+      });
       var payDetails = {
         application_type: 0,
-        product_type: this.toy_certificate.particular_product.exemption_reason
+        product_type: this.toy_certificate.particular_product.exemption_reason,
+        sku: this.sku_total
       };
       console.log(
         "toy certificate data: " + JSON.stringify(this.toy_certificate)

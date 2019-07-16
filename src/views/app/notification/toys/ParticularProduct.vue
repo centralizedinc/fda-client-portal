@@ -214,7 +214,7 @@
 
 <script>
 export default {
-  props: ["form", "exempt"],
+  props: ["form", "exempt", "sku_total"],
   data: () => ({
     isValid: true,
     add: false,
@@ -227,7 +227,7 @@ export default {
     toyProductType: "",
     item: "",
     model: "",
-    sku: "",
+    sku: 0,
     grading: "",
     age: [
       "0 Months+",
@@ -364,7 +364,20 @@ export default {
   },
   methods: {
     proceed() {
-      if (this.validate()) {
+      if (
+        (this.validate() &&
+          this.form.particular_product.product_details !== undefined) ||
+        this.form.particular_product.product_details.length < 0
+      ) {
+        console.log(
+          "this.form.particular_product.product_details.length(): " +
+            JSON.stringify(this.form.particular_product.product_details.length)
+        );
+        this.form.particular_product.product_details.forEach(data => {
+          this.sku_total += data.sku * 1;
+          console.log("this is sku data: " + JSON.stringify(this.sku_total));
+        });
+
         this.$emit("next", 2);
       } else {
         this.$notifyError([{ message: "Fill-up required fields." }]);
@@ -422,7 +435,8 @@ export default {
         !this.isEmpty(this.model) &&
         !this.isEmpty(this.sku) &&
         !this.isEmpty(this.grading) &&
-        this.editedIndex > -1
+        this.editedIndex > -1 &&
+        this.sku !== 0
       ) {
         console.log("edit save");
         this.form.particular_product.product_details[
