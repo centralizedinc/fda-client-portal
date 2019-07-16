@@ -197,7 +197,7 @@ export default {
   components: {
     Uploader: () => import("@/components/Uploader")
   },
-  props: ["form", "source", "origin", "companyActivity"],
+  props: ["form"],
   data: () => ({
     uploads: false,
     isValid: true,
@@ -337,6 +337,15 @@ export default {
         "Manufacturer"
       ) {
       }
+    },
+    source() {
+      return this.deepCopy(this.$store.state.foodCertificate.source);
+    },
+    origin() {
+      return this.deepCopy(this.$store.state.places.origin);
+    },
+    companyActivity(){
+      return this.deepCopy(this.$store.state.foodCertificate.company_activity);
     }
   },
   created() {

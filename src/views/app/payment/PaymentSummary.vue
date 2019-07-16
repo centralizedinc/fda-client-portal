@@ -201,27 +201,29 @@
 // import * as OrderOfPaymentGenerator from "./OrderOfPaymentGenerator";
 
 export default {
-  props: {
-    form: {
-      type: Object
-    },
-    case_holder: {
-      type: Object
-    },
-    charges: {
-      type: Object
-    },
-    allow_paylater: {
-      type: Boolean,
-      default: true
-    }
-  },
+  // props: {
+  //   form: {
+  //     type: Object
+  //   },
+  //   case_holder: {
+  //     type: Object
+  //   },
+  //   charges: {
+  //     type: Object
+  //   },
+  //   allow_paylater: {
+  //     type: Boolean,
+  //     default: true
+  //   }
+  // },
   components: {
     CreditCard: () => import("./CreditCardPayment.vue"),
     PayLater: () => import("./PayLater.vue")
   },
   data() {
     return {
+      form: {},
+      case_holder: {},
       rates: {
         fee: 5000,
         lrf: 50
@@ -244,9 +246,11 @@ export default {
   },
   methods: {
     init() {
-      console.log("FORM: " + JSON.stringify(this.$store.state.payments.form));
-      this.app_form = this.deepCopy(this.$store.state.payments.form);
-      this.form = this.deepCopy(this.$store.state.payments.form);
+      console.log(
+        "FORM: " + JSON.stringify(this.$store.state.certificate.view)
+      );
+      this.app_form = this.deepCopy(this.$store.state.certificate.view);
+      this.form = this.deepCopy(this.$store.state.certificate.view);
       this.$store
         .dispatch("GET_ONE_CASE", {
           case_no: this.form.case_no,

@@ -69,7 +69,7 @@
               </v-btn>
             </v-toolbar>
             <v-card-text>
-              <v-form v-model="valid">
+              <v-form v-model="isValid">
                 <v-container grid-list-md>
                   <v-layout row wrap>
                     <v-flex xs12>
@@ -145,7 +145,7 @@
 
 <script>
 export default {
-  props: ["form", "prodSpecs", "physicalParameter"],
+  props: ["form"],
   data: () => ({
     dialogSpecs: false,
     selected_specs: "",
@@ -158,12 +158,6 @@ export default {
     specification: "",
     isValid: true,
     specs_list: [],
-    physicalParameter: [],
-    prodSpecs: [
-      // "Physical (e.g. powder, liquid, gel, etc)",
-      // "Chemical (e.g. Moisture Content, Water Activity, pH, etc)",
-      // "Microbiological (e.g. Coliforms)"
-    ],
     headers: [
       {
         text: "Type",
@@ -183,9 +177,6 @@ export default {
       required: value => !!value || "This field is required"
     }
   }),
-  created() {
-    this.init();
-  },
   methods: {
     addNewSpecs() {
       this.add = true;
@@ -204,14 +195,6 @@ export default {
     validate() {
       this.$refs.form.validate();
       return this.isValid;
-    },
-    init() {
-      // this.prodSpecs = this.$store.state.foodCertificate.product_specification;
-      console.log("food specification data: " + JSON.stringify(this.prodSpecs));
-      // this.physicalParameter = this.$store.state.foodCertificate.physical_parameter;
-      // console.log("physical parameter: " + JSON.stringify(this.physicalParameter));
-      // this.vm_items = this.$store.state.foodCertificate.minerals;
-      // console.log("minerals data: " + JSON.stringify(this.minerals));
     },
     saveSpecs() {
       this.dialogSpecs = false;
@@ -294,7 +277,7 @@ export default {
     selected_specs(val) {
       this.spec = this.prodSpecs.find(x => x._id === val);
       console.log("selected data: " + JSON.stringify(this.spec));
-      if (this.spec.name === "Physical") {
+      if (this.spec && this.spec.name === "Physical") {
         console.log("selected specs  true data: " + JSON.stringify(val));
         this.selected = true;
         // this.physicalParameter = ["Color", "Odor", "Taste", "Texture", "Form"];
@@ -302,6 +285,18 @@ export default {
         console.log("selected specs false data: " + JSON.stringify(val));
         this.selected = false;
       }
+    }
+  },
+  computed: {
+    prodSpecs() {
+      return this.deepCopy(
+        this.$store.state.foodCertificate.product_specification
+      );
+    },
+    physicalParameter() {
+      return this.deepCopy(
+        this.$store.state.foodCertificate.physical_parameter
+      );
     }
   }
 };

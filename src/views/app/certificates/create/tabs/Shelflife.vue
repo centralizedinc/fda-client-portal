@@ -49,7 +49,7 @@
         <v-flex xs4>
           <v-autocomplete
             :rules="[rules.required]"
-            :items="shelfLifeType"
+            :items="shelfLifeTypes"
             item-text="name"
             item-value="_id"
             outline
@@ -163,10 +163,9 @@
 
 <script>
 export default {
-  props: ["form", "shelfLifeType"],
+  props: ["form"],
   data: () => ({
     isValid: true,
-    shelfLifeType: [],
     rules: {
       required: value => !!value || "This field is required"
     },
@@ -178,8 +177,10 @@ export default {
     dateFormatted: null,
     expiry_date: null
   }),
-  created() {
-    this.init();
+  computed: {
+    shelfLifeTypes(){
+      return this.deepCopy(this.$store.state.foodCertificate.shelf_life)
+    }
   },
   watch: {
     dateFormatted(val) {
@@ -203,10 +204,6 @@ export default {
     validate() {
       this.$refs.form.validate();
       return this.isValid;
-    },
-    init() {
-      this.shelfLifeType = this.$store.state.foodCertificate.shelf_life;
-      console.log("Shelf life type data: " + JSON.stringify(this.form));
     }
   }
 };

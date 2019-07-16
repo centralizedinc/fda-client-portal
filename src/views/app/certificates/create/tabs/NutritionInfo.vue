@@ -245,7 +245,7 @@
 
 <script>
 export default {
-  props: ["form", "vitamins", "minerals", "nutrition_information"],
+  props: ["form"],
   data: () => ({
     add: false,
     isValid: true,
@@ -256,7 +256,7 @@ export default {
     snackColor: "",
     snackText: "",
     valid: true,
-    vitMinHolder: {},
+    vitMinHolder: [],
     type: "",
     amount_per_serving: "",
     percent: "",
@@ -383,6 +383,19 @@ export default {
   created() {
     this.init();
   },
+  computed: {
+    vitamins() {
+      return this.deepCopy(this.$store.state.foodCertificate.vitamins);
+    },
+    minerals() {
+      return this.deepCopy(this.$store.state.foodCertificate.minerals);
+    },
+    nutrition_information() {
+      return this.deepCopy(
+        this.$store.state.foodCertificate.nutrition_information
+      );
+    }
+  },
   methods: {
     addNew() {
       this.add = true;
@@ -460,15 +473,13 @@ export default {
       console.log(
         "nutrition information data: " + JSON.stringify(this.nutritionServing)
       );
-      // this.vitamins = this.$store.state.foodCertificate.vitamins;
-      console.log("vitamins data: " + JSON.stringify(this.vitamins));
       // this.minerals = this.$store.state.foodCertificate.minerals;
       console.log("minerals data: " + JSON.stringify(this.minerals));
     }
   },
   watch: {
     choice(val) {
-      this.vitMinHolder = {};
+      this.vitMinHolder = [];
       if (val == 0) {
         this.vitMinHolder = this.vitamins;
       } else if (val == 1) {
