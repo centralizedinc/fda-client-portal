@@ -70,13 +70,17 @@ export default {
           } else {
             return null;
           }
+          region
         },
         getProduct(product_id) {
           if (this.$store.state.products.productType) {
             var product = null;
+            console.log("product_id: " + JSON.stringify(product_id))
+            console.log("this.$store.state.products.productType: " + JSON.stringify(this.$store.state.products.productType))
             product = this.$store.state.products.productType.find(x => {
               return x._id === product_id
             })
+            console.log("product id data: " + JSON.stringify(product))
             return product ? product.name : ''
           } else {
             return ''
@@ -412,6 +416,22 @@ export default {
           var minVit = ["Vitamin", "Minerals", "Nutrition"]
           console.log("vitMin data: " + JSON.stringify(minVit[data]))
           return minVit[data]
+        },
+        getProductPresentation(type) {
+          console.log("get product presentation: " + JSON.stringify(this.$store.state.cosmeticCertificate.product_presentation))
+          var product_presentation = this.$store.state.cosmeticCertificate.product_presentation
+          if (!product_presentation || !product_presentation.length) return {}
+          var proTion = product_presentation.find(x => x._id === type)
+          console.log("proTion data: " + JSON.stringify(proTion))
+          return proTion ? proTion : {}
+        },
+        getToysExemption(type) {
+          console.log("get product presentation: " + JSON.stringify(this.$store.state.toysCertificate.toys_exemption))
+          var toys_exemption = this.$store.state.toysCertificate.toys_exemption
+          if (!toys_exemption || !toys_exemption.length) return {}
+          var toyExemp = toys_exemption.find(x => x._id === type)
+          console.log("toyExemp data: " + JSON.stringify(toyExemp))
+          return toyExemp ? toyExemp : {}
         }
       }
     });

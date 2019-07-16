@@ -79,6 +79,13 @@
             name="name"
             label="Fax Number"
             mask="(##) ####-####"
+            :value="form.food_product.contacts.fax"
+          ></v-text-field>
+          <v-text-field
+            readonly
+            name="name"
+            label="Mobile Number"
+            mask="(####)-###-####"
             :value="form.food_product.contacts.mobile"
           ></v-text-field>
         </v-card-text>

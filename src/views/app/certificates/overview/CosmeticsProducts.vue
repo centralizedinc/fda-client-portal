@@ -36,17 +36,18 @@
         :value="form.cosmetic_certificate.particular_product.years_applied"
       ></v-text-field>
       <v-list dense>
+        <v-list-tile-content>Viriant/Shade Names:</v-list-tile-content>
         <v-list-tile
           v-for="(item, index) in form.cosmetic_certificate.particular_product.product_variants"
           :key="index"
         >
-          <v-list-tile-content>{{item}}:</v-list-tile-content>
+          <v-list-tile-content>{{item}}</v-list-tile-content>
         </v-list-tile>
       </v-list>
       <v-text-field
         readonly
         label="Product Type"
-        :value="form.cosmetic_certificate.particular_product.product_type"
+        :value="getProdLine(form.cosmetic_certificate.particular_product.product_type).name"
       ></v-text-field>
       <v-text-field
         readonly
@@ -62,7 +63,7 @@
       <v-text-field
         readonly
         label="Product Presentation"
-        :value="form.cosmetic_certificate.particular_product.product_presentation"
+        :value="getProductPresentation(form.cosmetic_certificate.particular_product.product_presentation).name"
       ></v-text-field>
       <v-text-field
         readonly
@@ -116,18 +117,18 @@
       <v-text-field
         readonly
         label="Region"
-        :value="form.cosmetic_certificate.establishment_info.region"
+        :value="getRegionName(form.cosmetic_certificate.establishment_info.region)"
       ></v-text-field>
       <v-text-field
         readonly
         label="License No"
         :value="form.cosmetic_certificate.establishment_info.license_no"
       ></v-text-field>
-      <v-text-field
+      <!-- <v-text-field
         readonly
         label="License Validity"
         :value="form.cosmetic_certificate.establishment_info.license_validity"
-      ></v-text-field>
+      ></v-text-field>-->
       <v-text-field
         readonly
         label="Email Address"
@@ -159,8 +160,8 @@
           <v-list-tile-content>{{item.type}}:</v-list-tile-content>
           <v-list-tile-content class="align-end">{{ item.details }}</v-list-tile-content>
         </v-list-tile>
-      </v-list> -->
-      <v-text-field
+      </v-list>-->
+      <!-- <v-text-field
         readonly
         label="Please select the corresponding company activity/activities"
         :value="form.cosmetic_certificate.establishment_info.activity"
@@ -170,7 +171,7 @@
         label="Directly Source"
         v-if="form.cosmetic_certificate.establishment_info.directly_source !== null"
         :value="form.cosmetic_certificate.establishment_info.directly_source"
-      ></v-text-field>
+      ></v-text-field>-->
       <v-text-field
         readonly
         label="Country of Origin"
@@ -214,7 +215,34 @@
         label="Designation"
         :value="form.cosmetic_certificate.company_representative.designation"
       ></v-text-field>
-      <v-list dense>
+      <v-text-field
+        readonly
+        name="name"
+        label="Email Address"
+        :value="form.cosmetic_certificate.company_representative.contacts.email"
+      ></v-text-field>
+      <v-text-field
+        readonly
+        name="name"
+        label="Landline Number"
+        mask="(##) ####-####"
+        :value="form.cosmetic_certificate.company_representative.contacts.landline"
+      ></v-text-field>
+      <v-text-field
+        readonly
+        name="name"
+        label="Fax Number"
+        mask="(##) ####-####"
+        :value="form.cosmetic_certificate.company_representative.contacts.fax"
+      ></v-text-field>
+      <v-text-field
+        readonly
+        name="name"
+        label="Mobile Number"
+        mask="(####)-###-####"
+        :value="form.cosmetic_certificate.company_representative.contacts.mobile"
+      ></v-text-field>
+      <!-- <v-list dense>
         <v-list-tile
           v-for="(item, index) in form.cosmetic_certificate.company_representative.contact_info"
           :key="index"
@@ -222,22 +250,22 @@
           <v-list-tile-content>{{item.type}}:</v-list-tile-content>
           <v-list-tile-content class="align-end">{{ item.details }}</v-list-tile-content>
         </v-list-tile>
-      </v-list>
+      </v-list>-->
     </v-card-text>
 
     <!-- Ingredients -->
     <v-card-title primary-title>
       <span class="subheading font-weight-thin primary--text">Ingredients</span>
       <v-spacer></v-spacer>
-      <v-btn v-if="show_part3" flat icon color="primary" @click="show_part3=false">
+      <v-btn v-if="show_part4" flat icon color="primary" @click="show_part4=false">
         <v-icon>expand_less</v-icon>
       </v-btn>
-      <v-btn v-else flat icon color="primary" @click="show_part3=true">
+      <v-btn v-else flat icon color="primary" @click="show_part4=true">
         <v-icon>expand_more</v-icon>
       </v-btn>
     </v-card-title>
     <v-divider></v-divider>
-    <v-card-text class="compact-form" v-if="show_part3">
+    <v-card-text class="compact-form" v-if="show_part4">
       <v-data-iterator
         :items="form.cosmetic_certificate.ingredients"
         :rows-per-page-items="rowsPerPageItems"
@@ -287,6 +315,7 @@ export default {
       show_part1: false,
       show_part2: false,
       show_part3: false,
+      show_part4: false,
       rowsPerPageItems: [4, 8, 12],
       pagination: {
         rowsPerPage: 4

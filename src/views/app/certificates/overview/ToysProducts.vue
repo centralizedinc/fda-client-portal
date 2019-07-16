@@ -28,7 +28,7 @@
       <v-text-field
         label="Product Type"
         readonly
-        :value="form.toy_certificate.particular_product.product_type"
+        :value="getProduct(form.toy_certificate.particular_product.product_type)"
       ></v-text-field>
       <template v-if="form.toy_certificate.particular_product.product_use">
         <v-text-field
@@ -48,10 +48,10 @@
         ></v-text-field>
       </template>
       <v-text-field
-        v-else-if="form.toy_certificate.particular_product.exemption_reason"
+        v-else-if="getToysExemption(form.toy_certificate.particular_product.exemption_reason).name"
         label="Exemption for the reason that"
         readonly
-        :value="form.toy_certificate.particular_product.exemption_reason"
+        :value="getToysExemption(form.toy_certificate.particular_product.exemption_reason).name"
       ></v-text-field>
       <v-data-iterator
         :items="form.toy_certificate.particular_product.product_details"
@@ -111,7 +111,11 @@
         label="Address"
         :value="form.toy_certificate.establishment_info.address"
       ></v-text-field>
-      <v-text-field readonly label="Region" :value="form.toy_certificate.establishment_info.region"></v-text-field>
+      <v-text-field
+        readonly
+        label="Region"
+        :value="getRegionName(form.toy_certificate.establishment_info.region).name"
+      ></v-text-field>
       <v-text-field
         readonly
         label="License No"
@@ -125,53 +129,54 @@
       <v-text-field
         readonly
         label="Email Address"
-        :value="form.cosmetic_certificate.establishment_info.contact_info.email"
+        :value="form.toy_certificate.establishment_info.contacts.email"
       ></v-text-field>
       <v-text-field
         readonly
         label="Landline Number"
         mask="(##)-####-####"
-        :value="form.cosmetic_certificate.establishment_info.contact_info.landline"
+        :value="form.toy_certificate.establishment_info.contacts.landline"
       ></v-text-field>
       <v-text-field
         readonly
         label="Fax Number"
         mask="(##)-####-####"
-        :value="form.cosmetic_certificate.establishment_info.contact_info.fax"
+        :value="form.toy_certificate.establishment_info.contacts.fax"
       ></v-text-field>
       <v-text-field
         readonly
         label="Mobile Number"
         mask="(####)-###-####"
-        :value="form.cosmetic_certificate.establishment_info.contact_info.mobile"
+        :value="form.toy_certificate.establishment_info.contacts.mobile"
       ></v-text-field>
+
       <!-- <v-list dense>
         <v-list-tile
-          v-for="(item, index) in form.toy_certificate.establishment_info.contact_info"
+          v-for="(item, index) in form.toy_certificate.establishment_info.contacts"
           :key="index"
         >
           <v-list-tile-content>{{item.type}}:</v-list-tile-content>
           <v-list-tile-content class="align-end">{{ item.details }}</v-list-tile-content>
         </v-list-tile>
       </v-list>-->
-      <v-text-field
+      <!-- <v-text-field
         readonly
         label="Please select the corresponding company activity/activities"
         :value="form.toy_certificate.establishment_info.activity"
-      ></v-text-field>
-      <v-text-field
+      ></v-text-field>-->
+      <!-- <v-text-field
         readonly
         label="Directly Source"
         v-if="form.toy_certificate.establishment_info.directly_source !== null"
         :value="form.toy_certificate.establishment_info.directly_source"
-      ></v-text-field>
-      <v-text-field
+      ></v-text-field>-->
+      <!-- <v-text-field
         readonly
         label="Country of Origin"
         v-if="form.toy_certificate.establishment_info.origin_country"
         :value="form.toy_certificate.establishment_info.origin_country"
-      ></v-text-field>
-      <v-text-field
+      ></v-text-field>-->
+      <!-- <v-text-field
         readonly
         label="Complete Name of Manufacturer"
         v-if="form.toy_certificate.establishment_info.manufacturer_name"
@@ -182,7 +187,7 @@
         label="Complete Address of Manufacturer"
         v-if="form.toy_certificate.establishment_info.manufacturer_address"
         :value="form.toy_certificate.establishment_info.manufacturer_address"
-      ></v-text-field>
+      ></v-text-field>-->
     </v-card-text>
 
     <!-- Person Representing the Local Company -->
@@ -207,29 +212,29 @@
       <v-text-field
         readonly
         label="Email Address"
-        :value="form.cosmetic_certificate.company_representative.contact_info.email"
+        :value="form.toy_certificate.company_representative.contacts.email"
       ></v-text-field>
       <v-text-field
         readonly
         label="Landline Number"
         mask="(##)-####-####"
-        :value="form.cosmetic_certificate.company_representative.contact_info.landline"
+        :value="form.toy_certificate.company_representative.contacts.landline"
       ></v-text-field>
       <v-text-field
         readonly
         label="Fax Number"
         mask="(##)-####-####"
-        :value="form.cosmetic_certificate.company_representative.contact_info.fax"
+        :value="form.toy_certificate.company_representative.contacts.fax"
       ></v-text-field>
       <v-text-field
         readonly
         label="Mobile Number"
         mask="(####)-###-####"
-        :value="form.cosmetic_certificate.company_representative.contact_info.mobile"
+        :value="form.toy_certificate.company_representative.contacts.mobile"
       ></v-text-field>
       <!-- <v-list dense>
         <v-list-tile
-          v-for="(item, index) in form.toy_certificate.company_representative.contact_info"
+          v-for="(item, index) in form.toy_certificate.company_representative.contacts"
           :key="index"
         >
           <v-list-tile-content>{{item.type}}:</v-list-tile-content>

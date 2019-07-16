@@ -106,13 +106,24 @@ export default {
         region: "",
         license_no: "",
         license_validity: "",
-        contact_info: {}
+        contacts: {
+          email: null,
+          landline: null,
+          fax: null,
+          mobile: null
+        }
       },
       company_representative: {
         name: "",
         designation: "",
-        contact_info: {}
-      }
+        contacts: {
+          email: null,
+          landline: null,
+          fax: null,
+          mobile: null
+        }
+      },
+      output_files: []
     }
   }),
   created() {
@@ -143,16 +154,28 @@ export default {
       // this.toy_certificate.establishment_info.primary_activity = this.getPrimary(
       //   this.active_license.general_info.primary_activity
       // );
-      this.toy_certificate.establishment_info.contact_info.email = this.active_license.estab_details.email;
-      this.toy_certificate.establishment_info.contact_info.landline = this.active_license.estab_details.landline;
-      this.toy_certificate.establishment_info.contact_info.fax = this.active_license.estab_details.fax;
-      this.toy_certificate.establishment_info.contact_info.mobile = this.active_license.estab_details.mobile;
+      console.log(
+        "this.active_license.estab_details: " +
+          JSON.stringify(this.active_license.estab_details)
+      );
+      this.toy_certificate.establishment_info.contacts.email = this.active_license.estab_details.email;
+      this.toy_certificate.establishment_info.contacts.landline = this.active_license.estab_details.landline;
+      this.toy_certificate.establishment_info.contacts.fax = this.active_license.estab_details.fax;
+      this.toy_certificate.establishment_info.contacts.mobile = this.active_license.estab_details.mobile;
       this.toy_certificate.company_representative.name =
         this.active_license.auth_officer.firstname +
         " " +
         this.active_license.auth_officer.middlename +
         " " +
         this.active_license.auth_officer.lastname;
+      this.toy_certificate.company_representative.contacts.email = this.active_license.auth_officer.email;
+      console.log(
+        "auth_officer: " + JSON.stringify(this.active_license.auth_officer)
+      );
+      console.log(
+        "auth_officer email: " +
+          JSON.stringify(this.active_license.auth_officer.email)
+      );
       this.toy_certificate.company_representative.designation = this.getDesignation(
         this.active_license.auth_officer.designation
       ).name;
@@ -201,7 +224,8 @@ export default {
         this.$store.commit("SET_FORM", {
           toy_certificate: this.toy_certificate,
           certificate_type: 1,
-          application_type: 0
+          application_type: 0,
+          output_files: this.toy_certificate.output_files
         });
         this.$router.push("/app/certificates/overview");
         this.$notify({

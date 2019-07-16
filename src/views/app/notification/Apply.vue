@@ -112,12 +112,22 @@ export default {
         region: "",
         license_no: "",
         license_validity: "",
-        contact_info: {}
+        contact_info: {
+          email: null,
+          landline: null,
+          fax: null,
+          mobile: null
+        }
       },
       company_representative: {
         name: "",
         designation: "",
-        contact_info: {}
+        contacts: {
+          email: null,
+          landline: null,
+          fax: null,
+          mobile: null
+        }
       },
       ingredients: [
         // {

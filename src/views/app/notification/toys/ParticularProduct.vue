@@ -214,7 +214,7 @@
 
 <script>
 export default {
-  props: ["form", "toyProduct", "exempt"],
+  props: ["form", "exempt"],
   data: () => ({
     isValid: true,
     add: false,

@@ -57,7 +57,7 @@
             outline
             disabled
             color="green darken-1"
-            v-model="form.establishment_info.contact_info.email"
+            v-model="form.establishment_info.contacts.email"
             label="1. Email Address"
           ></v-text-field>
         </v-flex>
@@ -67,7 +67,7 @@
             disabled
             mask="(##)-####-####"
             color="green darken-1"
-            v-model="form.establishment_info.contact_info.landline"
+            v-model="form.establishment_info.contacts.landline"
             label="2. Landline Number"
           ></v-text-field>
         </v-flex>
@@ -77,7 +77,7 @@
             disabled
             mask="(##)-####-####"
             color="green darken-1"
-            v-model="form.establishment_info.contact_info.fax"
+            v-model="form.establishment_info.contacts.fax"
             label="3. Fax Number"
           ></v-text-field>
         </v-flex>
@@ -87,7 +87,7 @@
             disabled
             mask="(####)-###-####"
             color="green darken-1"
-            v-model="form.establishment_info.contact_info.mobile"
+            v-model="form.establishment_info.contacts.mobile"
             label="4. Mobile Number"
           ></v-text-field>
         </v-flex>

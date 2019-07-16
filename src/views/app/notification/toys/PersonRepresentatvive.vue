@@ -38,7 +38,7 @@
           <v-text-field
             outline
             color="green darken-1"
-            v-model="form.company_representative.email"
+            v-model="form.company_representative.contacts.email"
             :rules="[rules.required]"
             label="1. Email Address"
           ></v-text-field>
@@ -48,7 +48,7 @@
             outline
             mask="(##)-####-####"
             color="green darken-1"
-            v-model="form.company_representative.landline"
+            v-model="form.company_representative.contacts.landline"
             :rules="[rules.required]"
             label="2. Landline Number"
           ></v-text-field>
@@ -58,7 +58,7 @@
             outline
             mask="(##)-####-####"
             color="green darken-1"
-            v-model="form.company_representative.fax"
+            v-model="form.company_representative.contacts.fax"
             :rules="[rules.required]"
             label="3. Fax Number"
           ></v-text-field>
@@ -68,7 +68,7 @@
             outline
             mask="(####)-###-####"
             color="green darken-1"
-            v-model="form.company_representative.mobile"
+            v-model="form.company_representative.contacts.mobile"
             :rules="[rules.required]"
             label="4. Mobile Number"
           ></v-text-field>

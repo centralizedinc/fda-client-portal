@@ -10,6 +10,7 @@
 import Uploader from "@/components/Uploader";
 
 export default {
+  props: ["form"],
   components: {
     Uploader
   },
@@ -20,8 +21,13 @@ export default {
   },
   methods: {
     upload(data) {
-      console.log("document upload data: " + JSON.stringify(data))
+      console.log("document upload data: " + JSON.stringify(data));
       this.$emit("upload", data);
+      this.form.output_files.push({
+        type: "foodSupplement",
+        form_data: data.formData,
+        uploadedFiles: data.uploadedFiles
+      });
       this.uploads = true;
     },
     validate() {
