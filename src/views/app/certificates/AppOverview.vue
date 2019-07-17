@@ -253,7 +253,7 @@
             readonly
             name="name"
             label="Shelf Life Declaration (in Months)"
-            :value="formatDate(form.shelf.declaration_date)"
+            :value="form.shelf.declaration_date"
           ></v-text-field>
           <v-text-field
             readonly
@@ -301,7 +301,7 @@
             readonly
             name="name"
             label="Open Date Marking/ Expiry Date"
-            :value="formatDate(form.shelf.date)"
+            :value="form.shelf.date"
           ></v-text-field>
         </v-card-text>
         <v-divider></v-divider>
@@ -630,13 +630,13 @@ export default {
   },
   methods: {
     init() {
-      this.form = this.deepCopy(this.$store.state.certificate.view)
+      this.form = this.deepCopy(this.$store.state.certificate.view);
       console.log(
         "app overview form data: " +
           JSON.stringify(this.$store.state.certificate.view)
       );
       this.case_details = this.deepCopy(this.$store.state.certificate.cases);
-      var pay = this.deepCopy(this.$store.state.payments.fee)
+      var pay = this.deepCopy(this.$store.state.payments.fee);
       console.log(
         "get certificate fee: " + JSON.stringify(this.$store.state.payments.fee)
       );

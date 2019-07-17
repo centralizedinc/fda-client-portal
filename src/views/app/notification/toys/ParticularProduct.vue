@@ -373,10 +373,6 @@ export default {
           "this.form.particular_product.product_details.length(): " +
             JSON.stringify(this.form.particular_product.product_details.length)
         );
-        this.form.particular_product.product_details.forEach(data => {
-          this.sku_total += data.sku * 1;
-          console.log("this is sku data: " + JSON.stringify(this.sku_total));
-        });
 
         this.$emit("next", 2);
       } else {

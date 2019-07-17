@@ -259,7 +259,17 @@ export default {
         .then(result => {
           console.log("get onse case @ view: " + JSON.stringify(result));
           this.case_holder = result;
+
+          console.log(
+            "check if case holder null: " + JSON.stringify(this.case_holder)
+          );
+          if (this.case_holder == null) {
+            console.log("case_holder if null ");
+            this.case_holder = this.app_form;
+          }
         });
+
+      console.log("case_holder data: " + JSON.stringify(this.case_holder));
       this.fees_form = this.charges
         ? this.charges
         : this.deepCopy(this.$store.state.payments.fee);
@@ -377,12 +387,32 @@ export default {
         });
     },
     generatePDF() {
+      console.log("case holder data: " + JSON.stringify(this.case_holder));
       var details = {
         fees: this.fees_form,
         form: this.form,
         case: this.case_holder,
         mode_of_payment: 5
       };
+      // this.app_form.general_info = {
+      //   product_type: this.active_license.general_info.product_type
+      // };
+      // this.app_form.estab_details = {
+      //   establishment_name: this.active_license.estab_details.establishment_name
+      // };
+      // details.officeAddress = {
+      //   // address: "as",
+      //   // city: "as",
+      //   // province: "a",
+      //   // region: "a",
+      //   // zipcode: "a"
+      //   address: this.active_license.address_list[0].address,
+      //   city: this.active_license.address_list[0].city,
+      //   province: this.active_license.address_list[0].province,
+      //   region: this.active_license.address_list[0].region,
+      //   zipcode: this.active_license.address_list[0].zipcode
+      // };
+      console.log("details data: " + JSON.stringify(details));
       this.$store
         .dispatch("SAVE_TRANSACTION_PROVIDER", details)
         .then(result => {
@@ -390,7 +420,6 @@ export default {
             "this is fdac save transaction provider data: " +
               JSON.stringify(result)
           );
-
           console.log("this.fees_form: " + JSON.stringify(this.fees_form));
           console.log("this.app_form: " + JSON.stringify(this.app_form));
           this.cashierPayment = true;
@@ -398,7 +427,6 @@ export default {
             formDetails: this.deepCopy(this.app_form),
             paymentDetails: this.deepCopy(this.fees_form)
           };
-
           full_details.formDetails.date_created = this.formatDate(
             full_details.formDetails.date_created
           );
@@ -406,7 +434,6 @@ export default {
             full_details.formDetails.application_type,
             full_details.formDetails.case_type
           );
-
           if (full_details.formDetails.case_type === 0) {
             full_details.officeAddress = this.app_form.address_list.find(
               data => {
@@ -464,14 +491,45 @@ export default {
             full_details.formDetails.establishment_info.activity = this.establishmentInfo(
               full_details.formDetails.establishment_info.activity
             ).name;
-            full_details.formDetails.establishment_info.type = this.establishmentType(
+            full_details.formDetails.establishment_info.type = this.getEstablishSource(
               full_details.formDetails.establishment_info.type
             ).name;
             full_details.formDetails.establishment_info.origin_country = this.establishplacesOrigin(
               full_details.formDetails.establishment_info.origin_country
             ).name;
-          }
 
+            // ----------added fields to run-----------
+            full_details.officeAddress = this.active_license.address_list.find(
+              data => {
+                return data.type === 0;
+              }
+            );
+            full_details.qualified = this.active_license.qualified[0];
+
+            full_details.formDetails.general_info = {
+              product_type: this.getProduct(
+                this.active_license.general_info.product_type
+              )
+            };
+
+            full_details.formDetails.auth_officer = {
+              mail_add: {
+                region: this.getRegionName(
+                  this.active_license.auth_officer.mail_add.region
+                ),
+                province: this.getProvinceName(
+                  this.active_license.auth_officer.mail_add.province
+                ),
+                city: this.getCityName(
+                  this.active_license.auth_officer.mail_add.city
+                )
+              }
+            };
+            full_details.formDetails.estab_details = {
+              establishment_name: this.active_license.estab_details
+                .establishment_name
+            };
+          }
           full_details.paymentDetails.fee = this.numberWithCommas(
             full_details.paymentDetails.fee
           );
@@ -495,6 +553,21 @@ export default {
           );
           this.$download(full_details, "PAY", "FDAC.pdf");
         });
+    }
+  },
+  computed: {
+    active_license() {
+      console.log(
+        "ACTIVE LICENSE : " +
+          JSON.stringify(this.$store.state.licenses.active_license)
+      );
+      console.log(
+        "ACTIVE LICENSE : " +
+          JSON.stringify(
+            this.$store.state.licenses.active_license.general_info.product_type
+          )
+      );
+      return this.$store.state.licenses.active_license;
     }
   }
 };
