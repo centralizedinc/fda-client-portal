@@ -224,11 +224,13 @@ export default {
         this.$store.commit("SET_VIEW_CERTIFICATE", {
           toy_certificate: this.toy_certificate,
           certificate_type: 1,
-          application_type: 0
+          application_type: 0,
+          case_type: 1
         });
         this.$store.commit("SET_FORM", {
           toy_certificate: this.toy_certificate,
           certificate_type: 1,
+          case_type: 1,
           application_type: 0,
           output_files: this.toy_certificate.output_files
         });

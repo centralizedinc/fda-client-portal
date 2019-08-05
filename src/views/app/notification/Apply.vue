@@ -209,12 +209,14 @@ export default {
         this.$store.commit("SET_VIEW_CERTIFICATE", {
           cosmetic_certificate: this.cosmetic_certificate,
           certificate_type: 2,
-          application_type: 0
+          application_type: 0,
+          case_type: 1
         });
         this.$store.commit("SET_FORM", {
           cosmetic_certificate: this.cosmetic_certificate,
           certificate_type: 2,
-          application_type: 0
+          application_type: 0,
+          case_type: 1,
         });
         this.$router.push("/app/certificates/overview");
         this.$notify({

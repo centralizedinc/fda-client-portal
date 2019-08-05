@@ -482,53 +482,144 @@ export default {
               full_details.qualified.tin
             );
           } else if (full_details.formDetails.case_type === 1) {
-            full_details.formDetails.food_product.type = this.foodProductType(
-              full_details.formDetails.food_product.type
-            ).name;
-            full_details.formDetails.food_product.categorization = this.foodCategory(
-              full_details.formDetails.food_product.categorization
-            ).name;
-            full_details.formDetails.establishment_info.activity = this.establishmentInfo(
-              full_details.formDetails.establishment_info.activity
-            ).name;
-            full_details.formDetails.establishment_info.type = this.getEstablishSource(
-              full_details.formDetails.establishment_info.type
-            ).name;
-            full_details.formDetails.establishment_info.origin_country = this.establishplacesOrigin(
-              full_details.formDetails.establishment_info.origin_country
-            ).name;
+            console.log("full details: " + JSON.stringify(full_details));
+            if (full_details.formDetails.certificate_type == 0) {
+              full_details.formDetails.food_product.type = this.foodProductType(
+                full_details.formDetails.food_product.type
+              ).name;
+              full_details.formDetails.food_product.categorization = this.foodCategory(
+                full_details.formDetails.food_product.categorization
+              ).name;
+              full_details.formDetails.establishment_info.activity = this.establishmentInfo(
+                full_details.formDetails.establishment_info.activity
+              ).name;
+              full_details.formDetails.establishment_info.type = this.getEstablishSource(
+                full_details.formDetails.establishment_info.type
+              ).name;
+              full_details.formDetails.establishment_info.origin_country = this.establishplacesOrigin(
+                full_details.formDetails.establishment_info.origin_country
+              ).name;
 
-            // ----------added fields to run-----------
-            full_details.officeAddress = this.active_license.address_list.find(
-              data => {
-                return data.type === 0;
-              }
-            );
-            full_details.qualified = this.active_license.qualified[0];
+              // ----------added fields to run-----------
+              full_details.officeAddress = this.active_license.address_list.find(
+                data => {
+                  return data.type === 0;
+                }
+              );
+              full_details.qualified = this.active_license.qualified[0];
 
-            full_details.formDetails.general_info = {
-              product_type: this.getProduct(
-                this.active_license.general_info.product_type
-              )
-            };
-
-            full_details.formDetails.auth_officer = {
-              mail_add: {
-                region: this.getRegionName(
-                  this.active_license.auth_officer.mail_add.region
-                ),
-                province: this.getProvinceName(
-                  this.active_license.auth_officer.mail_add.province
-                ),
-                city: this.getCityName(
-                  this.active_license.auth_officer.mail_add.city
+              full_details.formDetails.general_info = {
+                product_type: this.getProduct(
+                  this.active_license.general_info.product_type
                 )
-              }
-            };
-            full_details.formDetails.estab_details = {
-              establishment_name: this.active_license.estab_details
-                .establishment_name
-            };
+              };
+
+              full_details.formDetails.auth_officer = {
+                mail_add: {
+                  region: this.getRegionName(
+                    this.active_license.auth_officer.mail_add.region
+                  ),
+                  province: this.getProvinceName(
+                    this.active_license.auth_officer.mail_add.province
+                  ),
+                  city: this.getCityName(
+                    this.active_license.auth_officer.mail_add.city
+                  )
+                }
+              };
+              full_details.formDetails.estab_details = {
+                establishment_name: this.active_license.estab_details
+                  .establishment_name
+              };
+            }
+            // -------- toys certificate ---------
+            else if (full_details.formDetails.certificate_type == 1) {
+              // ----------added fields to run-----------
+              full_details.officeAddress = this.active_license.address_list.find(
+                data => {
+                  return data.type === 0;
+                }
+              );
+              full_details.qualified = this.active_license.qualified[0];
+
+              full_details.formDetails.general_info = {
+                product_type: this.getProduct(
+                  this.active_license.general_info.product_type
+                )
+              };
+
+              full_details.formDetails.auth_officer = {
+                mail_add: {
+                  region: this.getRegionName(
+                    this.active_license.auth_officer.mail_add.region
+                  ),
+                  province: this.getProvinceName(
+                    this.active_license.auth_officer.mail_add.province
+                  ),
+                  city: this.getCityName(
+                    this.active_license.auth_officer.mail_add.city
+                  )
+                }
+              };
+              full_details.formDetails.estab_details = {
+                establishment_name: this.active_license.estab_details
+                  .establishment_name
+              };
+            }
+
+            // -------- cosmetics ---------
+            else if (full_details.formDetails.certificate_type == 2) {
+              // full_details.formDetails.cosmetic_certificate.particular_product.product_type = this.foodProductType(
+              //   full_details.formDetails.cosmetic_certificate.particular_product
+              //     .product_type
+              // ).name;
+              // // full_details.formDetails.food_product.categorization = this.foodCategory(
+              // //   full_details.formDetails.food_product.categorization
+              // // ).name;
+              // full_details.formDetails.cosmetic_certificate.establishment_info.activity = this.establishmentInfo(
+              //   full_details.formDetails.cosmetic_certificate.establishment_info
+              //     .activity
+              // ).name;
+              // // full_details.formDetails.establishment_info.type = this.getEstablishSource(
+              // //   full_details.formDetails.establishment_info.type
+              // // ).name;
+              // full_details.formDetails.cosmetic_certificate.establishment_info.origin_country = this.establishplacesOrigin(
+              //   full_details.formDetails.cosmetic_certificate.establishment_info
+              //     .origin_country
+              // ).name;
+
+              // ----------added fields to run-----------
+              full_details.officeAddress = this.active_license.address_list.find(
+                data => {
+                  return data.type === 0;
+                }
+              );
+              full_details.qualified = this.active_license.qualified[0];
+
+              full_details.formDetails.general_info = {
+                product_type: this.getProduct(
+                  this.active_license.general_info.product_type
+                )
+              };
+
+              full_details.formDetails.auth_officer = {
+                mail_add: {
+                  region: this.getRegionName(
+                    this.active_license.auth_officer.mail_add.region
+                  ),
+                  province: this.getProvinceName(
+                    this.active_license.auth_officer.mail_add.province
+                  ),
+                  city: this.getCityName(
+                    this.active_license.auth_officer.mail_add.city
+                  )
+                }
+              };
+              full_details.formDetails.estab_details = {
+                establishment_name: this.active_license.estab_details
+                  .establishment_name
+              };
+            }
           }
           full_details.paymentDetails.fee = this.numberWithCommas(
             full_details.paymentDetails.fee
